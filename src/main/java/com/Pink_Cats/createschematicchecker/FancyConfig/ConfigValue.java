@@ -259,7 +259,7 @@ public class ConfigValue {
      * @param strValue String
      * @return result
      */
-    private String[] processArrayString(String strValue) {
+    public static String[] processArrayString(String strValue) {
         // 去掉方括号和空格
         strValue = strValue.replaceAll("[\\[\\]\" ]", "");
         strValue = NoAir(strValue);

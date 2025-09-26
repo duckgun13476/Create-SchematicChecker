@@ -4,6 +4,7 @@ import com.Pink_Cats.createschematicchecker.Message;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
+import net.minecraft.nbt.Tag;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -46,8 +47,18 @@ public class BlockSweeper {
                 Message.FM(EncodedRequest);
                 //ListTag ordered_stacks = EncodedRequest.getList("ordered_stacks",10);
                 CompoundTag ordered_stacks = EncodedRequest.getCompound("ordered_stacks");
+                ListTag ordered_stack_list = ordered_stacks.getList("entries", 10);
 
-                Message.FE(ordered_stacks);
+
+
+                for (int i = 0; i < ordered_stack_list.size(); i++) {
+                    CompoundTag entity = ordered_stack_list.getCompound(i);
+                    Message.FE(entity);
+                    CompoundTag item_stack = entity.getCompound("item_stack");
+                    Message.FE(item_stack);
+                    Tag stack_id = item_stack.get("id");
+                    Message.FE(stack_id);
+                }
 
 
             }
