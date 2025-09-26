@@ -23,15 +23,15 @@ public class Message {
     }
     public static void FE(Object message) {
         String messageString = String.valueOf(message);
-        Createschematicchecker.LOGGER.error(YELLOW + "{}" + RESET, messageString);
+        Createschematicchecker.LOGGER.error(RED + "{}" + RESET, messageString);
     }
     public static void FM(Object message) {
         String messageString = String.valueOf(message);
-        Createschematicchecker.LOGGER.error(GREEN + "{}" + RESET, messageString);
+        Createschematicchecker.LOGGER.info(GREEN + "{}" + RESET, messageString);
     }
     public static void FP(Object message) {
         String messageString = String.valueOf(message);
-        Createschematicchecker.LOGGER.error(MAGENTA + "{}" + RESET, messageString);
+        Createschematicchecker.LOGGER.info(MAGENTA + "{}" + RESET, messageString);
     }
 
 }

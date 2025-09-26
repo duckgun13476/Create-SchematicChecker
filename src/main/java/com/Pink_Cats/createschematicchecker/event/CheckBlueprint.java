@@ -10,6 +10,8 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
+import static com.Pink_Cats.createschematicchecker.core.NbtInterFace.S_bool;
+
 public class CheckBlueprint {
     BlueCore Checker;
 
@@ -40,7 +42,7 @@ public class CheckBlueprint {
                 return;
             }
 
-            if (Checker.SchematicBlueCore(PlayerBlueprintId)) {
+            if (S_bool(Checker.SchematicBlueCore(PlayerBlueprintId).get("is_valid"))) {
                 table.inventory.setStackInSlot(1, SchematicItem.create(
                         world.holderLookup(Registries.BLOCK), PlayerBlueprintId, player.getGameProfile().getName()));
             } else {

@@ -14,6 +14,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static com.Pink_Cats.createschematicchecker.CSCLanguage.translateDirect;
+import static com.Pink_Cats.createschematicchecker.FancyConfig.ConfigRegister.CSC_INIT;
 
 // An example config class. This is not required, but it's a good idea to have one to keep your config organized.
 // Demonstrates how to use Forge's config APIs
@@ -71,10 +72,12 @@ public class Config {
     @SubscribeEvent
     static void onLoad(final ModConfigEvent event) {
         ConfigReload();
+        CSC_INIT();
     }
     @SubscribeEvent
     static void onReload(final ModConfigEvent event) {
         ConfigReload();
+        CSC_INIT();
     }
 
 

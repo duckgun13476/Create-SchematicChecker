@@ -1,16 +1,19 @@
 package com.Pink_Cats.createschematicchecker.FancyConfig;
 
+import com.Pink_Cats.createschematicchecker.CSCLanguage;
 import com.Pink_Cats.createschematicchecker.Message;
 
 import java.util.Map;
 
 import static com.Pink_Cats.createschematicchecker.FancyConfig.ConfigHook.readToml;
+import static com.Pink_Cats.createschematicchecker.core.StrFunc.NoAir;
 
 public class ConfigValue {
 
     static SimpleTomlEditor tomlEditor = new SimpleTomlEditor("config.toml");
 
 
+//---------------------------------------------------------------------------------
     // 来创建字符串配置项
     public ConfigString define(String key, java.lang.String defaultValue) {
 
@@ -34,7 +37,7 @@ public class ConfigValue {
         }
 
         public ConfigString comment(String comment) {
-            tomlEditor.insertCommentAboveKey(key, comment);
+            tomlEditor.insertCommentAboveKey(key, CSCLanguage.translateDirect(comment));
             return this;
         }
 
@@ -58,22 +61,34 @@ public class ConfigValue {
             return new ConfigString(key, value);
         }
 
+        public void reload() {
+            Object configOperateResult = tomlEditor.ConfigValue_IO(key, value);
+            if (configOperateResult != null) {
+                value = (String) configOperateResult; // 更新当前值
+            }
+        }
+
 
     }
-//---------------------------------------------------------------------------------
 
+
+//---------------------------------------------------------------------------------
     // 来创建布尔配置项
     public ConfigBoolean define(String key, boolean defaultValue) {
         Object configOperateResult = tomlEditor.ConfigValue_IO(key, (Object) defaultValue);
-        Message.FW(configOperateResult);
+
 
         // 检查 configOperateResult 的类型
         if (configOperateResult instanceof Boolean) {
             return new ConfigBoolean(key, (Boolean) configOperateResult);
         } else if (configOperateResult instanceof String strValue) {
+            strValue = NoAir(strValue);
             // 如果是 String 类型，尝试将其转换为布尔值
-            boolean booleanValue = Boolean.parseBoolean(strValue);
-            return new ConfigBoolean(key, booleanValue);
+            if ("true".equals(strValue)){
+                return new ConfigBoolean(key, true);
+            }else{
+                return new ConfigBoolean(key, false);
+            }
         } else {
             return new ConfigBoolean(key, defaultValue);
         }
@@ -90,7 +105,7 @@ public class ConfigValue {
         }
 
         public ConfigBoolean comment(String comment) {
-            tomlEditor.insertCommentAboveKey(key, comment);
+            tomlEditor.insertCommentAboveKey(key, CSCLanguage.translateDirect(comment));
             return this;
         }
 
@@ -114,22 +129,23 @@ public class ConfigValue {
             return new ConfigBoolean(key, value);
         }
     }
+
+
 //---------------------------------------------------------------------------------
 
     public ConfigInt define(String key, int defaultValue) {
         Object configOperateResult = tomlEditor.ConfigValue_IO(key, (Object) defaultValue);
-        Message.FW(configOperateResult);
 
         // 检查 configOperateResult 的类型
         if (configOperateResult instanceof Integer) {
             return new ConfigInt(key, (Integer) configOperateResult);
         } else if (configOperateResult instanceof String strValue) {
-            // 如果是 String 类型，尝试将其转换为整数
+            strValue = strValue.trim();
             try {
                 int intValue = Integer.parseInt(strValue);
                 return new ConfigInt(key, intValue);
             } catch (NumberFormatException e) {
-                Message.FW("Invalid integer format for key: " + key);
+                Message.FW("Invalid integer format for key: " + key + " value: '" + strValue + "'");
                 return new ConfigInt(key, defaultValue);
             }
         } else {
@@ -148,7 +164,7 @@ public class ConfigValue {
         }
 
         public ConfigInt comment(String comment) {
-            tomlEditor.insertCommentAboveKey(key, comment);
+            tomlEditor.insertCommentAboveKey(key, CSCLanguage.translateDirect(comment));
             return this;
         }
 
@@ -174,6 +190,59 @@ public class ConfigValue {
     }
 
 
+//---------------------------------------------------------------------------------
+
+    public ConfigStringArray define(String key, String[] defaultValue) {
+        Object configOperateResult = tomlEditor.ConfigValue_IO(key, (Object) defaultValue);
+
+        // 检查 configOperateResult 的类型
+        if (configOperateResult instanceof String[]) {
+            return new ConfigStringArray(key, (String[]) configOperateResult);
+        } else if (configOperateResult instanceof String strValue) {
+
+            String[] strArray = processArrayString(strValue); // 假设使用逗号分隔
+
+            return new ConfigStringArray(key, strArray);
+        } else {
+            return new ConfigStringArray(key, defaultValue);
+        }
+    }
+
+    public static class ConfigStringArray {
+        private final String key;
+        private String[] value;
+
+        // 构造方法
+        public ConfigStringArray(String key, String[] defaultValue) {
+            this.key = key;
+            this.value = defaultValue; // 初始化为默认值
+        }
+
+        public ConfigStringArray comment(String comment) {
+            tomlEditor.insertCommentAboveKey(key, CSCLanguage.translateDirect(comment));
+            return this;
+        }
+
+        // 获取默认值
+        public String[] getDefaultValue() {
+            return value;
+        }
+
+        // 设置配置项的值
+        public void setValue(String[] value) {
+            this.value = value;
+        }
+
+        // 获取键
+        public String getKey() {
+            return key;
+        }
+
+        // 静态方法将字符串数组转换为 ConfigStringArray
+        public static ConfigStringArray fromJavaStringArray(String key, String[] value) {
+            return new ConfigStringArray(key, value);
+        }
+    }
 
 
 
@@ -185,9 +254,18 @@ public class ConfigValue {
 
 
 
-
-
-
+    /**
+     * Remove [ ] and " split.
+     * @param strValue String
+     * @return result
+     */
+    private String[] processArrayString(String strValue) {
+        // 去掉方括号和空格
+        strValue = strValue.replaceAll("[\\[\\]\" ]", "");
+        strValue = NoAir(strValue);
+        // 使用逗号分割字符串
+        return strValue.split(",");
+    }
 
 
 

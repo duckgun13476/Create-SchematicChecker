@@ -1,31 +1,83 @@
 package com.Pink_Cats.createschematicchecker.FancyConfig;
 
 
-import com.electronwill.nightconfig.toml.TomlWriter;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.Pink_Cats.createschematicchecker.Message;
 
 public class ConfigRegister {
 
-    private String name;
-    private String version;
-    private String description;
-    private List<String> banBlock;
+    // 定义 LANGUAGE 为 ConfigValue.String 类型
+    private static final String ConfigPath = "config.toml";
+    private static final ConfigValue ConfigBuild = new ConfigValue();
+    private static final SimpleTomlEditor tomlEditor = new SimpleTomlEditor(ConfigPath);
+    public static String DefineLanguage;
+    static {
+        tomlEditor.removeAllComments();
+        Object languageValue = ConfigHook.readToml(ConfigPath).get("Language");
+        DefineLanguage = (languageValue != null) ? languageValue.toString() : "en_us";
+    }
+    public static ConfigValue.ConfigString LANGUAGE = ConfigBuild
+            .define( "Language", "zh_cn")
+            .comment("config.lang");
 
-    // Getter和Setter
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
 
-    public String getVersion() { return version; }
-    public void setVersion(String version) { this.version = version; }
+    public static ConfigValue.ConfigString UUID = ConfigBuild
+            .define( "UUID", "wd2d-ddd2-2dav");
 
-    public String getDescription() { return description; }
-    public void setDescription(String description) { this.description = description; }
+    public static ConfigValue.ConfigBoolean ENABLE = ConfigBuild
+            .define("core.Enable", false)
+            .comment("config.EnableOrNot");
 
-    public List<String> getBanBlock() { return banBlock; }
-    public void setBanBlock(List<String> banBlock) { this.banBlock = banBlock; }
+    public static ConfigValue.ConfigInt RANDOM = ConfigBuild
+            .define("core.DelayTime", 52525)
+            .comment("config.DelayTime");
+
+    public static ConfigValue.ConfigStringArray BAN_BLOCK = ConfigBuild
+            .define("core.BanBlock", new String[]{"create:pulse_timer"})
+            .comment("console.feedback")
+            .comment("test");
+
+    public static ConfigValue.ConfigStringArray BAN_TAG = ConfigBuild
+            .define("core.BanTag", new String[]{"AttributeModifiers", "run_command"})
+            .comment("config.BanTag");
+
+
+    public static ConfigValue.ConfigBoolean KILL_ENTITY = ConfigBuild
+            .define("core.KillEntity", true)
+            .comment("config.KillEntity");
+
+    public static ConfigValue.ConfigBoolean DEBUG_TOTAL_BLOCK = ConfigBuild
+            .define("debug.DebugTotalBlock", true)
+            .comment("config.DebugTotalBlock");
+
+
+    public static String language = LANGUAGE.getDefaultValue();
+    public static String user_uuid = UUID.getDefaultValue();
+    public static boolean enable_csc = ENABLE.getDefaultValue();
+    public static String[] ban_block = BAN_BLOCK.getDefaultValue();
+    public static String[] ban_tag = BAN_TAG.getDefaultValue();
+    public static boolean kill_entity = KILL_ENTITY.getDefaultValue();
+    public static boolean debug_total_block = DEBUG_TOTAL_BLOCK.getDefaultValue();
+
+
+    public static void CSC_INIT() {
+        language = LANGUAGE.getDefaultValue();
+        user_uuid = UUID.getDefaultValue();
+        enable_csc = ENABLE.getDefaultValue();
+        ban_block = BAN_BLOCK.getDefaultValue();
+        ban_tag = BAN_TAG.getDefaultValue();
+        kill_entity = KILL_ENTITY.getDefaultValue();
+        debug_total_block = DEBUG_TOTAL_BLOCK.getDefaultValue();
+        Message.FM("Ban Block: " );
+        for (String s : ban_block) {
+            Message.FM(s);
+        }
+        Message.FM(debug_total_block);
+        Message.FM(kill_entity);
+        Message.FM(enable_csc);
+    }
+
+
+
+
+
 }

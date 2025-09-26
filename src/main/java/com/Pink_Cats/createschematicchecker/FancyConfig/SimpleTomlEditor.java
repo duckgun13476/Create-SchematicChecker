@@ -2,6 +2,7 @@ package com.Pink_Cats.createschematicchecker.FancyConfig;
 
 import com.Pink_Cats.createschematicchecker.Message;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.ArrayList;
 import java.io.BufferedReader;
@@ -57,27 +58,41 @@ public class SimpleTomlEditor {
             String[] keyParts = key.split("\\.");
             String subKey = keyParts.length > 0 ? keyParts[keyParts.length - 1] : null; // 获取最后一个元素或设置为null
 
-            //Message.FW("length:  " + keyParts.length);
-            //Message.FW(Arrays.toString(keyParts));
-            //Message.FW("subKey:  " + subKey);
             boolean HasKey = false;
-            Object key_line = "";
+            StringBuilder key_line = new StringBuilder();
+
             try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
                 int FileLineCount = 0;
+                boolean NoEndLine = false;
                 try (BufferedReader read = new BufferedReader(new FileReader(filePath))) {
-                    while (read.readLine() != null) {
-                        FileLineCount++;
+                    String Pre_liner = "";
+                    String Pre_line;
+                    for (int i_1 = 0; i_1 < 500; i_1++) {
+                        Pre_line = read.readLine();
+                        if (Pre_line == null) {
+                            if (!Pre_liner.isEmpty())
+                            {
+                                NoEndLine = true;
+                            }
+                            break;
+                        }else{
+                            Pre_liner = Pre_line.trim();
+                            FileLineCount++;
+                        }
+
                     }
-                    Message.FW("FileLineCount:  " + FileLineCount);
+                    //Message.FE("LastLine-" + Pre_liner+"-");
+                    //Message.FW("FileLineCount:  " + FileLineCount);
                 }
-                if (FileLineCount == 0) {
-                    try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
+                if (FileLineCount == 0 || NoEndLine) {
+                    try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath, true))) { // 追加模式
                         writer.write(System.lineSeparator()); // 写入一行空行
                         FileLineCount += 1;
                     } catch (IOException e) {
-                        Message.FE(e.getMessage());
+                        //Message.FE(e.getMessage());
                     }
                 }
+
 
 
                 String line;
@@ -89,6 +104,7 @@ public class SimpleTomlEditor {
 
 
                 while ((line = reader.readLine()) != null) {
+
                     m+=1;
                     if ((line.trim().startsWith("#") || line.isEmpty()) && ( m != FileLineCount ) ) {
                         content.append(line).append(System.lineSeparator());
@@ -104,11 +120,11 @@ public class SimpleTomlEditor {
                         leadingSpaces++;
                     }
                     //Message.FW("Found space:  " + leadingSpaces);
-                    //Message.FW("Checking..."+line+"." );
+                   // Message.FW("Checking..."+line+"." );
                     String[] LineKey = line.trim().split("\\.");
                     //Message.FW(m);
-                    if ( (LineKey.length < i +1 && !line.contains("=")) || (FileLineCount == m) ) {
-                        //Message.FW(m);
+                    if ( (LineKey.length < i +1 && !line.contains("=") && !line.contains(",") && !line.contains("]")) || (FileLineCount == m) ) {
+
                         if (!Write && !HasKey){
                             //Message.FM("end key" + kye);
                             Read = false;
@@ -124,12 +140,20 @@ public class SimpleTomlEditor {
                                     content.append(StartSpace).append(kye).append(System.lineSeparator());
                                 }
                                 else {
+                                    //Message.FE("Insert:::");
                                     if (value instanceof String) {
                                         content.append(StartSpace)
                                                 .append(kye)
                                                 .append(" = \"")
                                                 .append(value)
                                                 .append("\"")
+                                                .append(System.lineSeparator());
+                                    } else if (value instanceof String[]) {
+                                        // 处理字符串数组
+                                        content.append(StartSpace)
+                                                .append(kye)
+                                                .append(" = ")
+                                                .append(arrayToString((String[]) value,StartSpace)) // 调用方法将数组转换为 TOML 格式
                                                 .append(System.lineSeparator());
                                     } else {
                                         content.append(StartSpace)
@@ -148,6 +172,7 @@ public class SimpleTomlEditor {
                         }
 
                     }
+                   // Message.FE("read = "+ Read);
                     if (Read) {
                         if (line.trim().contains(kye)) {
 
@@ -157,14 +182,46 @@ public class SimpleTomlEditor {
                                 i  += 1;
                             }
                             if (line.trim().contains("=")){
+                                key_line = new StringBuilder(line.trim().split("=", 2)[1].trim().replace("\"", ""));
+                                if (line.trim().contains("[")){
+                               //     Message.FE(line);
+                                    content.append(line).append(System.lineSeparator());
+                                    for (int o = 0; o < 100; o++) {
+                                        String NextLine = reader.readLine();
+                                     //   Message.FE(NextLine);
+                                        if (NextLine==null)
+                                        {
+                                            break;
+                                        }
+                                        content.append(NextLine).append(System.lineSeparator());
 
-                                key_line = line.trim().split("=", 2)[1].trim().replace("\"", "");
-                                //Message.FM("keyResult: " + key_line);
+                                        if (NextLine.trim().startsWith("#") || NextLine.isEmpty()) {
+                                            continue;
+                                        }
+
+                                        key_line.append(NextLine);
+                                        if (NextLine.contains("]")) {
+                                            break;
+                                        }
+
+                                    }
+
+                                }
+
+                            //    Message.FM("keyResult: " + key_line);
                                 HasKey = true;
 
                             }
                         }
-                        content.append(line).append(System.lineSeparator());
+                        if (!(line.contains("=") && line.contains("["))) {
+                       //     Message.FM("addLine: "+line);
+                            content.append(line).append(System.lineSeparator());
+                        }else {
+                            if (!line.trim().contains(kye)){
+                                content.append(line).append(System.lineSeparator());
+                            }
+                        }
+
 
                     }
 
@@ -179,7 +236,7 @@ public class SimpleTomlEditor {
                 writer.write(content.toString());
             }
             if (HasKey){
-                return key_line;
+                return removeTrailingEmptyLines(key_line.toString());
             }else  {
                 return value;
             }
@@ -192,6 +249,24 @@ public class SimpleTomlEditor {
     }
 
 
+
+    private String arrayToString(String[] array, String startSpace) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("[\n"); // 开始数组并换行
+        for (int i = 0; i < array.length; i++) {
+            sb.append(startSpace).append("    \"").append(array[i]).append("\""); // 添加元素并缩进
+            if (i < array.length - 1) {
+                sb.append(",\n"); // 如果不是最后一个元素，添加逗号和换行
+            }
+        }
+        sb.append(" ]"); // 结束数组并换行
+        return sb.toString();
+    }
+
+
+
+
+
     private String Space4(int count) {
         if (count <= 0) {
             return "";}
@@ -201,6 +276,15 @@ public class SimpleTomlEditor {
     //toml space remove
     public static StringBuilder removeTrailingEmptyLines(StringBuilder content) {
         String[] lines = content.toString().split(System.lineSeparator());
+        return StringBuilderCoreSpace(lines);
+    }
+
+    public static String removeTrailingEmptyLines(String content) {
+        String[] lines = content.split(System.lineSeparator());
+        return StringBuilderCoreSpace(lines).toString();
+    }
+
+    private static StringBuilder StringBuilderCoreSpace(String[] lines) {
         StringBuilder newContent = new StringBuilder();
         int i = lines.length - 1;
         while (i >= 0 && lines[i].trim().isEmpty()) {
@@ -211,6 +295,8 @@ public class SimpleTomlEditor {
         }
         return newContent;
     }
+
+
 
     private String GetCurrentLineStringTitle(String[] keyParts,int FindKey) {
         String subKey = keyParts.length > 0 ? keyParts[keyParts.length - 1] : null; // 获取最后一个元素或设置为null
@@ -231,37 +317,6 @@ public class SimpleTomlEditor {
         }
     }
 
-
-    public void ConfigValue_IO(String key, Boolean value) {
-        try {
-            StringBuilder content = new StringBuilder();
-            boolean keyExists = false;
-
-            try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    if (line.startsWith(key + " =")) {
-                        keyExists = true;
-                        line = key + " = " + value; // 更新为新值，不添加双引号
-                    }
-                    content.append(line).append(System.lineSeparator());
-                }
-            }
-
-            // 如果键不存在，可以选择是否添加
-            if (!keyExists) {
-                content.append(key).append(" = ").append(value).append(System.lineSeparator());
-            }
-
-            try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
-                writer.write(content.toString());
-            }
-        } catch (IOException e) {
-            Message.FE(e.getMessage());
-        }
-    }
-
-
     // 插入注释
     public void insertCommentAboveKey(String key, String comment) {
         try {
@@ -270,11 +325,17 @@ public class SimpleTomlEditor {
             boolean commentExists = false; // 用于检查注释是否已存在
             boolean Inlist = false;
             String[] keyParts = key.split("\\.");
-            String father = GetCurrentLineStringTitle(keyParts,keyParts.length-2);
-            String children = GetCurrentLineStringTitle(keyParts,keyParts.length-1);
-            Message.FW(father);
-            Message.FW(children);
+            String father ;
+            String children;
 
+            if (keyParts.length > 1) {
+                father = GetCurrentLineStringTitle(keyParts,keyParts.length-2);
+            }
+            else {
+                Inlist = true;
+                father = "";
+            }
+            children = GetCurrentLineStringTitle(keyParts,keyParts.length-1);
 
             try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
                 List<String> lines = new ArrayList<>();
@@ -288,15 +349,15 @@ public class SimpleTomlEditor {
                 // 遍历所有行以构建新的内容
                 for (int i = 0; i < lines.size(); i++) {
                     String currentLine = lines.get(i);
-                    Message.FW(currentLine);
-                    if (currentLine.trim().startsWith(father)) {
+                //    Message.FW(currentLine);
+                    if (!Inlist && currentLine.trim().startsWith(father)) {
                         Inlist = true;
-                        Message.FW(true +"Inlist");
+                        //Message.FW(true +"Inlist");
                     }
 
                     // 在找到键之前插入注释
                     if (Inlist) {
-                        Message.FP(trimALL(currentLine));
+                       // Message.FP(trimALL(currentLine));
                         if (!keyFound && trimALL(currentLine.trim()).startsWith(children + "=")) {
                             keyFound = true; // 找到键后标记
 
@@ -340,6 +401,9 @@ public class SimpleTomlEditor {
             Message.FE(e.getMessage());
         }
     }
+
+
+
 
 
 
