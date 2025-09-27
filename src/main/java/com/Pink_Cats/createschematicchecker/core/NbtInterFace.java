@@ -2,9 +2,11 @@ package com.Pink_Cats.createschematicchecker.core;
 
 import com.Pink_Cats.createschematicchecker.Message;
 import net.minecraft.nbt.*;
+import net.minecraftforge.common.ForgeConfigSpec;
 
 import java.io.DataOutput;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import static com.Pink_Cats.createschematicchecker.core.StrFunc.NoQuotes;
 
@@ -93,6 +95,35 @@ public class NbtInterFace {
         return null;
     }
 
+    public static int S_int(Object data){
+        try {
+            if (data instanceof Integer) {
+                return Integer.parseInt(String.valueOf(data));
+            }
+
+        } catch (NumberFormatException e) {
+            System.out.println("error in O_int"+ e);
+
+        }
+        return 0;
+    }
+
+    public static ArrayList<CompoundTag> S_TagList(ArrayList<Object> objectList) {
+        ArrayList<CompoundTag> compoundTagList = new ArrayList<>();
+        try {
+            for (Object obj : objectList) {
+                if (obj instanceof CompoundTag) {
+                    compoundTagList.add((CompoundTag) obj);
+                }
+            }
+
+            return compoundTagList;
+        } catch (ClassCastException e) {
+            Message.FE("error in O_TagList"+ e);
+            return compoundTagList;
+        }
+
+    }
     //-----------------------------------------------------------------------------------------------------------
 
     public static String StrTag(Tag data){

@@ -4,7 +4,10 @@ import com.Pink_Cats.createschematicchecker.Message;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 
+import java.util.Objects;
+
 import static com.Pink_Cats.createschematicchecker.FancyConfig.ConfigRegister.*;
+import static com.Pink_Cats.createschematicchecker.core.NbtInterFace.StrTag;
 import static com.mojang.text2speech.Narrator.LOGGER;
 
 public class StrFunc {
@@ -90,6 +93,11 @@ public class StrFunc {
     public static String NoAir(String input) {
         // 使用 replaceAll() 方法将空格和回车替换为空字符串
         return input.replaceAll("\\s", "");
+    }
+
+
+    public static String TagMapId(CompoundTag nbt_data){
+        return  StrTag(Objects.requireNonNull(nbt_data.get("id")));
     }
 
 }

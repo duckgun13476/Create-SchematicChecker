@@ -75,6 +75,7 @@ public class NbtFunc {
                 for (Map.Entry<String, Integer> entry : blockCounts.entrySet()) {
                     Message.FP("ID: " + entry.getKey() + ", Count: " + entry.getValue());
                 }
+                blockCounts.clear();
             }
 
         }
