@@ -164,11 +164,11 @@ public class BlockSweeper {
             else {
                 String id = StrTag(Objects.requireNonNull(Data.get("Name")));
 
-                if (id.equals("create:valve_handle")){
+                if (id.equals("supplementaries:urn")){
                     ChainResult = MagicChainClear(Data,
-                            "nbt.ScrollValue",totalCount ,
+                            "Properties.treasure",totalCount ,
                             "operate" +
-                                    ".limit$ScrollValue$-180$180");
+                                    ".replace$treasure$false");
                     Data = S_tag(ChainResult.get("data"));
                     totalCount = S_int(ChainResult.get("find_count"));
                 }

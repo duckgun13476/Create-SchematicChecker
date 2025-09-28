@@ -112,7 +112,7 @@
   -[X] [视频链接](https://www.bilibili.com/video/BV1NwybY3ERY)
 
 - **7. 修复** 锦致装饰的翁在旧版本的无限 GT 特性，可以无限开宝藏 | 使用 GT 会导致服务器巨量卡顿  
-  [视频链接](https://www.bilibili.com/video/BV1LUS9YCEk1)
+  -[X] [视频链接](https://www.bilibili.com/video/BV1LUS9YCEk1)
 
 - **8. 修复** 恶意修改弹射置物台弹射力量产生的屠龙炮 | 这会直接导致 Forge 端崩服，极快的弹射速度会导致服务器直接卡死，弹射路径的区块全部会极快的生成  
   [视频链接](https://www.bilibili.com/video/BV1itXDY3EwJ)  
@@ -124,7 +124,7 @@
   [视频链接](https://www.bilibili.com/video/BV1vz9bY7EW5)
 
 - **11. 修复** 添加标签 use convert to 会返回任意创造物品的漏洞  
-  [视频链接](https://www.bilibili.com/video/BV1c19tYsEBL)
+  -[X] [视频链接](https://www.bilibili.com/video/BV1c19tYsEBL)
 
 - **12. 修复** 篡改动力臂距离到不合理的距离导致的超远距离传输 | 在某些情况下会因为距离问题直接导致崩服  
   [视频链接](https://www.bilibili.com/video/BV1XpXYYDEt7)
@@ -133,7 +133,7 @@
   [视频链接](https://www.bilibili.com/video/BV1nddcYSEWQ)
 
 - **14. 修复** 传送带的奇怪扭曲形式导致的传送带与传动杆复制  
-  [视频链接](https://www.bilibili.com/video/BV1omdmYrE3S)
+  -[X] [视频链接](https://www.bilibili.com/video/BV1omdmYrE3S)
 
 - **15. 修复** 恶意修改链式传动轮的匹配对象到几千个时导致的服务器巨量卡顿和锁链复制特性  
   [视频链接](https://www.bilibili.com/video/BV1Ze5Wz7EB2)
