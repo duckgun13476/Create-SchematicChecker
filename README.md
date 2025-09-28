@@ -94,14 +94,14 @@
 
 ## 针对已知问题的修复
 
-- **1. 修复** 使用讲台、剪贴板打印出创造物品的恶性漏洞       
-  [视频链接](https://www.bilibili.com/video/BV1sDp4ePEVp)
+- **1. 修复** 使用讲台、剪贴板打印出创造物品的恶性漏洞。
+  -[X] [视频链接](https://www.bilibili.com/video/BV1sDp4ePEVp)
 
-- **2. 修复** 阀门数据篡改导致的变量缓存溢出，会增加服务器些许缓存（无限阀门旋转特性）  
-  [视频链接](https://www.bilibili.com/video/BV1UdC9YjET5)
+- **2. 修复** 阀门数据篡改导致的变量缓存溢出，这会导致阀门实体内存无法回收，同时导致内存泄漏。（无限阀门旋转特性）  
+  -[X] [视频链接](https://www.bilibili.com/video/BV1UdC9YjET5)
 
-- **3. 修复** 剪贴板复制特性，附魔标签剔除 | 这可以复制创造物品，打印创造剪贴板  
-  [视频链接](https://www.bilibili.com/video/BV1SXC9YEEeW)
+- **3. 修复** 剪贴板复制特性，附魔标签剔除 | 这可以复制创造物品，打印带创造属性的剪贴板  
+  -[X] [视频链接](https://www.bilibili.com/video/BV1SXC9YEEeW)
 
 - **4. 修复** 阻止传送带修改打印上限超过一千格 | 这会导致渲染器溢出崩溃客户端，传送带的弱加载区块会卡服
 

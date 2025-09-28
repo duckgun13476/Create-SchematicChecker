@@ -116,6 +116,26 @@ public class BlockSweeper {
                     totalCount = S_int(ChainResult.get("find_count"));
                 }
 
+                if (id.equals("create:clipboard")){
+                    ChainResult = MagicChainClear(Data,
+                            "nbt.Item.id",totalCount ,
+                            "operate" +
+                                    ".clear$tag" +
+                                    ".replace$id$create:clipboard");
+                    Data = S_tag(ChainResult.get("data"));
+                    totalCount = S_int(ChainResult.get("find_count"));
+                }
+
+
+                if (id.equals("create:valve_handle")){
+                    ChainResult = MagicChainClear(Data,
+                            "nbt.ScrollValue",totalCount ,
+                            "operate" +
+                                    ".limit$ScrollValue$-180$180");
+                    Data = S_tag(ChainResult.get("data"));
+                    totalCount = S_int(ChainResult.get("find_count"));
+                }
+
 
 
 

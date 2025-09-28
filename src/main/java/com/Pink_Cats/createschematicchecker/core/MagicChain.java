@@ -43,16 +43,31 @@ public class MagicChain {
                     for (int index = 1; index < operate_chain.length; index++) {
 
                         String[] knife = KnifeSplit(operate_chain[index]);
-                        if (operate_chain[index].contains("clear"))
-                        {
+                        if (operate_chain[index].contains("clear")) {
                             tag.remove(knife[1]);
-                            Message.FM(tag);
                         }
-                        if (operate_chain[index].contains("replace"))
-                        {
+
+                        if (operate_chain[index].contains("replace")) {
                             tag.put(knife[1],TagString(knife[2])) ;
                         }
-                        Message.FM(tag);
+
+
+                        if (operate_chain[index].contains("limit")) {
+                            Message.FM(tag);
+                            Message.FM(Arrays.toString(knife));
+                            int DownLimit = StringToInt(knife[2]);
+                            int UpLimit = StringToInt(knife[3]);
+                            Message.FM(DownLimit+" "+UpLimit);
+                            int ActualCount = StringToInt(Objects.requireNonNull(tag.get(knife[1])).toString());
+                            if (ActualCount>UpLimit){
+                                tag.put(knife[1],TagInt(UpLimit) );
+                            } else if (ActualCount < DownLimit) {
+                                tag.put(knife[1],TagInt(DownLimit) );
+                            }
+                        }
+
+                        Message.FM("operate result"+tag);
+
 
 
                     }
