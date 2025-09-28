@@ -140,6 +140,7 @@ public class BlockSweeper {
                 String[][] SurgeryLogicArray = {
                         {"create:belt", "nbt.Length", "operate.limit$Length$0$30"},
                         {"create:belt", "nbt.Index", "operate.limit$Index$0$29"},
+                        {"create:weighted_ejector", "nbt.HorizontalDistance", "operate.limit$HorizontalDistance$1$32"},
                         // Add more entries as needed
                 };
 
@@ -172,6 +173,8 @@ public class BlockSweeper {
                     Data = S_tag(ChainResult.get("data"));
                     totalCount = S_int(ChainResult.get("find_count"));
                 }
+
+
 
 
 

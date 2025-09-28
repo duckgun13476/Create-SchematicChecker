@@ -8,12 +8,9 @@ import java.util.*;
 
 import static com.Pink_Cats.createschematicchecker.FancyConfig.ConfigValue.ChainSplit;
 import static com.Pink_Cats.createschematicchecker.FancyConfig.ConfigValue.KnifeSplit;
-import static com.Pink_Cats.createschematicchecker.core.BlockSweeper.Clear;
 import static com.Pink_Cats.createschematicchecker.core.BlockSweeper.Clear$;
-import static com.Pink_Cats.createschematicchecker.core.FilterInterface.FilterSweeper;
 import static com.Pink_Cats.createschematicchecker.core.FilterInterface.SweeperIfHasId;
 import static com.Pink_Cats.createschematicchecker.core.NbtInterFace.*;
-import static com.Pink_Cats.createschematicchecker.core.StrFunc.isInBanBlock;
 
 public class MagicChain {
 
@@ -21,6 +18,7 @@ public class MagicChain {
     public static Map<String,Object> MagicChainClear(CompoundTag data,String chain,int find_count,String type){
         HashMap<String,Object> magicChain = new HashMap<>();
         String[] BaseChain = ChainSplit(chain);
+        boolean Cheat = false;
         //Message.FM("BaseChain"+ Arrays.toString(BaseChain));
         ArrayList<Object> ResultTagList = new ArrayList<>();
         ResultTagList.add(data);
@@ -32,7 +30,11 @@ public class MagicChain {
         for (CompoundTag tag : ResultCompoundTag) {
             if (type.equals("id"))
                 {
-                    find_count = SweeperIfHasId(tag,find_count);
+                    find_count = SweeperIfHasId(tag,find_count,2+3);  //3 allow deep count
+                    if (find_count == -100)
+                    {
+                        Message.FE("Too much Filter depth!");
+                    }
                 }
 
 

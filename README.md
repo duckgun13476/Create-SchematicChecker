@@ -115,13 +115,13 @@
   -[X] [视频链接](https://www.bilibili.com/video/BV1LUS9YCEk1)
 
 - **8. 修复** 恶意修改弹射置物台弹射力量产生的屠龙炮 | 这会直接导致 Forge 端崩服，极快的弹射速度会导致服务器直接卡死，弹射路径的区块全部会极快的生成  
-  [视频链接](https://www.bilibili.com/video/BV1itXDY3EwJ)  
-  [视频链接](https://www.bilibili.com/video/BV13RKneEEFG)
+  -[X] [视频链接](https://www.bilibili.com/video/BV1itXDY3EwJ)  
+  -[X] [视频链接](https://www.bilibili.com/video/BV13RKneEEFG)
 
 - **9. 修复** 恶意修改过滤器使其内部 NBT 过大 | 将其放进漏斗会导致其在判定时产生极高的游戏卡顿刻
-
+  -[X] 暂时还没视频
 - **10. 修复** 恶意修改超长的链式传动轮匹配 | 这会导致巨量的卡服问题  
-  [视频链接](https://www.bilibili.com/video/BV1vz9bY7EW5)
+  -[X] [视频链接](https://www.bilibili.com/video/BV1vz9bY7EW5)
 
 - **11. 修复** 添加标签 use convert to 会返回任意创造物品的漏洞  
   -[X] [视频链接](https://www.bilibili.com/video/BV1c19tYsEBL)
@@ -130,13 +130,13 @@
   [视频链接](https://www.bilibili.com/video/BV1XpXYYDEt7)
 
 - **13. 修复** 篡改链式传动轮的匹配目标到虚空导致的 90° 锁链 | 这会在某些情况下崩服  
-  [视频链接](https://www.bilibili.com/video/BV1nddcYSEWQ)
+  -[X] [视频链接](https://www.bilibili.com/video/BV1nddcYSEWQ)
 
 - **14. 修复** 传送带的奇怪扭曲形式导致的传送带与传动杆复制  
   -[X] [视频链接](https://www.bilibili.com/video/BV1omdmYrE3S)
 
 - **15. 修复** 恶意修改链式传动轮的匹配对象到几千个时导致的服务器巨量卡顿和锁链复制特性  
-  [视频链接](https://www.bilibili.com/video/BV1Ze5Wz7EB2)
+  -[X] [视频链接](https://www.bilibili.com/video/BV1Ze5Wz7EB2)
 
 - **16. 修复** 恶意修改机械手的返还物品导致的无限产出漏洞  
   [视频链接](https://www.bilibili.com/video/BV1udtYzwEQN)
@@ -147,7 +147,7 @@
 - **18. 修复** 在安山漏斗可以返还过滤器的漏洞
 
 - **19. 修复** 可以使用烧毁标签来获得创造物品的漏洞  
-  [视频链接](https://www.bilibili.com/video/BV1UrEGzmEDU)
+  -[X] [视频链接](https://www.bilibili.com/video/BV1UrEGzmEDU)
 
 - **20. 修复** 可以使用实体（盔甲架）导致的任何复制特性和获取创造物品特性 | 使用实体剔除功能  
   [视频链接](https://www.bilibili.com/video/BV1wtRNYaE5m)
@@ -165,17 +165,19 @@
   [视频链接](https://www.bilibili.com/video/BV13nh2z5EvT)
 
 - **25. 修复** 利用nbt漏洞实现的运行指令恶性bug
+  -[X] [视频链接](https://www.bilibili.com/video/BV1rZY5z1Eo6)
 
-  [视频链接](https://www.bilibili.com/video/BV1rZY5z1Eo6)
+- **26. 修复** 6.0.+版本下可以篡改流体储罐导致容量异常的bug
 
-- **26. 修复** 1.21.1版本下可以篡改流体储罐导致容量异常的bug
-
-  [视频链接](https://www.bilibili.com/video/BV1rZY5z1Eo6)
+  [视频链接](https://www.bilibili.com/video/BV1hSnMzCE6A/)
 
 
 - **27. 修复** 夸克铁丝网的无限岩浆漏洞。
-  -[X] [视频链接](https://www.bilibili.com/video/BV1rZY5z1Eo6)
+  -[X] [视频链接](https://www.bilibili.com/video/BV1hSnMzCE6A/)
 
+
+- **28. 修复** 通过修改动力合成器实现的虚空传送物品漏洞。 
+  -[X] [视频链接](https://www.bilibili.com/video/BV1hSnMzCE6A/)
 
 
 

@@ -11,7 +11,8 @@ import static com.Pink_Cats.createschematicchecker.core.StrFunc.isInBanBlock;
 public class FilterInterface {
 
 
-    public static int FilterSweeper(CompoundTag data,int find_count){
+
+    public static int FilterSweeper(CompoundTag data,int find_count,int turn){
         CompoundTag components = data.getCompound("components");
         String version;
         ListTag filter_items;
@@ -41,18 +42,22 @@ public class FilterInterface {
                 filter_item = filter_items.getCompound(index);}
 
             Message.FM("filter_item "+filter_item);
-            find_count = SweeperIfHasId(filter_item,find_count);
+            find_count = SweeperIfHasId(filter_item,find_count,turn);
 
         }
         return find_count;
     }
 
 
-    public static int SweeperIfHasId(CompoundTag data, int count){
+    public static int SweeperIfHasId(CompoundTag data, int count,int turn){
+        turn -=1;
+        if (turn == 0){
+            return -100;
+        }
         String id = TagMapId(data);
         if (id.equals("create:filter")){
             Message.FM("filter");
-            count = FilterSweeper(data,count);
+            count = FilterSweeper(data,count,turn);
         }
         if (isInBanBlock(id)) {
             data.putString("id", Clear);
