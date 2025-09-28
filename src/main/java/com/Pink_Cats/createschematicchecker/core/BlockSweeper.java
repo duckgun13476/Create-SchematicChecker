@@ -137,6 +137,27 @@ public class BlockSweeper {
                 }
 
 
+                String[][] SurgeryLogicArray = {
+                        {"create:belt", "nbt.Length", "operate.limit$Length$0$30"},
+                        {"create:belt", "nbt.Index", "operate.limit$Index$0$29"},
+                        // Add more entries as needed
+                };
+
+                for (String[] idLogic : SurgeryLogicArray) {
+                    String idKey = idLogic[0];
+                    String chain = idLogic[1];
+                    String surgery = idLogic[2];
+                    if (id.equals(idKey)) {
+                        for (int i = 1; i < idLogic.length; i++) {
+                            ChainResult = MagicChainClear(Data, chain, totalCount,surgery);
+                            Data = S_tag(ChainResult.get("data"));
+                            totalCount = S_int(ChainResult.get("find_count"));
+                        }
+                    }
+                }
+
+
+
 
 
             }

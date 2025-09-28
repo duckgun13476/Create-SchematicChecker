@@ -21,13 +21,13 @@ public class MagicChain {
     public static Map<String,Object> MagicChainClear(CompoundTag data,String chain,int find_count,String type){
         HashMap<String,Object> magicChain = new HashMap<>();
         String[] BaseChain = ChainSplit(chain);
-        Message.FM("BaseChain"+ Arrays.toString(BaseChain));
+        //Message.FM("BaseChain"+ Arrays.toString(BaseChain));
         ArrayList<Object> ResultTagList = new ArrayList<>();
         ResultTagList.add(data);
 
         //Is a magic
-        Message.FM("EngineStart");
-        Message.FM(data);
+        //Message.FM("EngineStart");
+        //Message.FM(data);
         ArrayList<CompoundTag> ResultCompoundTag = S_TagList(MagicEngine(ResultTagList,BaseChain));
         for (CompoundTag tag : ResultCompoundTag) {
             if (type.equals("id"))
@@ -38,7 +38,7 @@ public class MagicChain {
 
             if (type.contains("operate"))
                 {
-                    Message.FM("operate");
+                    //Message.FM("operate");
                     String[] operate_chain = ChainSplit(type);
                     for (int index = 1; index < operate_chain.length; index++) {
 
@@ -53,11 +53,11 @@ public class MagicChain {
 
 
                         if (operate_chain[index].contains("limit")) {
-                            Message.FM(tag);
-                            Message.FM(Arrays.toString(knife));
+                            //Message.FM(tag);
+                            //Message.FM(Arrays.toString(knife));
                             int DownLimit = StringToInt(knife[2]);
                             int UpLimit = StringToInt(knife[3]);
-                            Message.FM(DownLimit+" "+UpLimit);
+                            //Message.FM(DownLimit+" "+UpLimit);
                             int ActualCount = StringToInt(Objects.requireNonNull(tag.get(knife[1])).toString());
                             if (ActualCount>UpLimit){
                                 tag.put(knife[1],TagInt(UpLimit) );
@@ -95,10 +95,10 @@ public class MagicChain {
                 }
 
 
-                Message.FM(Chain[i] + IsArrayList);
+                //Message.FM(Chain[i] + IsArrayList);      // EngineDebug
                 if (Chain.length==i+1)
                 {
-                    Message.FM("Is the last chain");
+                    //Message.FM("Is the last chain");    //  EngineDebug
                     if (TagItem instanceof CompoundTag CompoundTagItem){
                         ResultList.add(CompoundTagItem);
                         //Message.FM(ResultList);
