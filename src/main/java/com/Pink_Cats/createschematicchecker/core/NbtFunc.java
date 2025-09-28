@@ -3,7 +3,9 @@ package com.Pink_Cats.createschematicchecker.core;
 import com.Pink_Cats.createschematicchecker.Message;
 import net.minecraft.nbt.*;
 import java.io.*;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static com.Pink_Cats.createschematicchecker.FancyConfig.ConfigRegister.*;
@@ -37,7 +39,7 @@ public class NbtFunc {
                 CompoundTag paletteItem = palette.getCompound(i);
                 paletteItemResult = BaseBlockHandle(paletteItem,"palette",palette,i);
                 paletteItem = S_tag(paletteItemResult.get("Data"));
-                Cheat = S_bool(paletteItemResult.get("Cheat")) ;
+                Cheat = S_bool(paletteItemResult.get("Cheat")) || Cheat;
                 if (paletteItem != null) {
                     palette.set(i, paletteItem);
                 }
@@ -45,15 +47,82 @@ public class NbtFunc {
 
             // 提取 blocks 信息
             ListTag blocks = nbt_data.getList("blocks", 10); // 10 表示 CompoundTag 类型
+
+            List<Object[]> beltList = new ArrayList<>();
             for (int i = 0; i < blocks.size(); i++) {
                 CompoundTag block = blocks.getCompound(i);
+                String id = BlockGetId(block,palette);
+                //belt matcher
+                if (id.equals("create:belt"))
+                {
+                    String Controller = String.valueOf(block.getCompound("nbt").getCompound("Controller"));
+                    int Length = StringToInt(String.valueOf(block.getCompound("nbt").get("Length")));
+                    int Index = StringToInt(String.valueOf(block.getCompound("nbt").get("Index")));
+                    boolean isSame = false;
+                    for (Object[] item : beltList) {
+                        if (Controller.equals(item[0])) {
+                            isSame = true;
+                            item[3] = (int)item[3] + 1;
+                        }
+                    }
+                    if (!isSame) {
+                        Object[] newItem = {Controller, Length, Index, 1};
+                        beltList.add(newItem);
+                    }
+                }
+
+
+
                 blockResult = BaseBlockHandle(block,"block",palette,i);
                 block = S_tag(blockResult.get("Data"));
-                Cheat = S_bool(blockResult.get("Cheat"));
+                Cheat = S_bool(blockResult.get("Cheat")) || Cheat;
                 if (block != null) {
                     blocks.set(i, block);
                 }
             }
+
+
+            //belt mismatch check
+            Message.FE("belt mismatch check");
+            boolean BeltMismatch = false;
+            List<String> MismatchController = new ArrayList<>(List.of());
+            if (check_belt) {
+                for (Object[] item : beltList) {
+                    if (item[1] != item[3])
+                    {
+                        Cheat = true;
+                        BeltMismatch = true;
+                        MismatchController.add(item[0].toString());
+                        Message.FE("BeltMismatch Controller: " + item[0] + " | Length: " + item[1] + " | Index: " + item[2] + " | Count: " + item[3]);
+                    }
+                }
+            }
+
+            //belt mismatch fix
+            if (remove_belt_instead_kill) {
+                if (BeltMismatch) {
+                    Cheat = false;
+                    Message.FE("BeltMismatch");
+                    for (int i = 0; i < blocks.size(); i++) {
+                        Message.FE("BeltMismatch Controller: " + blocks.get(i).toString());
+                        CompoundTag block = blocks.getCompound(i);
+                        String id = BlockGetId(block,palette);
+                        //belt matcher
+                        if (id.equals("create:belt"))
+                        {
+                            String Controller = String.valueOf(block.getCompound("nbt").getCompound("Controller"));
+                            Message.FE(Controller);
+                            if (MismatchController.contains(Controller)) {
+                                blocks.remove(i);
+                                i -=1;
+                            }
+                        }
+                    }
+                }
+            }
+
+
+
 
             // 提取 entity 信息
             ListTag entities = nbt_data.getList("entities", 10); // 10 表示 CompoundTag 类型
@@ -61,7 +130,7 @@ public class NbtFunc {
                 CompoundTag entity = entities.getCompound(i);
                 entityResult = BaseBlockHandle(entity,"entity",palette,i);
                 entity = S_tag(entityResult.get("Data"));
-                Cheat = S_bool(entityResult.get("Cheat")) ;
+                Cheat = S_bool(entityResult.get("Cheat")) || Cheat;
                 if (entity != null) {
                     entities.set(i, entity);
                 }

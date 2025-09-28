@@ -50,6 +50,14 @@ public class ConfigRegister {
             .comment("config.DebugTotalBlock");
 
 
+    public static ConfigValue.ConfigBoolean CHECK_BELT_MISMATCH = ConfigBuild
+            .define("function.checkBelt", true)
+            .comment("config.checkBelt");
+
+    public static ConfigValue.ConfigBoolean TRY_REMOVE_PROBLEM_BELT_NOT_KILL = ConfigBuild
+            .define("function.TryRemoveBeltNotKill", true)
+            .comment("config.TryRemoveBeltNotKill");
+
     public static String language = LANGUAGE.getDefaultValue();
     public static String user_uuid = UUID.getDefaultValue();
     public static boolean enable_csc = ENABLE.getDefaultValue();
@@ -57,6 +65,8 @@ public class ConfigRegister {
     public static String[] ban_tag = BAN_TAG.getDefaultValue();
     public static boolean kill_entity = KILL_ENTITY.getDefaultValue();
     public static boolean debug_total_block = DEBUG_TOTAL_BLOCK.getDefaultValue();
+    public static boolean check_belt = CHECK_BELT_MISMATCH.getDefaultValue();
+    public static boolean remove_belt_instead_kill = TRY_REMOVE_PROBLEM_BELT_NOT_KILL.getDefaultValue();
 
 
     public static void CSC_INIT() {
@@ -67,6 +77,8 @@ public class ConfigRegister {
         ban_tag = BAN_TAG.getDefaultValue();
         kill_entity = KILL_ENTITY.getDefaultValue();
         debug_total_block = DEBUG_TOTAL_BLOCK.getDefaultValue();
+        check_belt = CHECK_BELT_MISMATCH.getDefaultValue();
+        remove_belt_instead_kill = TRY_REMOVE_PROBLEM_BELT_NOT_KILL.getDefaultValue();
         Message.FM("Ban Block: " );
         for (String s : ban_block) {
             Message.FM(s);
