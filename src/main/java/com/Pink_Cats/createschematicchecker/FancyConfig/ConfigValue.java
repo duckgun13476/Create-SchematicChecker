@@ -272,13 +272,19 @@ public class ConfigValue {
         // 去掉方括号和空格
         strValue = strValue.replaceAll("[\\[\\]\" ]", "");
         strValue = NoAir(strValue);
-        // 使用逗号分割字符串
+        // 使用.分割字符串
         return strValue.split("\\.");
     }
 
 
 
-
+    public static String[] KnifeSplit(String strValue) {
+        // 去掉方括号和空格
+        strValue = strValue.replaceAll("[\\[\\]\" ]", "");
+        strValue = NoAir(strValue);
+        // 使用.分割字符串
+        return strValue.split("\\$");
+    }
 
 
 }

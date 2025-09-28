@@ -7,18 +7,18 @@ import net.minecraft.nbt.ListTag;
 import java.util.*;
 
 import static com.Pink_Cats.createschematicchecker.FancyConfig.ConfigValue.ChainSplit;
+import static com.Pink_Cats.createschematicchecker.FancyConfig.ConfigValue.KnifeSplit;
 import static com.Pink_Cats.createschematicchecker.core.BlockSweeper.Clear;
 import static com.Pink_Cats.createschematicchecker.core.BlockSweeper.Clear$;
 import static com.Pink_Cats.createschematicchecker.core.FilterInterface.FilterSweeper;
 import static com.Pink_Cats.createschematicchecker.core.FilterInterface.SweeperIfHasId;
-import static com.Pink_Cats.createschematicchecker.core.NbtInterFace.S_TagList;
-import static com.Pink_Cats.createschematicchecker.core.NbtInterFace.StrTag;
+import static com.Pink_Cats.createschematicchecker.core.NbtInterFace.*;
 import static com.Pink_Cats.createschematicchecker.core.StrFunc.isInBanBlock;
 
 public class MagicChain {
 
 
-    public static Map<String,Object> MagicChainClear(CompoundTag data,String chain,int find_count){
+    public static Map<String,Object> MagicChainClear(CompoundTag data,String chain,int find_count,String type){
         HashMap<String,Object> magicChain = new HashMap<>();
         String[] BaseChain = ChainSplit(chain);
         Message.FM("BaseChain"+ Arrays.toString(BaseChain));
@@ -29,17 +29,42 @@ public class MagicChain {
         Message.FM("EngineStart");
         Message.FM(data);
         ArrayList<CompoundTag> ResultCompoundTag = S_TagList(MagicEngine(ResultTagList,BaseChain));
-
         for (CompoundTag tag : ResultCompoundTag) {
+            if (type.equals("id"))
+                {
+                    find_count = SweeperIfHasId(tag,find_count);
+                }
 
-            find_count = SweeperIfHasId(tag,find_count);
-            //if (id.equals("create:attribute_filter"))
+
+            if (type.contains("operate"))
+                {
+                    Message.FM("operate");
+                    String[] operate_chain = ChainSplit(type);
+                    for (int index = 1; index < operate_chain.length; index++) {
+
+                        String[] knife = KnifeSplit(operate_chain[index]);
+                        if (operate_chain[index].contains("clear"))
+                        {
+                            tag.remove(knife[1]);
+                            Message.FM(tag);
+                        }
+                        if (operate_chain[index].contains("replace"))
+                        {
+                            tag.put(knife[1],TagString(knife[2])) ;
+                        }
+                        Message.FM(tag);
+
+
+                    }
+                }
+
         }
 
         magicChain.put("data",data);
         magicChain.put("find_count",find_count);
         return magicChain;
     }
+
 
 
 

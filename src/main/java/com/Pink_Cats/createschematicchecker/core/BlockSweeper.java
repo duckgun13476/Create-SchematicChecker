@@ -29,6 +29,8 @@ public class BlockSweeper {
 
         String Before = Data.toString();
         String block_information = "";
+        Map<String,Object> ChainResult;
+
 
         if (type.equals("block")){
             CompoundTag nbt = Data.getCompound("nbt");
@@ -41,20 +43,10 @@ public class BlockSweeper {
                 nbt.putString("id", Clear);
                 totalCount -=1;
             }
-            Map<String,Object> ChainResult;
-
-
-            //redstone_requester
-            if (id.equals("create:redstone_requester")){
-                ChainResult = MagicChainClear(Data,
-                        "nbt.EncodedRequest.ordered_stacks.entries.item_stack.id",totalCount );
-                Data = S_tag(ChainResult.get("data"));
-                totalCount = S_int(ChainResult.get("find_count"));
-            }
 
 
 
-            //InterFace
+            //ID InterFace
             String[][] idLogicArray = {
 
                     //Create 6.0.*
@@ -98,15 +90,53 @@ public class BlockSweeper {
                 if (id.equals(idKey)) {
                     for (int i = 1; i < idLogic.length; i++) {
                         String logicValue = idLogic[1];
-                        ChainResult = MagicChainClear(Data, logicValue, totalCount);
+                        ChainResult = MagicChainClear(Data, logicValue, totalCount,"id");
                         Data = S_tag(ChainResult.get("data"));
                         totalCount = S_int(ChainResult.get("find_count"));
                     }
                 }
             }
+        }
+
+        if (type.contains("rule")){
+            if (type.contains("block")){
+                CompoundTag nbt = Data.getCompound("nbt");
+                String id = StrTag(Objects.requireNonNull(nbt.get("id")));
+
+
+                //Cheat InterFace
+
+                if (id.equals("create:lectern_controller")){
+                    ChainResult = MagicChainClear(Data,
+                            "nbt.Controller.id",totalCount ,
+                            "operate" +
+                                    ".clear$tag" +
+                                    ".replace$id$create:linked_controller");
+                    Data = S_tag(ChainResult.get("data"));
+                    totalCount = S_int(ChainResult.get("find_count"));
+                }
+
+
+
+
+            }
+            else {
+                String id = StrTag(Objects.requireNonNull(Data.get("Name")));
+
+
+
+
+
+
+            }
+
+
 
 
         }
+
+
+
         if (type.equals("palette")) {
             String id = StrTag(Objects.requireNonNull(Data.get("Name")));
             block_information = id;

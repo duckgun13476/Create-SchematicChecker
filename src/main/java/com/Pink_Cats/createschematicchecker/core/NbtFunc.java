@@ -94,17 +94,28 @@ public class NbtFunc {
     public Map<String,Object> BaseBlockHandle(CompoundTag data,String type,ListTag PaletteBlockData,int sequence) {
         boolean Cheat = false;
         boolean HasBanBlock = false;
+        boolean IsMatch  = true;
         Map<String, Object> result = new HashMap<>();
 
         if (HasBanTag(data.toString())) {
             Message.FM("Find Tag in " + data);
-            Cheat = true;
+            //Cheat = true;
         }
 
         if (HasBanBlock(data.toString())) {
             //Message.FM("Find Blacklist Block in " + data);
             HasBanBlock = true;
         }
+
+
+
+        Map<String,Object> MapData;
+
+
+        //clear with rule
+        MapData = ClearBanBlock(data, "rule." + type, sequence);
+        data = S_tag(MapData.get("Data"));
+        IsMatch = S_bool(MapData.get("IsMatch"));
 
 
         if (type.equals("block")) {
@@ -114,9 +125,9 @@ public class NbtFunc {
 
 
             if (HasBanBlock) {
-                Map<String,Object> MapData = ClearBanBlock(data,"block",sequence);
+                MapData = ClearBanBlock(data,"block",sequence);
                 data = S_tag(MapData.get("Data"));
-                boolean IsMatch = S_bool(MapData.get("IsMatch"));
+                IsMatch = S_bool(MapData.get("IsMatch")) && IsMatch;
                 //Message.FE(data);
             }
 
@@ -131,9 +142,9 @@ public class NbtFunc {
 
         if (type.equals("palette")) {
             if (HasBanBlock) {
-                Map<String,Object> MapData = ClearBanBlock(data,"palette",sequence);
+                MapData = ClearBanBlock(data,"palette",sequence);
                 data = S_tag(MapData.get("Data"));
-                boolean IsMatch = S_bool(MapData.get("IsMatch"));
+                IsMatch = S_bool(MapData.get("IsMatch")) && IsMatch;
                 Message.FE(data);
             }
             Cheat = false;
@@ -153,6 +164,7 @@ public class NbtFunc {
 
         result.put("Cheat", Cheat);
         result.put("Data", data);
+        result.put("IsMatch", IsMatch);
         return result;
 
     }
