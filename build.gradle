@@ -190,6 +190,10 @@ dependencies {
     modImplementation("com.tterrag.registrate:Registrate:${registrate_version}")
     compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:0.4.1"))
 
+
+    //Quark
+    modImplementation("curse.maven:quark-243121:6427817")
+    modImplementation("curse.maven:zeta-968868:6432578")
     //implementation 'com.google.code.gson:gson:2.8.9' // 更新版本
     //modImplementation(jarJar( group: 'com.moandjiezana.toml', name: 'toml4j', version: '0.7.2'))
     // Specify the version of Minecraft to use.

@@ -104,12 +104,12 @@
   -[X] [视频链接](https://www.bilibili.com/video/BV1SXC9YEEeW)
 
 - **4. 修复** 阻止传送带修改打印上限超过一千格 | 这会导致渲染器溢出崩溃客户端，传送带的弱加载区块会卡服
-
+  -[X] [视频链接](https://www.bilibili.com/video/BV1SXC9YEEeW)
 - **5. 修复** 阻止打印 -1 长度传送带 | 这会在旧版本崩溃 Forge 原生服务器。  
-  [视频链接](https://www.bilibili.com/video/BV1u9ytY2E8R)
+  -[X] [视频链接](https://www.bilibili.com/video/BV1u9ytY2E8R)
 
 - **6. 修复** 恶意利用修改传送带长度导致的巨量传送带破区块 | 这会导致服务器极其卡顿，破坏 CPU，崩溃服务器，还有概率导致存档损坏  
-  [视频链接](https://www.bilibili.com/video/BV1NwybY3ERY)
+  -[X] [视频链接](https://www.bilibili.com/video/BV1NwybY3ERY)
 
 - **7. 修复** 锦致装饰的翁在旧版本的无限 GT 特性，可以无限开宝藏 | 使用 GT 会导致服务器巨量卡顿  
   [视频链接](https://www.bilibili.com/video/BV1LUS9YCEk1)
@@ -167,6 +167,17 @@
 - **25. 修复** 利用nbt漏洞实现的运行指令恶性bug
 
   [视频链接](https://www.bilibili.com/video/BV1rZY5z1Eo6)
+
+- **26. 修复** 1.21.1版本下可以篡改流体储罐导致容量异常的bug
+
+  [视频链接](https://www.bilibili.com/video/BV1rZY5z1Eo6)
+
+
+- **27. 修复** 夸克铁丝网的无限岩浆漏洞。
+  -[X] [视频链接](https://www.bilibili.com/video/BV1rZY5z1Eo6)
+
+
+
 
 
 
