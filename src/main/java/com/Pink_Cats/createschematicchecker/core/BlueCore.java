@@ -42,6 +42,8 @@ public class BlueCore {
 
             Message.FW("file can't read" + path);
 
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return Map.of();
     }

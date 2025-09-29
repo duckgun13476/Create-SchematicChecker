@@ -32,6 +32,8 @@ public class NbtFunc {
         try {
 
             // 提取 palette 信息
+
+
             ListTag palette = nbt_data.getList("palette", 10); // 10 表示 CompoundTag 类型
             for (int i = 0; i < palette.size(); i++) {
                 CompoundTag paletteItem = palette.getCompound(i);
@@ -51,8 +53,14 @@ public class NbtFunc {
             List<int[]> Location = new ArrayList<>();
             List<List<int[]>> Destination = new ArrayList<>();
 
+            List<int[]> CrafterPos = new ArrayList<>();
+            List<int[]> CrafterPosFlow = new ArrayList<>();
+            List<ListTag> CrafterBlocks = new ArrayList<>();
+            List<Integer> IsCraftController = new ArrayList<>();
+
 
             for (int i = 0; i < blocks.size(); i++) {
+                Message.FM("size"+i);
                 CompoundTag block = blocks.getCompound(i);
                 String id = BlockGetId(block, palette);
 
@@ -102,13 +110,43 @@ public class NbtFunc {
 
                 }
 
+                //create:crafter
+                Message.FD("id" + id);
+                if (id.equals("create:mechanical_crafter")) {
+                    Message.FE("crafter");
+                    int[] SelfPos = StringPickPos(String.valueOf(block.get("pos")));
 
-                blockResult = BaseBlockHandle(block, "block", palette, i);
-                block = S_tag(blockResult.get("Data"));
-                Cheat = S_bool(blockResult.get("Cheat")) || Cheat;
+                    String Input = String.valueOf(block.getCompound("nbt").getCompound("ConnectedInput").get("Controller")).replaceAll("[b]", "");
+                    int IsController = StringToInt(Input);
+
+                    CompoundTag connection = block.getCompound("nbt").getCompound("ConnectedInput");
+                    ListTag Connections = (ListTag) connection.get("Data");
+
+
+                    CrafterPos.add(SelfPos);
+                    CrafterBlocks.add(Connections);
+                    IsCraftController.add(IsController);
+                    Message.FE(Arrays.toString(SelfPos));
+                    if (IsController == 1) {
+                        Message.FE("Success control" + Connections.size());
+                        for (int j=1;j<Connections.size();j++) {
+                            CrafterPosFlow.add(SelfPos);
+                        }
+                    }
+                }
+
+
+                if (block.size() >2){
+                    blockResult = BaseBlockHandle(block, "block", palette, i);
+                    block = S_tag(blockResult.get("Data"));
+                    Cheat = S_bool(blockResult.get("Cheat")) || Cheat;
+                }
+
                 if (block != null) {
                     blocks.set(i, block);
                 }
+
+
             }
 
 
@@ -219,13 +257,14 @@ public class NbtFunc {
                     //belt matcher
                     if (id.equals("create:chain_conveyor")) {
                         String Pos = Arrays.toString(StringPickPos(String.valueOf(block.get("pos"))));
-
                         for (int index = 0; index < mismatch_conveyor_controller.size(); index++) {
                             if (mismatch_conveyor_controller.get(index).equals(Pos)){
 
                                 Message.FE("problem: "+Pos);
                                 ListTag Connections = (ListTag) block.getCompound("nbt").get("Connections");
-                                Message.FE("Connections: "+Connections.toString());
+                                if (Connections != null) {
+                                    Message.FE("Connections: "+ Connections);
+                                }
 
                                 Message.FE("Pick"+ mismatch_conveyor_destination.get(index));
                                 for (int index2 = 0; index2 < mismatch_conveyor_destination.size(); index2++) {
@@ -237,30 +276,129 @@ public class NbtFunc {
                                                                     .get(index2)
                                                                     .toString()
                                                                     .replaceAll("[I;]", "")));
-
                                     Message.FE("inside Connections"+ Connection);
                                     Connections.remove(index2);
                                     index2 -= 1;
-
                                 }
-
-
-
-
                             }
-
-
-
-
-
-
                         }
                     }
                 }
             }
 
+            //Crafter Mismatch Check
+            Message.FE("Crafter PosBack");
+            for (int[] crafterPo : CrafterPos) {
+                Message.FE("Crafter Pos ADD: " + Arrays.toString(crafterPo));
+            }
+
+            CrafterPos.addAll(CrafterPosFlow); //add these to end
+
+            List<int[]> CrafterPosBack = new ArrayList<>();
+            for (int[] arr : CrafterPos) {
+                int[] newArr = Arrays.copyOf(arr, arr.length);
+                CrafterPosBack.add(newArr);
+            }
+
+            Message.FE("Crafter PosBack");
+            for (int[] crafterPo : CrafterPosBack) {
+                Message.FE("Crafter Pos Back: " + Arrays.toString(crafterPo));
+            }
+            try {
+                boolean CraftMisMatch = false;
+                if (!CrafterPos.isEmpty()) {
+                    for (int index = 0; index < IsCraftController.size(); index++) {
+
+                        Message.FE("Pos:" + Arrays.toString(CrafterPos.get(index)) + "|" + IsCraftController.get(index) + "|" + CrafterBlocks.get(index));
+                        int[] CorePos = CrafterPos.get(index);
 
 
+                        List<int[]> bird_finder = new ArrayList<>();
+
+
+                        for (int index2 = 0; index2 < CrafterBlocks.size(); index2++) {
+                            CompoundTag DesBlock = CrafterBlocks.get(index).getCompound(index2);
+                            if (!DesBlock.isEmpty()) {
+
+                                int[] DesBlockPos = new int[3];
+                                DesBlockPos[0] = StringToInt(Objects.requireNonNull(DesBlock.get("X")).toString());
+                                DesBlockPos[1] = StringToInt(Objects.requireNonNull(DesBlock.get("Y")).toString());
+                                DesBlockPos[2] = StringToInt(Objects.requireNonNull(DesBlock.get("Z")).toString());
+
+                                if (IsCraftController.get(index) == 1) {
+                                    bird_finder.add(DesBlockPos);
+                                }
+                                int[] MatchBlockPos = new int[3];
+                                MatchBlockPos[0] = CorePos[0] + DesBlockPos[0];
+                                MatchBlockPos[1] = CorePos[1] + DesBlockPos[1];
+                                MatchBlockPos[2] = CorePos[2] + DesBlockPos[2];
+
+                                Message.FE("Destination:" + Arrays.toString(MatchBlockPos));
+                                boolean PosMisMatch = false;
+                                for (int index5 = 0; index5 < CrafterPosBack.size(); index5++) {
+                                    Message.FE("matching:" + Arrays.toString(CrafterPosBack.get(index5)));
+                                    Message.FD("current name" );
+                                    for (int[] tag :CrafterPosBack){
+                                        Message.FD("current: " + Arrays.toString(tag));
+                                    }
+                                    if (Arrays.equals(CrafterPosBack.get(index5), MatchBlockPos)) {
+
+                                        Message.FE("found");
+                                        PosMisMatch = false;
+                                        CrafterPosBack.remove(index5);
+                                        break;
+                                    }
+                                    PosMisMatch = true;
+                                    Message.FE("not found" + Arrays.toString(CorePos));
+                                }
+
+
+                                Message.FE("CraftMisMatch:  " + CraftMisMatch + "PosMisMatch   " + PosMisMatch);
+
+                                if (PosMisMatch) {
+                                    CraftMisMatch = true;
+                                }
+                                Message.FE("CraftMisMatch:  " + CraftMisMatch + "PosMisMatch   " + PosMisMatch);
+                            }
+                        }
+
+
+                        if (IsCraftController.get(index) == 1) {
+                            boolean Attach;
+                            for (int[] birdPos2 : bird_finder) {
+                                Message.FE("Attaching:" + Arrays.toString(birdPos2));}
+                            for (int[] birdPos : bird_finder) {
+                                Attach = false;
+                                for (int[] birdIndex : bird_finder) {
+                                    int X = Math.abs(birdPos[0] - birdIndex[0]);
+                                    int Y = Math.abs(birdPos[1] - birdIndex[1]);
+                                    int Z = Math.abs(birdPos[2] - birdIndex[2]);
+                                    if (X + Y + Z <= 1) {
+                                        Attach = true;
+                                        break;
+                                    }
+                                }
+                                if (!Attach) {
+                                    CraftMisMatch = true;
+                                    Message.FE("NotAttach:  " + CraftMisMatch);
+                                }
+                            }
+                        }
+
+                    }
+                    Message.FE("count  "+ CrafterPosBack.size());
+                    if (!CrafterPosBack.isEmpty())
+                        CraftMisMatch = true;
+
+                    if (CraftMisMatch) {
+                        Message.FE("CraftMisMatch");
+                    }
+
+
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
 
 
 
