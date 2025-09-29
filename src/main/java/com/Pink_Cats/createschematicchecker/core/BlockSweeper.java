@@ -141,6 +141,7 @@ public class BlockSweeper {
                         {"create:belt", "nbt.Length", "operate.limit$Length$0$30"},
                         {"create:belt", "nbt.Index", "operate.limit$Index$0$29"},
                         {"create:weighted_ejector", "nbt.HorizontalDistance", "operate.limit$HorizontalDistance$1$32"},
+                        {"create:deployer", "nbt.Inventory", "operate.clear$Inventory"},
                         // Add more entries as needed
                 };
 

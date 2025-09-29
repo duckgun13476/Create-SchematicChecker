@@ -6,9 +6,11 @@ import net.minecraft.nbt.ListTag;
 
 import java.util.*;
 
+import static com.Pink_Cats.createschematicchecker.FancyConfig.ConfigRegister.ban_block;
 import static com.Pink_Cats.createschematicchecker.FancyConfig.ConfigValue.ChainSplit;
 import static com.Pink_Cats.createschematicchecker.FancyConfig.ConfigValue.KnifeSplit;
 import static com.Pink_Cats.createschematicchecker.core.BlockSweeper.Clear$;
+import static com.Pink_Cats.createschematicchecker.core.BlockSweeper.CountToClear;
 import static com.Pink_Cats.createschematicchecker.core.FilterInterface.SweeperIfHasId;
 import static com.Pink_Cats.createschematicchecker.core.NbtInterFace.*;
 
@@ -46,6 +48,9 @@ public class MagicChain {
 
                         String[] knife = KnifeSplit(operate_chain[index]);
                         if (operate_chain[index].contains("clear")) {
+                            String S_result = tag.getCompound(knife[1]).toString();
+                            int totalCount = CountToClear(S_result,ban_block);
+                            find_count = find_count - totalCount;
                             tag.remove(knife[1]);
                         }
 

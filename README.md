@@ -138,8 +138,8 @@
 - **15. 修复** 恶意修改链式传动轮的匹配对象到几千个时导致的服务器巨量卡顿和锁链复制特性  
   -[X] [视频链接](https://www.bilibili.com/video/BV1Ze5Wz7EB2)
 
-- **16. 修复** 恶意修改机械手的返还物品导致的无限产出漏洞  
-  [视频链接](https://www.bilibili.com/video/BV1udtYzwEQN)
+- **16. 修复** 恶意修改机械手的返还物品导致的无限产出漏洞(比如为机械手加入safenbt列表)  
+  -[X] [视频链接](https://www.bilibili.com/video/BV1udtYzwEQN)
 
 - **17. 修复** 机械手在伪装板模组下的物品复制特性  
   [视频链接](https://www.bilibili.com/video/BV1dubezLEp7)
@@ -152,7 +152,7 @@
 - **20. 修复** 可以使用实体（盔甲架）导致的任何复制特性和获取创造物品特性 | 使用实体剔除功能  
   [视频链接](https://www.bilibili.com/video/BV1wtRNYaE5m)
 
-- **21. 修复** 轧机在最新版本的创造物品恶性获取漏洞  
+- **21. 修复** 轧机在物品附加的某个版本创造物品恶性获取漏洞  
   [视频链接](https://www.bilibili.com/video/BV1b4eyzGEoj)
 
 - **22. 修复** 附魔工业会打印创造标签的恶性附属漏洞  
