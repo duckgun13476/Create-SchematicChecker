@@ -1,11 +1,8 @@
 package com.Pink_Cats.createschematicchecker.FancyConfig;
 
-import com.Pink_Cats.createschematicchecker.CSCLanguage;
-import com.Pink_Cats.createschematicchecker.Message;
+import com.Pink_Cats.createschematicchecker.lang.CSCLanguage;
+import com.Pink_Cats.createschematicchecker.lang.Message;
 
-import java.util.Map;
-
-import static com.Pink_Cats.createschematicchecker.FancyConfig.ConfigHook.readToml;
 import static com.Pink_Cats.createschematicchecker.FancyConfig.ConfigRegister.ConfigPath;
 import static com.Pink_Cats.createschematicchecker.core.StrFunc.NoAir;
 

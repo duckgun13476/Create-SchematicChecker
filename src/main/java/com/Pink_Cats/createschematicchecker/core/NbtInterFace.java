@@ -1,11 +1,8 @@
 package com.Pink_Cats.createschematicchecker.core;
 
-import com.Pink_Cats.createschematicchecker.Message;
+import com.Pink_Cats.createschematicchecker.lang.Message;
 import net.minecraft.nbt.*;
-import net.minecraftforge.common.ForgeConfigSpec;
 
-import java.io.DataOutput;
-import java.io.IOException;
 import java.util.ArrayList;
 
 import static com.Pink_Cats.createschematicchecker.core.StrFunc.NoQuotes;

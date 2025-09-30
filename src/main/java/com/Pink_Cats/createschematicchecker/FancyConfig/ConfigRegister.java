@@ -1,7 +1,7 @@
 package com.Pink_Cats.createschematicchecker.FancyConfig;
 
 
-import com.Pink_Cats.createschematicchecker.Message;
+import com.Pink_Cats.createschematicchecker.lang.Message;
 
 import static com.Pink_Cats.createschematicchecker.FancyConfig.FileIO.createIfNotExists;
 
@@ -29,7 +29,7 @@ public class ConfigRegister {
             .define( "UUID", "wd2d-ddd2-2dav");
 
     public static ConfigValue.ConfigBoolean ENABLE = ConfigBuild
-            .define("core.Enable", false)
+            .define("core.Enable", true)
             .comment("config.EnableOrNot");
 
     public static ConfigValue.ConfigInt RANDOM = ConfigBuild
@@ -48,8 +48,8 @@ public class ConfigRegister {
                     "minecraft:command_block",
                     "minecraft:kelp" })
 
-            .comment("console.feedback")
-            .comment("test");
+            .comment("core.BanBlock")
+            .comment("core.BanBlock2");
 
     public static ConfigValue.ConfigStringArray BAN_TAG = ConfigBuild
             .define("core.BanTag", new String[]{

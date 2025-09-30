@@ -1,4 +1,6 @@
-package com.Pink_Cats.createschematicchecker;
+package com.Pink_Cats.createschematicchecker.lang;
+
+import com.Pink_Cats.createschematicchecker.Createschematicchecker;
 
 public class Message {
     public static final String RESET = "\u001B[0m";

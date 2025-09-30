@@ -1,6 +1,6 @@
 package com.Pink_Cats.createschematicchecker.core;
 
-import com.Pink_Cats.createschematicchecker.Message;
+import com.Pink_Cats.createschematicchecker.lang.Message;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtIo;
 
@@ -8,14 +8,12 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
 
 import static com.Pink_Cats.createschematicchecker.FancyConfig.ConfigRegister.enable_backup;
 import static com.Pink_Cats.createschematicchecker.FancyConfig.FileIO.createIfNotExists;
 import static com.Pink_Cats.createschematicchecker.FancyConfig.FileIO.listFilesInDirectory;
 import static com.Pink_Cats.createschematicchecker.core.NbtInterFace.S_tag;
-import static com.Pink_Cats.createschematicchecker.core.StrFunc.SchematicOutput;
 import static com.Pink_Cats.createschematicchecker.core.StrFunc.getCurrentDateTime;
 
 public class BlueCore {

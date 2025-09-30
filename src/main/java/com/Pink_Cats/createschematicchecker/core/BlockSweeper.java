@@ -1,10 +1,8 @@
 package com.Pink_Cats.createschematicchecker.core;
 
-import com.Pink_Cats.createschematicchecker.Message;
+import com.Pink_Cats.createschematicchecker.lang.Message;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.StringTag;
-import net.minecraft.nbt.Tag;
 
 import java.util.HashMap;
 import java.util.Map;

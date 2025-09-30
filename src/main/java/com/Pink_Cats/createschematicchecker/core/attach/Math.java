@@ -1,4 +1,4 @@
-package com.Pink_Cats.createschematicchecker;
+package com.Pink_Cats.createschematicchecker.core.attach;
 
 public class Math {
 

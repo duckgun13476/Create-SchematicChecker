@@ -1,6 +1,6 @@
 package com.Pink_Cats.createschematicchecker.core;
 
-import com.Pink_Cats.createschematicchecker.Message;
+import com.Pink_Cats.createschematicchecker.lang.Message;
 import net.minecraft.nbt.*;
 
 import java.util.*;

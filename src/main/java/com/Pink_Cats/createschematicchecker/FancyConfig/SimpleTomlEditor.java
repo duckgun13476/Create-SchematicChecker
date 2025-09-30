@@ -1,8 +1,7 @@
 package com.Pink_Cats.createschematicchecker.FancyConfig;
 
-import com.Pink_Cats.createschematicchecker.Message;
+import com.Pink_Cats.createschematicchecker.lang.Message;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.ArrayList;
 import java.io.BufferedReader;
@@ -12,7 +11,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Objects;
 
-import static com.Pink_Cats.createschematicchecker.Math.trimALL;
+import static com.Pink_Cats.createschematicchecker.core.attach.Math.trimALL;
 
 public class SimpleTomlEditor {
 

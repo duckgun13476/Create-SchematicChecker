@@ -1,9 +1,9 @@
 package com.Pink_Cats.createschematicchecker;
 import com.Pink_Cats.createschematicchecker.FancyConfig.ConfigRegister;
 import com.Pink_Cats.createschematicchecker.core.NbtInterFace;
+import com.Pink_Cats.createschematicchecker.lang.Message;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
-import com.simibubi.create.foundation.config.ConfigBase;
 import com.simibubi.create.infrastructure.config.AllConfigs;
 import com.simibubi.create.infrastructure.config.CKinetics;
 import com.simibubi.create.infrastructure.config.CSchematics;
@@ -28,11 +28,8 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.slf4j.Logger;
 
-import static com.Pink_Cats.createschematicchecker.CSCLanguage.translateDirect;
+import static com.Pink_Cats.createschematicchecker.lang.CSCLanguage.translateDirect;
 import static com.Pink_Cats.createschematicchecker.FancyConfig.ConfigRegister.*;
-
-import static com.Pink_Cats.createschematicchecker.core.NbtInterFace.StringToInt;
-import static org.apache.commons.compress.harmony.pack200.PackingUtils.config;
 
 // The value here should match an entry in the META-INF/mods.toml file
 @Mod(Createschematicchecker.MODID)
@@ -64,8 +61,6 @@ public class Createschematicchecker {
 
     private void commonSetup(final FMLCommonSetupEvent event) {
         Message.FM(translateDirect("console.LoadingConfig"));
-
-
     }
 
     public CSchematics CreateSchematicConfig() {
@@ -154,7 +149,7 @@ public class Createschematicchecker {
                                     }
 
 
-                                    Component message = Component.literal("Reload complete.!")
+                                    Component message = Component.literal(translateDirect("console.ReloadSuccess"))
                                             .setStyle(Style.EMPTY
                                                     .withColor(ChatFormatting.GOLD)
                                                     );

@@ -1,7 +1,7 @@
 package com.Pink_Cats.createschematicchecker.event;
 
-import com.Pink_Cats.createschematicchecker.Message;
 import com.Pink_Cats.createschematicchecker.core.BlueCore;
+import com.Pink_Cats.createschematicchecker.lang.Message;
 import com.simibubi.create.AllItems;
 import com.simibubi.create.content.schematics.SchematicItem;
 import com.simibubi.create.content.schematics.table.SchematicTableBlockEntity;
