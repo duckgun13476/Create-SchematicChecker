@@ -4,11 +4,13 @@ import com.Pink_Cats.createschematicchecker.Message;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 
+import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 import static com.Pink_Cats.createschematicchecker.FancyConfig.ConfigRegister.*;
 import static com.Pink_Cats.createschematicchecker.core.NbtInterFace.StrTag;
-import static com.mojang.text2speech.Narrator.LOGGER;
 
 public class StrFunc {
 
@@ -32,6 +34,15 @@ public class StrFunc {
 
     public static boolean IsBanEntity(String data){
         for (String item : ban_entity){
+            if (data.equals(item)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean IsWhitelistEntity(String data){
+        for (String item : whitelist_entity){
             if (data.equals(item)){
                 return true;
             }
@@ -106,6 +117,18 @@ public class StrFunc {
 
     public static String TagMapId(CompoundTag nbt_data){
         return  StrTag(Objects.requireNonNull(nbt_data.get("id")));
+    }
+
+    public static boolean hasDuplicate(List<String> array) {
+        Set<String> set = new HashSet<>();
+
+        for (String element : array) {
+            if (!set.add(element)) {
+                return true; // 如果无法将元素添加到集合中（即已经存在相同的元素），返回 true
+            }
+        }
+
+        return false; // 如果遍历完整个数组都没有发现重复元素，返回 false
     }
 
 }

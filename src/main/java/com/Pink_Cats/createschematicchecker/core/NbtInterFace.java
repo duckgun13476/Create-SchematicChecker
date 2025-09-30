@@ -134,6 +134,9 @@ public class NbtInterFace {
     public static int StringToInt(String str) {
         return Integer.parseInt(str);
     }
+    public static float StringToFloat(String str) {
+        return Float.parseFloat(str);
+    }
 
 
 }

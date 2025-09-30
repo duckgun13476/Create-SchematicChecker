@@ -7,6 +7,7 @@ import java.util.*;
 
 import static com.Pink_Cats.createschematicchecker.FancyConfig.ConfigRegister.*;
 import static com.Pink_Cats.createschematicchecker.core.BlockSweeper.ClearBanBlock;
+import static com.Pink_Cats.createschematicchecker.core.ConveyorInterface.StringPickHalfPos;
 import static com.Pink_Cats.createschematicchecker.core.ConveyorInterface.StringPickPos;
 import static com.Pink_Cats.createschematicchecker.core.NbtInterFace.*;
 import static com.Pink_Cats.createschematicchecker.core.StrFunc.*;
@@ -149,6 +150,95 @@ public class NbtFunc {
 
                 }
 
+
+                //CopyCats Check
+
+                Message.FE("id:  "+id);
+                if (id.contains("copycats:")) {
+                    List<String> fake_id = new ArrayList<>(List.of());
+                    fake_id.add("minecraft:air");
+                    List<String> consume_id = new ArrayList<>(List.of());
+
+
+                    CompoundTag material = block.getCompound("nbt").getCompound("material_data");
+                    if (material.isEmpty()) {
+                        material = block.getCompound("nbt").getCompound("Material");
+
+                        String inside_material = NoQuotes(Objects.requireNonNull(material.get("Name")).toString());
+                        int consumedItem_count = StringToInt(
+                                block.getCompound("nbt")
+                                        .getCompound("Item")
+                                        .get("Count")
+                                        .toString()
+                                        .replaceAll("[b;]", ""));
+                        String consumedItem_id = NoQuotes(block.getCompound("nbt")
+                                .getCompound("Item").get("id").toString());
+
+
+                        Message.FE(inside_material);
+                        Message.FE(consumedItem_count);
+                        Message.FE(consumedItem_id);
+                        if (!fake_id.contains(consumedItem_id) || consumedItem_count > 1 || consumedItem_count < 0 ) {
+                            CompoundTag replace = block.getCompound("nbt")
+                                    .getCompound("Item");
+                            replace.put("id",TagString("minecraft:air"));
+
+                            CompoundTag replace2 =  block.getCompound("nbt").getCompound("Material");
+                            replace2.put("Name",TagString("minecraft:air"));
+
+                            Message.FE("CopyCats not match");
+                            Cheat = true;
+                        }
+
+                    }
+                    else {
+
+                        for (String key : material.getAllKeys()) {
+                            CompoundTag plastic = material.getCompound(key);
+                            Message.FE( "plastic"+ plastic);
+
+                            String inside_material = NoQuotes(Objects.requireNonNull(plastic.getCompound("material").get("Name")).toString());
+
+
+
+                            if (!fake_id.contains(inside_material)){
+                                fake_id.add(inside_material);
+                            } else {
+                                continue;
+                            }
+
+                            String consumedItem_id = NoQuotes(plastic.getCompound("consumedItem").get("id").toString());
+                            int consumedItem_count = StringToInt(
+                                                    plastic
+                                                            .getCompound("consumedItem")
+                                                            .get("Count")
+                                                            .toString()
+                                                            .replaceAll("[b;]", ""));
+                            Message.FE(consumedItem_count);
+                            Message.FE(consumedItem_id);
+                            Message.FE(inside_material);
+                            if (!fake_id.contains(consumedItem_id) || consumedItem_count > 1 || consumedItem_count < 0 ) {
+                                CompoundTag replace = plastic.getCompound("consumedItem");
+                                replace.put("id",TagString("minecraft:air"));
+                                CompoundTag replace2 = plastic.getCompound("material");
+                                replace2.put("Name",TagString("minecraft:air"));
+                                Message.FE("CopyCats not match");
+                                Cheat = true;
+                            }
+
+
+
+                        }
+                        fake_id.removeIf("minecraft:air"::equals);
+                        if (hasDuplicate(fake_id)){
+                            Message.FE("Duplicate not legal!");
+                            Cheat = true;
+                        }
+                    }
+
+
+                }
+                Message.FE("id3"+id);
 
 
 
@@ -426,13 +516,47 @@ public class NbtFunc {
             }
 
 
+            //CopyCats
+
+
+
             // 提取 entity 信息
             ListTag entities = nbt_data.getList("entities", 10); // 10 表示 CompoundTag 类型
+            boolean IsEntityKilled = false;
             for (int i = 0; i < entities.size(); i++) {
                 CompoundTag entity = entities.getCompound(i);
+                Message.FE("Entity");
                 entityResult = BaseBlockHandle(entity, "entity", palette, i);
-                entity = S_tag(entityResult.get("Data"));
+                Message.FE("Entity");
+                Object entityRes = entityResult.get("Data");
+                Message.FE("EntityRes"+entityRes);
+                if (entityRes.toString().equals("{}")) {
+                    Message.FE("EntityRes"+"{}");
+                    entity = new CompoundTag();
+                    IsEntityKilled = true;
+
+                }else {
+                    entity = S_tag(entityRes);
+                }
+
+                Message.FE("Entity222");
                 Cheat = S_bool(entityResult.get("Cheat")) || Cheat;
+                if (!IsEntityKilled) {
+                    if (kill_entity){
+
+                        String entityId = NoQuotes(entity.getCompound("nbt").get("id").toString());
+                        if (IsWhitelistEntity(entityId)){
+                            Message.FE("NotKilled:  " + entityId);
+                        }else {
+                            entities.remove(entity);
+                        }
+
+
+                    }
+
+                }
+
+
                 if (entity != null) {
                     entities.set(i, entity);
                 }
@@ -440,9 +564,6 @@ public class NbtFunc {
 
             nbt_data.put("blocks", blocks);
             nbt_data.put("palette", palette);
-            if (kill_entity){
-                entities.clear();
-            }
             nbt_data.put("entities", entities);
             // Output Result
             if (debug_total_block) {
@@ -472,16 +593,44 @@ public class NbtFunc {
         Map<String, Object> result = new HashMap<>();
 
         if (type.equals("entity")) {
-            if (kill_entity){
-                Message.FE("Kill Entity");
-            }else {
+
                 if (!data.isEmpty()){
                     String EntityId = BlockGetId(data,PaletteBlockData);
                     if (IsBanEntity(EntityId)) {
                         data = new CompoundTag();
                     }
+
+                    if (EntityId.equals("create:super_glue")){
+
+                        Message.FE("Super Glue");
+                        float[] From = StringPickHalfPos(data
+                                .getCompound("nbt")
+                                .get("From")
+                                .toString()
+                                .replaceAll("d", "")
+                        );
+
+                        float[] To = StringPickHalfPos(data
+                                .getCompound("nbt")
+                                .get("To")
+                                .toString()
+                                .replaceAll("d", "")
+                        );
+                        float X = Math.abs(From[0] - To[0]);
+                        float Y = Math.abs(From[1] - To[1]);
+                        float Z = Math.abs(From[2] - To[2]);
+                        if (X >24 || Y >24 || Z >24) {
+                            data = new CompoundTag();
+                            Message.FE("Super Glue To big!");
+                            Message.FE(data);
+                        }
+
+                    }
+
+
                 }
-            }
+
+
         }
 
 
@@ -546,6 +695,7 @@ public class NbtFunc {
         if (Cheat) {
             data = new CompoundTag();
         }
+
 
         result.put("Cheat", Cheat);
         result.put("Data", data);

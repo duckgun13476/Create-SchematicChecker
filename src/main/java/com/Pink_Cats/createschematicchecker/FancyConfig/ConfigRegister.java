@@ -62,7 +62,10 @@ public class ConfigRegister {
                     "minecraft:armor_stand"})
             .comment("config.BanEntity");
 
-
+    public static ConfigValue.ConfigStringArray WHITELIST_ENTITY = ConfigBuild
+            .define("core.whitelistEntity", new String[]{
+                    "create:super_glue"})
+            .comment("config.whitelistEntity");
 
 
     public static ConfigValue.ConfigBoolean DEBUG_TOTAL_BLOCK = ConfigBuild
@@ -88,6 +91,7 @@ public class ConfigRegister {
     public static boolean check_belt = CHECK_BELT_MISMATCH.getDefaultValue();
     public static boolean remove_belt_instead_kill = TRY_REMOVE_PROBLEM_BELT_NOT_KILL.getDefaultValue();
     public static String[] ban_entity = BAN_ENTITY.getDefaultValue();
+    public static String[] whitelist_entity = WHITELIST_ENTITY.getDefaultValue();
 
 
     public static void CSC_INIT() {
@@ -100,6 +104,7 @@ public class ConfigRegister {
         debug_total_block = DEBUG_TOTAL_BLOCK.getDefaultValue();
         check_belt = CHECK_BELT_MISMATCH.getDefaultValue();
         remove_belt_instead_kill = TRY_REMOVE_PROBLEM_BELT_NOT_KILL.getDefaultValue();
+        whitelist_entity = WHITELIST_ENTITY.getDefaultValue();
         ban_entity = BAN_ENTITY.getDefaultValue();
         Message.FM("Ban Block: " );
         for (String s : ban_block) {

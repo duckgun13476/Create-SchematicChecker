@@ -142,7 +142,7 @@
   -[X] [视频链接](https://www.bilibili.com/video/BV1udtYzwEQN)
 
 - **17. 修复** 机械手在伪装板模组下的物品复制特性  
-  [视频链接](https://www.bilibili.com/video/BV1dubezLEp7)
+  -[X] [视频链接](https://www.bilibili.com/video/BV1dubezLEp7)
 
 - **18. 修复** 在安山漏斗可以返还过滤器的漏洞
   -[X] [视频链接](https://www.bilibili.com/video/BV1UrEGzmEDU)
@@ -183,7 +183,12 @@
 - **29. 修复** 通过修改动力合成器实现的虚空传送物品漏洞。
   -[X] [没找到样例视频]()
 
+    
+- **30. 修复** 通过修改强力胶导致的超大黏着检测引起的服务器巨量卡顿甚至崩溃。
+  -[X] [没找到样例视频]()
 
+- **31. 修复** 通过修改机壳地盘、斜向地盘导致的超大黏着检测引起的服务器巨量卡顿甚至崩溃。
+  -[X] [没找到样例视频]()
 
 
 
