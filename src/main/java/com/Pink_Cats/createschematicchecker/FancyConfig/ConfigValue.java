@@ -6,11 +6,12 @@ import com.Pink_Cats.createschematicchecker.Message;
 import java.util.Map;
 
 import static com.Pink_Cats.createschematicchecker.FancyConfig.ConfigHook.readToml;
+import static com.Pink_Cats.createschematicchecker.FancyConfig.ConfigRegister.ConfigPath;
 import static com.Pink_Cats.createschematicchecker.core.StrFunc.NoAir;
 
 public class ConfigValue {
 
-    static SimpleTomlEditor tomlEditor = new SimpleTomlEditor("config.toml");
+    static SimpleTomlEditor tomlEditor = new SimpleTomlEditor(ConfigPath);
 
 
 //---------------------------------------------------------------------------------
@@ -124,6 +125,21 @@ public class ConfigValue {
             return key;
         }
 
+        public void reload() {
+            Object configOperateResult = tomlEditor.ConfigValue_IO(key, value);
+            if (configOperateResult instanceof Boolean) {
+                value = (boolean) configOperateResult; // 更新当前值
+            } else if (configOperateResult instanceof String strValue) {
+            strValue = NoAir(strValue);
+            // 如果是 String 类型，尝试将其转换为布尔值
+                value = "true".equals(strValue);
+            } else {
+                value = false;
+            }
+
+
+        }
+
         // 静态方法将布尔值转换为 ConfigBoolean
         public static ConfigBoolean fromJavaBoolean(String key, boolean value) {
             return new ConfigBoolean(key, value);
@@ -187,6 +203,25 @@ public class ConfigValue {
         public static ConfigInt fromJavaInt(String key, int value) {
             return new ConfigInt(key, value);
         }
+
+        public void reload() {
+            Object configOperateResult = tomlEditor.ConfigValue_IO(key, value);
+            if (configOperateResult instanceof Integer) {
+                value = (int) configOperateResult; // 更新当前值
+
+            } else if (configOperateResult instanceof String strValue) {
+                strValue = strValue.trim();
+                try {
+                    int intValue = Integer.parseInt(strValue);
+                    value = new ConfigInt(key, intValue).getDefaultValue();
+                } catch (NumberFormatException e) {
+                    Message.FW("Invalid integer format for key: " + key + " value: '" + strValue + "'");
+                    value = 0;
+                }
+            } else {
+                value = 0;
+            }
+        }
     }
 
 
@@ -241,6 +276,25 @@ public class ConfigValue {
         // 静态方法将字符串数组转换为 ConfigStringArray
         public static ConfigStringArray fromJavaStringArray(String key, String[] value) {
             return new ConfigStringArray(key, value);
+        }
+
+        public void reload() {
+            Object configOperateResult = tomlEditor.ConfigValue_IO(key, value);
+            if (configOperateResult instanceof String[]) {
+                value = (String[]) configOperateResult; // 更新当前值
+
+            } else if (configOperateResult instanceof String strValue) {
+
+                // 假设使用逗号分隔
+
+                value = processArrayString(strValue);
+            } else {
+                value = new String[]{};
+            }
+
+
+
+
         }
     }
 

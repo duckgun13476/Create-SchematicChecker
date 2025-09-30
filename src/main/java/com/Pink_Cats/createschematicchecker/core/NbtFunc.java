@@ -152,8 +152,6 @@ public class NbtFunc {
 
 
                 //CopyCats Check
-
-                Message.FE("id:  "+id);
                 if (id.contains("copycats:")) {
                     List<String> fake_id = new ArrayList<>(List.of());
                     fake_id.add("minecraft:air");
@@ -238,7 +236,6 @@ public class NbtFunc {
 
 
                 }
-                Message.FE("id3"+id);
 
 
 
@@ -267,7 +264,7 @@ public class NbtFunc {
                         BeltMismatch = true;
                         BeltCountMismatch++;
                         MismatchController.add(item[0].toString());
-                        Message.FE("BeltMismatch Controller: " + item[0] + " | Length: " + item[1] + " | Index: " + item[2] + " | Count: " + item[3]);
+                        //Message.FE("BeltMismatch Controller: " + item[0] + " | Length: " + item[1] + " | Index: " + item[2] + " | Count: " + item[3]);
                     }
                 }
             }
@@ -278,15 +275,15 @@ public class NbtFunc {
             //belt mismatch fix
             if (remove_belt_instead_kill) {
                 if (BeltMismatch) {
-                    Message.FE("BeltMismatch fix");
+                    //Message.FE("BeltMismatch fix");
                     for (int i = 0; i < blocks.size(); i++) {
-                        Message.FE("BeltMismatch Controller: " + blocks.get(i).toString());
+                        //Message.FE("BeltMismatch Controller: " + blocks.get(i).toString());
                         CompoundTag block = blocks.getCompound(i);
                         String id = BlockGetId(block, palette);
                         //belt matcher
                         if (id.equals("create:belt")) {
                             String Controller = String.valueOf(block.getCompound("nbt").getCompound("Controller"));
-                            Message.FE(Controller);
+                            //Message.FE(Controller);
                             if (MismatchController.contains(Controller)) {
                                 blocks.remove(i);
                                 i -= 1;
@@ -394,7 +391,6 @@ public class NbtFunc {
             }
 
             //Crafter Mismatch Check
-            Message.FE("Crafter PosBack");
             for (int[] crafterPo : CrafterPos) {
                 Message.FE("Crafter Pos ADD: " + Arrays.toString(crafterPo));
             }
@@ -407,7 +403,6 @@ public class NbtFunc {
                 CrafterPosBack.add(newArr);
             }
 
-            Message.FE("Crafter PosBack");
             for (int[] crafterPo : CrafterPosBack) {
                 Message.FE("Crafter Pos Back: " + Arrays.toString(crafterPo));
             }
@@ -525,13 +520,9 @@ public class NbtFunc {
             boolean IsEntityKilled = false;
             for (int i = 0; i < entities.size(); i++) {
                 CompoundTag entity = entities.getCompound(i);
-                Message.FE("Entity");
                 entityResult = BaseBlockHandle(entity, "entity", palette, i);
-                Message.FE("Entity");
                 Object entityRes = entityResult.get("Data");
-                Message.FE("EntityRes"+entityRes);
                 if (entityRes.toString().equals("{}")) {
-                    Message.FE("EntityRes"+"{}");
                     entity = new CompoundTag();
                     IsEntityKilled = true;
 
@@ -539,7 +530,6 @@ public class NbtFunc {
                     entity = S_tag(entityRes);
                 }
 
-                Message.FE("Entity222");
                 Cheat = S_bool(entityResult.get("Cheat")) || Cheat;
                 if (!IsEntityKilled) {
                     if (kill_entity){

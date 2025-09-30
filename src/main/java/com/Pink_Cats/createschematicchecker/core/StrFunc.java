@@ -4,6 +4,8 @@ import com.Pink_Cats.createschematicchecker.Message;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
@@ -13,6 +15,19 @@ import static com.Pink_Cats.createschematicchecker.FancyConfig.ConfigRegister.*;
 import static com.Pink_Cats.createschematicchecker.core.NbtInterFace.StrTag;
 
 public class StrFunc {
+
+
+    public static String getCurrentDateTime() {
+        // 获取当前时间
+        LocalDateTime now = LocalDateTime.now();
+
+        // 定义格式：yyyy_MMdd_HH_mm
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy_MMdd_HH_mm");
+
+        // 格式化并返回
+        return now.format(formatter);
+    }
+
 
     public static boolean HasBanTag(String data){
         for (String item : ban_tag){

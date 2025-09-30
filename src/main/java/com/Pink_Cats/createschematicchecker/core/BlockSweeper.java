@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-import static com.Pink_Cats.createschematicchecker.FancyConfig.ConfigRegister.ban_block;
+import static com.Pink_Cats.createschematicchecker.FancyConfig.ConfigRegister.*;
 import static com.Pink_Cats.createschematicchecker.core.MagicChain.MagicChainClear;
 import static com.Pink_Cats.createschematicchecker.core.NbtInterFace.*;
 import static com.Pink_Cats.createschematicchecker.core.StrFunc.isInBanBlock;
@@ -84,7 +84,6 @@ public class BlockSweeper {
 
                 };
 
-                // 遍历字符串数组，检查是否等于字符串 A，如果等于就执行相应的逻辑 B
                 for (String[] idLogic : idLogicArray) {
                     String idKey = idLogic[0];
                     if (id.equals(idKey)) {
@@ -137,9 +136,9 @@ public class BlockSweeper {
 
 
                     String[][] SurgeryLogicArray = {
-                            {"create:belt", "nbt.Length", "operate.limit$Length$0$30"},
-                            {"create:belt", "nbt.Index", "operate.limit$Index$0$29"},
-                            {"create:weighted_ejector", "nbt.HorizontalDistance", "operate.limit$HorizontalDistance$1$32"},
+                            {"create:belt", "nbt.Length", "operate.limit$Length$0$"+MaxBelt},
+                            {"create:belt", "nbt.Index", "operate.limit$Index$0$"+MaxIndex},
+                            {"create:weighted_ejector", "nbt.HorizontalDistance", "operate.limit$HorizontalDistance$1$"+MaxEject},
                             {"create:deployer", "nbt.Inventory", "operate.clear$Inventory"},
 
                             {"create:andesite_funnel", "nbt.Filter", "operate.clear$Filter"},
@@ -149,14 +148,11 @@ public class BlockSweeper {
                             {"create:mechanical_arm", "nbt.$InteractionPoints.Pos.Y", "operate.limit$Y$-5$5"},
                             {"create:mechanical_arm", "nbt.$InteractionPoints.Pos.Z", "operate.limit$Z$-5$5"},
 
-                            {"create:chassis", "nbt.ScrollValue", "operate.limit$ScrollValue$0$16"},
-
-                            {"create:chassis", "nbt.ScrollValue", "operate.limit$ScrollValue$0$16"},
+                            {"create:chassis", "nbt.ScrollValue", "operate.limit$ScrollValue$0$"+MaxChassisRange},
 
                             // Add more entries as needed
                             {"createaddition:rolling_mill","nbt.InputInventory", "operate.clear$InputInventory"},
                             {"createaddition:rolling_mill","nbt.OutputInventory", "operate.clear$OutputInventory"},
-
 
                             {"create_enchantment_industry:printer", "nbt.PrintingTemplate", "operate.clear$PrintingTemplate"},
 

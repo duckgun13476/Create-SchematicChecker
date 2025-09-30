@@ -73,7 +73,7 @@ public class MagicChain {
                             }
                         }
 
-                        Message.FM("operate result"+tag);
+                        //Message.FM("operate result"+tag);
 
 
 
@@ -152,7 +152,7 @@ public class MagicChain {
                             //Message.FM("pick start"+CompoundTagItem);
                             //Message.FM(Chain[i]);
                             TagItem = CompoundTagItem.getCompound(Chain[i]);
-                            Message.FM("pick result"+ TagItem);                             //Debug is here
+                            //Message.FM("pick result"+ TagItem);                             //Debug is here
                         }
                     }
                 }

@@ -54,9 +54,7 @@ public abstract class handleFinishedUploadMixin {
                 SchematicTableBlockEntity table = getTable(world, pos);//获取蓝图桌实例
                 if (table == null)
                     return;
-                System.out.println("upload");
                 table.finishUpload();
-                System.out.println("uploaded");
                 SchematicUploadEvent uploadEvent = new SchematicUploadEvent(player, playerSchematicId,schematic, world, table);//构建一个事件
                 MinecraftForge.EVENT_BUS.post(uploadEvent);
 

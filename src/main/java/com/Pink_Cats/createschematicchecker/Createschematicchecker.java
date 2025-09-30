@@ -1,7 +1,11 @@
 package com.Pink_Cats.createschematicchecker;
+import com.Pink_Cats.createschematicchecker.FancyConfig.ConfigRegister;
+import com.Pink_Cats.createschematicchecker.core.NbtInterFace;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
+import com.simibubi.create.foundation.config.ConfigBase;
 import com.simibubi.create.infrastructure.config.AllConfigs;
+import com.simibubi.create.infrastructure.config.CKinetics;
 import com.simibubi.create.infrastructure.config.CSchematics;
 import net.minecraft.ChatFormatting;
 import com.Pink_Cats.createschematicchecker.core.BlueCore;
@@ -19,11 +23,15 @@ import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.config.ModConfigEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.slf4j.Logger;
 
 import static com.Pink_Cats.createschematicchecker.CSCLanguage.translateDirect;
+import static com.Pink_Cats.createschematicchecker.FancyConfig.ConfigRegister.*;
+
+import static com.Pink_Cats.createschematicchecker.core.NbtInterFace.StringToInt;
 import static org.apache.commons.compress.harmony.pack200.PackingUtils.config;
 
 // The value here should match an entry in the META-INF/mods.toml file
@@ -60,16 +68,32 @@ public class Createschematicchecker {
 
     }
 
-    public CSchematics config() {
+    public CSchematics CreateSchematicConfig() {
         return AllConfigs.server().schematics;
+    }
+
+    public CKinetics CreateCKineticsConfig() {
+        return AllConfigs.server().kinetics;
+    }
+
+    public void CreateConfigInject(){
+        try{
+            CannonDelay = CreateSchematicConfig().schematicannonDelay.get().toString();
+            MaxBelt = CreateCKineticsConfig().maxBeltLength.get().toString();
+            MaxIndex = String.valueOf((NbtInterFace.StringToInt(ConfigRegister.MaxBelt)-1));
+            MaxEject = CreateCKineticsConfig().maxEjectorDistance.get().toString();
+            MaxChassisRange = CreateCKineticsConfig().maxChassisRange.get().toString();
+        } catch(Exception ex){
+            Message.FE(translateDirect("console.ConfigInjectCreateError"));
+        }
+
     }
 
 
     @SubscribeEvent
     public void onServerStarting(ServerStartingEvent event) {
         //CscConfigIO();
-        Message.FM(config().schematicannonDelay.get());
-
+        CreateConfigInject();
 
         Message.FM("   _____  _____  _____ ");
         Message.FM("  / ____|/ ____|/ ____|");
@@ -81,6 +105,15 @@ public class Createschematicchecker {
 
     }
 
+    @SubscribeEvent
+    public static void onReload(ModConfigEvent.Reloading event) {
+        try {
+            CSC_RELOAD();
+        }catch (Exception ex){
+            Message.FE(translateDirect("console.ConfigReloadError"));
+        }
+    }
+
 
     @SubscribeEvent
     public void onCommandRegister(RegisterCommandsEvent event) {
@@ -90,7 +123,7 @@ public class Createschematicchecker {
                         .executes(context ->  {
                                     Player player = context.getSource().getPlayer();
                                     if (player != null) {
-                                        Component message = Component.literal("Hello, " + player.getDisplayName().getString() + "!")
+                                        Component message = Component.literal("Hello, welcome to use CSC for Create!")
                                                 .setStyle(Style.EMPTY
                                                         .withColor(ChatFormatting.GREEN)
                                                         .withClickEvent(new ClickEvent(
@@ -98,20 +131,33 @@ public class Createschematicchecker {
                                                                 "https://mcg.tuanzi.ink/"
                                                         )));
                                         player.sendSystemMessage(message);
+                                        Component url = Component.literal("Hello, welcome to use CSC for Create! ")
+                                                .setStyle(Style.EMPTY
+                                                        .withColor(ChatFormatting.GREEN)
+                                                        .withClickEvent(new ClickEvent(
+                                                                ClickEvent.Action.OPEN_URL,
+                                                                "https://mcg.tuanzi.ink/"
+                                                        )));
+                                        player.sendSystemMessage(url);
                                     }
                                     return Command.SINGLE_SUCCESS;
                                 }
                         )
-                        .then(Commands.literal("echo")
+
+                        .then(Commands.literal("reload")
                                 .executes(context -> {
                                     Player player = context.getSource().getPlayer();
-                                    Component message = Component.literal("list2 " + player.getDisplayName().getString() + "!")
+                                    try {
+                                        CSC_RELOAD();
+                                    }catch (Exception ex){
+                                        ex.printStackTrace();
+                                    }
+
+
+                                    Component message = Component.literal("Reload complete.!")
                                             .setStyle(Style.EMPTY
                                                     .withColor(ChatFormatting.GOLD)
-                                                    .withClickEvent(new ClickEvent(
-                                                            ClickEvent.Action.OPEN_URL,
-                                                            "https://3dt.easecation.net/"
-                                                    )));
+                                                    );
                                     player.sendSystemMessage(message);
                                     return Command.SINGLE_SUCCESS;
                                 }

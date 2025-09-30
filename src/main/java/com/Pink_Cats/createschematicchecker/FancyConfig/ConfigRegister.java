@@ -3,10 +3,15 @@ package com.Pink_Cats.createschematicchecker.FancyConfig;
 
 import com.Pink_Cats.createschematicchecker.Message;
 
+import static com.Pink_Cats.createschematicchecker.FancyConfig.FileIO.createIfNotExists;
+
 public class ConfigRegister {
 
     // 定义 LANGUAGE 为 ConfigValue.String 类型
-    private static final String ConfigPath = "config.toml";
+    static {
+        createIfNotExists("config/CSC");
+    }
+    static final String ConfigPath = "config/CSC/config.toml";
     private static final ConfigValue ConfigBuild = new ConfigValue();
     private static final SimpleTomlEditor tomlEditor = new SimpleTomlEditor(ConfigPath);
     public static String DefineLanguage;
@@ -72,6 +77,10 @@ public class ConfigRegister {
             .define("debug.DebugTotalBlock", true)
             .comment("config.DebugTotalBlock");
 
+    public static ConfigValue.ConfigBoolean ENABLE_SCHEMATIC_BACKUP = ConfigBuild
+            .define("debug.EnableBackup", true)
+            .comment("config.EnableBackup");
+
 
     public static ConfigValue.ConfigBoolean CHECK_BELT_MISMATCH = ConfigBuild
             .define("function.checkBelt", true)
@@ -92,6 +101,14 @@ public class ConfigRegister {
     public static boolean remove_belt_instead_kill = TRY_REMOVE_PROBLEM_BELT_NOT_KILL.getDefaultValue();
     public static String[] ban_entity = BAN_ENTITY.getDefaultValue();
     public static String[] whitelist_entity = WHITELIST_ENTITY.getDefaultValue();
+    public static boolean enable_backup = ENABLE_SCHEMATIC_BACKUP.getDefaultValue();
+
+
+    public static String CannonDelay = "10";
+    public static String MaxBelt = "20";
+    public static String MaxIndex = "19";
+    public static String MaxEject = "32";
+    public static String MaxChassisRange = "16";
 
 
     public static void CSC_INIT() {
@@ -106,13 +123,39 @@ public class ConfigRegister {
         remove_belt_instead_kill = TRY_REMOVE_PROBLEM_BELT_NOT_KILL.getDefaultValue();
         whitelist_entity = WHITELIST_ENTITY.getDefaultValue();
         ban_entity = BAN_ENTITY.getDefaultValue();
+        enable_backup = ENABLE_SCHEMATIC_BACKUP.getDefaultValue();
         Message.FM("Ban Block: " );
         for (String s : ban_block) {
             Message.FM(s);
         }
         Message.FM(debug_total_block);
         Message.FM(kill_entity);
-        Message.FM(enable_csc);
+        Message.FM("enable backup"+ enable_backup);
+    }
+
+
+    public static  void CSC_RELOAD() {
+        UUID.reload();
+        ENABLE.reload();
+        BAN_BLOCK.reload();
+        BAN_TAG.reload();
+        KILL_ENTITY.reload();
+        DEBUG_TOTAL_BLOCK.reload();
+        CHECK_BELT_MISMATCH.reload();
+        TRY_REMOVE_PROBLEM_BELT_NOT_KILL.reload();
+        WHITELIST_ENTITY.reload();
+        BAN_ENTITY.reload();
+        ENABLE_SCHEMATIC_BACKUP.reload();
+        CSC_INIT();
+
+
+        Message.FM("Ban Block: " );
+        for (String s : ban_block) {
+            Message.FM(s);
+        }
+        Message.FM(debug_total_block);
+        Message.FM(kill_entity);
+        Message.FM("enable backup"+ enable_backup);
     }
 
 
