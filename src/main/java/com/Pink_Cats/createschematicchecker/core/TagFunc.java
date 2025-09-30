@@ -6,16 +6,13 @@ import net.minecraft.nbt.ListTag;
 
 import java.util.Objects;
 
-import static com.Pink_Cats.createschematicchecker.core.NbtInterFace.S_bool;
-import static com.Pink_Cats.createschematicchecker.core.NbtInterFace.S_tag;
-
 public class TagFunc {
 
 
 
     public static String BlockGetId (CompoundTag tag, ListTag PaletteBlockData) {
         try{
-            return Objects.requireNonNull(
+            String result = Objects.requireNonNull(
                     StrFunc.NoQuotes(
                             String.valueOf(
                                     Objects.requireNonNull(
@@ -25,6 +22,18 @@ public class TagFunc {
                     )
 
             );
+            if (result.equals("create:funnel")) {
+                try {
+                    int state = tag.getInt("state");
+                    CompoundTag PaletteData = PaletteBlockData.getCompound(state);
+                    return PaletteData.getString("Name");
+                }
+                catch(Exception ex) {
+                    Message.FE("FunnelGetIdError:" + ex.getMessage());
+                }
+            }
+
+            return result;
         }
         catch(Exception e){
             try {

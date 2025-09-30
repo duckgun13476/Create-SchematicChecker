@@ -32,18 +32,38 @@ public class ConfigRegister {
             .comment("config.DelayTime");
 
     public static ConfigValue.ConfigStringArray BAN_BLOCK = ConfigBuild
-            .define("core.BanBlock", new String[]{"create:pulse_timer"})
+            .define("core.BanBlock", new String[]{
+                    "create:creative_crate",
+                    "create:creative_fluid_tank",
+                    "create_integrated_farming:chicken_roost",
+                    "create:creative_motor",
+                    "create:creative_blaze_cake",
+                    "create:handheld_worldshaper",
+                    "minecraft:spawner",
+                    "minecraft:command_block",
+                    "minecraft:kelp" })
+
             .comment("console.feedback")
             .comment("test");
 
     public static ConfigValue.ConfigStringArray BAN_TAG = ConfigBuild
-            .define("core.BanTag", new String[]{"AttributeModifiers", "run_command","using_converts_to","bundle_contents","minecraft:container"})
+            .define("core.BanTag", new String[]{
+                    "AttributeModifiers", "run_command","using_converts_to","bundle_contents","minecraft:container"})
             .comment("config.BanTag");
 
 
     public static ConfigValue.ConfigBoolean KILL_ENTITY = ConfigBuild
             .define("core.KillEntity", true)
             .comment("config.KillEntity");
+
+
+    public static ConfigValue.ConfigStringArray BAN_ENTITY = ConfigBuild
+            .define("core.BanEntity", new String[]{
+                    "minecraft:armor_stand"})
+            .comment("config.BanEntity");
+
+
+
 
     public static ConfigValue.ConfigBoolean DEBUG_TOTAL_BLOCK = ConfigBuild
             .define("debug.DebugTotalBlock", true)
@@ -67,6 +87,7 @@ public class ConfigRegister {
     public static boolean debug_total_block = DEBUG_TOTAL_BLOCK.getDefaultValue();
     public static boolean check_belt = CHECK_BELT_MISMATCH.getDefaultValue();
     public static boolean remove_belt_instead_kill = TRY_REMOVE_PROBLEM_BELT_NOT_KILL.getDefaultValue();
+    public static String[] ban_entity = BAN_ENTITY.getDefaultValue();
 
 
     public static void CSC_INIT() {
@@ -79,6 +100,7 @@ public class ConfigRegister {
         debug_total_block = DEBUG_TOTAL_BLOCK.getDefaultValue();
         check_belt = CHECK_BELT_MISMATCH.getDefaultValue();
         remove_belt_instead_kill = TRY_REMOVE_PROBLEM_BELT_NOT_KILL.getDefaultValue();
+        ban_entity = BAN_ENTITY.getDefaultValue();
         Message.FM("Ban Block: " );
         for (String s : ban_block) {
             Message.FM(s);

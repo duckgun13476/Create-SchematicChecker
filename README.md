@@ -127,7 +127,7 @@
   -[X] [视频链接](https://www.bilibili.com/video/BV1c19tYsEBL)
 
 - **12. 修复** 篡改动力臂距离到不合理的距离导致的超远距离传输 | 在某些情况下会因为距离问题直接导致崩服  
-  [视频链接](https://www.bilibili.com/video/BV1XpXYYDEt7)
+  -[X] [视频链接](https://www.bilibili.com/video/BV1XpXYYDEt7)
 
 - **13. 修复** 篡改链式传动轮的匹配目标到虚空导致的 90° 锁链 | 这会在某些情况下崩服  
   -[X] [视频链接](https://www.bilibili.com/video/BV1nddcYSEWQ)
@@ -145,31 +145,31 @@
   [视频链接](https://www.bilibili.com/video/BV1dubezLEp7)
 
 - **18. 修复** 在安山漏斗可以返还过滤器的漏洞
-
+  -[X] [视频链接](https://www.bilibili.com/video/BV1UrEGzmEDU)
 - **19. 修复** 可以使用烧毁标签来获得创造物品的漏洞  
   -[X] [视频链接](https://www.bilibili.com/video/BV1UrEGzmEDU)
 
 - **20. 修复** 可以使用实体（盔甲架）导致的任何复制特性和获取创造物品特性 | 使用实体剔除功能  
-  [视频链接](https://www.bilibili.com/video/BV1wtRNYaE5m)
+  -[X] [视频链接](https://www.bilibili.com/video/BV1wtRNYaE5m)
 
 - **21. 修复** 轧机在物品附加的某个版本创造物品恶性获取漏洞  
-  [视频链接](https://www.bilibili.com/video/BV1b4eyzGEoj)
+  -[X] [视频链接](https://www.bilibili.com/video/BV1b4eyzGEoj)
 
-- **22. 修复** 附魔工业会打印创造标签的恶性附属漏洞  
-  [视频链接](https://www.bilibili.com/video/BV1GKemzWEKm)
+- **22. 修复** 附魔工业在某个版本会打印创造标签的恶性附属漏洞  
+  -[X] [视频链接](https://www.bilibili.com/video/BV1GKemzWEKm)
 
 - **23. 修复** 创意传动会打印无限能源电池的特性  
-  [视频链接](https://www.bilibili.com/video/BV193vAzNEJ2)
+  -[X] [视频链接](https://www.bilibili.com/video/BV193vAzNEJ2)
 
 - **24. 修复** 集成农业会打印鸡舍实现 GT 机卡服的特性  
-  [视频链接](https://www.bilibili.com/video/BV13nh2z5EvT)
+  -[X] [视频链接](https://www.bilibili.com/video/BV13nh2z5EvT)
 
 - **25. 修复** 利用nbt漏洞实现的运行指令恶性bug
   -[X] [视频链接](https://www.bilibili.com/video/BV1rZY5z1Eo6)
 
 - **26. 修复** 6.0.+版本下可以篡改流体储罐导致容量异常的bug
 
-  [视频链接](https://www.bilibili.com/video/BV1hSnMzCE6A/)
+  -[X] [视频链接](https://www.bilibili.com/video/BV1hSnMzCE6A/)
 
 
 - **27. 修复** 夸克铁丝网的无限岩浆漏洞。
@@ -178,6 +178,10 @@
 
 - **28. 修复** 通过修改动力合成器实现的虚空传送物品漏洞。 
   -[X] [视频链接](https://www.bilibili.com/video/BV1hSnMzCE6A/)
+
+
+- **29. 修复** 通过修改动力合成器实现的虚空传送物品漏洞。
+  -[X] [没找到样例视频]()
 
 
 

@@ -9,8 +9,7 @@ import static com.Pink_Cats.createschematicchecker.FancyConfig.ConfigRegister.*;
 import static com.Pink_Cats.createschematicchecker.core.BlockSweeper.ClearBanBlock;
 import static com.Pink_Cats.createschematicchecker.core.ConveyorInterface.StringPickPos;
 import static com.Pink_Cats.createschematicchecker.core.NbtInterFace.*;
-import static com.Pink_Cats.createschematicchecker.core.StrFunc.HasBanBlock;
-import static com.Pink_Cats.createschematicchecker.core.StrFunc.HasBanTag;
+import static com.Pink_Cats.createschematicchecker.core.StrFunc.*;
 import static com.Pink_Cats.createschematicchecker.core.TagFunc.BlockGetId;
 import static com.mojang.text2speech.Narrator.LOGGER;
 
@@ -58,11 +57,13 @@ public class NbtFunc {
             List<ListTag> CrafterBlocks = new ArrayList<>();
             List<Integer> IsCraftController = new ArrayList<>();
 
+            int ControllerCount = 0;
+            int FindTankCount = 0;
 
             for (int i = 0; i < blocks.size(); i++) {
-                Message.FM("size"+i);
                 CompoundTag block = blocks.getCompound(i);
                 String id = BlockGetId(block, palette);
+
 
                 //belt matcher
                 if (id.equals("create:belt")) {
@@ -111,7 +112,6 @@ public class NbtFunc {
                 }
 
                 //create:crafter
-                Message.FD("id" + id);
                 if (id.equals("create:mechanical_crafter")) {
                     Message.FE("crafter");
                     int[] SelfPos = StringPickPos(String.valueOf(block.get("pos")));
@@ -134,6 +134,23 @@ public class NbtFunc {
                         }
                     }
                 }
+
+                //fluid tank
+                if (id.equals("create:fluid_tank")) {
+                    FindTankCount +=1;
+                    Message.FE("create:fluid_tank");
+                    Tag Size = block.getCompound("nbt").get("Size");
+                    Tag Height = block.getCompound("nbt").get("Height");
+                    if (Size!=null && Height!=null) {
+                        Message.FE(Size+"+"+Height);
+                        ControllerCount = ControllerCount + (StringToInt(Size.toString()) *StringToInt(Size.toString())*StringToInt(Height.toString()));
+                    }
+
+
+                }
+
+
+
 
 
                 if (block.size() >2){
@@ -392,6 +409,7 @@ public class NbtFunc {
 
                     if (CraftMisMatch) {
                         Message.FE("CraftMisMatch");
+                        Cheat = true;
                     }
 
 
@@ -400,6 +418,12 @@ public class NbtFunc {
                 ex.printStackTrace();
             }
 
+            //FluidTank Mismatch Check
+            if (ControllerCount != FindTankCount)
+            {
+                Message.FE("FluidTankMismatch: "+ControllerCount + "|" + FindTankCount);
+                Cheat = true;
+            }
 
 
             // 提取 entity 信息
@@ -416,6 +440,9 @@ public class NbtFunc {
 
             nbt_data.put("blocks", blocks);
             nbt_data.put("palette", palette);
+            if (kill_entity){
+                entities.clear();
+            }
             nbt_data.put("entities", entities);
             // Output Result
             if (debug_total_block) {
@@ -444,6 +471,20 @@ public class NbtFunc {
         boolean IsMatch  = true;
         Map<String, Object> result = new HashMap<>();
 
+        if (type.equals("entity")) {
+            if (kill_entity){
+                Message.FE("Kill Entity");
+            }else {
+                if (!data.isEmpty()){
+                    String EntityId = BlockGetId(data,PaletteBlockData);
+                    if (IsBanEntity(EntityId)) {
+                        data = new CompoundTag();
+                    }
+                }
+            }
+        }
+
+
         if (HasBanTag(data.toString())) {
             Message.FM("Find Tag in " + data);
             //Cheat = true;
@@ -460,9 +501,11 @@ public class NbtFunc {
 
 
         //clear with rule
-        MapData = ClearBanBlock(data, "rule." + type, sequence);
-        data = S_tag(MapData.get("Data"));
-        IsMatch = S_bool(MapData.get("IsMatch"));
+        if (!type.equals("entity")) {
+            MapData = ClearBanBlock(data, "rule." + type, sequence,PaletteBlockData);
+            data = S_tag(MapData.get("Data"));
+            IsMatch = S_bool(MapData.get("IsMatch"));
+        }
 
 
         if (type.equals("block")) {
@@ -472,7 +515,7 @@ public class NbtFunc {
 
 
             if (HasBanBlock) {
-                MapData = ClearBanBlock(data,"block",sequence);
+                MapData = ClearBanBlock(data,"block",sequence,PaletteBlockData);
                 data = S_tag(MapData.get("Data"));
                 IsMatch = S_bool(MapData.get("IsMatch")) && IsMatch;
                 //Message.FE(data);
@@ -489,7 +532,7 @@ public class NbtFunc {
 
         if (type.equals("palette")) {
             if (HasBanBlock) {
-                MapData = ClearBanBlock(data,"palette",sequence);
+                MapData = ClearBanBlock(data,"palette",sequence,PaletteBlockData);
                 data = S_tag(MapData.get("Data"));
                 IsMatch = S_bool(MapData.get("IsMatch")) && IsMatch;
                 Message.FE(data);
@@ -498,11 +541,6 @@ public class NbtFunc {
 
         }
 
-        if (type.equals("entity")) {
-            if (kill_entity){
-                data = new CompoundTag();
-            }
-        }
 
 
         if (Cheat) {

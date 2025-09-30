@@ -30,6 +30,14 @@ public class StrFunc {
         return false;
     }
 
+    public static boolean IsBanEntity(String data){
+        for (String item : ban_entity){
+            if (data.equals(item)){
+                return true;
+            }
+        }
+        return false;
+    }
 
     public static boolean HasBanBlock(String data){
 
