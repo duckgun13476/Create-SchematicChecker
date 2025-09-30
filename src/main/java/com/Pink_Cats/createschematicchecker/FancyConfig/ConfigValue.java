@@ -4,7 +4,7 @@ import com.Pink_Cats.createschematicchecker.lang.CSCLanguage;
 import com.Pink_Cats.createschematicchecker.lang.Message;
 
 import static com.Pink_Cats.createschematicchecker.FancyConfig.ConfigRegister.ConfigPath;
-import static com.Pink_Cats.createschematicchecker.core.StrFunc.NoAir;
+import static com.Pink_Cats.createschematicchecker.core.BlueEngine.StrFunc.NoAir;
 
 public class ConfigValue {
 

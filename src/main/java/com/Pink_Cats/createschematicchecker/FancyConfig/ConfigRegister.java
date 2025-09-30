@@ -4,6 +4,7 @@ package com.Pink_Cats.createschematicchecker.FancyConfig;
 import com.Pink_Cats.createschematicchecker.lang.Message;
 
 import static com.Pink_Cats.createschematicchecker.FancyConfig.FileIO.createIfNotExists;
+import static com.Pink_Cats.createschematicchecker.lang.CSCLanguage.translateDirect;
 
 public class ConfigRegister {
 
@@ -11,6 +12,7 @@ public class ConfigRegister {
     static {
         createIfNotExists("config/CSC");
     }
+    public static final String CommitBreak = "#----------------------------------------------------------------------";
     static final String ConfigPath = "config/CSC/config.toml";
     private static final ConfigValue ConfigBuild = new ConfigValue();
     private static final SimpleTomlEditor tomlEditor = new SimpleTomlEditor(ConfigPath);
@@ -22,6 +24,17 @@ public class ConfigRegister {
     }
     public static ConfigValue.ConfigString LANGUAGE = ConfigBuild
             .define( "Language", "zh_cn")
+            .comment(CommitBreak)
+            .comment("config.explain1")
+            .comment("config.explain2")
+            .comment("config.explain3")
+            .comment("config.explain4")
+            .comment("config.explain5")
+            .comment("config.explain6")
+            .comment("config.explain7")
+            .comment("config.explain8")
+            .comment("config.explain9")
+            .comment("config.explain10")
             .comment("config.lang");
 
 
@@ -30,10 +43,12 @@ public class ConfigRegister {
 
     public static ConfigValue.ConfigBoolean ENABLE = ConfigBuild
             .define("core.Enable", true)
+            .comment(CommitBreak)
             .comment("config.EnableOrNot");
 
     public static ConfigValue.ConfigInt RANDOM = ConfigBuild
-            .define("core.DelayTime", 52525)
+            .define("core.DelayTime", 10)
+            .comment(CommitBreak)
             .comment("config.DelayTime");
 
     public static ConfigValue.ConfigStringArray BAN_BLOCK = ConfigBuild
@@ -48,47 +63,65 @@ public class ConfigRegister {
                     "minecraft:command_block",
                     "minecraft:kelp" })
 
+            .comment(CommitBreak)
             .comment("core.BanBlock")
             .comment("core.BanBlock2");
 
     public static ConfigValue.ConfigStringArray BAN_TAG = ConfigBuild
             .define("core.BanTag", new String[]{
                     "AttributeModifiers", "run_command","using_converts_to","bundle_contents","minecraft:container"})
+            .comment(CommitBreak)
             .comment("config.BanTag");
 
 
     public static ConfigValue.ConfigBoolean KILL_ENTITY = ConfigBuild
             .define("core.KillEntity", true)
-            .comment("config.KillEntity");
+            .comment(CommitBreak)
+            .comment("config.KillEntity")
+            .comment("config.KillEntity2")
+            .comment("config.KillEntity3");
 
 
     public static ConfigValue.ConfigStringArray BAN_ENTITY = ConfigBuild
             .define("core.BanEntity", new String[]{
                     "minecraft:armor_stand"})
-            .comment("config.BanEntity");
+            .comment(CommitBreak)
+            .comment("config.BanEntity")
+            .comment("config.BanEntity2");
 
     public static ConfigValue.ConfigStringArray WHITELIST_ENTITY = ConfigBuild
             .define("core.whitelistEntity", new String[]{
                     "create:super_glue"})
-            .comment("config.whitelistEntity");
+            .comment(CommitBreak)
+            .comment("config.whitelistEntity")
+            .comment("config.whitelistEntity2")
+            .comment("config.whitelistEntity3");
 
 
     public static ConfigValue.ConfigBoolean DEBUG_TOTAL_BLOCK = ConfigBuild
             .define("debug.DebugTotalBlock", true)
+            .comment(CommitBreak)
             .comment("config.DebugTotalBlock");
 
     public static ConfigValue.ConfigBoolean ENABLE_SCHEMATIC_BACKUP = ConfigBuild
             .define("debug.EnableBackup", true)
-            .comment("config.EnableBackup");
+            .comment(CommitBreak)
+            .comment("config.EnableBackup")
+            .comment("config.EnableBackup2")
+            .comment("config.EnableBackup3");
 
 
     public static ConfigValue.ConfigBoolean CHECK_BELT_MISMATCH = ConfigBuild
             .define("function.checkBelt", true)
-            .comment("config.checkBelt");
+            .comment(CommitBreak)
+            .comment("config.checkBelt")
+            .comment("config.checkBelt2");
 
     public static ConfigValue.ConfigBoolean TRY_REMOVE_PROBLEM_BELT_NOT_KILL = ConfigBuild
             .define("function.TryRemoveBeltNotKill", true)
-            .comment("config.TryRemoveBeltNotKill");
+            .comment(CommitBreak)
+            .comment("config.TryRemoveBeltNotKill")
+            .comment("config.TryRemoveBeltNotKill2");
 
     public static String language = LANGUAGE.getDefaultValue();
     public static String user_uuid = UUID.getDefaultValue();
@@ -124,17 +157,12 @@ public class ConfigRegister {
         whitelist_entity = WHITELIST_ENTITY.getDefaultValue();
         ban_entity = BAN_ENTITY.getDefaultValue();
         enable_backup = ENABLE_SCHEMATIC_BACKUP.getDefaultValue();
-        Message.FM("Ban Block: " );
-        for (String s : ban_block) {
-            Message.FM(s);
-        }
-        Message.FM(debug_total_block);
-        Message.FM(kill_entity);
-        Message.FM("enable backup"+ enable_backup);
     }
 
 
     public static  void CSC_RELOAD() {
+        Message.FM(translateDirect("console.reload1"));
+
         UUID.reload();
         ENABLE.reload();
         BAN_BLOCK.reload();
@@ -148,14 +176,7 @@ public class ConfigRegister {
         ENABLE_SCHEMATIC_BACKUP.reload();
         CSC_INIT();
 
-
-        Message.FM("Ban Block: " );
-        for (String s : ban_block) {
-            Message.FM(s);
-        }
-        Message.FM(debug_total_block);
-        Message.FM(kill_entity);
-        Message.FM("enable backup"+ enable_backup);
+        Message.FM(translateDirect("console.reload2"));
     }
 
 

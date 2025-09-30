@@ -1,4 +1,4 @@
-package com.Pink_Cats.createschematicchecker.core;
+package com.Pink_Cats.createschematicchecker.core.BlueEngine;
 
 import com.Pink_Cats.createschematicchecker.lang.Message;
 import net.minecraft.nbt.CompoundTag;

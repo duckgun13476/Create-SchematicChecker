@@ -11,7 +11,7 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
-import static com.Pink_Cats.createschematicchecker.core.NbtInterFace.S_bool;
+import static com.Pink_Cats.createschematicchecker.core.BlueEngine.NbtInterFace.S_bool;
 
 public class CheckBlueprint {
     BlueCore Checker;

@@ -9,14 +9,9 @@ public class FileIO {
 
         if (!file.exists()) {
             boolean created = file.mkdirs();
-
             if (created) {
-                System.out.println("Path created successfully: " + path);
-            } else {
-                System.out.println("Failed to create path: " + path);
+
             }
-        } else {
-            System.out.println("Path already exists: " + path);
         }
     }
 

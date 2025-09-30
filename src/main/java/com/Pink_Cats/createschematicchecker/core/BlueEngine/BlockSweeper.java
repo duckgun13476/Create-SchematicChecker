@@ -1,4 +1,4 @@
-package com.Pink_Cats.createschematicchecker.core;
+package com.Pink_Cats.createschematicchecker.core.BlueEngine;
 
 import com.Pink_Cats.createschematicchecker.lang.Message;
 import net.minecraft.nbt.CompoundTag;
@@ -9,10 +9,10 @@ import java.util.Map;
 import java.util.Objects;
 
 import static com.Pink_Cats.createschematicchecker.FancyConfig.ConfigRegister.*;
-import static com.Pink_Cats.createschematicchecker.core.MagicChain.MagicChainClear;
-import static com.Pink_Cats.createschematicchecker.core.NbtInterFace.*;
-import static com.Pink_Cats.createschematicchecker.core.StrFunc.isInBanBlock;
-import static com.Pink_Cats.createschematicchecker.core.TagFunc.BlockGetId;
+import static com.Pink_Cats.createschematicchecker.core.ChainEngine.MagicChain.MagicChainClear;
+import static com.Pink_Cats.createschematicchecker.core.BlueEngine.NbtInterFace.*;
+import static com.Pink_Cats.createschematicchecker.core.BlueEngine.StrFunc.isInBanBlock;
+import static com.Pink_Cats.createschematicchecker.core.BlueEngine.TagFunc.BlockGetId;
 
 public class BlockSweeper {
 
@@ -216,15 +216,18 @@ public class BlockSweeper {
 
             }
 
-
-            if (totalCount != 0) {
-                IsMatch = false;
-                Message.FM("[" + type + "][" + block_information + "]MisMatch: Block:[" + (sequence + 1) + "] All: " + total + " Left: " + totalCount);
-                Message.FM("Before:");
-                Message.FM(Before);
-                Message.FM("After:");
-                Message.FM(Data.toString());
+            if (!type.contains("rule")){
+                if (totalCount != 0) {
+                    IsMatch = false;
+                    Message.FM("[" + type + "][" + block_information + "]MisMatch: Block:[" + (sequence + 1) + "] All: " + total + " Left: " + totalCount);
+                    Message.FM("Before:");
+                    Message.FM(Before);
+                    Message.FM("After:");
+                    Message.FM(Data.toString());
+                }
             }
+
+
             result.put("IsMatch", IsMatch);
             result.put("Data", Data);
             return result;

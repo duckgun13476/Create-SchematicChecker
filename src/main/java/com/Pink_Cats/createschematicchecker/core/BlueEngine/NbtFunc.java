@@ -1,4 +1,4 @@
-package com.Pink_Cats.createschematicchecker.core;
+package com.Pink_Cats.createschematicchecker.core.BlueEngine;
 
 import com.Pink_Cats.createschematicchecker.lang.Message;
 import net.minecraft.nbt.*;
@@ -6,17 +6,17 @@ import net.minecraft.nbt.*;
 import java.util.*;
 
 import static com.Pink_Cats.createschematicchecker.FancyConfig.ConfigRegister.*;
-import static com.Pink_Cats.createschematicchecker.core.BlockSweeper.ClearBanBlock;
-import static com.Pink_Cats.createschematicchecker.core.ConveyorInterface.StringPickHalfPos;
-import static com.Pink_Cats.createschematicchecker.core.ConveyorInterface.StringPickPos;
-import static com.Pink_Cats.createschematicchecker.core.NbtInterFace.*;
-import static com.Pink_Cats.createschematicchecker.core.StrFunc.*;
-import static com.Pink_Cats.createschematicchecker.core.TagFunc.BlockGetId;
+import static com.Pink_Cats.createschematicchecker.core.BlueEngine.BlockSweeper.ClearBanBlock;
+import static com.Pink_Cats.createschematicchecker.core.ChainEngine.ConveyorInterface.StringPickHalfPos;
+import static com.Pink_Cats.createschematicchecker.core.ChainEngine.ConveyorInterface.StringPickPos;
+import static com.Pink_Cats.createschematicchecker.core.BlueEngine.NbtInterFace.*;
+import static com.Pink_Cats.createschematicchecker.core.BlueEngine.StrFunc.*;
+import static com.Pink_Cats.createschematicchecker.core.BlueEngine.TagFunc.BlockGetId;
 import static com.mojang.text2speech.Narrator.LOGGER;
 
 public class NbtFunc {
     //test para
-    boolean DEBUG_ID = false;
+    boolean TEST_DEBUG_ID = false;
 
 
 
@@ -86,7 +86,6 @@ public class NbtFunc {
 
                 //create:chain_conveyor
                 if (id.equals("create:chain_conveyor")) {
-                    //Message.FE(block);
                     int[] SelfPos = StringPickPos(String.valueOf(block.get("pos")));
                     List<int[]> connectionList = new ArrayList<>();
                     ListTag Connections = (ListTag) block.getCompound("nbt").get("Connections");
@@ -104,7 +103,6 @@ public class NbtFunc {
 
 
                     if (Connections != null) {
-                        //Message.FE(Arrays.toString(SelfPos) + "|" + connectionList);
                         Destination.add(connectionList);
                         Location.add(SelfPos);
 
@@ -114,12 +112,9 @@ public class NbtFunc {
 
                 //create:crafter
                 if (id.equals("create:mechanical_crafter")) {
-                    Message.FE("crafter");
                     int[] SelfPos = StringPickPos(String.valueOf(block.get("pos")));
-
                     String Input = String.valueOf(block.getCompound("nbt").getCompound("ConnectedInput").get("Controller")).replaceAll("[b]", "");
                     int IsController = StringToInt(Input);
-
                     CompoundTag connection = block.getCompound("nbt").getCompound("ConnectedInput");
                     ListTag Connections = (ListTag) connection.get("Data");
 
@@ -127,9 +122,7 @@ public class NbtFunc {
                     CrafterPos.add(SelfPos);
                     CrafterBlocks.add(Connections);
                     IsCraftController.add(IsController);
-                    Message.FE(Arrays.toString(SelfPos));
                     if (IsController == 1) {
-                        Message.FE("Success control" + Connections.size());
                         for (int j=1;j<Connections.size();j++) {
                             CrafterPosFlow.add(SelfPos);
                         }
@@ -139,11 +132,9 @@ public class NbtFunc {
                 //fluid tank
                 if (id.equals("create:fluid_tank")) {
                     FindTankCount +=1;
-                    Message.FE("create:fluid_tank");
                     Tag Size = block.getCompound("nbt").get("Size");
                     Tag Height = block.getCompound("nbt").get("Height");
                     if (Size!=null && Height!=null) {
-                        Message.FE(Size+"+"+Height);
                         ControllerCount = ControllerCount + (StringToInt(Size.toString()) *StringToInt(Size.toString())*StringToInt(Height.toString()));
                     }
 
@@ -173,9 +164,6 @@ public class NbtFunc {
                                 .getCompound("Item").get("id").toString());
 
 
-                        Message.FE(inside_material);
-                        Message.FE(consumedItem_count);
-                        Message.FE(consumedItem_id);
                         if (!fake_id.contains(consumedItem_id) || consumedItem_count > 1 || consumedItem_count < 0 ) {
                             CompoundTag replace = block.getCompound("nbt")
                                     .getCompound("Item");
@@ -193,8 +181,6 @@ public class NbtFunc {
 
                         for (String key : material.getAllKeys()) {
                             CompoundTag plastic = material.getCompound(key);
-                            Message.FE( "plastic"+ plastic);
-
                             String inside_material = NoQuotes(Objects.requireNonNull(plastic.getCompound("material").get("Name")).toString());
 
 
@@ -212,9 +198,6 @@ public class NbtFunc {
                                                             .get("Count")
                                                             .toString()
                                                             .replaceAll("[b;]", ""));
-                            Message.FE(consumedItem_count);
-                            Message.FE(consumedItem_id);
-                            Message.FE(inside_material);
                             if (!fake_id.contains(consumedItem_id) || consumedItem_count > 1 || consumedItem_count < 0 ) {
                                 CompoundTag replace = plastic.getCompound("consumedItem");
                                 replace.put("id",TagString("minecraft:air"));
@@ -223,9 +206,6 @@ public class NbtFunc {
                                 Message.FE("CopyCats not match");
                                 Cheat = true;
                             }
-
-
-
                         }
                         fake_id.removeIf("minecraft:air"::equals);
                         if (hasDuplicate(fake_id)){
@@ -233,13 +213,7 @@ public class NbtFunc {
                             Cheat = true;
                         }
                     }
-
-
                 }
-
-
-
-
                 if (block.size() >2){
                     blockResult = BaseBlockHandle(block, "block", palette, i);
                     block = S_tag(blockResult.get("Data"));
@@ -264,7 +238,6 @@ public class NbtFunc {
                         BeltMismatch = true;
                         BeltCountMismatch++;
                         MismatchController.add(item[0].toString());
-                        //Message.FE("BeltMismatch Controller: " + item[0] + " | Length: " + item[1] + " | Index: " + item[2] + " | Count: " + item[3]);
                     }
                 }
             }
@@ -275,15 +248,12 @@ public class NbtFunc {
             //belt mismatch fix
             if (remove_belt_instead_kill) {
                 if (BeltMismatch) {
-                    //Message.FE("BeltMismatch fix");
                     for (int i = 0; i < blocks.size(); i++) {
-                        //Message.FE("BeltMismatch Controller: " + blocks.get(i).toString());
                         CompoundTag block = blocks.getCompound(i);
                         String id = BlockGetId(block, palette);
                         //belt matcher
                         if (id.equals("create:belt")) {
                             String Controller = String.valueOf(block.getCompound("nbt").getCompound("Controller"));
-                            //Message.FE(Controller);
                             if (MismatchController.contains(Controller)) {
                                 blocks.remove(i);
                                 i -= 1;
@@ -297,11 +267,8 @@ public class NbtFunc {
             //conveyor mismatch
             List<String> mismatch_conveyor_controller = new ArrayList<>(List.of());
             List<String> mismatch_conveyor_destination = new ArrayList<>(List.of());
-            Message.FE("conveyor mismatch check");
             for (int i = 0; i < Location.size(); i++) {
-                Message.FE(Arrays.toString(Location.get(i)) +"|");
                 for (int[] item : Destination.get(i)) {
-
                     //45 angle check
                     if (Math.max(Math.abs(item[0]),Math.abs(item[2])-2) < Math.abs(item[1]) ) {
                         Cheat = true;
@@ -324,7 +291,6 @@ public class NbtFunc {
                     item[1] = item[1] + Location.get(i)[1];
                     item[2] = item[2] + Location.get(i)[2];
 
-                    Message.FE( "|+" +Arrays.toString(item) );
                     boolean pos_match = false;
                     for (int[]Pos : Location){
                         if ((Arrays.equals(item, Pos))) {
@@ -333,7 +299,6 @@ public class NbtFunc {
                         }
                     }
                     if (!pos_match) {
-                        Message.FE("Not Match!");
                         mismatch_conveyor_controller.add(Arrays.toString(Location.get(i)));
                         item[0] = item[0] - Location.get(i)[0];
                         item[1] = item[1] - Location.get(i)[1];
@@ -348,39 +313,19 @@ public class NbtFunc {
             if (mismatch_conveyor_controller.size()>  10){
                 Cheat  = true;
             }
-            for (String roller:mismatch_conveyor_controller ){
-                Message.FE("roller"+roller);
-            }
             //conveyor fix
             if (!mismatch_conveyor_controller.isEmpty()){
-                Message.FE("conveyor fix");
                 for (int i = 0; i < blocks.size(); i++) {
-                    Message.FE("conveyor Mismatch Controller: " + blocks.get(i).toString());
                     CompoundTag block = blocks.getCompound(i);
                     String id = BlockGetId(block, palette);
                     //belt matcher
                     if (id.equals("create:chain_conveyor")) {
                         String Pos = Arrays.toString(StringPickPos(String.valueOf(block.get("pos"))));
-                        for (int index = 0; index < mismatch_conveyor_controller.size(); index++) {
-                            if (mismatch_conveyor_controller.get(index).equals(Pos)){
+                        for (String s : mismatch_conveyor_controller) {
+                            if (s.equals(Pos)) {
 
-                                Message.FE("problem: "+Pos);
                                 ListTag Connections = (ListTag) block.getCompound("nbt").get("Connections");
-                                if (Connections != null) {
-                                    Message.FE("Connections: "+ Connections);
-                                }
-
-                                Message.FE("Pick"+ mismatch_conveyor_destination.get(index));
                                 for (int index2 = 0; index2 < mismatch_conveyor_destination.size(); index2++) {
-
-                                    String Connection =
-                                            Arrays.toString(
-                                                    StringPickPos(
-                                                            mismatch_conveyor_destination
-                                                                    .get(index2)
-                                                                    .toString()
-                                                                    .replaceAll("[I;]", "")));
-                                    Message.FE("inside Connections"+ Connection);
                                     Connections.remove(index2);
                                     index2 -= 1;
                                 }
@@ -391,10 +336,6 @@ public class NbtFunc {
             }
 
             //Crafter Mismatch Check
-            for (int[] crafterPo : CrafterPos) {
-                Message.FE("Crafter Pos ADD: " + Arrays.toString(crafterPo));
-            }
-
             CrafterPos.addAll(CrafterPosFlow); //add these to end
 
             List<int[]> CrafterPosBack = new ArrayList<>();
@@ -403,18 +344,12 @@ public class NbtFunc {
                 CrafterPosBack.add(newArr);
             }
 
-            for (int[] crafterPo : CrafterPosBack) {
-                Message.FE("Crafter Pos Back: " + Arrays.toString(crafterPo));
-            }
             try {
                 boolean CraftMisMatch = false;
                 if (!CrafterPos.isEmpty()) {
                     for (int index = 0; index < IsCraftController.size(); index++) {
 
-                        Message.FE("Pos:" + Arrays.toString(CrafterPos.get(index)) + "|" + IsCraftController.get(index) + "|" + CrafterBlocks.get(index));
                         int[] CorePos = CrafterPos.get(index);
-
-
                         List<int[]> bird_finder = new ArrayList<>();
 
 
@@ -435,40 +370,24 @@ public class NbtFunc {
                                 MatchBlockPos[1] = CorePos[1] + DesBlockPos[1];
                                 MatchBlockPos[2] = CorePos[2] + DesBlockPos[2];
 
-                                Message.FE("Destination:" + Arrays.toString(MatchBlockPos));
                                 boolean PosMisMatch = false;
                                 for (int index5 = 0; index5 < CrafterPosBack.size(); index5++) {
-                                    Message.FE("matching:" + Arrays.toString(CrafterPosBack.get(index5)));
-                                    Message.FD("current name" );
-                                    for (int[] tag :CrafterPosBack){
-                                        Message.FD("current: " + Arrays.toString(tag));
-                                    }
                                     if (Arrays.equals(CrafterPosBack.get(index5), MatchBlockPos)) {
-
-                                        Message.FE("found");
                                         PosMisMatch = false;
                                         CrafterPosBack.remove(index5);
                                         break;
                                     }
                                     PosMisMatch = true;
-                                    Message.FE("not found" + Arrays.toString(CorePos));
                                 }
-
-
-                                Message.FE("CraftMisMatch:  " + CraftMisMatch + "PosMisMatch   " + PosMisMatch);
-
                                 if (PosMisMatch) {
                                     CraftMisMatch = true;
                                 }
-                                Message.FE("CraftMisMatch:  " + CraftMisMatch + "PosMisMatch   " + PosMisMatch);
                             }
                         }
 
 
                         if (IsCraftController.get(index) == 1) {
                             boolean Attach;
-                            for (int[] birdPos2 : bird_finder) {
-                                Message.FE("Attaching:" + Arrays.toString(birdPos2));}
                             for (int[] birdPos : bird_finder) {
                                 Attach = false;
                                 for (int[] birdIndex : bird_finder) {
@@ -482,13 +401,10 @@ public class NbtFunc {
                                 }
                                 if (!Attach) {
                                     CraftMisMatch = true;
-                                    Message.FE("NotAttach:  " + CraftMisMatch);
                                 }
                             }
                         }
-
                     }
-                    Message.FE("count  "+ CrafterPosBack.size());
                     if (!CrafterPosBack.isEmpty())
                         CraftMisMatch = true;
 
@@ -592,7 +508,6 @@ public class NbtFunc {
 
                     if (EntityId.equals("create:super_glue")){
 
-                        Message.FE("Super Glue");
                         float[] From = StringPickHalfPos(data
                                 .getCompound("nbt")
                                 .get("From")
@@ -626,11 +541,10 @@ public class NbtFunc {
 
         if (HasBanTag(data.toString())) {
             Message.FM("Find Tag in " + data);
-            //Cheat = true;
+            IsMatch = false;
         }
 
         if (HasBanBlock(data.toString())) {
-            //Message.FM("Find Blacklist Block in " + data);
             HasBanBlock = true;
         }
 
@@ -649,7 +563,7 @@ public class NbtFunc {
 
         if (type.equals("block")) {
             String id = BlockGetId(data,PaletteBlockData);
-            if (DEBUG_ID) {Message.FE("ID: " + id);}
+            if (TEST_DEBUG_ID) {Message.FE("ID: " + id);}
             blockCounts.put(id, blockCounts.getOrDefault(id, 0) + 1);
 
 
@@ -657,16 +571,7 @@ public class NbtFunc {
                 MapData = ClearBanBlock(data,"block",sequence,PaletteBlockData);
                 data = S_tag(MapData.get("Data"));
                 IsMatch = S_bool(MapData.get("IsMatch")) && IsMatch;
-                //Message.FE(data);
             }
-
-
-
-
-            //Message.FP("create:clipboard".equals(BlockGetId(data)));
-            Cheat = false;
-
-
         }
 
         if (type.equals("palette")) {
@@ -674,15 +579,12 @@ public class NbtFunc {
                 MapData = ClearBanBlock(data,"palette",sequence,PaletteBlockData);
                 data = S_tag(MapData.get("Data"));
                 IsMatch = S_bool(MapData.get("IsMatch")) && IsMatch;
-                Message.FE(data);
             }
-            Cheat = false;
-
         }
 
 
 
-        if (Cheat) {
+        if (!IsMatch) {
             data = new CompoundTag();
         }
 

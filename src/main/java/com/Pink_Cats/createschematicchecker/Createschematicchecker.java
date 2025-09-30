@@ -1,6 +1,6 @@
 package com.Pink_Cats.createschematicchecker;
 import com.Pink_Cats.createschematicchecker.FancyConfig.ConfigRegister;
-import com.Pink_Cats.createschematicchecker.core.NbtInterFace;
+import com.Pink_Cats.createschematicchecker.core.BlueEngine.NbtInterFace;
 import com.Pink_Cats.createschematicchecker.lang.Message;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
@@ -54,9 +54,6 @@ public class Createschematicchecker {
         MinecraftForge.EVENT_BUS.register(new CheckBlueprint(shifter));//注册蓝图上传事件的监听器
 
 
-
-
-
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {
@@ -92,8 +89,8 @@ public class Createschematicchecker {
 
         Message.FM("   _____  _____  _____ ");
         Message.FM("  / ____|/ ____|/ ____|");
-        Message.FM(" | |    | (___ | |     "+"   "+ "CSC version: 0.21");
-        Message.FM(" | |     \\___ \\| |     "+"   "+ "Minecraft version: 1.20.1");
+        Message.FM(" | |    | (___ | |     "+"   "+ translateDirect("console.CscVersion"));
+        Message.FM(" | |     \\___ \\| |     "+"   "+ translateDirect("console.McVersion"));
         Message.FM(" | |____ ____) | |____ "+"   "+ translateDirect( "console.feedback"));
         Message.FM("  \\_____|_____/ \\_____|");
         Message.FM("                       ");

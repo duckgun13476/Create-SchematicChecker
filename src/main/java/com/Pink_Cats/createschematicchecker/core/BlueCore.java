@@ -1,5 +1,6 @@
 package com.Pink_Cats.createschematicchecker.core;
 
+import com.Pink_Cats.createschematicchecker.core.BlueEngine.NbtFunc;
 import com.Pink_Cats.createschematicchecker.lang.Message;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtIo;
@@ -12,9 +13,8 @@ import java.util.Map;
 
 import static com.Pink_Cats.createschematicchecker.FancyConfig.ConfigRegister.enable_backup;
 import static com.Pink_Cats.createschematicchecker.FancyConfig.FileIO.createIfNotExists;
-import static com.Pink_Cats.createschematicchecker.FancyConfig.FileIO.listFilesInDirectory;
-import static com.Pink_Cats.createschematicchecker.core.NbtInterFace.S_tag;
-import static com.Pink_Cats.createschematicchecker.core.StrFunc.getCurrentDateTime;
+import static com.Pink_Cats.createschematicchecker.core.BlueEngine.NbtInterFace.S_tag;
+import static com.Pink_Cats.createschematicchecker.core.BlueEngine.StrFunc.getCurrentDateTime;
 
 public class BlueCore {
 
@@ -28,18 +28,22 @@ public class BlueCore {
         Message.FD("Path:"+path);
         try {
             CompoundTag nbt_data = Path_to_CompoundTag(path);
-
+            String User = blueprintId.split("/")[0];
+            String Blueprint = blueprintId.split("/")[1];
             //SchematicOutput(nbt_data);
+            if (enable_backup)
+            {CompoundTag_to_Path(nbt_data, "config/CSC/backup/"+User+"/",getCurrentDateTime()+Blueprint);}
 
             Map<String,Object> result = MainCheck.NBTCheck(nbt_data);
 
-            String User = blueprintId.split("/")[0];
-            String Blueprint = blueprintId.split("/")[1];
+
 
 
             //SchematicOutput(S_tag(result.get("nbt_data")));
-            if (enable_backup)
-            {CompoundTag_to_Path(S_tag(result.get("nbt_data")), "config/CSC/backup/"+User+"/",getCurrentDateTime()+Blueprint);}
+
+            CompoundTag_to_Path(S_tag(result.get("nbt_data")), DefaultPath+User+"/",Blueprint);
+
+
 
             return result;
 
@@ -65,11 +69,6 @@ public class BlueCore {
 
 
     public void CompoundTag_to_Path(CompoundTag compoundTag, String outputPath,String file) throws IOException {
-        String currentDirectory = System.getProperty("user.dir");
-        System.out.println("Current directory: " + currentDirectory);
-        listFilesInDirectory(currentDirectory);
-
-
         createIfNotExists(outputPath);
         File outputFile = new File(outputPath,file);
         FileOutputStream fileOutputStream = new FileOutputStream(outputFile);

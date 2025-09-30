@@ -1,4 +1,4 @@
-package com.Pink_Cats.createschematicchecker.core;
+package com.Pink_Cats.createschematicchecker.core.ChainEngine;
 
 import com.Pink_Cats.createschematicchecker.lang.Message;
 import net.minecraft.nbt.CompoundTag;
@@ -9,10 +9,10 @@ import java.util.*;
 import static com.Pink_Cats.createschematicchecker.FancyConfig.ConfigRegister.ban_block;
 import static com.Pink_Cats.createschematicchecker.FancyConfig.ConfigValue.ChainSplit;
 import static com.Pink_Cats.createschematicchecker.FancyConfig.ConfigValue.KnifeSplit;
-import static com.Pink_Cats.createschematicchecker.core.BlockSweeper.Clear$;
-import static com.Pink_Cats.createschematicchecker.core.BlockSweeper.CountToClear;
-import static com.Pink_Cats.createschematicchecker.core.FilterInterface.SweeperIfHasId;
-import static com.Pink_Cats.createschematicchecker.core.NbtInterFace.*;
+import static com.Pink_Cats.createschematicchecker.core.BlueEngine.BlockSweeper.Clear$;
+import static com.Pink_Cats.createschematicchecker.core.BlueEngine.BlockSweeper.CountToClear;
+import static com.Pink_Cats.createschematicchecker.core.BlueEngine.FilterInterface.SweeperIfHasId;
+import static com.Pink_Cats.createschematicchecker.core.BlueEngine.NbtInterFace.*;
 
 public class MagicChain {
 
@@ -124,14 +124,14 @@ public class MagicChain {
                             System.arraycopy(Chain, i+1, ListChain, 0, Chain.length - i-1);
                             //Message.FM("ListChain"+ Arrays.toString(ListChain));
 
-                            Message.FM("before_list"+CompoundTagItem);
+                            //Message.FM("before_list"+CompoundTagItem);
 
                             ListTag ordered_stack_list = CompoundTagItem.getList(Chain[i], 10);
 
 
 
 
-                            Message.FM("ordered_stack_list"+ordered_stack_list);
+                            //Message.FM("ordered_stack_list"+ordered_stack_list);
 
                             ArrayList<Object> EntryList = new ArrayList<>();
                             for (int j = 0; j < ordered_stack_list.size(); j++) {
@@ -139,7 +139,7 @@ public class MagicChain {
                                 CompoundTag entity = ordered_stack_list.getCompound(j);
 
                                 EntryList.add(entity);
-                                Message.FM("entity"+entity);
+                                //Message.FM("entity"+entity);
                             }
                             //Message.FM("EntryList"+EntryList);
                             ResultList = MagicEngine(EntryList,ListChain);

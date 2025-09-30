@@ -1,12 +1,12 @@
-package com.Pink_Cats.createschematicchecker.core;
+package com.Pink_Cats.createschematicchecker.core.BlueEngine;
 
 import com.Pink_Cats.createschematicchecker.lang.Message;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 
-import static com.Pink_Cats.createschematicchecker.core.BlockSweeper.Clear;
-import static com.Pink_Cats.createschematicchecker.core.StrFunc.TagMapId;
-import static com.Pink_Cats.createschematicchecker.core.StrFunc.isInBanBlock;
+import static com.Pink_Cats.createschematicchecker.core.BlueEngine.BlockSweeper.Clear;
+import static com.Pink_Cats.createschematicchecker.core.BlueEngine.StrFunc.TagMapId;
+import static com.Pink_Cats.createschematicchecker.core.BlueEngine.StrFunc.isInBanBlock;
 
 public class FilterInterface {
 

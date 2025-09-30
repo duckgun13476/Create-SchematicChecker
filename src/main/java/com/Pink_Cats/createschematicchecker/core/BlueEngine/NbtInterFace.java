@@ -1,11 +1,11 @@
-package com.Pink_Cats.createschematicchecker.core;
+package com.Pink_Cats.createschematicchecker.core.BlueEngine;
 
 import com.Pink_Cats.createschematicchecker.lang.Message;
 import net.minecraft.nbt.*;
 
 import java.util.ArrayList;
 
-import static com.Pink_Cats.createschematicchecker.core.StrFunc.NoQuotes;
+import static com.Pink_Cats.createschematicchecker.core.BlueEngine.StrFunc.NoQuotes;
 
 public class NbtInterFace {
 

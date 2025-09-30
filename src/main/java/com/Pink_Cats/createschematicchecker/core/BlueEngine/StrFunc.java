@@ -1,4 +1,4 @@
-package com.Pink_Cats.createschematicchecker.core;
+package com.Pink_Cats.createschematicchecker.core.BlueEngine;
 
 import com.Pink_Cats.createschematicchecker.lang.Message;
 import net.minecraft.nbt.CompoundTag;
@@ -12,7 +12,7 @@ import java.util.Objects;
 import java.util.Set;
 
 import static com.Pink_Cats.createschematicchecker.FancyConfig.ConfigRegister.*;
-import static com.Pink_Cats.createschematicchecker.core.NbtInterFace.StrTag;
+import static com.Pink_Cats.createschematicchecker.core.BlueEngine.NbtInterFace.StrTag;
 
 public class StrFunc {
 

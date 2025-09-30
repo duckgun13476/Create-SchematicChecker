@@ -1,8 +1,8 @@
-package com.Pink_Cats.createschematicchecker.core;
+package com.Pink_Cats.createschematicchecker.core.ChainEngine;
 
 import static com.Pink_Cats.createschematicchecker.FancyConfig.ConfigValue.processArrayString;
-import static com.Pink_Cats.createschematicchecker.core.NbtInterFace.StringToFloat;
-import static com.Pink_Cats.createschematicchecker.core.NbtInterFace.StringToInt;
+import static com.Pink_Cats.createschematicchecker.core.BlueEngine.NbtInterFace.StringToFloat;
+import static com.Pink_Cats.createschematicchecker.core.BlueEngine.NbtInterFace.StringToInt;
 
 public class ConveyorInterface {
 
