@@ -2,24 +2,16 @@ package com.Pink_Cats.createschematicchecker;
 import com.Pink_Cats.createschematicchecker.FancyConfig.ConfigRegister;
 import com.Pink_Cats.createschematicchecker.core.BlueEngine.NbtInterFace;
 import com.Pink_Cats.createschematicchecker.lang.Message;
-import com.mojang.brigadier.Command;
-import com.mojang.brigadier.CommandDispatcher;
 import com.simibubi.create.infrastructure.config.AllConfigs;
 import com.simibubi.create.infrastructure.config.CKinetics;
 import com.simibubi.create.infrastructure.config.CSchematics;
-import net.minecraft.ChatFormatting;
 import com.Pink_Cats.createschematicchecker.core.BlueCore;
 import com.Pink_Cats.createschematicchecker.event.CheckBlueprint;
 import com.mojang.logging.LogUtils;
-import net.minecraft.commands.CommandSourceStack;
-import net.minecraft.commands.Commands;
-import net.minecraft.network.chat.ClickEvent;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.Style;
-import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
+import net.minecraftforge.event.server.ServerStoppingEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -28,6 +20,11 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.slf4j.Logger;
 
+import java.util.List;
+
+import static com.Pink_Cats.createschematicchecker.database.SingleLog.CSC_MES;
+import static com.Pink_Cats.createschematicchecker.database.SingleLog.CSC_WARN;
+import static com.Pink_Cats.createschematicchecker.echo.Commands.RegisterCSCCommand;
 import static com.Pink_Cats.createschematicchecker.lang.CSCLanguage.translateDirect;
 import static com.Pink_Cats.createschematicchecker.FancyConfig.ConfigRegister.*;
 
@@ -58,6 +55,8 @@ public class Createschematicchecker {
 
     private void commonSetup(final FMLCommonSetupEvent event) {
         Message.FM(translateDirect("console.LoadingConfig"));
+        List<String> log = List.of();
+        CSC_INIT(log);
     }
 
     public CSchematics CreateSchematicConfig() {
@@ -98,6 +97,20 @@ public class Createschematicchecker {
     }
 
     @SubscribeEvent
+    public void onServerStopping(ServerStoppingEvent event) {
+
+        CSC_MES.close();
+        CSC_WARN.close();
+        Message.FM(translateDirect("console.csc.StopServer"));
+
+
+    }
+
+
+
+
+
+    @SubscribeEvent
     public static void onReload(ModConfigEvent.Reloading event) {
         try {
             CSC_RELOAD();
@@ -106,61 +119,11 @@ public class Createschematicchecker {
         }
     }
 
-
     @SubscribeEvent
     public void onCommandRegister(RegisterCommandsEvent event) {
-        CommandDispatcher<CommandSourceStack> dispatcher = event.getDispatcher();
-        dispatcher.register(
-                Commands.literal("csc")
-                        .executes(context ->  {
-                                    Player player = context.getSource().getPlayer();
-                                    if (player != null) {
-                                        Component message = Component.literal("Hello, welcome to use CSC for Create!")
-                                                .setStyle(Style.EMPTY
-                                                        .withColor(ChatFormatting.GREEN)
-                                                        .withClickEvent(new ClickEvent(
-                                                                ClickEvent.Action.OPEN_URL,
-                                                                "https://mcg.tuanzi.ink/"
-                                                        )));
-                                        player.sendSystemMessage(message);
-                                        Component url = Component.literal("Hello, welcome to use CSC for Create! ")
-                                                .setStyle(Style.EMPTY
-                                                        .withColor(ChatFormatting.GREEN)
-                                                        .withClickEvent(new ClickEvent(
-                                                                ClickEvent.Action.OPEN_URL,
-                                                                "https://mcg.tuanzi.ink/"
-                                                        )));
-                                        player.sendSystemMessage(url);
-                                    }
-                                    return Command.SINGLE_SUCCESS;
-                                }
-                        )
-
-                        .then(Commands.literal("reload")
-                                .executes(context -> {
-                                    Player player = context.getSource().getPlayer();
-                                    try {
-                                        CSC_RELOAD();
-                                    }catch (Exception ex){
-                                        ex.printStackTrace();
-                                    }
-
-
-                                    Component message = Component.literal(translateDirect("console.ReloadSuccess"))
-                                            .setStyle(Style.EMPTY
-                                                    .withColor(ChatFormatting.GOLD)
-                                                    );
-                                    player.sendSystemMessage(message);
-                                    return Command.SINGLE_SUCCESS;
-                                }
-                        ))
-
-        );
+        RegisterCSCCommand(event);
 
     }
-
-
-
 
 
 

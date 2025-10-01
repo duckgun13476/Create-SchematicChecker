@@ -3,8 +3,12 @@ package com.Pink_Cats.createschematicchecker.FancyConfig;
 
 import com.Pink_Cats.createschematicchecker.lang.Message;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static com.Pink_Cats.createschematicchecker.FancyConfig.FileIO.createIfNotExists;
 import static com.Pink_Cats.createschematicchecker.lang.CSCLanguage.translateDirect;
+import static com.Pink_Cats.createschematicchecker.network.SimpleJsonParser.UpdateRuleThread;
 
 public class ConfigRegister {
 
@@ -103,6 +107,11 @@ public class ConfigRegister {
             .comment(CommitBreak)
             .comment("config.DebugTotalBlock");
 
+    public static ConfigValue.ConfigBoolean DEBUG_CHEAT_FIND = ConfigBuild
+            .define("debug.DebugCheatFind", true)
+            .comment(CommitBreak)
+            .comment("config.DebugCheatFind");
+
     public static ConfigValue.ConfigBoolean ENABLE_SCHEMATIC_BACKUP = ConfigBuild
             .define("debug.EnableBackup", true)
             .comment(CommitBreak)
@@ -123,6 +132,50 @@ public class ConfigRegister {
             .comment("config.TryRemoveBeltNotKill")
             .comment("config.TryRemoveBeltNotKill2");
 
+    public static ConfigValue.ConfigInt MAX_BELT_CHEAT_LIMIT = ConfigBuild
+            .define("function.maxBeltCheatLimit", 10)
+            .comment(CommitBreak)
+            .comment("config.maxBeltCheatLimit")
+            .comment("config.maxBeltCheatLimit2");
+
+
+    public static ConfigValue.ConfigInt MAX_CONVEYOR_CHEAT_DISTANCE_LIMIT = ConfigBuild
+            .define("function.maxConveyorCheatDistanceLimit", 50)
+            .comment(CommitBreak)
+            .comment("config.maxConveyorCheatDistanceLimit")
+            .comment("config.maxConveyorCheatDistanceLimit2");
+
+
+    public static ConfigValue.ConfigInt MAX_CONVEYOR_CHEAT_LIMIT = ConfigBuild
+            .define("function.maxConveyorCheatLimit", 10)
+            .comment(CommitBreak)
+            .comment("config.maxConveyorCheatLimit")
+            .comment("config.maxConveyorCheatLimit2");
+
+
+
+
+    public static ConfigValue.ConfigBoolean ENABLE_AUTO_UPDATE = ConfigBuild
+            .define("online.enableAutoUpdate", false)
+            .comment(CommitBreak)
+            .comment("config.online.enableAutoUpdate1")
+            .comment("config.online.enableAutoUpdate2")
+            .comment("config.online.enableAutoUpdate3")
+            .comment("config.online.enableAutoUpdate4")
+            .comment("config.online.enableAutoUpdate5");
+
+    public static ConfigValue.ConfigBoolean ENABLE_MANUAL_CONFIG= ConfigBuild
+            .define("online.enableManualConfig", false)
+            .comment(CommitBreak)
+            .comment("config.online.enableManualConfig1")
+            .comment("config.online.enableManualConfig2")
+            .comment("config.online.enableManualConfig3")
+            .comment("config.online.enableManualConfig4")
+            .comment("config.online.enableManualConfig5")
+            .comment("config.online.enableManualConfig6")
+            .comment("config.online.enableManualConfig7")
+            .comment("config.online.enableManualConfig8");
+
     public static String language = LANGUAGE.getDefaultValue();
     public static String user_uuid = UUID.getDefaultValue();
     public static boolean enable_csc = ENABLE.getDefaultValue();
@@ -135,6 +188,23 @@ public class ConfigRegister {
     public static String[] ban_entity = BAN_ENTITY.getDefaultValue();
     public static String[] whitelist_entity = WHITELIST_ENTITY.getDefaultValue();
     public static boolean enable_backup = ENABLE_SCHEMATIC_BACKUP.getDefaultValue();
+    public static boolean enable_auto_config_update = ENABLE_AUTO_UPDATE.getDefaultValue();
+    public static boolean enable_manual_config = ENABLE_MANUAL_CONFIG.getDefaultValue();
+    public static int maxBeltCheatLimit =  MAX_BELT_CHEAT_LIMIT.getDefaultValue();
+    public static int maxConveyorCheatLimit =   MAX_CONVEYOR_CHEAT_LIMIT.getDefaultValue();
+    public static int maxConveyorCheatDistanceLimit = MAX_CONVEYOR_CHEAT_DISTANCE_LIMIT.getDefaultValue();
+    public static boolean DebugCheatFind = DEBUG_CHEAT_FIND.getDefaultValue();
+
+
+    public static String[][] ID_match_rule;
+    public static String[][] Operate_match_rule;
+
+    public static String[][] Operate_modify_rule_local;
+    public static String[][] ID_modify_rule_local;
+    public static String[][] Operate_modify_rule_online;
+    public static String[][] ID_modify_rule_online;
+    public static String[][] Operate_modify_rule_manual;
+    public static String[][] ID_modify_rule_manual;
 
 
     public static String CannonDelay = "10";
@@ -144,7 +214,11 @@ public class ConfigRegister {
     public static String MaxChassisRange = "16";
 
 
-    public static void CSC_INIT() {
+    public static List<String> CSC_INIT(List<String> log) {
+        DebugCheatFind = DEBUG_CHEAT_FIND.getDefaultValue();
+        maxConveyorCheatDistanceLimit = MAX_CONVEYOR_CHEAT_DISTANCE_LIMIT.getDefaultValue();
+        maxConveyorCheatLimit = MAX_CONVEYOR_CHEAT_LIMIT.getDefaultValue();
+        maxBeltCheatLimit = MAX_BELT_CHEAT_LIMIT.getDefaultValue();
         language = LANGUAGE.getDefaultValue();
         user_uuid = UUID.getDefaultValue();
         enable_csc = ENABLE.getDefaultValue();
@@ -157,12 +231,21 @@ public class ConfigRegister {
         whitelist_entity = WHITELIST_ENTITY.getDefaultValue();
         ban_entity = BAN_ENTITY.getDefaultValue();
         enable_backup = ENABLE_SCHEMATIC_BACKUP.getDefaultValue();
+        enable_auto_config_update = ENABLE_AUTO_UPDATE.getDefaultValue();
+        enable_manual_config = ENABLE_MANUAL_CONFIG.getDefaultValue();
+        UpdateRuleThread(log);
+        return log;
     }
 
 
-    public static  void CSC_RELOAD() {
+    public static List<String> CSC_RELOAD() {
         Message.FM(translateDirect("console.reload1"));
-
+        List<String> list = new ArrayList<String>();
+        DEBUG_CHEAT_FIND.reload();
+        MAX_CONVEYOR_CHEAT_DISTANCE_LIMIT.reload();
+        MAX_CONVEYOR_CHEAT_LIMIT.reload();
+        MAX_BELT_CHEAT_LIMIT.reload();
+        LANGUAGE.reload();
         UUID.reload();
         ENABLE.reload();
         BAN_BLOCK.reload();
@@ -174,9 +257,11 @@ public class ConfigRegister {
         WHITELIST_ENTITY.reload();
         BAN_ENTITY.reload();
         ENABLE_SCHEMATIC_BACKUP.reload();
-        CSC_INIT();
-
+        ENABLE_AUTO_UPDATE.reload();
+        ENABLE_MANUAL_CONFIG.reload();
+        CSC_INIT(list);
         Message.FM(translateDirect("console.reload2"));
+        return list;
     }
 
 

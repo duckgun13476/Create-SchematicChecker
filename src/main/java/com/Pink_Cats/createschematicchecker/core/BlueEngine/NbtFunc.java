@@ -12,6 +12,7 @@ import static com.Pink_Cats.createschematicchecker.core.ChainEngine.ConveyorInte
 import static com.Pink_Cats.createschematicchecker.core.BlueEngine.NbtInterFace.*;
 import static com.Pink_Cats.createschematicchecker.core.BlueEngine.StrFunc.*;
 import static com.Pink_Cats.createschematicchecker.core.BlueEngine.TagFunc.BlockGetId;
+import static com.Pink_Cats.createschematicchecker.lang.CSCLanguage.translateDirect;
 import static com.mojang.text2speech.Narrator.LOGGER;
 
 public class NbtFunc {
@@ -20,7 +21,7 @@ public class NbtFunc {
 
 
 
-    public Map<String, Object> NBTCheck(CompoundTag nbt_data)//校验 NBT
+    public Map<String, Object> NBTCheck(CompoundTag nbt_data,List<String> CheatLog)//校验 NBT
     {
         Map<String, Object> result = new HashMap<>();
         Map<String, Object> paletteItemResult;
@@ -28,6 +29,7 @@ public class NbtFunc {
         Map<String, Object> entityResult;
 
         boolean Cheat = false;
+        boolean Problem = false;
         //PinkCats Inject
         try {
 
@@ -37,7 +39,7 @@ public class NbtFunc {
             ListTag palette = nbt_data.getList("palette", 10); // 10 表示 CompoundTag 类型
             for (int i = 0; i < palette.size(); i++) {
                 CompoundTag paletteItem = palette.getCompound(i);
-                paletteItemResult = BaseBlockHandle(paletteItem, "palette", palette, i);
+                paletteItemResult = BaseBlockHandle(paletteItem, "palette", palette, i,CheatLog);
                 paletteItem = S_tag(paletteItemResult.get("Data"));
                 Cheat = S_bool(paletteItemResult.get("Cheat")) || Cheat;
                 if (paletteItem != null) {
@@ -172,7 +174,7 @@ public class NbtFunc {
                             CompoundTag replace2 =  block.getCompound("nbt").getCompound("Material");
                             replace2.put("Name",TagString("minecraft:air"));
 
-                            Message.FE("CopyCats not match");
+                            CheatLog.add(translateDirect("console.cheat.copycats") +"["+consumedItem_count+"|1]["+consumedItem_id+"|"+inside_material+"]");
                             Cheat = true;
                         }
 
@@ -203,19 +205,20 @@ public class NbtFunc {
                                 replace.put("id",TagString("minecraft:air"));
                                 CompoundTag replace2 = plastic.getCompound("material");
                                 replace2.put("Name",TagString("minecraft:air"));
-                                Message.FE("CopyCats not match");
+
+                                CheatLog.add(translateDirect("console.cheat.copycats") +"["+consumedItem_count+"|1]["+consumedItem_id+"|"+inside_material+"]");
                                 Cheat = true;
                             }
                         }
                         fake_id.removeIf("minecraft:air"::equals);
                         if (hasDuplicate(fake_id)){
-                            Message.FE("Duplicate not legal!");
+                            CheatLog.add(translateDirect("console.cheat.copycats.count"));
                             Cheat = true;
                         }
                     }
                 }
                 if (block.size() >2){
-                    blockResult = BaseBlockHandle(block, "block", palette, i);
+                    blockResult = BaseBlockHandle(block, "block", palette, i,CheatLog);
                     block = S_tag(blockResult.get("Data"));
                     Cheat = S_bool(blockResult.get("Cheat")) || Cheat;
                 }
@@ -241,7 +244,9 @@ public class NbtFunc {
                     }
                 }
             }
-            if (BeltCountMismatch>5){
+            if (BeltCountMismatch>maxBeltCheatLimit){
+
+                CheatLog.add(translateDirect("console.cheat.belt.count") +"["+maxBeltCheatLimit+"|"+BeltCountMismatch+"]");
                 Cheat = true;
             }
 
@@ -261,6 +266,13 @@ public class NbtFunc {
                         }
                     }
                 }
+            } else {
+                if (BeltMismatch) {
+
+                    CheatLog.add(translateDirect("console.cheat.belt.mismatch"));
+                    Cheat = true;
+                }
+
             }
 
 
@@ -272,18 +284,19 @@ public class NbtFunc {
                     //45 angle check
                     if (Math.max(Math.abs(item[0]),Math.abs(item[2])-2) < Math.abs(item[1]) ) {
                         Cheat = true;
-                        Message.FE("Angle Cheat!");
+                        CheatLog.add(translateDirect("console.cheat.conveyor.angle"));
                     }
-                    if (
+                    int Length = Math.max(
                             Math.max(
-                                    Math.max(
-                                            Math.abs(item[0]),
-                                            Math.abs(item[2])
-                                    ),Math.abs(item[1])
-                            ) > 50 ) {
+                                    Math.abs(item[0]),
+                                    Math.abs(item[2])
+                            ),Math.abs(item[1])
+                    );
+
+                    if (Length > maxConveyorCheatDistanceLimit ) {
 
                         Cheat = true;
-                        Message.FE("Distance Cheat!");
+                        CheatLog.add(translateDirect("console.cheat.conveyor.distance")+"["+Length+"|"+maxConveyorCheatDistanceLimit+"]");
                     }
 
 
@@ -310,7 +323,9 @@ public class NbtFunc {
 
             }
 
-            if (mismatch_conveyor_controller.size()>  10){
+            if (mismatch_conveyor_controller.size()>  maxConveyorCheatLimit){
+
+                CheatLog.add(translateDirect("console.cheat.conveyor.limit")+"["+mismatch_conveyor_controller.size()+"|"+maxConveyorCheatLimit+"]");
                 Cheat  = true;
             }
             //conveyor fix
@@ -401,15 +416,19 @@ public class NbtFunc {
                                 }
                                 if (!Attach) {
                                     CraftMisMatch = true;
+                                    CheatLog.add(translateDirect("console.cheat.crafter.attach"));
+
                                 }
                             }
                         }
                     }
-                    if (!CrafterPosBack.isEmpty())
+                    if (!CrafterPosBack.isEmpty()){
                         CraftMisMatch = true;
+                        CheatLog.add(translateDirect("console.cheat.crafter.mismatch"));
+                    }
+
 
                     if (CraftMisMatch) {
-                        Message.FE("CraftMisMatch");
                         Cheat = true;
                     }
 
@@ -422,7 +441,8 @@ public class NbtFunc {
             //FluidTank Mismatch Check
             if (ControllerCount != FindTankCount)
             {
-                Message.FE("FluidTankMismatch: "+ControllerCount + "|" + FindTankCount);
+
+                CheatLog.add(translateDirect("console.cheat.FluidTank.mismatch")+"["+ControllerCount + "|" + FindTankCount+"]");
                 Cheat = true;
             }
 
@@ -436,7 +456,7 @@ public class NbtFunc {
             boolean IsEntityKilled = false;
             for (int i = 0; i < entities.size(); i++) {
                 CompoundTag entity = entities.getCompound(i);
-                entityResult = BaseBlockHandle(entity, "entity", palette, i);
+                entityResult = BaseBlockHandle(entity, "entity", palette, i,CheatLog);
                 Object entityRes = entityResult.get("Data");
                 if (entityRes.toString().equals("{}")) {
                     entity = new CompoundTag();
@@ -473,6 +493,7 @@ public class NbtFunc {
             nbt_data.put("entities", entities);
             // Output Result
             if (debug_total_block) {
+                Message.FP(translateDirect("console.debug.itemDetail"));
                 for (Map.Entry<String, Integer> entry : blockCounts.entrySet()) {
                     Message.FP("ID: " + entry.getKey() + ", Count: " + entry.getValue());
                 }
@@ -485,6 +506,12 @@ public class NbtFunc {
         }
         //Inject limit.
         //Add special matcher here.↑
+        if  (Cheat) {
+            Problem = true;
+        }
+
+
+        result.put("Problem",Problem);
         result.put("nbt_data", nbt_data);
         result.put("Cheat",Cheat);
         return result;
@@ -492,7 +519,7 @@ public class NbtFunc {
 
     Map<String, Integer> blockCounts = new HashMap<>();
 
-    public Map<String,Object> BaseBlockHandle(CompoundTag data,String type,ListTag PaletteBlockData,int sequence) {
+    public Map<String,Object> BaseBlockHandle(CompoundTag data,String type,ListTag PaletteBlockData,int sequence,List<String> CheatLog) {
         boolean Cheat = false;
         boolean HasBanBlock = false;
         boolean IsMatch  = true;

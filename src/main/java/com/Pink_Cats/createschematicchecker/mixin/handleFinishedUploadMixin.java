@@ -1,6 +1,7 @@
 package com.Pink_Cats.createschematicchecker.mixin;
 
 import com.Pink_Cats.createschematicchecker.Createschematicchecker;
+import com.Pink_Cats.createschematicchecker.lang.Message;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.schematics.ServerSchematicLoader;
 import com.simibubi.create.content.schematics.table.SchematicTableBlockEntity;
@@ -17,6 +18,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.Map;
 
+import static com.Pink_Cats.createschematicchecker.lang.CSCLanguage.translateDirect;
 
 
 @Mixin(value = ServerSchematicLoader.class,remap = false)
@@ -41,7 +43,7 @@ public abstract class handleFinishedUploadMixin {
                 Level world = removed.world;
                 BlockPos pos = removed.tablePos;//获取蓝图桌的位置
 
-                Createschematicchecker.LOGGER.info("New Schematic Uploaded: {}", playerSchematicId);
+                Message.FM(translateDirect( "console.newSchematic")+ playerSchematicId);
 
                 if (pos == null)
                     return;

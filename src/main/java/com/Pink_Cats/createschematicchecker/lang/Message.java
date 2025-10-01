@@ -2,6 +2,9 @@ package com.Pink_Cats.createschematicchecker.lang;
 
 import com.Pink_Cats.createschematicchecker.Createschematicchecker;
 
+import static com.Pink_Cats.createschematicchecker.database.SingleLog.CSC_MES;
+import static com.Pink_Cats.createschematicchecker.database.SingleLog.CSC_WARN;
+
 public class Message {
     public static final String RESET = "\u001B[0m";
     public static final String RED = "\u001B[31m";
@@ -13,27 +16,35 @@ public class Message {
     public static final String WHITE = "\u001B[37m";   // 白色
     public static final String BLACK = "\u001B[30m";   // 黑色
 
-
+    public static final String LOGO = "[CSC]";
 
     public static void FD(Object message) {
         String messageString = String.valueOf(message);
-        Createschematicchecker.LOGGER.info(BLUE + "{}" + RESET, messageString);
+        Createschematicchecker.LOGGER.info(CYAN+LOGO+BLUE + "{}" + RESET, messageString);
+        CSC_MES.log("[INFO] "+messageString);
     }
     public static void FW(Object message) {
         String messageString = String.valueOf(message);
-        Createschematicchecker.LOGGER.warn(YELLOW + "{}" + RESET, messageString);
+        Createschematicchecker.LOGGER.warn(CYAN+LOGO+YELLOW + "{}" + RESET, messageString);
+        CSC_MES.log("[WARN] "+messageString);
+        CSC_WARN.log("[WARN] "+messageString);
     }
     public static void FE(Object message) {
         String messageString = String.valueOf(message);
-        Createschematicchecker.LOGGER.error(RED + "{}" + RESET, messageString);
+        Createschematicchecker.LOGGER.error(CYAN+LOGO+RED + "{}" + RESET, messageString);
+        CSC_MES.log("[ERROR] "+messageString);
+        CSC_WARN.log("[ERROR] "+messageString);
     }
     public static void FM(Object message) {
         String messageString = String.valueOf(message);
-        Createschematicchecker.LOGGER.info(GREEN + "{}" + RESET, messageString);
+        Createschematicchecker.LOGGER.info(CYAN+LOGO+GREEN + "{}" + RESET, messageString);
+        CSC_MES.log("[INFO] "+messageString);
     }
     public static void FP(Object message) {
         String messageString = String.valueOf(message);
-        Createschematicchecker.LOGGER.info(MAGENTA + "{}" + RESET, messageString);
+        Createschematicchecker.LOGGER.info(CYAN+LOGO+MAGENTA + "{}" + RESET, messageString);
+        CSC_MES.log("[INFO] "+messageString);
     }
+
 
 }

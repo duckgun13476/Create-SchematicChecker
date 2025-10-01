@@ -23,15 +23,15 @@ public class CSCLanguage {
         enUs.put("config.lang", "Choose a language you want to use     zh_ch / en_us ");
         enUs.put("config.EnableOrNot","Enable CSC (Create:Schematic Checker) or not");
         enUs.put("config.DelayTime","The time if checker is timeout!");
-        enUs.put("console.ReloadSuccess", "CSC Reload successful!");
+        enUs.put("console.ReloadSuccess", "[CSC] CSC Reload successful! time consume:");
         enUs.put("config.BanTag", "BanTag. If any block has tag in this list will be cleared!");
         enUs.put("core.BanBlock", "The Block or Item you don't want to emerge in Schematic");
         enUs.put("core.BanBlock2", "Any block will clear if remove method failed!");
         enUs.put("console.McVersion", "Minecraft Version: "+mc_version+" forge");
         enUs.put("console.CscVersion", "[CSC] Version: v"+csc_version);
-        enUs.put("console.reload1", "[CSC]   Reloading configuration--");
-        enUs.put("console.reload2", "[CSC]   Configuration loaded");
-        enUs.put("console.ConfigReloadError","[CSC]   Reload configuration failure！");
+        enUs.put("console.reload1", " Reloading configuration--");
+        enUs.put("console.reload2", " Configuration loaded");
+        enUs.put("console.ConfigReloadError"," Reload configuration failure！");
         enUs.put("config.KillEntity", "Whether to remove entities. When set to true, entities inside the schematic will be cleared, except those listed in the whitelist.");
         enUs.put("config.KillEntity2", "Enabling this feature can prevent all potential entity NBT duplication exploits, and also block armor stands from obtaining creative items.");
         enUs.put("config.KillEntity3", "It is recommended to enable this feature!");
@@ -61,23 +61,102 @@ public class CSCLanguage {
         enUs.put("config.TryRemoveBeltNotKill", "When incomplete belts are detected, whether to remove them instead of blocking the entire blueprint.");
         enUs.put("config.TryRemoveBeltNotKill2", "This feature is still in Beta. It allows the blueprint to be printed normally, but incomplete belts will not be printed.");
 
+        enUs.put( "console.csc.list",        "IdMatchRuleAll        List all ID exclusion rules");
+        enUs.put( "console.csc.list2",       "OperateMatchRuleAll   List all NBT operation rules");
+        enUs.put( "console.csc.list3",       "IdMatchRule           List ID exclusion rules from local manual configuration and automatic updates");
+        enUs.put( "console.csc.list4",       "OperateMatchRule      List NBT operation rules from local manual configuration and automatic updates");
+        enUs.put( "console.csc.list5",       "Local manual configuration is located in config/CSC/user_rule.json ");
+        enUs.put( "console.csc.list6",       "Automatic updates are located in config/CSC/online");
+        enUs.put( "console.csc.run.command",        "-----[CSC]-----[Command Tips]-----");
+
+        enUs.put( "console.csc.liner",              "----------------------------------");
+        enUs.put( "console.csc.welcome",              "Welcome to [CSC] ");
+        enUs.put( "console.csc.welcome1",             "[Click to access] Issue    Feedback [GitHub]");
+        enUs.put( "console.csc.welcome2",             "[Click to access] Help/Feedback  QQ: 1061133894");
+        enUs.put( "console.csc.welcome3",             "/csc reload Reload CSC configurations");
+        enUs.put( "console.csc.welcome4",             "/csc list View CSC parameter help");
+        enUs.put( "console.csc.welcome5",             "/csc list [Parameter]  View CSC parameters");
+
+        enUs.put( "console.csc.StopServer",             "CSC close completely, thanks for using!");
+        enUs.put( "console.paraList1",             "Currently attached ID matching cleanup rules");
+        enUs.put( "console.paraList2",             "Currently attached Block NBT matching cleanup rules");
+        enUs.put( "console.paraList3",             "All current ID matching cleanup rules, including built-in rules");
+        enUs.put( "console.paraList4",             "All current Block NBT matching cleanup rules, including built-in rules");
+        enUs.put( "console.error",             "CSC got error：");
+        enUs.put("console.manual.config.error",             "[CSC] Configuration file error ->");
+        enUs.put("console.config.manual.read.error",       "[CSC] Exception occurred while loading user configuration file! ->");
+        enUs.put("console.config.online.read.error",       "[CSC] Exception occurred while loading synchronized configuration file! ->");
+        enUs.put("console.makefile.error",                 "[CSC] Failed to create file or write content ->");
+        enUs.put("console.miss.operate",                   "[CSC] Missing NBT operation method, must be [limit/clear/replace] ->");
+        enUs.put("console.miss.operate2",                  "[CSC] Missing NBT operation prefix, must contain [operate] ->");
+        enUs.put("console.miss.id",                        "[CSC] Block/item ID setup error, must be in [create:belt] format ->");
+        enUs.put("console.miss.length2",                   "[CSC] Rule length setup error, must be [id 2 item] ->");
+        enUs.put("console.miss.length3",                   "[CSC] Rule length setup error, must be [operate 3 item] ->");
+        enUs.put("console.miss.format",                    "[CSC] Rule format error ->");
+        enUs.put("console.miss.liner",                     " Field format error, missing '[' (line number ->");
+        enUs.put("console.miss.json.start",                "[CSC] JSON should start with '{' (line number: 1)");
+        enUs.put("console.miss.json.stop",                 "[CSC] JSON should end with '}' (line number ->");
+        enUs.put("console.miss.json.empty",                "[CSC] JSON file is empty!");
+        enUs.put("console.miss.fail.parse",                "[CSC] JSON file parsing failed, please delete CSC's user_rule.json and restart!");
+        enUs.put( "console.newSchematic",             "New Schematic Uploaded: 》");
+        enUs.put( "console.thread.new",             "thread run！goal =》");
+        enUs.put( "console.total.time",             "bibi~ scan success time consume：");
+        enUs.put( "console.cheat.find",             "Find cheat schematic！");
+
+        enUs.put("console.cheat.copycats",             "Copycat item quantity is abnormal or items do not match layers! [Actual Quantity | Expected Quantity] [Included Items | Disguised Layers] =>");
+        enUs.put("console.cheat.copycats.count",       "Copycat item quantity does not match!");
+        enUs.put("console.cheat.belt.count",           "Number of mismatched conveyor belts exceeds cheat threshold! [Threshold | Actual Quantity]");
+        enUs.put("console.cheat.belt.mismatch",        "Conveyor belt quantity does not match!");
+        enUs.put("console.cheat.conveyor.angle",       "Chain drive wheel angle has been tampered with, exceeding 45 degrees!");
+        enUs.put("console.cheat.conveyor.distance",    "Chain drive wheel length exceeds the upper limit in configuration file [Actual Value | Configured Value]");
+        enUs.put("console.cheat.conveyor.limit",       "Number of mismatched chain drive wheels exceeds the cheat threshold in configuration file! [Actual Value | Configured Value]");
+        enUs.put("console.cheat.crafter.mismatch",     "Mechanical Crafter entity data does not match!");
+        enUs.put("console.cheat.crafter.attach",       "Mechanical Crafters considered the same entity are not connected to each other!");
+        enUs.put("console.cheat.FluidTank.mismatch",   "Fluid Tank Controller quantity does not match! [Number of Controllers | Number of Tanks Found]");
+        enUs.put("console.CheatOutput",                "Cheat schematic detected! Player:");
+        enUs.put("console.CheatOutput2",               "   Schematic:");
+        enUs.put("console.debug.itemDetail",           "Meow, output schematic item list!");
+
+
+        enUs.put("config.maxBeltCheatLimit",             "Maximum allowed number of mismatched conveyor belts. If the number of conveyor belts with mismatched checksums in the schematic exceeds this threshold, the schematic will be deemed a cheat schematic");
+        enUs.put("config.maxBeltCheatLimit2",            "If the number of mismatches in the schematic is less than this value, the problematic conveyor belts will be removed");
+        enUs.put("config.maxConveyorCheatDistanceLimit", "Maximum allowed length of chain drive wheels (default is 32 in Create). If there are chain drive wheels in the schematic exceeding this distance, the schematic will be deemed a cheat schematic");
+        enUs.put("config.maxConveyorCheatDistanceLimit2", "If the length of chain drive wheels is less than this threshold, only the problematic drive wheels will be removed");
+        enUs.put("config.maxConveyorCheatLimit",         "Maximum allowed number of mismatched drive wheels. If the number of drive wheels with mismatched checksums in the schematic exceeds this threshold, the schematic will be deemed a cheat schematic");
+        enUs.put("config.maxConveyorCheatLimit2",        "If the number of checksum mismatches is less than this value, the schematic will only remove the problematic drive wheels");
+        enUs.put("config.online.enableAutoUpdate1",      "Whether to enable cloud-based automatic update synchronization. Note: This feature requires an internet connection!");
+        enUs.put("config.online.enableAutoUpdate2",      "After enabling this feature, CSC will automatically synchronize the latest vulnerability exclusion rules from the cloud");
+        enUs.put("config.online.enableAutoUpdate3",      "However, if abnormal schematics or unreadable schematics are detected, CSC will upload these schematics to the cloud to enhance cloud rules");
+        enUs.put("config.online.enableAutoUpdate4",      "Since cloud checks require schematic samples for continuous updates, the uploaded schematics will only be used for vulnerability detection and no other purposes");
+        enUs.put("config.online.enableAutoUpdate5",      "Enabling this feature will collect partial schematic data. Therefore, using this feature means you allow CSC to use your schematics for rule enhancement!");
+        enUs.put("config.online.enableManualConfig1",    "Whether to enable user-configured rules. When enabled, the user's additional configuration file will be used as rules to process schematics");
+        enUs.put("config.online.enableManualConfig2",    "ID is for the exclusion of entity blocks, used as a supplement when the banblock function fails to completely exclude targets");
+        enUs.put("config.online.enableManualConfig3",    "Each object requires two elements: the item's ID and its position. You can query this using the NBTExplorer software");
+        enUs.put("config.online.enableManualConfig4",    "By default, paths are separated by dots (.). If encountering a list, you need to add a $ before the list tag to assist in identification");
+        enUs.put("config.online.enableManualConfig5",    "Operate is for NBT exclusion, used to manipulate the NBT structure of any block with a high degree of flexibility");
+        enUs.put("config.online.enableManualConfig6",    "Limit: When setting Limit, you can specify the upper and lower bounds of a variable. The format required is operate.limit$VariableName$LowerBound$UpperBound");
+        enUs.put("config.online.enableManualConfig7",    "Clear: When set to Clear, the corresponding NBT will be removed. The format required is operate.clear$VariableName");
+        enUs.put("config.online.enableManualConfig8",    "Replace: When set to Replace, the corresponding NBT tag will be replaced (only strings can be replaced). The format required is operate.replace$VariableName$Result");
+
+
+
 
         // zh_cn
         Map<String, String> zhCn = new HashMap<>();
         zhCn.put("console.feedback", "问题/反馈: QQ：1061133894");
-        zhCn.put("console.LoadingConfig", "[CSC] 加载配置中。。   加载完毕！");
+        zhCn.put("console.LoadingConfig", " 加载配置中。。   加载完毕！");
         zhCn.put("config.lang", "选择默认的文件语言 zh_ch / en_us ");
         zhCn.put("config.EnableOrNot","是否启用 CSC （机械动力：蓝图检查）");
         zhCn.put("config.DelayTime","蓝图检查的超时时间");
-        zhCn.put("console.ReloadSuccess", "[CSC] 配置重载成功！！");
+        zhCn.put("console.ReloadSuccess", "[CSC] 配置重载成功！！ 用时：");
         zhCn.put("config.BanTag", "禁止标签，任何方块如果内部包含此列表的标签，都会被清除！");
         zhCn.put("core.BanBlock", "被禁止的方块或物品，如果被填入，CSC将尝试剔除方块实体内的对应物品。");
         zhCn.put("core.BanBlock2", "如果剔除失败，CSC会将该物品清除实体数据，方块仍然可以打印，但会失去nbt数据。");
         zhCn.put("console.McVersion" ,"Minecraft 版本: "+mc_version+" forge");
         zhCn.put("console.CscVersion","[CSC]   版本: v"+csc_version);
-        zhCn.put("console.reload1","[CSC]   重载配置中--");
-        zhCn.put("console.reload2","[CSC]   配置加载完毕");
-        zhCn.put("console.ConfigReloadError","[CSC]   配置重载发生错误！");
+        zhCn.put("console.reload1"," 重载配置中--");
+        zhCn.put("console.reload2"," 配置加载完毕");
+        zhCn.put("console.ConfigReloadError"," 配置重载发生错误！");
         zhCn.put("config.KillEntity","是否清理实体，当设置为true后，蓝图内的实体会被清除，但不会清除填入白名单的实体。");
         zhCn.put("config.KillEntity2","此功能启用可以阻止所有潜在的实体nbt复制漏洞，也可以阻止盔甲架获取创造物品");
         zhCn.put("config.KillEntity3","此功能建议启用！");
@@ -107,6 +186,92 @@ public class CSCLanguage {
         zhCn.put("config.TryRemoveBeltNotKill",        "当传送带被检测出不完整时，是否清除不完整的传送带而不是直接阻止蓝图");
         zhCn.put("config.TryRemoveBeltNotKill2",        "此功能还在Beta版本，这可以在传送带不完整时，正常打印蓝图，只是不完整的传送带不会打印");
 
+
+        zhCn.put( "console.csc.list",        "IdMatchRuleAll        列出全部的 ID  剔除规则");
+        zhCn.put( "console.csc.list2",        "OperateMatchRuleAll   列出全部的 nbt 操作规则");
+        zhCn.put( "console.csc.list3",        "IdMatchRule           列出 本地手动配置 和 自动更新 的 ID 剔除规则");
+        zhCn.put( "console.csc.list4",        "OperateMatchRule      列出 本地手动配置 和 自动更新 的 nbt 操作规则");
+        zhCn.put( "console.csc.list5",        "本地手动配置 位于config/CSC/user_rule.json  ");
+        zhCn.put( "console.csc.list6",        "自动更新 位于config/CSC/online");
+
+        zhCn.put( "console.csc.run.command",        "------[CSC]-----[命令提示]-----");
+        zhCn.put( "console.csc.liner",              "----------------------------");
+
+
+        zhCn.put( "console.csc.welcome",              "欢迎使用  [机械动力：蓝图校验] ");
+        zhCn.put( "console.csc.welcome1",             "[链接] 问题反馈[GitHub]");
+        zhCn.put( "console.csc.welcome2",             "[链接] 帮助/反馈  QQ: 1061133894");
+        zhCn.put( "console.csc.welcome3",             "/csc reload 重载CSC配置");
+        zhCn.put( "console.csc.welcome4",             "/csc list 查看CSC的参数帮助");
+        zhCn.put( "console.csc.welcome5",             "/csc list [参数]  查看CSC的参数");
+        zhCn.put( "console.csc.StopServer",             "CSC 已经安全关闭，感谢使用喵~");
+        zhCn.put( "console.paraList1",             "当前附加的 ID 匹配清理规则");
+        zhCn.put( "console.paraList2",             "当前附加的 方块nbt 匹配清理规则");
+        zhCn.put( "console.paraList3",             "当前全部的 ID 匹配清理规则，包含内置规则");
+        zhCn.put( "console.paraList4",             "当前全部的 方块nbt 匹配清理规则，包含内置规则");
+        zhCn.put( "console.error",             "CSC发生了错误-》");
+
+
+        zhCn.put( "console.manual.config.error",             "[CSC] 配置文件发生了错误-》");
+        zhCn.put( "console.config.manual.read.error",             "[CSC] 加载用户配置文件发生了异常！-》");
+        zhCn.put( "console.config.online.read.error",             "[CSC] 加载同步配置文件发生了异常！-》");
+        zhCn.put( "console.makefile.error",             "[CSC] 创建文件或写入内容失败-》");
+        zhCn.put( "console.miss.operate",             "[CSC] 缺少nbt操作方法，必须为 [limit/clear/replace]-》");
+        zhCn.put( "console.miss.operate2",             "[CSC] 缺少nbt操作前缀，必须包含 [operate]-》");
+        zhCn.put( "console.miss.id",             "[CSC] 方块/物品 id 设置错误，必须为[create:belt]格式-》");
+        zhCn.put( "console.miss.length2",             "[CSC] 规则的长度设置错误，必须为[id 2 个变量]-》");
+        zhCn.put( "console.miss.length3",             "[CSC] 规则的长度设置错误，必须为[operate 3 个变量]-》");
+        zhCn.put( "console.miss.format",             "[CSC] 规则的格式出现错误-》");
+        zhCn.put( "console.miss.liner",             " 字段格式错误，缺少'['（行号-》");
+        zhCn.put( "console.miss.json.start",             "[CSC] JSON应以'{'开头（行号：1）");
+        zhCn.put( "console.miss.json.stop",             "[CSC] JSON应以'}'结尾 行号-》");
+        zhCn.put( "console.miss.json.empty",             "[CSC] JSON文件是空的！");
+        zhCn.put( "console.miss.fail.parse",             "[CSC] JSON文件解析失败，请删除CSC 的 user_rule.json 并重启！");
+
+        zhCn.put( "console.newSchematic",             "发现新的蓝图上传喵~ =》");
+        zhCn.put( "console.thread.new",             "线程启动！目标=》");
+        zhCn.put( "console.total.time",             "滴滴~ 扫描完毕 用时：");
+        zhCn.put( "console.cheat.find",             "发现作弊蓝图！");
+
+
+
+
+        zhCn.put( "console.cheat.copycats",             "伪装板的物品数量异常或物品与图层不匹配！[实际数量|应该的数量][包含的物品|伪装图层]=》");
+        zhCn.put( "console.cheat.copycats.count",             "伪装板的物品数量不匹配！");
+        zhCn.put( "console.cheat.belt.count",             "传送带不匹配的传送带超过作弊阈值！[阈值|实际数量]");
+        zhCn.put( "console.cheat.belt.mismatch",             "传送带数量不匹配！");
+        zhCn.put( "console.cheat.conveyor.angle",             "链式传动轮的角度被篡改，超过了45度！");
+        zhCn.put( "console.cheat.conveyor.distance",             "链式传动轮的长度超过了配置文件的上限 [实际值|配置值]");
+        zhCn.put( "console.cheat.conveyor.limit",             "链式传动轮不匹配的数量超过了配置文件的作弊阈值！ [实际值|配置值]");
+        zhCn.put( "console.cheat.crafter.mismatch",             "动力合成器的实体数据不匹配！");
+        zhCn.put( "console.cheat.crafter.attach",             "被视为同一实体的动力合成器没有相互连接！");
+        zhCn.put( "console.cheat.FluidTank.mismatch",             "流体储罐控制器数量不匹配！[控制器数量|找到的容器数量]");
+        zhCn.put( "console.CheatOutput",             "侦测到作弊蓝图！玩家：");
+        zhCn.put( "console.CheatOutput2",             "   蓝图：");
+        zhCn.put( "console.debug.itemDetail",             "呜喵，输出蓝图物品列表！");
+
+
+
+
+        zhCn.put( "config.maxBeltCheatLimit",             "传送带的最大允许不匹配数量，当蓝图内校验和不匹配的传送带数量超过这个阈值后，蓝图会被视为作弊蓝图");
+        zhCn.put( "config.maxBeltCheatLimit2",          "当蓝图内的不匹配数量少于这个值时，将会剔除有问题的传送带");
+        zhCn.put( "config.maxConveyorCheatDistanceLimit",    "链式传动轮的最大允许长度，机械动力默认为32 当蓝图内有超过这个距离的链式传动轮时，蓝图会被视为作弊蓝图");
+        zhCn.put( "config.maxConveyorCheatDistanceLimit2",    "当链式传动轮的长度低于这个阈值时，仅会剔除有问题的传动轮");
+        zhCn.put( "config.maxConveyorCheatLimit",    "传动轮的最大允许不匹配数量，当蓝图校验和不匹配的传动轮数量超过这个阈值后，蓝图会被视为作弊蓝图");
+        zhCn.put( "config.maxConveyorCheatLimit2",    "如果校验和不匹配数量少于这个值，蓝图仅会剔除有问题的传动轮");
+        zhCn.put( "config.online.enableAutoUpdate1",    "是否启用云端自动更新同步功能，注意，此功能需要联网！");
+        zhCn.put( "config.online.enableAutoUpdate2",    "启用此功能后，CSC将会自动从云端同步最新的漏洞剔除规则");
+        zhCn.put( "config.online.enableAutoUpdate3",    "但如果出现了异常蓝图或无法读取的蓝图，CSC会将这些蓝图上传至云端来加强云端规则");
+        zhCn.put( "config.online.enableAutoUpdate4",    "因为云端检查需要蓝图样本才能不断更新，上传的蓝图仅会用于漏洞检测，不会用于任何其他用途");
+        zhCn.put( "config.online.enableAutoUpdate5",    "启用此功能会收集部分蓝图数据，因此如果您使用此功能就代表允许CSC利用您的蓝图进行规则强化！");
+        zhCn.put( "config.online.enableManualConfig1",    "是否启用用户配置规则，当启用后，用户的额外配置文件会作为规则处理蓝图");
+        zhCn.put( "config.online.enableManualConfig2",    "id 是针对实体方块的剔除，用于banblock功能剔除不完全时的附加");
+        zhCn.put( "config.online.enableManualConfig3",    "每个对象需要两个元素，物品的ID 和位置，可以通过NBTExplorer 软件来查询 ");
+        zhCn.put( "config.online.enableManualConfig4",    "默认情况下的路径使用.来分割，如果遇到列表，需要在列表标签前加入$ 来辅助识别");
+        zhCn.put( "config.online.enableManualConfig5",    "operate 是针对nbt的剔除功能，用于操作任意方块的nbt结构，具有极高的自由度");
+        zhCn.put( "config.online.enableManualConfig6",    "limit 当设置limit时，可以指定变量的上下限，需要使用 operate.limit$变量名$下限$上限  的格式");
+        zhCn.put( "config.online.enableManualConfig7",    "clear 当设置为清除时，对应的nbt会被剔除，需要使用 operate.clear$变量名  的格式");
+        zhCn.put( "config.online.enableManualConfig8",    "replace 当设置为替换时，对应的nbt标签会被替换 只能替换字符串，需要使用 operate.replace$变量名$结果 的格式");
 
         //enUs.put(" ")
         languageDictionary.put("zh_cn", zhCn);

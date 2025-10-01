@@ -46,53 +46,27 @@ public class BlockSweeper {
 
 
                 //ID InterFace
-                String[][] idLogicArray = {
-
-                        //Create 6.0.*
-                        {"create:stock_ticker", "nbt.$Categories.id"},
-                        {"create:redstone_requester", "nbt.EncodedRequest.ordered_stacks.$entries.item_stack.id"},
-
-                        //Create 0.5.1
-                        {"create:redstone_link", "nbt.FrequencyFirst.id"},
-                        {"create:redstone_link", "nbt.FrequencyLast.id"},
-                        {"create:depot", "nbt.HeldItem.Item.id"},
-                        {"create:weighted_ejector", "nbt.HeldItem.Item.id"},
-                        {"create:chute", "nbt.Item.id"},
-                        {"create:smart_chute", "nbt.Item.id"},
-                        {"create:smart_chute", "nbt.Filter.id"},
-                        {"create:saw", "nbt.Filter.id"},
-                        {"create:deployer", "nbt.Filter.id"},
-                        {"create:deployer", "nbt.$Inventory.id"},
-                        {"create:funnel", "nbt.Filter.id"},
-                        {"create:placard", "nbt.Item.id"},
-                        {"create:content_observer", "nbt.Filter.id"},
-                        {"create:belt", "nbt.Inventory.$Items.Item.id"},
-                        {"create:basin", "nbt.Filter.id"},
-                        {"create:basin", "nbt.InputItems.$Items.id"},
-                        {"create:smart_fluid_pipe", "nbt.Filter.id"},
-                        {"create:mechanical_crafter", "nbt.Inventory.$Items.id"},
-                        {"create:toolbox", "nbt.Inventory.$Compartments.id"},
-                        {"create:toolbox", "nbt.Inventory.$Items.id"},
-                        {"create:stockpile_switch", "nbt.Filter.id"},
-                        {"create:brass_tunnel", "nbt.Filter.id"},
-                        {"create:brass_tunnel", "nbt.$Filters.Filter.id"},
-                        {"create:brass_tunnel", "nbt.StackToDistribute.id"},
-                        {"create:mechanical_roller", "nbt.Filter.id"},
 
 
-                };
-
-                for (String[] idLogic : idLogicArray) {
-                    String idKey = idLogic[0];
-                    if (id.equals(idKey)) {
-                        for (int i = 1; i < idLogic.length; i++) {
-                            String logicValue = idLogic[1];
-                            ChainResult = MagicChainClear(Data, logicValue, totalCount, "id");
-                            Data = S_tag(ChainResult.get("data"));
-                            totalCount = S_int(ChainResult.get("find_count"));
+                for (String[] idLogic : ID_match_rule) {
+                    try {
+                        String idKey = idLogic[0];
+                        if (id.equals(idKey)) {
+                            for (int i = 1; i < idLogic.length; i++) {
+                                String logicValue = idLogic[1];
+                                ChainResult = MagicChainClear(Data, logicValue, totalCount, "id");
+                                Data = S_tag(ChainResult.get("data"));
+                                totalCount = S_int(ChainResult.get("find_count"));
+                            }
                         }
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
+
                 }
+
+
+
             }
 
             if (type.contains("rule")) {
@@ -133,41 +107,24 @@ public class BlockSweeper {
                     }
 
 
-                    String[][] SurgeryLogicArray = {
-                            {"create:belt", "nbt.Length", "operate.limit$Length$0$"+MaxBelt},
-                            {"create:belt", "nbt.Index", "operate.limit$Index$0$"+MaxIndex},
-                            {"create:weighted_ejector", "nbt.HorizontalDistance", "operate.limit$HorizontalDistance$1$"+MaxEject},
-                            {"create:deployer", "nbt.Inventory", "operate.clear$Inventory"},
-
-                            {"create:andesite_funnel", "nbt.Filter", "operate.clear$Filter"},
-                            {"create:andesite_funnel", "nbt.FilterAmount", "operate.clear$FilterAmount"},
-
-                            {"create:mechanical_arm", "nbt.$InteractionPoints.Pos.X", "operate.limit$X$-5$5"},
-                            {"create:mechanical_arm", "nbt.$InteractionPoints.Pos.Y", "operate.limit$Y$-5$5"},
-                            {"create:mechanical_arm", "nbt.$InteractionPoints.Pos.Z", "operate.limit$Z$-5$5"},
-
-                            {"create:chassis", "nbt.ScrollValue", "operate.limit$ScrollValue$0$"+MaxChassisRange},
-
-                            // Add more entries as needed
-                            {"createaddition:rolling_mill","nbt.InputInventory", "operate.clear$InputInventory"},
-                            {"createaddition:rolling_mill","nbt.OutputInventory", "operate.clear$OutputInventory"},
-
-                            {"create_enchantment_industry:printer", "nbt.PrintingTemplate", "operate.clear$PrintingTemplate"},
-
-
-                    };
-
-                    for (String[] idLogic : SurgeryLogicArray) {
+                    for (String[] idLogic : Operate_match_rule) {
                         String idKey = idLogic[0];
                         String chain = idLogic[1];
                         String surgery = idLogic[2];
-                        if (id.equals(idKey)) {
-                            for (int i = 1; i < idLogic.length; i++) {
-                                ChainResult = MagicChainClear(Data, chain, totalCount, surgery);
-                                Data = S_tag(ChainResult.get("data"));
-                                totalCount = S_int(ChainResult.get("find_count"));
+                        try {
+                            if (id.equals(idKey)) {
+                                for (int i = 1; i < idLogic.length; i++) {
+                                    ChainResult = MagicChainClear(Data, chain, totalCount, surgery);
+                                    Data = S_tag(ChainResult.get("data"));
+                                    totalCount = S_int(ChainResult.get("find_count"));
+                                }
                             }
+                        } catch (Exception e) {
+                            Message.FE("发现匹配规则的方块，但是没有在方块中找到处理的变量");
+                            Message.FE("方块["+(sequence)+1+"]  规则 ["+idKey+"|"+chain+"|"+surgery+"]");
+                            //e.printStackTrace();
                         }
+
                     }
 
 

@@ -9,35 +9,44 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 import static com.Pink_Cats.createschematicchecker.FancyConfig.ConfigRegister.enable_backup;
 import static com.Pink_Cats.createschematicchecker.FancyConfig.FileIO.createIfNotExists;
+import static com.Pink_Cats.createschematicchecker.core.BlueEngine.NbtInterFace.S_bool;
 import static com.Pink_Cats.createschematicchecker.core.BlueEngine.NbtInterFace.S_tag;
 import static com.Pink_Cats.createschematicchecker.core.BlueEngine.StrFunc.getCurrentDateTime;
+import static com.Pink_Cats.createschematicchecker.lang.CSCLanguage.translateDirect;
 
 public class BlueCore {
 
     NbtFunc MainCheck = new NbtFunc();
-    public Map<String,Object> SchematicBlueCore(String blueprintId)
+    public Map<String,Object> SchematicBlueCore(String blueprintId, List<String> CheatLog)
     {
         //蓝图路径
         String DefaultPath = "./schematics/uploaded/";
         //String DefaultPath = System.getProperty("user.dir");
         String path = DefaultPath + blueprintId;
-        Message.FD("Path:"+path);
+        Message.FD(translateDirect("console.thread.new")+path);
         try {
             CompoundTag nbt_data = Path_to_CompoundTag(path);
             String User = blueprintId.split("/")[0];
             String Blueprint = blueprintId.split("/")[1];
             //SchematicOutput(nbt_data);
             if (enable_backup)
-            {CompoundTag_to_Path(nbt_data, "config/CSC/backup/"+User+"/",getCurrentDateTime()+Blueprint);}
+            {
+                CompoundTag_to_Path(nbt_data, "config/CSC/backup/"+User+"/",getCurrentDateTime()+Blueprint);
+            }
 
-            Map<String,Object> result = MainCheck.NBTCheck(nbt_data);
+            Map<String,Object> result = MainCheck.NBTCheck(nbt_data,CheatLog);
+            boolean IsProblemSchematic = S_bool(result.get("Cheat"));
+            if (enable_backup){
+                if (!IsProblemSchematic) {
+                    CompoundTag_to_Path(nbt_data, "config/CSC/problem/"+User+"/",getCurrentDateTime()+Blueprint);
+                }
 
-
-
+            }
 
             //SchematicOutput(S_tag(result.get("nbt_data")));
 
