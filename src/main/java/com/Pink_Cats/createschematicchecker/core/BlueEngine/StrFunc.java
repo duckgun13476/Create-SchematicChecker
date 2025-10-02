@@ -22,7 +22,7 @@ public class StrFunc {
         LocalDateTime now = LocalDateTime.now();
 
         // 定义格式：yyyy_MMdd_HH_mm
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy_MMdd_HH_mm");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy_MM_dd_HH_mm");
 
         // 格式化并返回
         return now.format(formatter);

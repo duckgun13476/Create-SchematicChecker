@@ -250,9 +250,6 @@ public class CSCLanguage {
         zhCn.put( "console.CheatOutput2",             "   蓝图：");
         zhCn.put( "console.debug.itemDetail",             "呜喵，输出蓝图物品列表！");
 
-
-
-
         zhCn.put( "config.maxBeltCheatLimit",             "传送带的最大允许不匹配数量，当蓝图内校验和不匹配的传送带数量超过这个阈值后，蓝图会被视为作弊蓝图");
         zhCn.put( "config.maxBeltCheatLimit2",          "当蓝图内的不匹配数量少于这个值时，将会剔除有问题的传送带");
         zhCn.put( "config.maxConveyorCheatDistanceLimit",    "链式传动轮的最大允许长度，机械动力默认为32 当蓝图内有超过这个距离的链式传动轮时，蓝图会被视为作弊蓝图");
@@ -272,6 +269,16 @@ public class CSCLanguage {
         zhCn.put( "config.online.enableManualConfig6",    "limit 当设置limit时，可以指定变量的上下限，需要使用 operate.limit$变量名$下限$上限  的格式");
         zhCn.put( "config.online.enableManualConfig7",    "clear 当设置为清除时，对应的nbt会被剔除，需要使用 operate.clear$变量名  的格式");
         zhCn.put( "config.online.enableManualConfig8",    "replace 当设置为替换时，对应的nbt标签会被替换 只能替换字符串，需要使用 operate.replace$变量名$结果 的格式");
+
+
+
+
+        zhCn.put( "config.tag.mismatch.output",    "警告：在蓝图内发现被禁止的Tag | 方块nbt数据=》");
+        zhCn.put( "console.problemOutput",             "蓝图出现校验不匹配！玩家：");
+        zhCn.put( "console.problemOutput2",             "   蓝图：");
+        zhCn.put( "console.cheat.createbigcannons",             "火炮炮弹内的物品不是火炮的引信！=》");
+        zhCn.put( "console.cheat.clipboard",             "剪贴板包含不应该存在的标签，因为这是不可能的！=》");
+
 
         //enUs.put(" ")
         languageDictionary.put("zh_cn", zhCn);

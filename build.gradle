@@ -190,7 +190,7 @@ dependencies {
     modImplementation("com.tterrag.registrate:Registrate:${registrate_version}")
     compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:0.4.1"))
 
-
+    modImplementation("curse.maven:create-big-cannons-646668:6064368")
     //Quark
 
     //modImplementation("curse.maven:quark-243121:6427817")

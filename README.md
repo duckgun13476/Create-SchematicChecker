@@ -95,101 +95,103 @@
 ## 针对已知问题的修复
 
 - **1. 修复** 使用讲台、剪贴板打印出创造物品的恶性漏洞。
-  -[X] [视频链接](https://www.bilibili.com/video/BV1sDp4ePEVp)
+  - [X] [视频链接](https://www.bilibili.com/video/BV1sDp4ePEVp)
 
 - **2. 修复** 阀门数据篡改导致的变量缓存溢出，这会导致阀门实体内存无法回收，同时导致内存泄漏。（无限阀门旋转特性）  
-  -[X] [视频链接](https://www.bilibili.com/video/BV1UdC9YjET5)
+  - [X] [视频链接](https://www.bilibili.com/video/BV1UdC9YjET5)
 
 - **3. 修复** 剪贴板复制特性，附魔标签剔除 | 这可以复制创造物品，打印带创造属性的剪贴板  
-  -[X] [视频链接](https://www.bilibili.com/video/BV1SXC9YEEeW)
+  - [X] [视频链接](https://www.bilibili.com/video/BV1SXC9YEEeW)
 
 - **4. 修复** 阻止传送带修改打印上限超过一千格 | 这会导致渲染器溢出崩溃客户端，传送带的弱加载区块会卡服
-  -[X] [视频链接](https://www.bilibili.com/video/BV1SXC9YEEeW)
+  - [X] [视频链接](https://www.bilibili.com/video/BV1SXC9YEEeW)
 - **5. 修复** 阻止打印 -1 长度传送带 | 这会在旧版本崩溃 Forge 原生服务器。  
-  -[X] [视频链接](https://www.bilibili.com/video/BV1u9ytY2E8R)
+  - [X] [视频链接](https://www.bilibili.com/video/BV1u9ytY2E8R)
 
 - **6. 修复** 恶意利用修改传送带长度导致的巨量传送带破区块 | 这会导致服务器极其卡顿，破坏 CPU，崩溃服务器，还有概率导致存档损坏  
-  -[X] [视频链接](https://www.bilibili.com/video/BV1NwybY3ERY)
+  - [X] [视频链接](https://www.bilibili.com/video/BV1NwybY3ERY)
 
 - **7. 修复** 锦致装饰的翁在旧版本的无限 GT 特性，可以无限开宝藏 | 使用 GT 会导致服务器巨量卡顿  
-  -[X] [视频链接](https://www.bilibili.com/video/BV1LUS9YCEk1)
+  - [X] [视频链接](https://www.bilibili.com/video/BV1LUS9YCEk1)
 
 - **8. 修复** 恶意修改弹射置物台弹射力量产生的屠龙炮 | 这会直接导致 Forge 端崩服，极快的弹射速度会导致服务器直接卡死，弹射路径的区块全部会极快的生成  
-  -[X] [视频链接](https://www.bilibili.com/video/BV1itXDY3EwJ)  
-  -[X] [视频链接](https://www.bilibili.com/video/BV13RKneEEFG)
+  - [X] [视频链接](https://www.bilibili.com/video/BV1itXDY3EwJ)  
+  - [X] [视频链接](https://www.bilibili.com/video/BV13RKneEEFG)
 
 - **9. 修复** 恶意修改过滤器使其内部 NBT 过大 | 将其放进漏斗会导致其在判定时产生极高的游戏卡顿刻
-  -[X] 暂时还没视频
+  - [X] 暂时还没视频
 - **10. 修复** 恶意修改超长的链式传动轮匹配 | 这会导致巨量的卡服问题  
-  -[X] [视频链接](https://www.bilibili.com/video/BV1vz9bY7EW5)
+  - [X] [视频链接](https://www.bilibili.com/video/BV1vz9bY7EW5)
 
 - **11. 修复** 添加标签 use convert to 会返回任意创造物品的漏洞  
-  -[X] [视频链接](https://www.bilibili.com/video/BV1c19tYsEBL)
+  - [X] [视频链接](https://www.bilibili.com/video/BV1c19tYsEBL)
 
 - **12. 修复** 篡改动力臂距离到不合理的距离导致的超远距离传输 | 在某些情况下会因为距离问题直接导致崩服  
-  -[X] [视频链接](https://www.bilibili.com/video/BV1XpXYYDEt7)
+  - [X] [视频链接](https://www.bilibili.com/video/BV1XpXYYDEt7)
 
 - **13. 修复** 篡改链式传动轮的匹配目标到虚空导致的 90° 锁链 | 这会在某些情况下崩服  
-  -[X] [视频链接](https://www.bilibili.com/video/BV1nddcYSEWQ)
+  - [X] [视频链接](https://www.bilibili.com/video/BV1nddcYSEWQ)
 
 - **14. 修复** 传送带的奇怪扭曲形式导致的传送带与传动杆复制  
-  -[X] [视频链接](https://www.bilibili.com/video/BV1omdmYrE3S)
+  - [X] [视频链接](https://www.bilibili.com/video/BV1omdmYrE3S)
 
 - **15. 修复** 恶意修改链式传动轮的匹配对象到几千个时导致的服务器巨量卡顿和锁链复制特性  
-  -[X] [视频链接](https://www.bilibili.com/video/BV1Ze5Wz7EB2)
+  - [X] [视频链接](https://www.bilibili.com/video/BV1Ze5Wz7EB2)
 
 - **16. 修复** 恶意修改机械手的返还物品导致的无限产出漏洞(比如为机械手加入safenbt列表)  
-  -[X] [视频链接](https://www.bilibili.com/video/BV1udtYzwEQN)
+  - [X] [视频链接](https://www.bilibili.com/video/BV1udtYzwEQN)
 
 - **17. 修复** 机械手在伪装板模组下的物品复制特性  
-  -[X] [视频链接](https://www.bilibili.com/video/BV1dubezLEp7)
+  - [X] [视频链接](https://www.bilibili.com/video/BV1dubezLEp7)
 
 - **18. 修复** 在安山漏斗可以返还过滤器的漏洞
-  -[X] [视频链接](https://www.bilibili.com/video/BV1UrEGzmEDU)
+  - [X] [视频链接](https://www.bilibili.com/video/BV1UrEGzmEDU)
 - **19. 修复** 可以使用烧毁标签来获得创造物品的漏洞  
-  -[X] [视频链接](https://www.bilibili.com/video/BV1UrEGzmEDU)
+  - [X] [视频链接](https://www.bilibili.com/video/BV1UrEGzmEDU)
 
 - **20. 修复** 可以使用实体（盔甲架）导致的任何复制特性和获取创造物品特性 | 使用实体剔除功能  
-  -[X] [视频链接](https://www.bilibili.com/video/BV1wtRNYaE5m)
+  - [X] [视频链接](https://www.bilibili.com/video/BV1wtRNYaE5m)
 
-- **21. 修复** 轧机在物品附加的某个版本创造物品恶性获取漏洞  
-  -[X] [视频链接](https://www.bilibili.com/video/BV1b4eyzGEoj)
+- **21. 修复** 轧机在物品附加的某个发行版本创造物品恶性获取漏洞  
+  - [X] [视频链接](https://www.bilibili.com/video/BV1b4eyzGEoj)
 
 - **22. 修复** 附魔工业在某个版本会打印创造标签的恶性附属漏洞  
-  -[X] [视频链接](https://www.bilibili.com/video/BV1GKemzWEKm)
+  - [X] [视频链接](https://www.bilibili.com/video/BV1GKemzWEKm)
 
 - **23. 修复** 创意传动会打印无限能源电池的特性  
-  -[X] [视频链接](https://www.bilibili.com/video/BV193vAzNEJ2)
+  - [X] [视频链接](https://www.bilibili.com/video/BV193vAzNEJ2)
 
 - **24. 修复** 集成农业会打印鸡舍实现 GT 机卡服的特性  
-  -[X] [视频链接](https://www.bilibili.com/video/BV13nh2z5EvT)
+  - [X] [视频链接](https://www.bilibili.com/video/BV13nh2z5EvT)
 
 - **25. 修复** 利用nbt漏洞实现的运行指令恶性bug
-  -[X] [视频链接](https://www.bilibili.com/video/BV1rZY5z1Eo6)
+  - [X] [视频链接](https://www.bilibili.com/video/BV1rZY5z1Eo6)
 
 - **26. 修复** 6.0.+版本下可以篡改流体储罐导致容量异常的bug
 
-  -[X] [视频链接](https://www.bilibili.com/video/BV1hSnMzCE6A/)
+  - [X] [视频链接](https://www.bilibili.com/video/BV1hSnMzCE6A/)
 
 
 - **27. 修复** 夸克铁丝网的无限岩浆漏洞。
-  -[X] [视频链接](https://www.bilibili.com/video/BV1hSnMzCE6A/)
+  - [X] [视频链接](https://www.bilibili.com/video/BV1hSnMzCE6A/)
 
 
 - **28. 修复** 通过修改动力合成器实现的虚空传送物品漏洞。 
-  -[X] [视频链接](https://www.bilibili.com/video/BV1hSnMzCE6A/)
+  - [X] [视频链接](https://www.bilibili.com/video/BV1hSnMzCE6A/)
 
 
 - **29. 修复** 通过修改动力合成器实现的虚空传送物品漏洞。
-  -[X] [没找到样例视频]()
+  - [X] [没找到样例视频]()
 
     
 - **30. 修复** 通过修改强力胶导致的超大黏着检测引起的服务器巨量卡顿甚至崩溃。
-  -[X] [没找到样例视频]()
+  - [X] [没找到样例视频]()
 
 - **31. 修复** 通过修改机壳地盘、斜向地盘导致的超大黏着检测引起的服务器巨量卡顿甚至崩溃。
-  -[X] [没找到样例视频]()
-
+  - [X] [没找到样例视频]()
+  - 
+- **32. 检测** 通过修改机械动力：火炮的炮弹引信导致的获取任意创造物品的漏洞。
+  - [X] [没找到样例视频]()
 
 
 ## 致谢

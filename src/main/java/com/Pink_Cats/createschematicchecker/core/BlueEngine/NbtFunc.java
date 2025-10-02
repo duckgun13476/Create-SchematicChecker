@@ -30,6 +30,7 @@ public class NbtFunc {
 
         boolean Cheat = false;
         boolean Problem = false;
+        boolean IsNotMatch = false;
         //PinkCats Inject
         try {
 
@@ -42,6 +43,8 @@ public class NbtFunc {
                 paletteItemResult = BaseBlockHandle(paletteItem, "palette", palette, i,CheatLog);
                 paletteItem = S_tag(paletteItemResult.get("Data"));
                 Cheat = S_bool(paletteItemResult.get("Cheat")) || Cheat;
+
+                IsNotMatch = S_bool(paletteItemResult.get("IsNotMatch")) || IsNotMatch;
                 if (paletteItem != null) {
                     palette.set(i, paletteItem);
                 }
@@ -66,6 +69,32 @@ public class NbtFunc {
             for (int i = 0; i < blocks.size(); i++) {
                 CompoundTag block = blocks.getCompound(i);
                 String id = BlockGetId(block, palette);
+
+                //clipboard
+                if (id.equals("createbigcannons:fuzed_block")) {
+                    String InsideID = Objects.requireNonNull(block.getCompound("nbt").getCompound("Fuze").get("id")).toString();
+                    if (!InsideID.contains("createbigcannons:")){
+                        Cheat = true;
+                        CheatLog.add(translateDirect("console.cheat.createbigcannons") +"["+InsideID+"]");
+
+                    }
+                }
+
+
+                //createbigcannons:fuzed_block
+                if (id.equals("create:clipboard")) {
+                    String nbt = Objects.requireNonNull(block.toString());
+
+                    if (nbt.contains("AttributeModifiers:") || nbt.contains("AttributeName:")||
+                        nbt.contains("using_converts_to")||
+                        nbt.contains("bundle_contents")||
+                        nbt.contains("minecraft:container"))
+                    {
+                        Cheat = true;
+                        CheatLog.add(translateDirect("console.cheat.clipboard") );
+
+                    }
+                }
 
 
                 //belt matcher
@@ -221,6 +250,8 @@ public class NbtFunc {
                     blockResult = BaseBlockHandle(block, "block", palette, i,CheatLog);
                     block = S_tag(blockResult.get("Data"));
                     Cheat = S_bool(blockResult.get("Cheat")) || Cheat;
+                    IsNotMatch = S_bool(blockResult.get("IsNotMatch")) || IsNotMatch;
+
                 }
 
                 if (block != null) {
@@ -510,6 +541,9 @@ public class NbtFunc {
             Problem = true;
         }
 
+        if (IsNotMatch){
+            Problem = true;
+        }
 
         result.put("Problem",Problem);
         result.put("nbt_data", nbt_data);
@@ -522,7 +556,7 @@ public class NbtFunc {
     public Map<String,Object> BaseBlockHandle(CompoundTag data,String type,ListTag PaletteBlockData,int sequence,List<String> CheatLog) {
         boolean Cheat = false;
         boolean HasBanBlock = false;
-        boolean IsMatch  = true;
+        boolean IsNotMatch  = false;
         Map<String, Object> result = new HashMap<>();
 
         if (type.equals("entity")) {
@@ -567,8 +601,10 @@ public class NbtFunc {
 
 
         if (HasBanTag(data.toString())) {
-            Message.FM("Find Tag in " + data);
-            IsMatch = false;
+
+            Message.FW(translateDirect("config.tag.mismatch.output") + data);
+            IsNotMatch = true;
+
         }
 
         if (HasBanBlock(data.toString())) {
@@ -584,7 +620,7 @@ public class NbtFunc {
         if (!type.equals("entity")) {
             MapData = ClearBanBlock(data, "rule." + type, sequence,PaletteBlockData);
             data = S_tag(MapData.get("Data"));
-            IsMatch = S_bool(MapData.get("IsMatch"));
+            IsNotMatch = S_bool(MapData.get("IsNotMatch")) || IsNotMatch;
         }
 
 
@@ -597,7 +633,7 @@ public class NbtFunc {
             if (HasBanBlock) {
                 MapData = ClearBanBlock(data,"block",sequence,PaletteBlockData);
                 data = S_tag(MapData.get("Data"));
-                IsMatch = S_bool(MapData.get("IsMatch")) && IsMatch;
+                IsNotMatch = S_bool(MapData.get("IsNotMatch")) || IsNotMatch;
             }
         }
 
@@ -605,20 +641,20 @@ public class NbtFunc {
             if (HasBanBlock) {
                 MapData = ClearBanBlock(data,"palette",sequence,PaletteBlockData);
                 data = S_tag(MapData.get("Data"));
-                IsMatch = S_bool(MapData.get("IsMatch")) && IsMatch;
+                IsNotMatch = S_bool(MapData.get("IsNotMatch")) || IsNotMatch;
             }
         }
 
 
 
-        if (!IsMatch) {
+        if (IsNotMatch) {
             data = new CompoundTag();
         }
 
 
         result.put("Cheat", Cheat);
         result.put("Data", data);
-        result.put("IsMatch", IsMatch);
+        result.put("IsNotMatch", IsNotMatch);
         return result;
 
     }

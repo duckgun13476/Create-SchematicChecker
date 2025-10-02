@@ -386,6 +386,8 @@ public class SimpleJsonParser {
 
                 {"create_enchantment_industry:printer", "nbt.PrintingTemplate", "operate.clear$PrintingTemplate"},
 
+                {"createbigcannons:fuzed_block","nbt.Fuze", "operate.clear$Fuze"},
+
 
         };
 

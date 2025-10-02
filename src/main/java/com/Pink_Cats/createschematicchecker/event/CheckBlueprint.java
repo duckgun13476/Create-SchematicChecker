@@ -20,6 +20,7 @@ import net.minecraftforge.server.ServerLifecycleHooks;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static com.Pink_Cats.createschematicchecker.FancyConfig.ConfigRegister.DebugCheatFind;
 import static com.Pink_Cats.createschematicchecker.core.BlueEngine.NbtInterFace.S_bool;
@@ -58,8 +59,10 @@ public class CheckBlueprint {
             List<String> CheatLog = new ArrayList<>();
 
             long startTime = System.currentTimeMillis();
-            boolean IsCheatSchematic = S_bool(Checker.SchematicBlueCore(PlayerBlueprintId,CheatLog).get("Cheat"));
-
+            Map<String,Object> CheckResult = Checker.SchematicBlueCore(PlayerBlueprintId,CheatLog);
+            boolean IsCheatSchematic = S_bool(CheckResult.get("Cheat"));
+            boolean IsProblem = S_bool(CheckResult.get("Problem"));
+            String player_id = player.getGameProfile().getName();
 
             long endTime = System.currentTimeMillis();
             long executionTime = endTime - startTime;
@@ -78,14 +81,21 @@ public class CheckBlueprint {
 
 
             if (!IsCheatSchematic) {
+                if (IsProblem){
+                    Message.FW(translateDirect("console.problemOutput")+player_id+
+                            translateDirect("console.problemOutput2")+PlayerBlueprintId);
+
+                }
 
                 table.inventory.setStackInSlot(1, SchematicItem.create(
-                        world.holderLookup(Registries.BLOCK), PlayerBlueprintId, player.getGameProfile().getName()));
+                        world.holderLookup(Registries.BLOCK), PlayerBlueprintId, player_id));
 
             } else {
                 Message.FE(translateDirect("console.cheat.find"));
+                Message.FE(translateDirect("console.CheatOutput")+player_id+
+                        translateDirect("console.CheatOutput2")+PlayerBlueprintId);
                 if (DebugCheatFind){
-                    broadcast(PlayerBlueprintId,player.getGameProfile().getName());
+                    broadcast(PlayerBlueprintId,player_id);
                 }
                 table.inventory.setStackInSlot(0, AllItems.EMPTY_SCHEMATIC.asStack());
             }

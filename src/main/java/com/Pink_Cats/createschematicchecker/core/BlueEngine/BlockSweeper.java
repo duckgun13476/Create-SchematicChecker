@@ -21,7 +21,7 @@ public class BlockSweeper {
     public static Map<String,Object> ClearBanBlock(CompoundTag Data,String type,int sequence,ListTag PaletteData) {
         try {
             Map<String, Object> result = new HashMap<>();
-            boolean IsMatch = true;
+            boolean IsNotMatch = false;
 
 
             int totalCount = CountToClear(Data.toString(), ban_block);
@@ -175,7 +175,7 @@ public class BlockSweeper {
 
             if (!type.contains("rule")){
                 if (totalCount != 0) {
-                    IsMatch = false;
+                    IsNotMatch = true;
                     Message.FM("[" + type + "][" + block_information + "]MisMatch: Block:[" + (sequence + 1) + "] All: " + total + " Left: " + totalCount);
                     Message.FM("Before:");
                     Message.FM(Before);
@@ -185,7 +185,7 @@ public class BlockSweeper {
             }
 
 
-            result.put("IsMatch", IsMatch);
+            result.put("IsNotMatch", IsNotMatch);
             result.put("Data", Data);
             return result;
         } catch (Exception e) {

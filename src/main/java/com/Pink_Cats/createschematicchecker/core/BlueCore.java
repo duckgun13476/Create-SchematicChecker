@@ -4,6 +4,7 @@ import com.Pink_Cats.createschematicchecker.core.BlueEngine.NbtFunc;
 import com.Pink_Cats.createschematicchecker.lang.Message;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtIo;
+import org.antlr.runtime.MismatchedNotSetException;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -40,10 +41,17 @@ public class BlueCore {
             }
 
             Map<String,Object> result = MainCheck.NBTCheck(nbt_data,CheatLog);
-            boolean IsProblemSchematic = S_bool(result.get("Cheat"));
+            boolean IsCheat = S_bool(result.get("Cheat"));
+            boolean IsProblem = S_bool(result.get("Problem"));
             if (enable_backup){
-                if (!IsProblemSchematic) {
-                    CompoundTag_to_Path(nbt_data, "config/CSC/problem/"+User+"/",getCurrentDateTime()+Blueprint);
+                if (IsProblem) {
+                    if(IsCheat){
+                        CompoundTag_to_Path(nbt_data, "config/CSC/problem/"+User+"/","Cheat_"+getCurrentDateTime()+Blueprint);
+                    }else {
+                        CompoundTag_to_Path(nbt_data, "config/CSC/problem/"+User+"/","Problem_"+getCurrentDateTime()+Blueprint);
+                    }
+
+
                 }
 
             }
