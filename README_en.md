@@ -4,8 +4,8 @@
 
 ### ~~A countermeasure against griefers who use bugged schematics (just kidding)~~  
 
+<img width="1920" height="1080" alt="439597651-6bdcd06c-c454-41f0-aa1d-7f8b882064f8" src="https://github.com/user-attachments/assets/85848717-c13d-4c70-8049-6c136a387021" />
 
-![icon.png](icon.png)  
 
 
 ## Q&A / Bug Reports / Support | QQ Group: 1061133894  
