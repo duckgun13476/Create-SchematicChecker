@@ -9,4 +9,12 @@ public class Math {
         return input.replaceAll("\\s+", ""); // 使用正则表达式去掉所有空格
     }
 
+    public static int StringToInt(String str) {
+        return Integer.parseInt(str);
+    }
+
+    public static float StringToFloat(String str) {
+        return Float.parseFloat(str);
+    }
+
 }

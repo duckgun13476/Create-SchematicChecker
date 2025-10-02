@@ -13,6 +13,7 @@ import static com.Pink_Cats.createschematicchecker.core.ChainEngine.MagicChain.M
 import static com.Pink_Cats.createschematicchecker.core.BlueEngine.NbtInterFace.*;
 import static com.Pink_Cats.createschematicchecker.core.BlueEngine.StrFunc.isInBanBlock;
 import static com.Pink_Cats.createschematicchecker.core.BlueEngine.TagFunc.BlockGetId;
+import static com.Pink_Cats.createschematicchecker.lang.CSCLanguage.translateDirect;
 
 public class BlockSweeper {
 
@@ -120,8 +121,11 @@ public class BlockSweeper {
                                 }
                             }
                         } catch (Exception e) {
-                            Message.FE("发现匹配规则的方块，但是没有在方块中找到处理的变量");
-                            Message.FE("方块["+(sequence)+1+"]  规则 ["+idKey+"|"+chain+"|"+surgery+"]");
+
+                            Message.FE(translateDirect("check.chain.rule.error"));
+                            Message.FE(translateDirect("check.chain.rule.block")+
+                                    (sequence)+1+translateDirect("check.chain.rule.rule")+
+                                    idKey+"|"+chain+"|"+surgery+"]");
                             //e.printStackTrace();
                         }
 

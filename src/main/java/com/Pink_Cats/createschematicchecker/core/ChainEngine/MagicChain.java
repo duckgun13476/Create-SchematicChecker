@@ -13,6 +13,8 @@ import static com.Pink_Cats.createschematicchecker.core.BlueEngine.BlockSweeper.
 import static com.Pink_Cats.createschematicchecker.core.BlueEngine.BlockSweeper.CountToClear;
 import static com.Pink_Cats.createschematicchecker.core.BlueEngine.FilterInterface.SweeperIfHasId;
 import static com.Pink_Cats.createschematicchecker.core.BlueEngine.NbtInterFace.*;
+import static com.Pink_Cats.createschematicchecker.core.attach.Math.StringToInt;
+import static com.Pink_Cats.createschematicchecker.lang.CSCLanguage.translateDirect;
 
 public class MagicChain {
 
@@ -21,13 +23,10 @@ public class MagicChain {
         HashMap<String,Object> magicChain = new HashMap<>();
         String[] BaseChain = ChainSplit(chain);
         boolean Cheat = false;
-        //Message.FM("BaseChain"+ Arrays.toString(BaseChain));
         ArrayList<Object> ResultTagList = new ArrayList<>();
         ResultTagList.add(data);
 
         //Is a magic
-        //Message.FM("EngineStart");
-        //Message.FM(data);
         ArrayList<CompoundTag> ResultCompoundTag = S_TagList(MagicEngine(ResultTagList,BaseChain));
         for (CompoundTag tag : ResultCompoundTag) {
             if (type.equals("id"))
@@ -35,17 +34,15 @@ public class MagicChain {
                     find_count = SweeperIfHasId(tag,find_count,2+3);  //3 allow deep count
                     if (find_count == -100)
                     {
-                        Message.FE("Too much Filter depth!");
+                        Message.FE(translateDirect("check.csc.cheat.filter"));
                     }
                 }
 
 
             if (type.contains("operate"))
                 {
-                    //Message.FM("operate");
                     String[] operate_chain = ChainSplit(type);
                     for (int index = 1; index < operate_chain.length; index++) {
-
                         String[] knife = KnifeSplit(operate_chain[index]);
                         if (operate_chain[index].contains("clear")) {
                             String S_result = tag.getCompound(knife[1]).toString();
@@ -60,11 +57,8 @@ public class MagicChain {
 
 
                         if (operate_chain[index].contains("limit")) {
-                            //Message.FM(tag);
-                            //Message.FM(Arrays.toString(knife));
                             int DownLimit = StringToInt(knife[2]);
                             int UpLimit = StringToInt(knife[3]);
-                            //Message.FM(DownLimit+" "+UpLimit);
                             int ActualCount = StringToInt(Objects.requireNonNull(tag.get(knife[1])).toString());
                             if (ActualCount>UpLimit){
                                 tag.put(knife[1],TagInt(UpLimit) );

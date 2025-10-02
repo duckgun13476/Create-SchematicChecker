@@ -12,6 +12,7 @@ import static com.Pink_Cats.createschematicchecker.core.ChainEngine.ConveyorInte
 import static com.Pink_Cats.createschematicchecker.core.BlueEngine.NbtInterFace.*;
 import static com.Pink_Cats.createschematicchecker.core.BlueEngine.StrFunc.*;
 import static com.Pink_Cats.createschematicchecker.core.BlueEngine.TagFunc.BlockGetId;
+import static com.Pink_Cats.createschematicchecker.core.attach.Math.StringToInt;
 import static com.Pink_Cats.createschematicchecker.lang.CSCLanguage.translateDirect;
 import static com.mojang.text2speech.Narrator.LOGGER;
 
@@ -664,19 +665,5 @@ public class NbtFunc {
 
 }
 
-//Message.FM("Name"+ New_enty);
-//CompoundTag New_test = new CompoundTag();
-//New_enty.put("Name","create:brass_casing" );
-//Message.FM("exist"+ entry);
-//Message.FM("new"+ New_enty);
-//Message.FE(NbtInterFace.AreTagEquals(entry, New_enty));
-//Message.FM("Name"+ New_enty);
-//New_enty.remove("Name");
-//Message.FM("Name"+ New_enty);
-//Message.FM("Palette"+ entry);
-//CompoundTag exp = new CompoundTag();
-//exp.put("Name",TagString("create:brass_casing"));
-//Message.FM("Exist exp "+ exp);
-//Message.FE(NbtInterFace.AreTagEquals(entry, exp));
 
 

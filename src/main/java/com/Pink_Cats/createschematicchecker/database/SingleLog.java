@@ -161,6 +161,13 @@ public class SingleLog {
         }
     }
 
+    public void reopen() {
+        // 如果流已经关闭（为null），则重新初始化
+        if (this.writer == null) {
+            initWriter();
+        }
+    }
+
     public static SingleLog CSC_MES = SingleLog.getInstance("config/CSC/Log/CSC_Record.log");
     public static SingleLog CSC_WARN = SingleLog.getInstance("config/CSC/CSC_Warn.log");
 

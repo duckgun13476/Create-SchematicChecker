@@ -22,6 +22,7 @@ import org.slf4j.Logger;
 
 import java.util.List;
 
+import static com.Pink_Cats.createschematicchecker.core.attach.Math.StringToInt;
 import static com.Pink_Cats.createschematicchecker.database.SingleLog.CSC_MES;
 import static com.Pink_Cats.createschematicchecker.database.SingleLog.CSC_WARN;
 import static com.Pink_Cats.createschematicchecker.echo.Commands.RegisterCSCCommand;
@@ -56,6 +57,7 @@ public class Createschematicchecker {
     private void commonSetup(final FMLCommonSetupEvent event) {
         Message.FM(translateDirect("console.LoadingConfig"));
         List<String> log = List.of();
+        CSC_Variables_Load();
         CSC_INIT(log);
     }
 
@@ -71,7 +73,7 @@ public class Createschematicchecker {
         try{
             CannonDelay = CreateSchematicConfig().schematicannonDelay.get().toString();
             MaxBelt = CreateCKineticsConfig().maxBeltLength.get().toString();
-            MaxIndex = String.valueOf((NbtInterFace.StringToInt(ConfigRegister.MaxBelt)-1));
+            MaxIndex = String.valueOf((StringToInt(ConfigRegister.MaxBelt)-1));
             MaxEject = CreateCKineticsConfig().maxEjectorDistance.get().toString();
             MaxChassisRange = CreateCKineticsConfig().maxChassisRange.get().toString();
         } catch(Exception ex){
@@ -85,7 +87,8 @@ public class Createschematicchecker {
     public void onServerStarting(ServerStartingEvent event) {
         //CscConfigIO();
         CreateConfigInject();
-
+        CSC_MES.reopen();
+        CSC_WARN.reopen();
         Message.FM("   _____  _____  _____ ");
         Message.FM("  / ____|/ ____|/ ____|");
         Message.FM(" | |    | (___ | |     "+"   "+ translateDirect("console.CscVersion"));
@@ -99,10 +102,10 @@ public class Createschematicchecker {
     @SubscribeEvent
     public void onServerStopping(ServerStoppingEvent event) {
 
+        CSC_Variables_Save();
+        Message.FM(translateDirect("console.csc.StopServer"));
         CSC_MES.close();
         CSC_WARN.close();
-        Message.FM(translateDirect("console.csc.StopServer"));
-
 
     }
 

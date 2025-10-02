@@ -89,26 +89,26 @@ public class StrFunc {
     public static void SchematicOutput(CompoundTag nbt_data){
         try {
             // 提取 blocks 信息
-            Message.FM("block");
+            Message.FP("block");
             ListTag blocks = nbt_data.getList("blocks", 10); // 10 表示 CompoundTag 类型
             for (int i = 0; i < blocks.size(); i++) {
                 CompoundTag block = blocks.getCompound(i);
-                Message.FM(block );
+                Message.FP(block );
             }
             // 提取 palette 信息
             Message.FM("palette");
             ListTag palette = nbt_data.getList("palette", 10); // 10 表示 CompoundTag 类型
             for (int i = 0; i < palette.size(); i++) {
                 CompoundTag paletteItem = palette.getCompound(i);
-                Message.FM(paletteItem );
+                Message.FP(paletteItem );
 
             }
             // 提取 entity 信息
-            Message.FM("entities");
+            Message.FP("entities");
             ListTag entities = nbt_data.getList("entities", 10); // 10 表示 CompoundTag 类型
             for (int i = 0; i < entities.size(); i++) {
                 CompoundTag entity = entities.getCompound(i);
-                Message.FM(entity.toString());
+                Message.FP(entity.toString());
             }
 
         }

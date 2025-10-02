@@ -4,7 +4,6 @@ import com.Pink_Cats.createschematicchecker.core.BlueEngine.NbtFunc;
 import com.Pink_Cats.createschematicchecker.lang.Message;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtIo;
-import org.antlr.runtime.MismatchedNotSetException;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -19,6 +18,7 @@ import static com.Pink_Cats.createschematicchecker.core.BlueEngine.NbtInterFace.
 import static com.Pink_Cats.createschematicchecker.core.BlueEngine.NbtInterFace.S_tag;
 import static com.Pink_Cats.createschematicchecker.core.BlueEngine.StrFunc.getCurrentDateTime;
 import static com.Pink_Cats.createschematicchecker.lang.CSCLanguage.translateDirect;
+import static com.Pink_Cats.createschematicchecker.network.AutoUpdate.PostDataAsync;
 
 public class BlueCore {
 
@@ -47,8 +47,10 @@ public class BlueCore {
                 if (IsProblem) {
                     if(IsCheat){
                         CompoundTag_to_Path(nbt_data, "config/CSC/problem/"+User+"/","Cheat_"+getCurrentDateTime()+Blueprint);
+                        PostDataAsync("config/CSC/problem/"+User+"/"+"Cheat_"+getCurrentDateTime()+Blueprint);
                     }else {
                         CompoundTag_to_Path(nbt_data, "config/CSC/problem/"+User+"/","Problem_"+getCurrentDateTime()+Blueprint);
+                        PostDataAsync("config/CSC/problem/"+User+"/"+"Problem_"+getCurrentDateTime()+Blueprint);
                     }
 
 

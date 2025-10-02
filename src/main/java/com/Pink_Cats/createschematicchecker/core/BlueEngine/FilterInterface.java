@@ -56,7 +56,6 @@ public class FilterInterface {
         }
         String id = TagMapId(data);
         if (id.equals("create:filter")){
-            Message.FM("filter");
             count = FilterSweeper(data,count,turn);
         }
         if (isInBanBlock(id)) {

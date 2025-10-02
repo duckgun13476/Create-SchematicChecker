@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static com.Pink_Cats.createschematicchecker.FancyConfig.ConfigRegister.DebugCheatFind;
+import static com.Pink_Cats.createschematicchecker.FancyConfig.ConfigRegister.*;
 import static com.Pink_Cats.createschematicchecker.core.BlueEngine.NbtInterFace.S_bool;
 import static com.Pink_Cats.createschematicchecker.lang.CSCLanguage.translateDirect;
 
@@ -60,6 +60,7 @@ public class CheckBlueprint {
 
             long startTime = System.currentTimeMillis();
             Map<String,Object> CheckResult = Checker.SchematicBlueCore(PlayerBlueprintId,CheatLog);
+            CheckCount++;
             boolean IsCheatSchematic = S_bool(CheckResult.get("Cheat"));
             boolean IsProblem = S_bool(CheckResult.get("Problem"));
             String player_id = player.getGameProfile().getName();
@@ -82,6 +83,7 @@ public class CheckBlueprint {
 
             if (!IsCheatSchematic) {
                 if (IsProblem){
+                    ProblemCount +=1;
                     Message.FW(translateDirect("console.problemOutput")+player_id+
                             translateDirect("console.problemOutput2")+PlayerBlueprintId);
 
@@ -91,6 +93,7 @@ public class CheckBlueprint {
                         world.holderLookup(Registries.BLOCK), PlayerBlueprintId, player_id));
 
             } else {
+                CheatCount +=1;
                 Message.FE(translateDirect("console.cheat.find"));
                 Message.FE(translateDirect("console.CheatOutput")+player_id+
                         translateDirect("console.CheatOutput2")+PlayerBlueprintId);

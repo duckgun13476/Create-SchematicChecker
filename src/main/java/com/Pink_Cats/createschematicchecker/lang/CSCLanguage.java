@@ -9,7 +9,7 @@ public class CSCLanguage {
 
     private static final String DEFAULT_LANGUAGE = "en_us";
     private static final String mc_version = "1.20.1";
-    private static final String csc_version = "0.21";
+    public static final String csc_version = "0.21";
 
 
     // 定义不同语言的翻译字典
@@ -137,8 +137,30 @@ public class CSCLanguage {
         enUs.put("config.online.enableManualConfig6",    "Limit: When setting Limit, you can specify the upper and lower bounds of a variable. The format required is operate.limit$VariableName$LowerBound$UpperBound");
         enUs.put("config.online.enableManualConfig7",    "Clear: When set to Clear, the corresponding NBT will be removed. The format required is operate.clear$VariableName");
         enUs.put("config.online.enableManualConfig8",    "Replace: When set to Replace, the corresponding NBT tag will be replaced (only strings can be replaced). The format required is operate.replace$VariableName$Result");
-
-
+        enUs.put( "config.tag.mismatch.output",    "Warning: Forbidden Tag found in the schematic | Block NBT data=>");
+        enUs.put( "console.problemOutput",             "Schematic verification mismatch occurred! Player:");
+        enUs.put( "console.problemOutput2",             "   Schematic:");
+        enUs.put( "console.cheat.createbigcannons",             "The item in the cannon shell is not a cannon fuse!=>");
+        enUs.put( "console.cheat.clipboard",             "The clipboard contains tags that shouldn't exist, as this is impossible!=>");
+        enUs.put( "console.csc.welcome.help",             "> /csc help for command assistance");
+        enUs.put( "console.csc.board.day",             " day(s) ");
+        enUs.put( "console.csc.board.hour",             " hour(s) ");
+        enUs.put( "console.csc.board.minute",             " minute(s) ");
+        enUs.put( "console.csc.board.second",             " second(s) ");
+        enUs.put( "console.csc.board.guard",             "> CSC has been protecting your server");
+        enUs.put( "console.csc.board.checkCount",             "> Total checked ");
+        enUs.put( "console.csc.board.checkCount2",             " schematics");
+        enUs.put( "console.csc.board.checkCount3",             "> Found ");
+        enUs.put( "console.csc.board.checkCount4",             " problematic schematics");
+        enUs.put( "console.csc.board.checkCount5",             "> Blocked ");
+        enUs.put( "console.csc.board.checkCount6",             " cheating schematic uploads");
+        enUs.put( "check.csc.cheat.filter",             "Too much Filter depth!");
+        enUs.put( "check.chain.rule.error",             "A block matching the rule was found, but the variable for processing was not found in the block");
+        enUs.put( "check.chain.rule.block",             "Block [");
+        enUs.put( "check.chain.rule.rule",             "]  Rule [");
+        enUs.put("config.online.UpdateInfo",             "Enable automatic update reminders. When set to true, if CSC has vulnerabilities that require a version update to fix, a reminder will be sent");
+        enUs.put("check.Update.Info1",             "Connected to cloud server:");
+        enUs.put("check.Update.Info2",             "  Cloud schematic samples:");
 
 
         // zh_cn
@@ -169,8 +191,8 @@ public class CSCLanguage {
         zhCn.put("config.explain1",        "    欢迎您使用CSC，CSC（原名 Create:SchematicChecker | 机械动力：蓝图校验 ）" );
         zhCn.put("config.explain2",        "是专为机械动力与全部机械动力附属而定制的蓝图扫描模组,它可以阻止任何已经记录在案的潜在/恶性漏洞。");
         zhCn.put("config.explain3",        "这些恶性漏洞包括但不限于：复制物品、卡顿服务器甚至崩溃服务器、获取创造物品、获取服务器控制权等。。");
-        zhCn.put("config.explain4",        "触发它们仅需上传固定修改参数的蓝图，这使得破坏服务器变得轻而易举，只要有蓝图炮，那么任何人都可以随意的");
-        zhCn.put("config.explain5",        "以极低的成本和极少的时间破坏服务器。");
+        zhCn.put("config.explain4",        "而触发它们仅需上传固定修改参数的蓝图，这使得破坏服务器变得轻而易举，只要服务器不禁用蓝图炮，那么任何人都可以随意的");
+        zhCn.put("config.explain5",        "以极低的成本和极少的时间破坏服务器、崩溃服务器、获取任意物品。");
         zhCn.put("config.explain6",        "  此模组转为此问题而设计，永久解决机械动力蓝图的弊病！");
         zhCn.put("config.explain7",        "CSC 允许用户自定义黑名单标签、方块，允许自定义剔除规则，允许对蓝图的校验结果进行详细的配置和自定义");
         zhCn.put("config.explain8",        "由于蓝图的通用性，这使得CSC可以检测包括机械动力和机械动力的所有附属mod！" );
@@ -246,7 +268,7 @@ public class CSCLanguage {
         zhCn.put( "console.cheat.crafter.mismatch",             "动力合成器的实体数据不匹配！");
         zhCn.put( "console.cheat.crafter.attach",             "被视为同一实体的动力合成器没有相互连接！");
         zhCn.put( "console.cheat.FluidTank.mismatch",             "流体储罐控制器数量不匹配！[控制器数量|找到的容器数量]");
-        zhCn.put( "console.CheatOutput",             "侦测到作弊蓝图！玩家：");
+        zhCn.put( "console.CheatOutput",             "嘟嘟嘟！侦测到作弊蓝图！玩家：");
         zhCn.put( "console.CheatOutput2",             "   蓝图：");
         zhCn.put( "console.debug.itemDetail",             "呜喵，输出蓝图物品列表！");
 
@@ -256,7 +278,7 @@ public class CSCLanguage {
         zhCn.put( "config.maxConveyorCheatDistanceLimit2",    "当链式传动轮的长度低于这个阈值时，仅会剔除有问题的传动轮");
         zhCn.put( "config.maxConveyorCheatLimit",    "传动轮的最大允许不匹配数量，当蓝图校验和不匹配的传动轮数量超过这个阈值后，蓝图会被视为作弊蓝图");
         zhCn.put( "config.maxConveyorCheatLimit2",    "如果校验和不匹配数量少于这个值，蓝图仅会剔除有问题的传动轮");
-        zhCn.put( "config.online.enableAutoUpdate1",    "是否启用云端自动更新同步功能，注意，此功能需要联网！");
+        zhCn.put( "config.online.enableAutoUpdate1",    "是否启用云端自动更新同步功能，转为服务器定制，注意，此功能需要联网！");
         zhCn.put( "config.online.enableAutoUpdate2",    "启用此功能后，CSC将会自动从云端同步最新的漏洞剔除规则");
         zhCn.put( "config.online.enableAutoUpdate3",    "但如果出现了异常蓝图或无法读取的蓝图，CSC会将这些蓝图上传至云端来加强云端规则");
         zhCn.put( "config.online.enableAutoUpdate4",    "因为云端检查需要蓝图样本才能不断更新，上传的蓝图仅会用于漏洞检测，不会用于任何其他用途");
@@ -269,15 +291,34 @@ public class CSCLanguage {
         zhCn.put( "config.online.enableManualConfig6",    "limit 当设置limit时，可以指定变量的上下限，需要使用 operate.limit$变量名$下限$上限  的格式");
         zhCn.put( "config.online.enableManualConfig7",    "clear 当设置为清除时，对应的nbt会被剔除，需要使用 operate.clear$变量名  的格式");
         zhCn.put( "config.online.enableManualConfig8",    "replace 当设置为替换时，对应的nbt标签会被替换 只能替换字符串，需要使用 operate.replace$变量名$结果 的格式");
-
-
-
-
         zhCn.put( "config.tag.mismatch.output",    "警告：在蓝图内发现被禁止的Tag | 方块nbt数据=》");
         zhCn.put( "console.problemOutput",             "蓝图出现校验不匹配！玩家：");
         zhCn.put( "console.problemOutput2",             "   蓝图：");
         zhCn.put( "console.cheat.createbigcannons",             "火炮炮弹内的物品不是火炮的引信！=》");
         zhCn.put( "console.cheat.clipboard",             "剪贴板包含不应该存在的标签，因为这是不可能的！=》");
+        zhCn.put( "console.csc.welcome.help",             "》/csc help 获取相关指令帮助");
+        zhCn.put( "console.csc.board.day",             " 天 ");
+        zhCn.put( "console.csc.board.hour",             " 小时 ");
+        zhCn.put( "console.csc.board.minute",             " 分钟 ");
+        zhCn.put( "console.csc.board.second",             " 秒 ");
+        zhCn.put( "console.csc.board.guard",             "》CSC已经守护了您的服务器 ");
+        zhCn.put( "console.csc.board.checkCount",             "》总共检查了 ");
+        zhCn.put( "console.csc.board.checkCount2",             " 个蓝图");
+        zhCn.put( "console.csc.board.checkCount3",             "》发现了 ");
+        zhCn.put( "console.csc.board.checkCount4",             " 个问题蓝图");
+        zhCn.put( "console.csc.board.checkCount5",             "》阻止了 ");
+        zhCn.put( "console.csc.board.checkCount6",             " 次作弊蓝图上传");
+        zhCn.put( "check.csc.cheat.filter",             "过滤器迭代次数过多！");
+        zhCn.put( "check.chain.rule.error",             "发现匹配规则的方块，但是没有在方块中找到处理的变量");
+        zhCn.put( "check.chain.rule.block",             "方块[");
+        zhCn.put("check.chain.rule.rule",             "]  规则 [");
+
+
+
+
+        zhCn.put("config.online.UpdateInfo",             "启动自动更新提醒，当设置为true，如果CSC有需要更新版本才能修复的漏洞，将会发出提醒");
+        zhCn.put("check.Update.Info1",             "已连接到云端的服务器：");
+        zhCn.put("check.Update.Info2",             "  云端蓝图样本：");
 
 
         //enUs.put(" ")

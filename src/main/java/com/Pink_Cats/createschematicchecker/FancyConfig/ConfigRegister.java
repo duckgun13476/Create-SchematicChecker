@@ -4,9 +4,12 @@ package com.Pink_Cats.createschematicchecker.FancyConfig;
 import com.Pink_Cats.createschematicchecker.lang.Message;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.Pink_Cats.createschematicchecker.FancyConfig.FileIO.createIfNotExists;
+import static com.Pink_Cats.createschematicchecker.database.DataCount.*;
 import static com.Pink_Cats.createschematicchecker.lang.CSCLanguage.translateDirect;
 import static com.Pink_Cats.createschematicchecker.network.SimpleJsonParser.UpdateRuleThread;
 
@@ -43,7 +46,7 @@ public class ConfigRegister {
 
 
     public static ConfigValue.ConfigString UUID = ConfigBuild
-            .define( "UUID", "wd2d-ddd2-2dav");
+            .define( "UUID", java.util.UUID.randomUUID().toString());
 
     public static ConfigValue.ConfigBoolean ENABLE = ConfigBuild
             .define("core.Enable", true)
@@ -176,6 +179,12 @@ public class ConfigRegister {
             .comment("config.online.enableManualConfig7")
             .comment("config.online.enableManualConfig8");
 
+    public static ConfigValue.ConfigBoolean UPDATE_INFO= ConfigBuild
+            .define("online.UpdateInfo", true)
+            .comment(CommitBreak)
+            .comment("config.online.UpdateInfo");
+
+
     public static String language = LANGUAGE.getDefaultValue();
     public static String user_uuid = UUID.getDefaultValue();
     public static boolean enable_csc = ENABLE.getDefaultValue();
@@ -194,6 +203,7 @@ public class ConfigRegister {
     public static int maxConveyorCheatLimit =   MAX_CONVEYOR_CHEAT_LIMIT.getDefaultValue();
     public static int maxConveyorCheatDistanceLimit = MAX_CONVEYOR_CHEAT_DISTANCE_LIMIT.getDefaultValue();
     public static boolean DebugCheatFind = DEBUG_CHEAT_FIND.getDefaultValue();
+    public static boolean update_info = UPDATE_INFO.getDefaultValue();
 
 
     public static String[][] ID_match_rule;
@@ -213,8 +223,36 @@ public class ConfigRegister {
     public static String MaxEject = "32";
     public static String MaxChassisRange = "16";
 
+    public static long GuardTime;
+    public static int  CheckCount;
+    public static int  ProblemCount;
+    public static int CheatCount;
+
+
+
+    public static void CSC_Variables_Load(){
+        Map<String, String> CSCVariables= LoadVariables();
+        GuardTime = Long.parseLong(CSCVariables.get("GuardTime"));
+        CheckCount = Integer.parseInt(CSCVariables.get("CheckCount"));
+        ProblemCount = Integer.parseInt(CSCVariables.get("ProblemCount"));
+        CheatCount = Integer.parseInt(CSCVariables.get("CheatCount"));
+
+    }
+
+
+    public static void  CSC_Variables_Save(){
+        Map<String, String> variables = new HashMap<>();
+        variables.put("GuardTime", String.valueOf(GuardTime));
+        variables.put("CheckCount", String.valueOf(CheckCount));
+        variables.put("ProblemCount", String.valueOf(ProblemCount));
+        variables.put("CheatCount", String.valueOf(CheatCount));
+        WriteVariables(variables);
+    }
+
+
 
     public static List<String> CSC_INIT(List<String> log) {
+        update_info = UPDATE_INFO.getDefaultValue();
         DebugCheatFind = DEBUG_CHEAT_FIND.getDefaultValue();
         maxConveyorCheatDistanceLimit = MAX_CONVEYOR_CHEAT_DISTANCE_LIMIT.getDefaultValue();
         maxConveyorCheatLimit = MAX_CONVEYOR_CHEAT_LIMIT.getDefaultValue();
@@ -241,6 +279,7 @@ public class ConfigRegister {
     public static List<String> CSC_RELOAD() {
         Message.FM(translateDirect("console.reload1"));
         List<String> list = new ArrayList<String>();
+        UPDATE_INFO.reload();
         DEBUG_CHEAT_FIND.reload();
         MAX_CONVEYOR_CHEAT_DISTANCE_LIMIT.reload();
         MAX_CONVEYOR_CHEAT_LIMIT.reload();

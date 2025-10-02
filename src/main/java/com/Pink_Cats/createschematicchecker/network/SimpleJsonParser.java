@@ -12,7 +12,7 @@ import static com.Pink_Cats.createschematicchecker.FancyConfig.ConfigRegister.*;
 import static com.Pink_Cats.createschematicchecker.FancyConfig.ConfigRegister.MaxChassisRange;
 import static com.Pink_Cats.createschematicchecker.FancyConfig.FileIO.createIfNotExists;
 import static com.Pink_Cats.createschematicchecker.lang.CSCLanguage.translateDirect;
-import static com.Pink_Cats.createschematicchecker.network.VersionChecker.UpdateMainThread;
+import static com.Pink_Cats.createschematicchecker.online.VersionChecker.UpdateMainThread;
 
 public class SimpleJsonParser {
 
@@ -243,40 +243,34 @@ public class SimpleJsonParser {
             String[][] operateArray = result[1];
 
 
-            if (idArray.length != 0) {
-                System.out.println("id data:");
-                for (String[] subArray : idArray) {
-                    if (subArray.length != 2) {
-                        log.add(translateDirect("console.miss.length2") + subArray.length);
-                        return false;
-                    }
-
-                    if (!subArray[0].contains(":")) {
-                        log.add(translateDirect("console.miss.id") + subArray[0]);
-                        return false;
-                    }
-
+            for (String[] subArray : idArray) {
+                if (subArray.length != 2) {
+                    log.add(translateDirect("console.miss.length2") + subArray.length);
+                    return false;
                 }
+
+                if (!subArray[0].contains(":")) {
+                    log.add(translateDirect("console.miss.id") + subArray[0]);
+                    return false;
+                }
+
             }
-            if (operateArray.length != 0) {
-                System.out.println("\noperate  data:");
-                for (String[] subArray : operateArray) {
-                    if (subArray.length != 3) {
-                        log.add(translateDirect("console.miss.length3") + subArray.length);
-                        return false;
-                    }
-                    if (!subArray[0].contains(":")) {
-                        log.add(translateDirect("console.miss.id") + subArray[0]);
-                        return false;
-                    }
-                    if (!subArray[2].contains("operate") ) {
-                        log.add(translateDirect("console.miss.operate2") + subArray[2]);
-                        return false;
-                    }
-                    if (!subArray[2].contains("limit") && !subArray[2].contains("clear") && !subArray[2].contains("replace") ) {
-                        log.add(translateDirect("console.miss.operate") + subArray[2]);
-                        return false;
-                    }
+            for (String[] subArray : operateArray) {
+                if (subArray.length != 3) {
+                    log.add(translateDirect("console.miss.length3") + subArray.length);
+                    return false;
+                }
+                if (!subArray[0].contains(":")) {
+                    log.add(translateDirect("console.miss.id") + subArray[0]);
+                    return false;
+                }
+                if (!subArray[2].contains("operate")) {
+                    log.add(translateDirect("console.miss.operate2") + subArray[2]);
+                    return false;
+                }
+                if (!subArray[2].contains("limit") && !subArray[2].contains("clear") && !subArray[2].contains("replace")) {
+                    log.add(translateDirect("console.miss.operate") + subArray[2]);
+                    return false;
                 }
             }
 
@@ -446,7 +440,6 @@ public class SimpleJsonParser {
                         operateArray = result[1];
                     }
 
-                    Message.FM(idArray.length);
                     if (operateArray.length != 0) {
                         Operate_modify_rule_online = operateArray;
                         SurgeryExist = merge(SurgeryExist, operateArray);
@@ -506,7 +499,7 @@ public class SimpleJsonParser {
     public static void main(String[] args) {
         List<String> log = new ArrayList<>();
         UpdateRuleThread(log);
-        Message.FM(Arrays.toString(log.toArray()));
+        Message.FP(Arrays.toString(log.toArray()));
 
     }
 }

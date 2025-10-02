@@ -33,7 +33,8 @@ public class Commands {
                         .executes(context ->  {
                                     Player player = context.getSource().getPlayer();
                                     if (player != null) {
-                                        CSC_HELP(player);
+                                        CSC_MAIN(player);
+
                                     }
                                     return Command.SINGLE_SUCCESS;
                                 }
@@ -217,8 +218,6 @@ public class Commands {
     public static void CSC_HELP(Player player){
         player.sendSystemMessage(Component.literal(translateDirect("console.csc.run.command"))
                 .setStyle(Style.EMPTY.withColor(ChatFormatting.GOLD)));
-        player.sendSystemMessage(Component.literal(translateDirect("console.csc.welcome"))
-                .setStyle(Style.EMPTY.withColor(ChatFormatting.GREEN)));
         player.sendSystemMessage(Component.literal(translateDirect("console.csc.welcome1"))
                 .setStyle(Style.EMPTY
                         .withClickEvent(new ClickEvent(
@@ -239,6 +238,62 @@ public class Commands {
                 .setStyle(Style.EMPTY.withColor(ChatFormatting.GREEN)));
         player.sendSystemMessage(Component.literal(translateDirect("console.csc.welcome5"))
                 .setStyle(Style.EMPTY.withColor(ChatFormatting.GREEN)));
+        player.sendSystemMessage(Component.literal(translateDirect("console.csc.liner"))
+                .setStyle(Style.EMPTY.withColor(ChatFormatting.GOLD)));
+    }
+
+
+    public static void CSC_MAIN(Player player){
+
+        player.sendSystemMessage(Component.literal(translateDirect("console.csc.run.command"))
+                .setStyle(Style.EMPTY.withColor(ChatFormatting.GOLD)));
+
+        player.sendSystemMessage(Component.literal(translateDirect("console.csc.welcome"))
+                .setStyle(Style.EMPTY.withColor(ChatFormatting.GREEN)));
+
+        player.sendSystemMessage(Component.literal(translateDirect("console.csc.welcome.help"))
+                .setStyle(Style.EMPTY.withColor(ChatFormatting.GREEN)));
+
+
+
+
+        int seconds = Math.toIntExact(GuardTime % 60);         // 剩余秒数
+        int totalMinutes = Math.toIntExact(GuardTime / 60);    // 总分钟数
+        int minutes = totalMinutes % 60;         // 剩余分钟数
+        int totalHours = totalMinutes / 60;      // 总小时数
+        int hours = totalHours % 24;             // 剩余小时数
+        int days = totalHours / 24;              // 天数
+
+        player.sendSystemMessage(Component.literal(
+                translateDirect("console.csc.board.guard")+days+
+                        translateDirect( "console.csc.board.day")+hours+
+                        translateDirect( "console.csc.board.hour")+minutes+
+                        translateDirect("console.csc.board.minute")+seconds+
+                        translateDirect("console.csc.board.second")
+                )
+                .setStyle(Style.EMPTY.withColor(ChatFormatting.GREEN)));
+
+
+
+        player.sendSystemMessage(Component.literal(
+                translateDirect("console.csc.board.checkCount")+CheckCount+
+                        translateDirect( "console.csc.board.checkCount2")
+                )
+                .setStyle(Style.EMPTY.withColor(ChatFormatting.GREEN)));
+
+        player.sendSystemMessage(Component.literal(
+                translateDirect("console.csc.board.checkCount3")+ProblemCount+
+                        translateDirect( "console.csc.board.checkCount4")
+                )
+                .setStyle(Style.EMPTY.withColor(ChatFormatting.GREEN)));
+        player.sendSystemMessage(Component.literal(
+                translateDirect("console.csc.board.checkCount5")+CheatCount+
+                translateDirect("console.csc.board.checkCount6")
+                )
+                .setStyle(Style.EMPTY.withColor(ChatFormatting.GREEN)));
+
+
+
         player.sendSystemMessage(Component.literal(translateDirect("console.csc.liner"))
                 .setStyle(Style.EMPTY.withColor(ChatFormatting.GOLD)));
     }

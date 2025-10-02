@@ -1,5 +1,7 @@
 package com.Pink_Cats.createschematicchecker.FancyConfig;
 
+import com.Pink_Cats.createschematicchecker.lang.Message;
+
 import java.io.File;
 
 public class FileIO {
@@ -9,8 +11,8 @@ public class FileIO {
 
         if (!file.exists()) {
             boolean created = file.mkdirs();
-            if (created) {
-
+            if (!created) {
+                Message.FE("Path Create Failed");
             }
         }
     }
