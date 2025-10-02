@@ -73,20 +73,6 @@
    "minecraft:kelp"  # 这可以阻止绝大多数gt机，他们极其卡顿！
    ]
    
-   # 实验功能，可以在发现异常蓝图后推送smtp邮箱，免费又好用，还能利用免费的推送服务！
-   [smtp]
-   # 是否启用，true 或 false
-   enable = false
-   # 接收报警的邮箱，所有报警信息都会发送到这个邮箱！
-   email_receive = "example@qq.com"
-   # smtp的默认根服务器，一般情况不需要改
-   smtp_server = "smtp.qq.com"
-   # smtp的默认服务器端口，一般情况不需要改
-   smtp_port = 587
-   # 使用哪个邮箱进行发送，报警信息会从这个邮箱发出
-   smtp_sender_email = "<EMAIL>"
-   # 这个邮箱的smtp密码，需要在qq邮箱网页版获取
-   smtp_password = "<PASSWORD>"
    ```
 
 
