@@ -26,6 +26,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import static com.Pink_Cats.createschematicchecker.FancyConfig.ConfigRegister.CreateVersion;
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.WATERLOGGED;
 
 @Mixin(value = OpenEndedPipe.class,remap = false)
@@ -101,6 +102,7 @@ public class OpenEndedPipeMixin extends FlowSource {
 
         if (FluidHelper.isWater(stack.getFluid()))
             AdvancementBehaviour.tryAward(world, pos, AllAdvancements.WATER_SUPPLY);
+
 
         if (waterlog || lavalog) {
             if (waterlog) {

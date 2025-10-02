@@ -20,6 +20,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.slf4j.Logger;
 
+import java.lang.reflect.Field;
 import java.util.List;
 
 import static com.Pink_Cats.createschematicchecker.core.attach.Math.StringToInt;
@@ -69,6 +70,7 @@ public class Createschematicchecker {
         return AllConfigs.server().kinetics;
     }
 
+
     public void CreateConfigInject(){
         try{
             CannonDelay = CreateSchematicConfig().schematicannonDelay.get().toString();
@@ -76,6 +78,21 @@ public class Createschematicchecker {
             MaxIndex = String.valueOf((StringToInt(ConfigRegister.MaxBelt)-1));
             MaxEject = CreateCKineticsConfig().maxEjectorDistance.get().toString();
             MaxChassisRange = CreateCKineticsConfig().maxChassisRange.get().toString();
+
+            try {
+                // 获取配置对象
+                Object config = CreateCKineticsConfig();
+                Class<?> ckClass = config.getClass();
+                Field field = ckClass.getDeclaredField("maxChainConveyorLength");
+                field.setAccessible(true);
+                Object fieldValue = field.get(config);
+                CreateVersion = "6.0";
+            } catch (Exception e) {
+                CreateVersion = "0.5";
+            }
+
+
+
         } catch(Exception ex){
             Message.FE(translateDirect("console.ConfigInjectCreateError"));
         }

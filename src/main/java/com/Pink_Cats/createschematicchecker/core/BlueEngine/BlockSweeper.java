@@ -180,14 +180,18 @@ public class BlockSweeper {
             if (!type.contains("rule")){
                 if (totalCount != 0) {
                     IsNotMatch = true;
-                    Message.FM("[" + type + "][" + block_information + "]MisMatch: Block:[" + (sequence + 1) + "] All: " + total + " Left: " + totalCount);
-                    Message.FM("Before:");
+                    Message.FM(
+                            translateDirect("csc.mismatch.output1") + type +
+                                    translateDirect("csc.mismatch.output2")+ block_information +
+                                    translateDirect("csc.mismatch.output3") + (sequence + 1) +
+                                    translateDirect("csc.mismatch.output4") + total +
+                                    translateDirect("csc.mismatch.output5") + totalCount);
+                    Message.FM(translateDirect("csc.mismatch.before"));
                     Message.FM(Before);
-                    Message.FM("After:");
+                    Message.FM(translateDirect("csc.mismatch.after"));
                     Message.FM(Data.toString());
                 }
             }
-
 
             result.put("IsNotMatch", IsNotMatch);
             result.put("Data", Data);

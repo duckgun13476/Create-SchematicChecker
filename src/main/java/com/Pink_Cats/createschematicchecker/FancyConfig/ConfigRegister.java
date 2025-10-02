@@ -67,7 +67,13 @@ public class ConfigRegister {
                     "create:creative_blaze_cake",
                     "create:handheld_worldshaper",
                     "minecraft:spawner",
+                    "twilightforest:giant_obsidian",
+                    "twilightforest:giant_leaves",
+                    "twilightforest:giant_log",
+                    "twilightforest:giant_cobblestone",
+                    "twilightforest:huge_lily_pad",
                     "minecraft:command_block",
+                    "quark:grate",
                     "minecraft:kelp" })
 
             .comment(CommitBreak)
@@ -227,6 +233,7 @@ public class ConfigRegister {
     public static int  CheckCount;
     public static int  ProblemCount;
     public static int CheatCount;
+    public static String CreateVersion = "0.5";
 
 
 

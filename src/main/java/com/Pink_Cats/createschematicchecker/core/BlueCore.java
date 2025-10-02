@@ -63,15 +63,10 @@ public class BlueCore {
             CompoundTag_to_Path(S_tag(result.get("nbt_data")), DefaultPath+User+"/",Blueprint);
 
 
-
             return result;
 
-        } catch (IOException e) {
-            Message.FW("Wrong in BlueCore" + DefaultPath);
-            e.printStackTrace();
-
         } catch (Exception e) {
-            e.printStackTrace();
+            Message.FW("Wrong in BlueCore" + DefaultPath);
         }
         return Map.of();
     }

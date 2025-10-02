@@ -12,6 +12,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static com.Pink_Cats.createschematicchecker.FancyConfig.FileIO.createIfNotExists;
+import static com.Pink_Cats.createschematicchecker.lang.CSCLanguage.translateDirect;
 import static com.Pink_Cats.createschematicchecker.network.rule_io.RuleFixer;
 
 public class VersionChecker {
@@ -256,10 +257,10 @@ public class VersionChecker {
             Date localDate = getLocalVersion(BaseOnlinePath);
             String path = BaseOnlinePath+"/rule_"+serverVersion+".json";
             if (localDate.before(serverDate)) {
-                System.out.println("old local download...");
-
+                Message.FM(translateDirect("csc.update.start"));
                 downloadFile(fileBaseUrl, serverVersion, path);
-                System.out.println("download success");
+                Message.FM(translateDirect("csc.update.success"));
+
             }
             RuleFixer(path);
 

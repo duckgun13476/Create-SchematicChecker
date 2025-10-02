@@ -21,7 +21,7 @@ public class AutoUpdate {
     private static final ExecutorService executor = Executors.newSingleThreadExecutor();
     private static int tick = 0;
     private static int tick_1=0;
-    private static final int update_period = 15;
+    private static final int update_period = 3600;
 
     @SubscribeEvent
     public static void serverTickEvent(TickEvent.ServerTickEvent evt) {

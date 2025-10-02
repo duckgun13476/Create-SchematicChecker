@@ -41,7 +41,6 @@ public class FilterInterface {
             else {
                 filter_item = filter_items.getCompound(index);}
 
-            Message.FM("filter_item "+filter_item);
             find_count = SweeperIfHasId(filter_item,find_count,turn);
 
         }

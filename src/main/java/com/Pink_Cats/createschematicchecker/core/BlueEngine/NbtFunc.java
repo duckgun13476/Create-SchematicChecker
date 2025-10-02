@@ -504,7 +504,9 @@ public class NbtFunc {
 
                         String entityId = NoQuotes(entity.getCompound("nbt").get("id").toString());
                         if (IsWhitelistEntity(entityId)){
-                            Message.FE("NotKilled:  " + entityId);
+                            if (!entityId.equals("create:super_glue")){
+                                Message.FE(translateDirect("csc.kill.whitelist.ignore") + entityId);
+                            }
                         }else {
                             entities.remove(entity);
                         }

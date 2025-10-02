@@ -161,7 +161,8 @@ public class CSCLanguage {
         enUs.put("config.online.UpdateInfo",             "Enable automatic update reminders. When set to true, if CSC has vulnerabilities that require a version update to fix, a reminder will be sent");
         enUs.put("check.Update.Info1",             "Connected to cloud server:");
         enUs.put("check.Update.Info2",             "  Cloud schematic samples:");
-
+        enUs.put("csc.update.start",             "  Detected cloud rule update, preparing to download~");
+        enUs.put("csc.update.success",             "  Update completed~");
 
         // zh_cn
         Map<String, String> zhCn = new HashMap<>();
@@ -320,6 +321,20 @@ public class CSCLanguage {
         zhCn.put("check.Update.Info1",             "已连接到云端的服务器：");
         zhCn.put("check.Update.Info2",             "  云端蓝图样本：");
 
+
+        zhCn.put("csc.update.start",             "  检测到云端规则更新，准备下载~");
+        zhCn.put("csc.update.success",             "  更新完毕~");
+
+        zhCn.put("csc.kill.whitelist.ignore",             "根据配置忽略的物品：");
+
+        zhCn.put("csc.mismatch.output1",             "位于[");
+        zhCn.put("csc.mismatch.output2",             "][");
+        zhCn.put("csc.mismatch.output3",             "] 不匹配的方块：[");
+        zhCn.put("csc.mismatch.output4",             "] 总共应该剔除的数量: ");
+        zhCn.put("csc.mismatch.output5",             " 还剩下的数量: " );
+
+        zhCn.put("csc.mismatch.before",             "剔除前: " );
+        zhCn.put("csc.mismatch.after",             "剔除后: " );
 
         //enUs.put(" ")
         languageDictionary.put("zh_cn", zhCn);
