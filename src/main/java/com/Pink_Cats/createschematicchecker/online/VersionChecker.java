@@ -117,7 +117,10 @@ public class VersionChecker {
             int start = json.indexOf(":\"") + 2;
             int end = json.indexOf("\"", start);
             return json.substring(start, end);
+        } catch (Exception e) {
+
         }
+        return String.valueOf(new  Date());
     }
 
 
@@ -166,7 +169,10 @@ public class VersionChecker {
             while ((bytesRead = in.read(buffer)) != -1) {
                 out.write(buffer, 0, bytesRead);
             }
+        } catch (Exception ignored) {
+
         }
+
     }
 
     // 将版本字符串转换为 Date
