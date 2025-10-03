@@ -196,7 +196,7 @@ public class NbtFunc {
                                 .getCompound("Item").get("id").toString());
 
 
-                        if (!fake_id.contains(consumedItem_id) || consumedItem_count > 1 || consumedItem_count < 0 ) {
+                        if (!inside_material.equals(consumedItem_id) || consumedItem_count > 1 || consumedItem_count < 0 ) {
                             CompoundTag replace = block.getCompound("nbt")
                                     .getCompound("Item");
                             replace.put("id",TagString("minecraft:air"));
