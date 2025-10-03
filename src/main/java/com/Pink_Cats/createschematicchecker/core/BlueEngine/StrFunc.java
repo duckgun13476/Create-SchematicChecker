@@ -135,7 +135,7 @@ public class StrFunc {
         try {
             return  StrTag(Objects.requireNonNull(nbt_data.get("id")));
         } catch (Exception e) {
-            Message.FE(translateDirect("tag.no.id")+" "+nbt_data);
+            //Message.FE(translateDirect("tag.no.id")+" "+nbt_data);
             return "null:null";
         }
 
