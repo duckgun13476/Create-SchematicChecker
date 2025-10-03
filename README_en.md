@@ -185,6 +185,8 @@ It fixes a vast number of Create schematic-related vulnerabilities—including n
 - **32. Detected**: Exploit allowing arbitrary creative item acquisition via modified Create: Cannons (tampered fuse data).  
   - [X] [No sample video found]()  
 
+- **33. Detected**: Fixed a bug where printing giant blocks from the Twilight Forest mod would ignore the terrain and break bedrock.
+  - [X] [No sample video found]()
 
 ## Acknowledgments  
  - Special thanks to **crackun24**  
