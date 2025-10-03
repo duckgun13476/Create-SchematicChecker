@@ -4,6 +4,13 @@
 
 ### ~~A countermeasure against griefers who use bugged schematics (just kidding)~~  
 
+1. Welcome to CSC. CSC (formerly known as Create:SchematicChecker | Create: Schematic Validation) is a dedicated schematic-scanning mod tailored for Create and all its addons. It can block any recorded potential/malicious vulnerabilities, including but not limited to: item duplication, server lag or even crashes, obtaining creative items, and gaining control of the server. Triggering these vulnerabilities only requires uploading schematics with fixed modified parameters, which makes sabotaging the server extremely easy. As long as the server does not disable schematic cannons, anyone can randomly sabotage the server, crash it, obtain any creative items, and permanently damage any Create survival server—with extremely low costs and minimal time. This mod is designed specifically to address this issue, providing a permanent solution to all problems related to Create schematics!
+CSC allows users to customize blacklisted tags and blocks, define custom removal rules, and configure and customize the detailed results of schematic validation. Thanks to the universality of schematics, as long as the configuration file is properly designed, CSC can detect any cheating schematics from Create and all its addon mods.
+
+2. If the user agrees, CSC can even optionally connect to the internet to automatically sync rules to the local server. Whenever the CSC team discovers a new vulnerability, the configuration file will be updated automatically—enabling the automatic removal of potential vulnerabilities without the need to restart the server.
+
+
+
 <img width="1920" height="1080" alt="439597651-6bdcd06c-c454-41f0-aa1d-7f8b882064f8" src="https://github.com/user-attachments/assets/85848717-c13d-4c70-8049-6c136a387021" />
 
 
