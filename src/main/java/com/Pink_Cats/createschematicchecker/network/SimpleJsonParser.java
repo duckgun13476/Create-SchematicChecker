@@ -388,9 +388,17 @@ public class SimpleJsonParser {
         //ID InterFace
         String[][] IdLogicArray = {
 
-                //Create 6.0.*
+                //Create 6.0.* neoforge
                 {"create:stock_ticker", "nbt.$Categories.id"},
                 {"create:redstone_requester", "nbt.EncodedRequest.ordered_stacks.$entries.item_stack.id"},
+
+
+                //Create 6.0.* forge
+                {"create:redstone_requester", "nbt.EncodedRequest.OrderedStacks.$Entries.Item.id"},
+                {"create:table_cloth", "nbt.$Items.id"},
+                {"create:package_frogport", "nbt.Inventory.$Items.id"},
+                {"create:package_postbox", "nbt.Inventory.$Items.id"},
+
 
                 //Create 0.5.1
                 {"create:redstone_link", "nbt.FrequencyFirst.id"},
@@ -409,6 +417,7 @@ public class SimpleJsonParser {
                 {"create:belt", "nbt.Inventory.$Items.Item.id"},
                 {"create:basin", "nbt.Filter.id"},
                 {"create:basin", "nbt.InputItems.$Items.id"},
+                {"create:basin", "nbt.OutputItems.$Items.id"},
                 {"create:smart_fluid_pipe", "nbt.Filter.id"},
                 {"create:mechanical_crafter", "nbt.Inventory.$Items.id"},
                 {"create:toolbox", "nbt.Inventory.$Compartments.id"},
@@ -418,6 +427,11 @@ public class SimpleJsonParser {
                 {"create:brass_tunnel", "nbt.$Filters.Filter.id"},
                 {"create:brass_tunnel", "nbt.StackToDistribute.id"},
                 {"create:mechanical_roller", "nbt.Filter.id"},
+
+
+                //millstone can't save nbt so it doesn't need clear
+                //{"create:millstone", "nbt.InputInventory.$Items.id"},
+                //{"create:millstone", "nbt.OutputInventory.$Items.id"},
 
 
         };

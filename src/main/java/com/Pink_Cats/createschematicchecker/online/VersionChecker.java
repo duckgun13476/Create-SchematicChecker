@@ -188,11 +188,6 @@ public class VersionChecker {
     }
 
 
-    private static boolean checkServerVersion(String version, String serverVersion)  {
-        System.out.println(serverVersion);
-        System.out.println(version);
-        return false;
-    }
 
     public static Date getLocalVersion(String path) {
         File directory = new File(path);

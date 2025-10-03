@@ -32,6 +32,9 @@ public class MagicChain {
             if (type.equals("id"))
                 {
                     find_count = SweeperIfHasId(tag,find_count,2+3);  //3 allow deep count
+
+
+
                     if (find_count == -100)
                     {
                         Message.FE(translateDirect("check.csc.cheat.filter"));

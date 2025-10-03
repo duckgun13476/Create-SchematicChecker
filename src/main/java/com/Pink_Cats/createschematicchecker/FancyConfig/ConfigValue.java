@@ -312,7 +312,7 @@ public class ConfigValue {
      */
     public static String[] processArrayString(String strValue) {
         // 去掉方括号和空格
-        strValue = strValue.replaceAll("[\\[\\]\" ]", "");
+        strValue = strValue.replaceAll("[\\[\\]\" {}XYZ:]", "");
         strValue = NoAir(strValue);
         // 使用逗号分割字符串
         return strValue.split(",");

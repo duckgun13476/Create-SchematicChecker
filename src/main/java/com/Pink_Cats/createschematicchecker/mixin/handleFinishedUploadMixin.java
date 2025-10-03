@@ -1,6 +1,5 @@
 package com.Pink_Cats.createschematicchecker.mixin;
 
-import com.Pink_Cats.createschematicchecker.Createschematicchecker;
 import com.Pink_Cats.createschematicchecker.lang.Message;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.schematics.ServerSchematicLoader;

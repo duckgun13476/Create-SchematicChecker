@@ -18,22 +18,4 @@ public class FileIO {
     }
 
 
-    public static void listFilesInDirectory(String directoryPath) {
-        File directory = new File(directoryPath);
-
-        // 获取目录中的所有文件和文件夹
-        File[] files = directory.listFiles();
-
-        if (files != null) {
-            for (File file : files) {
-                if (file.isDirectory()) {
-                    System.out.println("Directory: " + file.getName());
-                } else {
-                    System.out.println("File: " + file.getName());
-                }
-            }
-        } else {
-            System.out.println("No files found in the directory.");
-        }
-    }
 }
