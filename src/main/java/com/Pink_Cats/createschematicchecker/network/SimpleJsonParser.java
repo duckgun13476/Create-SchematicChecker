@@ -382,6 +382,9 @@ public class SimpleJsonParser {
 
                 {"createbigcannons:fuzed_block","nbt.Fuze", "operate.clear$Fuze"},
 
+                //package_frogport
+                {"create:package_frogport","nbt.Inventory", "operate.clear$Inventory"},
+
 
         };
 
@@ -391,6 +394,10 @@ public class SimpleJsonParser {
                 //Create 6.0.* neoforge
                 {"create:stock_ticker", "nbt.$Categories.id"},
                 {"create:redstone_requester", "nbt.EncodedRequest.ordered_stacks.$entries.item_stack.id"},
+                {"create:factory_panel", "nbt.bottom_left.Filter.id"},
+                {"create:factory_panel", "nbt.top_left.Filter.id"},
+                {"create:factory_panel", "nbt.bottom_right.Filter.id"},
+                {"create:factory_panel", "nbt.top_right.Filter.id"},
 
 
                 //Create 6.0.* forge
@@ -428,6 +435,7 @@ public class SimpleJsonParser {
                 {"create:brass_tunnel", "nbt.StackToDistribute.id"},
                 {"create:mechanical_roller", "nbt.Filter.id"},
 
+                {"create:creative_crate", "nbt.Filter.id"},
 
                 //millstone can't save nbt so it doesn't need clear
                 //{"create:millstone", "nbt.InputInventory.$Items.id"},

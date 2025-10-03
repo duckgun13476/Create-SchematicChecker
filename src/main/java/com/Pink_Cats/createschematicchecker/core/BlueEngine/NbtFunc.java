@@ -197,7 +197,7 @@ public class NbtFunc {
                                 .getCompound("Item").get("id").toString());
 
 
-                        if (!fake_id.contains(consumedItem_id) || consumedItem_count > 1 || consumedItem_count < 0 ) {
+                        if (!inside_material.equals(consumedItem_id) || consumedItem_count > 1 || consumedItem_count < 0 ) {
                             CompoundTag replace = block.getCompound("nbt")
                                     .getCompound("Item");
                             replace.put("id",TagString("minecraft:air"));
@@ -603,9 +603,7 @@ public class NbtFunc {
 
         }
 
-        Message.FM("block:"+data);
-        Message.FM("banblock:"+Arrays.toString(ban_block));
-        Message.FM("has:"+HasBanBlock(data.toString()));
+
         if (HasBanTag(data.toString())) {
 
             Message.FW(translateDirect("config.tag.mismatch.output") + data);
