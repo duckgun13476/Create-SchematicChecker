@@ -261,6 +261,7 @@ public class VersionChecker {
                 downloadFile(fileBaseUrl, serverVersion, path);
                 Message.FM(translateDirect("csc.update.success"));
 
+
             }
             RuleFixer(path);
 

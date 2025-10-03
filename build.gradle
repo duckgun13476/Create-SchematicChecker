@@ -243,6 +243,30 @@ compileJava {
     options.compilerArgs = ['-Xdiags:verbose']
 }
 
+
+
+tasks.register('printReobfJarPath') {
+    doLast {
+        println "Reobfuscated JAR file path: ${reobfJar.archiveFile.get().asFile.absolutePath}"
+        def versionParts = mod_version.split("-")
+        println "version = \"$minecraft_version-$mod_version\"\n" +
+                "    displayName = \"${display_name}_v${versionParts[0]}_for_Create_v${versionParts[1]}\""
+        def propertiesFile = file('api.properties')
+        if (propertiesFile.exists()) {
+            def properties = new Properties()
+            properties.load(new FileInputStream(propertiesFile))
+            def cfToken = properties.getProperty("CF_TOKEN")
+            def modrinthToken = properties.getProperty("MODRINTH_TOKEN")
+
+            println "CF_TOKEN: $cfToken"
+            println "MODRINTH_TOKEN: $modrinthToken"
+        } else {
+            println "api.properties not exist"
+        }
+    }
+}
+
+
 jar {
     from('LICENSE.txt') {
         rename { "${it}_${archivesBaseName}" }
@@ -258,11 +282,22 @@ jar {
 
 
 publishMods {
+    def forge_p = true
+    def modrinth_p = false
+    def propertiesFile = file('api.properties')
+    def properties = new Properties()
+    properties.load(new FileInputStream(propertiesFile))
+    def cfTokenGet = properties.getProperty("CF_TOKEN")
+    def modrinthTokenGet = properties.getProperty("MODRINTH_TOKEN")
+
+
     file = reobfJar.archiveFile
     changelog = rootProject.file("update/${minecraft_version}-${mod_version}.md").text
     type = STABLE
     version = "$minecraft_version-$mod_version"
-    displayName = "$mod_name $mod_version for mc$minecraft_version"
+    def versionParts = mod_version.split("-")
+    displayName = "${display_name}_v${versionParts[0]}_for_Create_v${versionParts[1]}"
+
     modLoaders.add("forge")
     modLoaders.add("neoforge")
 
