@@ -310,7 +310,7 @@ publishMods {
             clientRequired = true
             serverRequired = true
             requires("create")
-            optional("jei", "crafttweaker")
+            optional("jei", "observable")
         }
     }
     var mrToken = System.getenv("MODRINTH_TOKEN")
@@ -320,7 +320,7 @@ publishMods {
             projectId = "${modrinth_id}"
             minecraftVersions.add(minecraft_version)
             requires("create")
-            optional("jei", "kubejs","kubejs-create","crafttweaker","createtweaker")
+            optional("jei", "observable")
         }
     }
 }
