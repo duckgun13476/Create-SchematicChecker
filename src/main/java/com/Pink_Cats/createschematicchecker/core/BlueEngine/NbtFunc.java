@@ -70,6 +70,7 @@ public class NbtFunc {
                 CompoundTag block = blocks.getCompound(i);
                 String id = BlockGetId(block, palette);
 
+
                 //clipboard
                 if (id.equals("createbigcannons:fuzed_block")) {
                     String InsideID = Objects.requireNonNull(block.getCompound("nbt").getCompound("Fuze").get("id")).toString();
@@ -602,7 +603,9 @@ public class NbtFunc {
 
         }
 
-
+        Message.FM("block:"+data);
+        Message.FM("banblock:"+Arrays.toString(ban_block));
+        Message.FM("has:"+HasBanBlock(data.toString()));
         if (HasBanTag(data.toString())) {
 
             Message.FW(translateDirect("config.tag.mismatch.output") + data);

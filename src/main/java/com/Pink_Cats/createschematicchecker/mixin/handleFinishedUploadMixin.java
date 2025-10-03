@@ -9,7 +9,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.MinecraftForge;
+import net.neoforged.neoforge.common.NeoForge;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -57,7 +57,7 @@ public abstract class handleFinishedUploadMixin {
                     return;
                 table.finishUpload();
                 SchematicUploadEvent uploadEvent = new SchematicUploadEvent(player, playerSchematicId,schematic, world, table);//构建一个事件
-                MinecraftForge.EVENT_BUS.post(uploadEvent);
+                NeoForge.EVENT_BUS.post(uploadEvent);
 
                 ctr.cancel();
             } catch (Exception e) {

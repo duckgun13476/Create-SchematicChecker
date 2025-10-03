@@ -10,7 +10,6 @@ import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.event.RegisterCommandsEvent;
 
 import java.util.Arrays;
 import java.util.List;
@@ -18,14 +17,13 @@ import java.util.List;
 import static com.Pink_Cats.createschematicchecker.FancyConfig.ConfigRegister.*;
 import static com.Pink_Cats.createschematicchecker.FancyConfig.ConfigRegister.ID_modify_rule_manual;
 import static com.Pink_Cats.createschematicchecker.FancyConfig.ConfigRegister.ID_modify_rule_online;
-import static com.Pink_Cats.createschematicchecker.core.BlueEngine.NbtInterFace.S_bool;
 import static com.Pink_Cats.createschematicchecker.lang.CSCLanguage.translateDirect;
 import static com.Pink_Cats.createschematicchecker.network.SimpleJsonParser.merge;
 
 public class Commands {
 
     public static long executionTime;
-    public static void RegisterCSCCommand(RegisterCommandsEvent event){
+    public static void RegisterCSCCommand(net.neoforged.neoforge.event.RegisterCommandsEvent event){
         CommandDispatcher<CommandSourceStack> dispatcher = event.getDispatcher();
 
         dispatcher.register(

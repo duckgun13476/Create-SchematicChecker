@@ -1,6 +1,5 @@
 package com.Pink_Cats.createschematicchecker;
 import com.Pink_Cats.createschematicchecker.FancyConfig.ConfigRegister;
-import com.Pink_Cats.createschematicchecker.core.BlueEngine.NbtInterFace;
 import com.Pink_Cats.createschematicchecker.lang.Message;
 import com.simibubi.create.infrastructure.config.AllConfigs;
 import com.simibubi.create.infrastructure.config.CKinetics;
@@ -8,16 +7,20 @@ import com.simibubi.create.infrastructure.config.CSchematics;
 import com.Pink_Cats.createschematicchecker.core.BlueCore;
 import com.Pink_Cats.createschematicchecker.event.CheckBlueprint;
 import com.mojang.logging.LogUtils;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.RegisterCommandsEvent;
-import net.minecraftforge.event.server.ServerStartingEvent;
-import net.minecraftforge.event.server.ServerStoppingEvent;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.config.ModConfigEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+
+import net.neoforged.fml.ModContainer;
+import net.neoforged.fml.config.ModConfig;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.RegisterCommandsEvent;
+import net.neoforged.neoforge.event.server.ServerStartingEvent;
+import net.neoforged.neoforge.event.server.ServerStoppingEvent;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.event.IModBusEvent;
+import net.neoforged.bus.api.IEventBus;
+
+import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.event.config.ModConfigEvent;
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import org.slf4j.Logger;
 
 import java.lang.reflect.Field;
@@ -39,21 +42,23 @@ public class Createschematicchecker {
     public static final Logger LOGGER = LogUtils.getLogger();
 
 
-    public Createschematicchecker() {
+    public Createschematicchecker(IEventBus modEventBus, ModContainer modContainer) {
 
-        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         // 添加监听器
         modEventBus.addListener(this::commonSetup);
-        MinecraftForge.EVENT_BUS.register(this);
+        modEventBus.register(new ModEventHandler(this));
 
-        //ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.SPEC);
+        NeoForge.EVENT_BUS.register(new GameEventHandler(this));
+
 
         BlueCore shifter = new BlueCore();   //创建一个新的过滤器
-
-        MinecraftForge.EVENT_BUS.register(new CheckBlueprint(shifter));//注册蓝图上传事件的监听器
+        NeoForge.EVENT_BUS.register(new CheckBlueprint(shifter));//注册蓝图上传事件的监听器
 
 
     }
+
+
+
 
     private void commonSetup(final FMLCommonSetupEvent event) {
         Message.FM(translateDirect("console.LoadingConfig"));
@@ -100,51 +105,73 @@ public class Createschematicchecker {
     }
 
 
-    @SubscribeEvent
-    public void onServerStarting(ServerStartingEvent event) {
-        //CscConfigIO();
-        CreateConfigInject();
-        CSC_MES.reopen();
-        CSC_WARN.reopen();
-        Message.FM("   _____  _____  _____ ");
-        Message.FM("  / ____|/ ____|/ ____|");
-        Message.FM(" | |    | (___ | |     "+"   "+ translateDirect("console.CscVersion"));
-        Message.FM(" | |     \\___ \\| |     "+"   "+ translateDirect("console.McVersion"));
-        Message.FM(" | |____ ____) | |____ "+"   "+ translateDirect( "console.feedback"));
-        Message.FM("  \\_____|_____/ \\_____|");
-        Message.FM("                       ");
-
-    }
-
-    @SubscribeEvent
-    public void onServerStopping(ServerStoppingEvent event) {
-
-        CSC_Variables_Save();
-        Message.FM(translateDirect("console.csc.StopServer"));
-        CSC_MES.close();
-        CSC_WARN.close();
-
-    }
 
 
 
+    private class ModEventHandler {
+        private final Createschematicchecker mod;
 
+        public ModEventHandler(Createschematicchecker mod) {
+            this.mod = mod;
+        }
 
-    @SubscribeEvent
-    public static void onReload(ModConfigEvent.Reloading event) {
-        try {
-            CSC_RELOAD();
-        }catch (Exception ex){
-            Message.FE(translateDirect("console.ConfigReloadError"));
+        // 只有Mod事件（如ModConfigEvent）放在这里
+        @SubscribeEvent
+        public void onReload(ModConfigEvent.Reloading event) {
+            try {
+                CSC_RELOAD(); // 直接调用主类的方法
+            } catch (Exception ex) {
+                Message.FE(translateDirect("console.ConfigReloadError"));
+            }
+        }
+
+        public Createschematicchecker getMod() {
+            return mod;
         }
     }
 
-    @SubscribeEvent
-    public void onCommandRegister(RegisterCommandsEvent event) {
-        RegisterCSCCommand(event);
 
+    private class GameEventHandler {
+        private final Createschematicchecker mod;
+
+        public GameEventHandler(Createschematicchecker mod) {
+            this.mod = mod;
+        }
+
+        // 所有通用游戏事件放在这里
+        @SubscribeEvent
+        public void onServerStarting(ServerStartingEvent event) {
+            //CscConfigIO();
+            CreateConfigInject();
+            CSC_MES.reopen();
+            CSC_WARN.reopen();
+            Message.FM("   _____  _____  _____ ");
+            Message.FM("  / ____|/ ____|/ ____|");
+            Message.FM(" | |    | (___ | |     "+"   "+ translateDirect("console.CscVersion"));
+            Message.FM(" | |     \\___ \\| |     "+"   "+ translateDirect("console.McVersion"));
+            Message.FM(" | |____ ____) | |____ "+"   "+ translateDirect( "console.feedback"));
+            Message.FM("  \\_____|_____/ \\_____|");
+            Message.FM("                       ");
+
+        }
+
+        @SubscribeEvent
+        public void onServerStopping(ServerStoppingEvent event) {
+            CSC_Variables_Save();
+            Message.FM(translateDirect("console.csc.StopServer"));
+            CSC_MES.close();
+            CSC_WARN.close();
+        }
+
+        @SubscribeEvent
+        public void onCommandRegister(RegisterCommandsEvent event) {
+            RegisterCSCCommand(event);
+        }
     }
+
 
 
 
 }
+
+

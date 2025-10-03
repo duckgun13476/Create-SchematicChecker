@@ -1,11 +1,10 @@
 package com.Pink_Cats.createschematicchecker.network;
 
 import net.minecraft.server.MinecraftServer;
-import net.minecraftforge.event.RegisterCommandsEvent;
-import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
-
+import net.neoforged.neoforge.event.RegisterCommandsEvent;
+import net.neoforged.neoforge.event.tick.ServerTickEvent;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -15,7 +14,7 @@ import static com.Pink_Cats.createschematicchecker.online.NbtFileUploader.AutoUp
 import static com.Pink_Cats.createschematicchecker.online.SimpleHeartbeatPusher.HeartBeatTask;
 import static com.Pink_Cats.createschematicchecker.online.VersionChecker.UpdateMainThread;
 
-@Mod.EventBusSubscriber
+@EventBusSubscriber
 public class AutoUpdate {
 
     private static final ExecutorService executor = Executors.newSingleThreadExecutor();
@@ -24,8 +23,8 @@ public class AutoUpdate {
     private static final int update_period = 3600;
 
     @SubscribeEvent
-    public static void serverTickEvent(TickEvent.ServerTickEvent evt) {
-        if(evt.phase == TickEvent.Phase.END) return;
+    public static void serverTickEvent(ServerTickEvent.Post evt) {
+
         // auto save
         tick ++;
         if (tick>20) {
@@ -68,7 +67,7 @@ public class AutoUpdate {
 
 
     @SubscribeEvent
-    public void onCommandRegister(RegisterCommandsEvent event) {
+    public static void onCommandRegister(RegisterCommandsEvent event) {
 
     }
 

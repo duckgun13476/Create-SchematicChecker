@@ -3,7 +3,8 @@ package com.Pink_Cats.createschematicchecker.event;
 import com.simibubi.create.content.schematics.table.SchematicTableBlockEntity;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.eventbus.api.Event;
+import net.neoforged.bus.api.Event;
+
 
 public class SchematicUploadEvent extends Event {//蓝图上传事件
     public String SchematicPath;

@@ -3,14 +3,13 @@ package com.Pink_Cats.createschematicchecker.core;
 import com.Pink_Cats.createschematicchecker.core.BlueEngine.NbtFunc;
 import com.Pink_Cats.createschematicchecker.lang.Message;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtAccounter;
 import net.minecraft.nbt.NbtIo;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.util.List;
 import java.util.Map;
+import java.util.zip.GZIPInputStream;
 
 import static com.Pink_Cats.createschematicchecker.FancyConfig.ConfigRegister.enable_backup;
 import static com.Pink_Cats.createschematicchecker.FancyConfig.FileIO.createIfNotExists;
@@ -78,7 +77,11 @@ public class BlueCore {
     private CompoundTag Path_to_CompoundTag(String SchematicPath) throws IOException {
         File BluePrint = new File(SchematicPath);
         FileInputStream file_stream = new FileInputStream(BluePrint);
-        return NbtIo.readCompressed(file_stream);
+        DataInputStream stream = new DataInputStream(new BufferedInputStream(
+                new GZIPInputStream(file_stream)));
+
+        return NbtIo.read(stream, NbtAccounter.create(0x20000000L));
+
     }
 
 
