@@ -13,6 +13,7 @@ import java.util.Set;
 
 import static com.Pink_Cats.createschematicchecker.FancyConfig.ConfigRegister.*;
 import static com.Pink_Cats.createschematicchecker.core.BlueEngine.NbtInterFace.StrTag;
+import static com.Pink_Cats.createschematicchecker.lang.CSCLanguage.translateDirect;
 
 public class StrFunc {
 
@@ -131,7 +132,13 @@ public class StrFunc {
 
 
     public static String TagMapId(CompoundTag nbt_data){
-        return  StrTag(Objects.requireNonNull(nbt_data.get("id")));
+        try {
+            return  StrTag(Objects.requireNonNull(nbt_data.get("id")));
+        } catch (Exception e) {
+            Message.FE(translateDirect("tag.no.id")+" "+nbt_data);
+            return "null:null";
+        }
+
     }
 
     public static boolean hasDuplicate(List<String> array) {

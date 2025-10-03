@@ -163,7 +163,7 @@ public class CSCLanguage {
         enUs.put("check.Update.Info2",             "  Cloud schematic samples:");
         enUs.put("csc.update.start",             "  Detected cloud rule update, preparing to download~");
         enUs.put("csc.update.success",             "  Update completed~");
-
+        enUs.put("tag.no.id",             "Didn't find id ：" );
         // zh_cn
         Map<String, String> zhCn = new HashMap<>();
         zhCn.put("console.feedback", "问题/反馈: QQ：1061133894");
@@ -335,6 +335,10 @@ public class CSCLanguage {
 
         zhCn.put("csc.mismatch.before",             "剔除前: " );
         zhCn.put("csc.mismatch.after",             "剔除后: " );
+
+
+        zhCn.put("tag.no.id",             "没有在目标nbt内找到 id ：" );
+
 
         //enUs.put(" ")
         languageDictionary.put("zh_cn", zhCn);

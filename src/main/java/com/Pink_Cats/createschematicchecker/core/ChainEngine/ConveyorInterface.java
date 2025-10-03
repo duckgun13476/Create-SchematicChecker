@@ -8,7 +8,6 @@ public class ConveyorInterface {
 
 
     public static int[] StringPickPos (String Pos){
-
         String[] apart = processArrayString(Pos);
         int [] PosRes = new int [3];
         PosRes[0] = StringToInt(apart[0]);

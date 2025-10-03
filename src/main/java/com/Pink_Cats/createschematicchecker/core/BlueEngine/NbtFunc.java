@@ -37,7 +37,6 @@ public class NbtFunc {
 
             // 提取 palette 信息
 
-
             ListTag palette = nbt_data.getList("palette", 10); // 10 表示 CompoundTag 类型
             for (int i = 0; i < palette.size(); i++) {
                 CompoundTag paletteItem = palette.getCompound(i);
@@ -118,6 +117,7 @@ public class NbtFunc {
 
                 //create:chain_conveyor
                 if (id.equals("create:chain_conveyor")) {
+
                     int[] SelfPos = StringPickPos(String.valueOf(block.get("pos")));
                     List<int[]> connectionList = new ArrayList<>();
                     ListTag Connections = (ListTag) block.getCompound("nbt").get("Connections");
@@ -247,8 +247,11 @@ public class NbtFunc {
                         }
                     }
                 }
+
                 if (block.size() >2){
+
                     blockResult = BaseBlockHandle(block, "block", palette, i,CheatLog);
+
                     block = S_tag(blockResult.get("Data"));
                     Cheat = S_bool(blockResult.get("Cheat")) || Cheat;
                     IsNotMatch = S_bool(blockResult.get("IsNotMatch")) || IsNotMatch;
@@ -306,6 +309,8 @@ public class NbtFunc {
                 }
 
             }
+
+
 
 
             //conveyor mismatch
@@ -381,6 +386,7 @@ public class NbtFunc {
                     }
                 }
             }
+
 
             //Crafter Mismatch Check
             CrafterPos.addAll(CrafterPosFlow); //add these to end
@@ -482,7 +488,6 @@ public class NbtFunc {
             //CopyCats
 
 
-
             // 提取 entity 信息
             ListTag entities = nbt_data.getList("entities", 10); // 10 表示 CompoundTag 类型
             boolean IsEntityKilled = false;
@@ -497,7 +502,6 @@ public class NbtFunc {
                 }else {
                     entity = S_tag(entityRes);
                 }
-
                 Cheat = S_bool(entityResult.get("Cheat")) || Cheat;
                 if (!IsEntityKilled) {
                     if (kill_entity){
@@ -516,10 +520,6 @@ public class NbtFunc {
 
                 }
 
-
-                if (entity != null) {
-                    entities.set(i, entity);
-                }
             }
 
             nbt_data.put("blocks", blocks);
@@ -639,7 +639,6 @@ public class NbtFunc {
                 IsNotMatch = S_bool(MapData.get("IsNotMatch")) || IsNotMatch;
             }
         }
-
         if (type.equals("palette")) {
             if (HasBanBlock) {
                 MapData = ClearBanBlock(data,"palette",sequence,PaletteBlockData);
