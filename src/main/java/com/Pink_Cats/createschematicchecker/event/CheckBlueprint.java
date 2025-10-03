@@ -6,7 +6,6 @@ import com.simibubi.create.AllItems;
 import com.simibubi.create.content.schematics.SchematicItem;
 import com.simibubi.create.content.schematics.table.SchematicTableBlockEntity;
 import net.minecraft.ChatFormatting;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.server.MinecraftServer;
@@ -15,7 +14,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraft.world.level.Level;
 import net.minecraftforge.server.ServerLifecycleHooks;
 
 import java.util.ArrayList;
@@ -90,7 +88,7 @@ public class CheckBlueprint {
                 }
 
                 table.inventory.setStackInSlot(1, SchematicItem.create(
-                        world.holderLookup(Registries.BLOCK), PlayerBlueprintId, player_id));
+                        world, PlayerBlueprintId, player_id));
 
             } else {
                 CheatCount +=1;

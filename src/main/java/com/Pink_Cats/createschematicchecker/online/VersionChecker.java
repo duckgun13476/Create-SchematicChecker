@@ -117,7 +117,10 @@ public class VersionChecker {
             int start = json.indexOf(":\"") + 2;
             int end = json.indexOf("\"", start);
             return json.substring(start, end);
+        } catch (Exception e) {
+
         }
+        return String.valueOf(new  Date());
     }
 
 

@@ -8,7 +8,8 @@ import com.simibubi.create.content.fluids.pipes.VanillaFluidTargets;
 import com.simibubi.create.foundation.advancement.AdvancementBehaviour;
 import com.simibubi.create.foundation.advancement.AllAdvancements;
 import com.simibubi.create.foundation.fluid.FluidHelper;
-import com.simibubi.create.foundation.utility.BlockFace;
+import com.simibubi.create.foundation.mixin.accessor.FlowingFluidAccessor;
+import net.createmod.catnip.math.BlockFace;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.LiquidBlock;
@@ -44,9 +45,10 @@ public class OpenEndedPipeMixin extends FlowSource {
     @Shadow
     private BlockPos pos;
 
-    public OpenEndedPipeMixin(BlockFace location) {
+    public OpenEndedPipeMixin(net.createmod.catnip.math.BlockFace location) {
         super(location);
     }
+
 
     @Inject(method = "removeFluidFromSpace", at = @At("HEAD"), cancellable = true,remap = false)
     private void removeFluidFromSpace(boolean simulate, CallbackInfoReturnable<FluidStack> cir) {
@@ -117,9 +119,28 @@ public class OpenEndedPipeMixin extends FlowSource {
             cir.setReturnValue(stack);
             cir.cancel();
             return;
+        } else {
+            var newState = fluidState.createLegacyBlock()
+                    .setValue(LiquidBlock.LEVEL, 14);
+
+            var newFluidState = newState.getFluidState();
+
+            if (newFluidState.getType() instanceof FlowingFluidAccessor flowing) {
+                var potentiallyFilled = flowing.create$getNewLiquid(world, outputPos, newState);
+
+                // Check if we'd immediately become the same fluid again.
+                if (potentiallyFilled.equals(fluidState)) {
+                    // If so, no need to update the block state.
+                    cir.setReturnValue(stack);
+                    cir.cancel();
+                }
+            }
+
+            world.setBlock(outputPos, newState, 3);
         }
-        world.setBlock(outputPos, fluidState.createLegacyBlock()
-                .setValue(LiquidBlock.LEVEL, 14), 3);
+
+
+
 
         cir.setReturnValue(stack);
         cir.cancel();

@@ -186,11 +186,10 @@ dependencies {
     implementation 'org.jetbrains:annotations:22.0.0'
 
     //Create
-    modImplementation("curse.maven:create-328085:5838779")
     modImplementation("com.tterrag.registrate:Registrate:${registrate_version}")
     compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:0.4.1"))
-
-    modImplementation("curse.maven:create-big-cannons-646668:6064368")
+    modImplementation("net.createmod.ponder:Ponder-Forge-${minecraft_version}:${ponder_version}")
+    modImplementation("curse.maven:create-328085:6641603")
     //Quark
 
     //modImplementation("curse.maven:quark-243121:6427817")
