@@ -169,7 +169,10 @@ public class VersionChecker {
             while ((bytesRead = in.read(buffer)) != -1) {
                 out.write(buffer, 0, bytesRead);
             }
+        } catch (Exception ignored) {
+
         }
+
     }
 
     // 将版本字符串转换为 Date
