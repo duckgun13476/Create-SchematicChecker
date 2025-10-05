@@ -71,6 +71,7 @@ public class NbtFunc {
                 CompoundTag block = blocks.getCompound(i);
                 String id = BlockGetId(block, palette);
 
+
                 //clipboard
                 if (id.equals("createbigcannons:fuzed_block")) {
                     String InsideID = Objects.requireNonNull(block.getCompound("nbt").getCompound("Fuze").get("id")).toString();
@@ -647,8 +648,9 @@ public class NbtFunc {
                 String track_shape = NoQuotes(data.getCompound("Properties")
                         .get("shape").toString());
 
-                if (track_shape.equals("none")) {
+                if (track_shape.equals("none") || track_shape.equals("NONE")) {
                     Properties.put("shape",TagString("xo"));
+                    Message.FE(translateDirect("csc.trams.track_problem"));
 
                 }
 
