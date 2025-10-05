@@ -190,7 +190,7 @@ tasks.register('printReobfJarPath') {
         // 分割版本信息
         def versionParts = mod_version.split("-")
         println "version = \"$minecraft_version-$mod_version\"\n" +
-                "    displayName = \"${display_name}_v${versionParts[0]}_for_Create_v${versionParts[1]}\""
+                "    displayName = \"${display_name}_v${versionParts[0]}_for_Create_neoforge_v${versionParts[1]}\""
 
         // 打印 CF_TOKEN 和 MODRINTH_TOKEN
         def cfToken = properties.getProperty("CF_TOKEN", "not found")
@@ -218,8 +218,9 @@ publishMods {
     type = STABLE
     version = "$minecraft_version-$mod_version"
     def versionParts = mod_version.split("-")
-    displayName = "${display_name}_v${versionParts[0]}_for_Create_v${versionParts[1]}"
-    modLoaders.add("forge")
+    displayName = "${display_name}_v${versionParts[0]}_for_Create_neoforge_v${versionParts[1]}"
+
+
     modLoaders.add("neoforge")
 
     var cfToken = cfTokenGet
