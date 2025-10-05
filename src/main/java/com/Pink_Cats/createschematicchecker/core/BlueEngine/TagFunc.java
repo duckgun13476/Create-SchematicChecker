@@ -6,14 +6,28 @@ import net.minecraft.nbt.ListTag;
 
 import java.util.Objects;
 
+import static com.Pink_Cats.createschematicchecker.core.BlueEngine.StrFunc.NoQuotes;
+
 public class TagFunc {
+
+
+    public static String PaletteGetId(CompoundTag tag){
+
+        try {
+            return NoQuotes(tag.get("Name").toString());
+        } catch (NullPointerException e){
+            Message.FE("PaletteGetId Error"+e.getMessage());
+            return "";
+        }
+
+    }
 
 
 
     public static String BlockGetId (CompoundTag tag, ListTag PaletteBlockData) {
         try{
             String result = Objects.requireNonNull(
-                    StrFunc.NoQuotes(
+                    NoQuotes(
                             String.valueOf(
                                     Objects.requireNonNull(
                                             tag.getCompound("nbt").get("id")

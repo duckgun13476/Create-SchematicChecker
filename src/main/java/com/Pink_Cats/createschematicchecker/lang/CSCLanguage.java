@@ -164,6 +164,11 @@ public class CSCLanguage {
         enUs.put("csc.update.start",             "  Detected cloud rule update, preparing to download~");
         enUs.put("csc.update.success",             "  Update completed~");
         enUs.put("tag.no.id",             "Didn't find id ：" );
+
+        enUs.put( "csc.trams.track_problem", "Find track renderer is none, This is unlegal. Set to default") ;
+
+
+
         // zh_cn
         Map<String, String> zhCn = new HashMap<>();
         zhCn.put("console.feedback", "问题/反馈: QQ：1061133894");
@@ -339,6 +344,9 @@ public class CSCLanguage {
 
         zhCn.put("tag.no.id",             "没有在目标nbt内找到 id ：" );
 
+
+
+        zhCn.put( "csc.trams.track_problem", "在火车轨道中发现方向渲染为空，这是不合理的，已重置为默认") ;
 
         //enUs.put(" ")
         languageDictionary.put("zh_cn", zhCn);
