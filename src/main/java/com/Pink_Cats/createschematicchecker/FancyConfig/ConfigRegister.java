@@ -30,7 +30,7 @@ public class ConfigRegister {
         DefineLanguage = (languageValue != null) ? languageValue.toString() : "en_us";
     }
     public static ConfigValue.ConfigString LANGUAGE = ConfigBuild
-            .define( "Language", "zh_cn")
+            .define( "Language", "en_us")
             .comment(CommitBreak)
             .comment("config.explain1")
             .comment("config.explain2")
