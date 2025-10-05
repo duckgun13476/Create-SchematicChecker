@@ -7,6 +7,7 @@ import java.util.*;
 
 import static com.Pink_Cats.createschematicchecker.FancyConfig.ConfigRegister.*;
 import static com.Pink_Cats.createschematicchecker.core.BlueEngine.BlockSweeper.ClearBanBlock;
+import static com.Pink_Cats.createschematicchecker.core.BlueEngine.TagFunc.PaletteGetId;
 import static com.Pink_Cats.createschematicchecker.core.ChainEngine.ConveyorInterface.StringPickHalfPos;
 import static com.Pink_Cats.createschematicchecker.core.ChainEngine.ConveyorInterface.StringPickPos;
 import static com.Pink_Cats.createschematicchecker.core.BlueEngine.NbtInterFace.*;
@@ -640,6 +641,23 @@ public class NbtFunc {
             }
         }
         if (type.equals("palette")) {
+            String id = PaletteGetId(data);
+            if (id.equals("create:track")){
+                CompoundTag Properties = data.getCompound("Properties");
+                String track_shape = NoQuotes(data.getCompound("Properties")
+                        .get("shape").toString());
+
+                if (track_shape.equals("none")) {
+                    Properties.put("shape",TagString("xo"));
+
+                }
+
+
+            }
+
+
+
+
             if (HasBanBlock) {
                 MapData = ClearBanBlock(data,"palette",sequence,PaletteBlockData);
                 data = S_tag(MapData.get("Data"));
