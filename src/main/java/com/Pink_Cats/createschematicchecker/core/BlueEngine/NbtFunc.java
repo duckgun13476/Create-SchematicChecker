@@ -198,15 +198,18 @@ public class NbtFunc {
 
 
                         if (!inside_material.equals(consumedItem_id) || consumedItem_count > 1 || consumedItem_count < 0 ) {
-                            CompoundTag replace = block.getCompound("nbt")
-                                    .getCompound("Item");
-                            replace.put("id",TagString("minecraft:air"));
+                            if (!consumedItem_id.equals("minecraft:air")){
 
-                            CompoundTag replace2 =  block.getCompound("nbt").getCompound("Material");
-                            replace2.put("Name",TagString("minecraft:air"));
+                                CompoundTag replace = block.getCompound("nbt")
+                                        .getCompound("Item");
+                                replace.put("id",TagString("minecraft:air"));
 
-                            CheatLog.add(translateDirect("console.cheat.copycats") +"["+consumedItem_count+"|1]["+consumedItem_id+"|"+inside_material+"]");
-                            Cheat = true;
+                                CompoundTag replace2 =  block.getCompound("nbt").getCompound("Material");
+                                replace2.put("Name",TagString("minecraft:air"));
+
+                                CheatLog.add(translateDirect("console.cheat.copycats") +"["+consumedItem_count+"|1]["+consumedItem_id+"|"+inside_material+"]");
+                                Cheat = true;
+                            }
                         }
 
                     }
@@ -231,14 +234,19 @@ public class NbtFunc {
                                                             .get("Count")
                                                             .toString()
                                                             .replaceAll("[b;]", ""));
-                            if (!fake_id.contains(consumedItem_id) || consumedItem_count > 1 || consumedItem_count < 0 ) {
-                                CompoundTag replace = plastic.getCompound("consumedItem");
-                                replace.put("id",TagString("minecraft:air"));
-                                CompoundTag replace2 = plastic.getCompound("material");
-                                replace2.put("Name",TagString("minecraft:air"));
 
-                                CheatLog.add(translateDirect("console.cheat.copycats") +"["+consumedItem_count+"|1]["+consumedItem_id+"|"+inside_material+"]");
-                                Cheat = true;
+                            if (!fake_id.contains(consumedItem_id) || consumedItem_count > 1 || consumedItem_count < 0 ) {
+
+                                if (!consumedItem_id.equals("minecraft:air")){
+                                    CompoundTag replace = plastic.getCompound("consumedItem");
+                                    replace.put("id",TagString("minecraft:air"));
+                                    CompoundTag replace2 = plastic.getCompound("material");
+                                    replace2.put("Name",TagString("minecraft:air"));
+
+                                    CheatLog.add(translateDirect("console.cheat.copycats") +"["+consumedItem_count+"|1]["+consumedItem_id+"|"+inside_material+"]");
+                                    Cheat = true;
+                                }
+
                             }
                         }
                         fake_id.removeIf("minecraft:air"::equals);
