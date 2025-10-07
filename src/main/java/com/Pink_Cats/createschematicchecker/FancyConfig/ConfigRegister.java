@@ -102,7 +102,9 @@ public class ConfigRegister {
 
     public static ConfigValue.ConfigStringArray BAN_TAG = ConfigBuild
             .define("core.BanTag", new String[]{
-                    "AttributeModifiers", "run_command","using_converts_to","bundle_contents","minecraft:container"})
+                    "AttributeModifiers", "run_command",
+                    "using_converts_to","bundle_contents",
+                    "minecraft:container","minecraft:attribute_modifiers"})
             .comment(CommitBreak)
             .comment("config.BanTag");
 
