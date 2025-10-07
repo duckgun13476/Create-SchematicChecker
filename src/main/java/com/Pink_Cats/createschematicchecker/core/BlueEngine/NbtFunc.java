@@ -90,10 +90,13 @@ public class NbtFunc {
                     if (nbt.contains("AttributeModifiers:") || nbt.contains("AttributeName:")||
                         nbt.contains("using_converts_to")||
                         nbt.contains("bundle_contents")||
+                        nbt.contains("modifiers:")||
+                        nbt.contains("amount:infinityd")||
                         nbt.contains("minecraft:container"))
                     {
                         Cheat = true;
                         CheatLog.add(translateDirect("console.cheat.clipboard") );
+                        CheatLog.add("-》 " + nbt);
 
                     }
                 }

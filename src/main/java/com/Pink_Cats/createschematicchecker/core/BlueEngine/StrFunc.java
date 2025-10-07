@@ -31,8 +31,12 @@ public class StrFunc {
 
 
     public static boolean HasBanTag(String data){
+        String LowData = data.toLowerCase();
+        Message.FM(LowData);
         for (String item : ban_tag){
-            if (data.contains(item)){
+            String LowItem = item.toLowerCase();
+            Message.FM(LowItem);
+            if (LowData.contains(LowItem)){
                 return true;
             }
         }
