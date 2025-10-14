@@ -213,6 +213,12 @@ public class ConfigRegister {
             .comment("config.online.UpdateInfo");
 
 
+    public static ConfigValue.ConfigBoolean ENABLE_DEBUG= ConfigBuild
+            .define("debug.debug.problem", false)
+            .comment(CommitBreak)
+            .comment("config.debug.problem");
+
+
     public static String language = LANGUAGE.getDefaultValue();
     public static String user_uuid = UUID.getDefaultValue();
     public static boolean enable_csc = ENABLE.getDefaultValue();
@@ -232,6 +238,7 @@ public class ConfigRegister {
     public static int maxConveyorCheatDistanceLimit = MAX_CONVEYOR_CHEAT_DISTANCE_LIMIT.getDefaultValue();
     public static boolean DebugCheatFind = DEBUG_CHEAT_FIND.getDefaultValue();
     public static boolean update_info = UPDATE_INFO.getDefaultValue();
+    public static boolean enable_debug = ENABLE_DEBUG.getDefaultValue();
 
 
     public static String[][] ID_match_rule;
@@ -281,6 +288,7 @@ public class ConfigRegister {
 
 
     public static List<String> CSC_INIT(List<String> log) {
+        enable_debug = ENABLE_DEBUG.getDefaultValue();
         update_info = UPDATE_INFO.getDefaultValue();
         DebugCheatFind = DEBUG_CHEAT_FIND.getDefaultValue();
         maxConveyorCheatDistanceLimit = MAX_CONVEYOR_CHEAT_DISTANCE_LIMIT.getDefaultValue();
@@ -308,6 +316,7 @@ public class ConfigRegister {
     public static List<String> CSC_RELOAD() {
         Message.FM(translateDirect("console.reload1"));
         List<String> list = new ArrayList<String>();
+        ENABLE_DEBUG.reload();
         UPDATE_INFO.reload();
         DEBUG_CHEAT_FIND.reload();
         MAX_CONVEYOR_CHEAT_DISTANCE_LIMIT.reload();

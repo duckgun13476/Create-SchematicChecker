@@ -7,6 +7,8 @@ import com.simibubi.create.content.schematics.SchematicItem;
 import com.simibubi.create.content.schematics.table.SchematicTableBlockEntity;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtIo;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.server.MinecraftServer;
@@ -18,12 +20,19 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.server.ServerLifecycleHooks;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import static com.Pink_Cats.createschematicchecker.FancyConfig.ConfigRegister.*;
 import static com.Pink_Cats.createschematicchecker.core.BlueEngine.NbtInterFace.S_bool;
+import static com.Pink_Cats.createschematicchecker.core.BlueEngine.NbtInterFace.S_tag;
+import static com.Pink_Cats.createschematicchecker.core.BlueEngine.StrFunc.getCurrentDateTime;
+import static com.Pink_Cats.createschematicchecker.event.TempOffEvent.CheckSchematic;
+import static com.Pink_Cats.createschematicchecker.event.TempOffEvent.Temporary_stop;
 import static com.Pink_Cats.createschematicchecker.lang.CSCLanguage.translateDirect;
 
 public class CheckBlueprint {
@@ -50,20 +59,52 @@ public class CheckBlueprint {
             Level world = event.World;
             ServerPlayer player = event.Player;
             String PlayerBlueprintId = event.SchematicPath;
+            String player_id = player.getGameProfile().getName();
 
 
             if (table.isRemoved()) {
                 return;
             }
 
+
+            if (!CheckSchematic)
+            {
+                Message.FE(translateDirect("console.stop.csc.temp.output"));
+                String DefaultPath = "./schematics/uploaded/";
+                //String DefaultPath = System.getProperty("user.dir");
+                String path = DefaultPath + PlayerBlueprintId;
+                CompoundTag nbt_data = Path_to_CompoundTag(path);
+                String User = PlayerBlueprintId.split("/")[0];
+                String Blueprint = PlayerBlueprintId.split("/")[1];
+                if (enable_backup)
+                {
+                    Checker.CompoundTag_to_Path(nbt_data, "config/CSC/backup/"+User+"/",getCurrentDateTime()+Blueprint);
+                }
+                Checker.CompoundTag_to_Path(nbt_data, DefaultPath+User+"/",Blueprint);
+
+                table.inventory.setStackInSlot(1, SchematicItem.create(
+                        world.holderLookup(Registries.BLOCK), Blueprint, player_id));
+                return;
+            }
+
+
+
             List<String> CheatLog = new ArrayList<>();
 
             long startTime = System.currentTimeMillis();
+
+
+
             Map<String,Object> CheckResult = Checker.SchematicBlueCore(PlayerBlueprintId,CheatLog);
+
+
+
+
+
             CheckCount++;
             boolean IsCheatSchematic = S_bool(CheckResult.get("Cheat"));
             boolean IsProblem = S_bool(CheckResult.get("Problem"));
-            String player_id = player.getGameProfile().getName();
+            boolean CannotCheck = S_bool(CheckResult.get("CannotCheck"));
 
             long endTime = System.currentTimeMillis();
             long executionTime = endTime - startTime;
@@ -79,6 +120,13 @@ public class CheckBlueprint {
             }
             //Message.FE(PlayerBlueprintId);
             Message.FP(translateDirect("console.total.time") + executionTime + " ms");
+
+            if (CannotCheck) {
+                Message.FE(translateDirect("console.csc.cannotCheck"));
+                table.inventory.setStackInSlot(0, AllItems.EMPTY_SCHEMATIC.asStack());
+                return;
+            }
+
 
 
             if (!IsCheatSchematic) {
@@ -106,6 +154,12 @@ public class CheckBlueprint {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public CompoundTag Path_to_CompoundTag(String SchematicPath) throws IOException {
+        File BluePrint = new File(SchematicPath);
+        FileInputStream file_stream = new FileInputStream(BluePrint);
+        return NbtIo.readCompressed(file_stream);
     }
 
     public String removeFirstPathComponent(String path) {

@@ -41,6 +41,7 @@ public class BlueCore {
             }
 
             Map<String,Object> result = MainCheck.NBTCheck(nbt_data,CheatLog);
+            boolean CannotCheck = S_bool(result.get("CannotCheck"));
             boolean IsCheat = S_bool(result.get("Cheat"));
             boolean IsProblem = S_bool(result.get("Problem"));
             if (enable_backup){
@@ -75,7 +76,7 @@ public class BlueCore {
 
 
     //tool func
-    private CompoundTag Path_to_CompoundTag(String SchematicPath) throws IOException {
+    public CompoundTag Path_to_CompoundTag(String SchematicPath) throws IOException {
         File BluePrint = new File(SchematicPath);
         FileInputStream file_stream = new FileInputStream(BluePrint);
         return NbtIo.readCompressed(file_stream);
