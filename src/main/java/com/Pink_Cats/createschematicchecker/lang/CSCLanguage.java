@@ -76,6 +76,8 @@ public class CSCLanguage {
         enUs.put( "console.csc.welcome3",             "/csc reload Reload CSC configurations");
         enUs.put( "console.csc.welcome4",             "/csc list View CSC parameter help");
         enUs.put( "console.csc.welcome5",             "/csc list [Parameter]  View CSC parameters");
+        enUs.put( "console.csc.welcome6",             "/csc Enable       Restart CSC");
+        enUs.put( "console.csc.welcome7",             "/csc DisableTemp  temporary stop CSC 5min");
 
         enUs.put( "console.csc.StopServer",             "CSC close completely, thanks for using!");
         enUs.put( "console.paraList1",             "Currently attached ID matching cleanup rules");
@@ -166,6 +168,13 @@ public class CSCLanguage {
         enUs.put("tag.no.id",             "Didn't find id ：" );
 
         enUs.put( "csc.trams.track_problem", "Find track renderer is none, This is unlegal. Set to default") ;
+        enUs.put("config.debug.problem", "enable debug mod") ;
+        enUs.put( "console.stop.csc.temp.output", "For user config CSC is now disable Please check schematic manly") ;
+        enUs.put("csc.off.temporary.restore","CSC restored!");
+
+        enUs.put("console.csc.cannotCheck","CSC can't check this blueprint Please input /csc help to feed back, feedback way is in it!");
+
+
 
 
 
@@ -229,9 +238,14 @@ public class CSCLanguage {
         zhCn.put( "console.csc.welcome",              "欢迎使用  [机械动力：蓝图校验] ");
         zhCn.put( "console.csc.welcome1",             "[链接] 问题反馈[GitHub]");
         zhCn.put( "console.csc.welcome2",             "[链接] 帮助/反馈  QQ: 1061133894");
-        zhCn.put( "console.csc.welcome3",             "/csc reload 重载CSC配置");
-        zhCn.put( "console.csc.welcome4",             "/csc list 查看CSC的参数帮助");
+        zhCn.put( "console.csc.welcome3",             "/csc reload      重载CSC配置");
+        zhCn.put( "console.csc.welcome4",             "/csc list        查看CSC的参数帮助");
         zhCn.put( "console.csc.welcome5",             "/csc list [参数]  查看CSC的参数");
+        zhCn.put( "console.csc.welcome6",             "/csc Enable       重新启动CSC");
+        zhCn.put( "console.csc.welcome7",             "/csc DisableTemp  临时关闭CSC 5分钟");
+
+
+
         zhCn.put( "console.csc.StopServer",             "CSC 已经安全关闭，感谢使用喵~");
         zhCn.put( "console.paraList1",             "当前附加的 ID 匹配清理规则");
         zhCn.put( "console.paraList2",             "当前附加的 方块nbt 匹配清理规则");
@@ -318,35 +332,36 @@ public class CSCLanguage {
         zhCn.put( "check.chain.rule.error",             "发现匹配规则的方块，但是没有在方块中找到处理的变量");
         zhCn.put( "check.chain.rule.block",             "方块[");
         zhCn.put("check.chain.rule.rule",             "]  规则 [");
-
-
-
-
         zhCn.put("config.online.UpdateInfo",             "启动自动更新提醒，当设置为true，如果CSC有需要更新版本才能修复的漏洞，将会发出提醒");
         zhCn.put("check.Update.Info1",             "已连接到云端的服务器：");
         zhCn.put("check.Update.Info2",             "  云端蓝图样本：");
-
-
         zhCn.put("csc.update.start",             "  检测到云端规则更新，准备下载~");
         zhCn.put("csc.update.success",             "  更新完毕~");
-
         zhCn.put("csc.kill.whitelist.ignore",             "根据配置忽略的物品：");
-
         zhCn.put("csc.mismatch.output1",             "位于[");
         zhCn.put("csc.mismatch.output2",             "][");
         zhCn.put("csc.mismatch.output3",             "] 不匹配的方块：[");
         zhCn.put("csc.mismatch.output4",             "] 总共应该剔除的数量: ");
         zhCn.put("csc.mismatch.output5",             " 还剩下的数量: " );
-
         zhCn.put("csc.mismatch.before",             "剔除前: " );
         zhCn.put("csc.mismatch.after",             "剔除后: " );
-
-
         zhCn.put("tag.no.id",             "没有在目标nbt内找到 id ：" );
-
-
-
         zhCn.put( "csc.trams.track_problem", "在火车轨道中发现方向渲染为空，这是不合理的，已重置为默认") ;
+
+
+
+        zhCn.put("config.debug.problem", "启动调试模式，这会打印更多的报错输出，但会导致控制台变得混乱，绝大多数情况下不需要开启") ;
+        zhCn.put( "console.disable.csc", "CSC已临时关闭5分钟，蓝图将不会被检测，请注意检查蓝图！") ;
+
+
+        zhCn.put( "console.stop.csc.temp.output", "根据用户规则，当前蓝图不会检测，请注意检测蓝图") ;
+
+        zhCn.put("csc.off.temporary.restore","CSC 已恢复启动");
+
+        zhCn.put("console.csc.cannotCheck","CSC 不能检测这个蓝图，为了您和其他所有服务器安全，请输入 /csc help ，提交此蓝图的反馈！");
+
+
+
 
         //enUs.put(" ")
         languageDictionary.put("zh_cn", zhCn);
