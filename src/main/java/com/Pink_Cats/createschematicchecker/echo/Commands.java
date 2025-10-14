@@ -1,6 +1,7 @@
 package com.Pink_Cats.createschematicchecker.echo;
 
 import com.Pink_Cats.createschematicchecker.FancyConfig.ConfigRegister;
+import com.Pink_Cats.createschematicchecker.event.TempOffEvent;
 import com.Pink_Cats.createschematicchecker.lang.Message;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
@@ -19,6 +20,7 @@ import static com.Pink_Cats.createschematicchecker.FancyConfig.ConfigRegister.*;
 import static com.Pink_Cats.createschematicchecker.FancyConfig.ConfigRegister.ID_modify_rule_manual;
 import static com.Pink_Cats.createschematicchecker.FancyConfig.ConfigRegister.ID_modify_rule_online;
 import static com.Pink_Cats.createschematicchecker.core.BlueEngine.NbtInterFace.S_bool;
+import static com.Pink_Cats.createschematicchecker.event.TempOffEvent.Temporary_stop;
 import static com.Pink_Cats.createschematicchecker.lang.CSCLanguage.translateDirect;
 import static com.Pink_Cats.createschematicchecker.network.SimpleJsonParser.merge;
 
@@ -89,7 +91,24 @@ public class Commands {
                                             return Command.SINGLE_SUCCESS;
                                         }
                                 ))
-
+                        .then(net.minecraft.commands.Commands.literal("DisableTemp")
+                                .executes(context ->  {
+                                            Player player = context.getSource().getPlayer();
+                                            if (player != null) {
+                                                CSC_DISABLE(player);
+                                            }
+                                            return Command.SINGLE_SUCCESS;
+                                        }
+                                ))
+                        .then(net.minecraft.commands.Commands.literal("Enable")
+                                .executes(context ->  {
+                                            Player player = context.getSource().getPlayer();
+                                            if (player != null) {
+                                                CSC_ENABLE(player);
+                                            }
+                                            return Command.SINGLE_SUCCESS;
+                                        }
+                                ))
                         .then(net.minecraft.commands.Commands.literal("list")
                                 .executes(context -> {
                                     Player player = context.getSource().getPlayer();
@@ -215,6 +234,26 @@ public class Commands {
     }
 
 
+    public static void CSC_DISABLE(Player player) {
+
+        player.sendSystemMessage(Component.literal(translateDirect("console.disable.csc"))
+                .setStyle(Style.EMPTY.withColor(ChatFormatting.GOLD)));
+
+        Temporary_stop = true;
+
+    }
+
+
+    public static void CSC_ENABLE(Player player) {
+
+        player.sendSystemMessage(Component.literal(translateDirect("csc.off.temporary.restore"))
+                .setStyle(Style.EMPTY.withColor(ChatFormatting.GOLD)));
+
+        TempOffEvent.StopTick  = 5;
+
+    }
+
+
     public static void CSC_HELP(Player player){
         player.sendSystemMessage(Component.literal(translateDirect("console.csc.run.command"))
                 .setStyle(Style.EMPTY.withColor(ChatFormatting.GOLD)));
@@ -238,6 +277,13 @@ public class Commands {
                 .setStyle(Style.EMPTY.withColor(ChatFormatting.GREEN)));
         player.sendSystemMessage(Component.literal(translateDirect("console.csc.welcome5"))
                 .setStyle(Style.EMPTY.withColor(ChatFormatting.GREEN)));
+
+        player.sendSystemMessage(Component.literal(translateDirect("console.csc.welcome6"))
+                .setStyle(Style.EMPTY.withColor(ChatFormatting.GREEN)));
+        player.sendSystemMessage(Component.literal(translateDirect("console.csc.welcome7"))
+                .setStyle(Style.EMPTY.withColor(ChatFormatting.GREEN)));
+
+
         player.sendSystemMessage(Component.literal(translateDirect("console.csc.liner"))
                 .setStyle(Style.EMPTY.withColor(ChatFormatting.GOLD)));
     }

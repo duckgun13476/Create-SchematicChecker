@@ -33,6 +33,7 @@ public class NbtFunc {
         boolean Cheat = false;
         boolean Problem = false;
         boolean IsNotMatch = false;
+        boolean CannotCheck = false;
         //PinkCats Inject
         try {
 
@@ -190,30 +191,44 @@ public class NbtFunc {
                         material = block.getCompound("nbt").getCompound("Material");
 
                         String inside_material = NoQuotes(Objects.requireNonNull(material.get("Name")).toString());
-                        int consumedItem_count = StringToInt(
-                                block.getCompound("nbt")
-                                        .getCompound("Item")
-                                        .get("Count")
-                                        .toString()
-                                        .replaceAll("[b;]", ""));
-                        String consumedItem_id = NoQuotes(block.getCompound("nbt")
-                                .getCompound("Item").get("id").toString());
+
+                        CompoundTag Item = block.getCompound("nbt")
+                                .getCompound("Item");
 
 
-                        if (!inside_material.equals(consumedItem_id) || consumedItem_count > 1 || consumedItem_count < 0 ) {
-                            if (!consumedItem_id.equals("minecraft:air")){
+                        if (!Item.toString().equals("{}")) {
 
-                                CompoundTag replace = block.getCompound("nbt")
-                                        .getCompound("Item");
-                                replace.put("id",TagString("minecraft:air"));
+                            int consumedItem_count = StringToInt(
+                                    Item.get("Count")
+                                            .toString()
+                                            .replaceAll("[b;]", ""));
 
-                                CompoundTag replace2 =  block.getCompound("nbt").getCompound("Material");
-                                replace2.put("Name",TagString("minecraft:air"));
 
-                                CheatLog.add(translateDirect("console.cheat.copycats") +"["+consumedItem_count+"|1]["+consumedItem_id+"|"+inside_material+"]");
-                                Cheat = true;
+
+                            String consumedItem_id = NoQuotes(block.getCompound("nbt")
+                                    .getCompound("Item").get("id").toString());
+
+
+                            if (!inside_material.equals(consumedItem_id) || consumedItem_count > 1 || consumedItem_count < 0 ) {
+                                if (!consumedItem_id.equals("minecraft:air")){
+
+                                    CompoundTag replace = block.getCompound("nbt")
+                                            .getCompound("Item");
+                                    replace.put("id",TagString("minecraft:air"));
+
+                                    CompoundTag replace2 =  block.getCompound("nbt").getCompound("Material");
+                                    replace2.put("Name",TagString("minecraft:air"));
+
+                                    CheatLog.add(translateDirect("console.cheat.copycats") +"["+consumedItem_count+"|1]["+consumedItem_id+"|"+inside_material+"]");
+                                    Cheat = true;
+                                }
                             }
+
+
+
                         }
+
+
 
                     }
                     else {
@@ -259,6 +274,10 @@ public class NbtFunc {
                         }
                     }
                 }
+
+
+
+
 
                 if (block.size() >2){
 
@@ -485,7 +504,8 @@ public class NbtFunc {
 
                 }
             } catch (Exception ex) {
-                ex.printStackTrace();
+                if (enable_debug)
+                    ex.printStackTrace();
             }
 
             //FluidTank Mismatch Check
@@ -548,7 +568,11 @@ public class NbtFunc {
 
         }
         catch (Exception e) {
-            LOGGER.error(e.getMessage());
+            if (enable_debug)
+                e.printStackTrace();
+            Message.FE(e.getMessage());
+            CannotCheck = true;
+
         }
         //Inject limit.
         //Add special matcher here.↑
@@ -560,6 +584,7 @@ public class NbtFunc {
             Problem = true;
         }
 
+        result.put("CannotCheck",CannotCheck);
         result.put("Problem",Problem);
         result.put("nbt_data", nbt_data);
         result.put("Cheat",Cheat);
