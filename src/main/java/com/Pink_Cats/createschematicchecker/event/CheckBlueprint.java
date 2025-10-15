@@ -138,6 +138,7 @@ public class CheckBlueprint {
                 table.inventory.setStackInSlot(1, SchematicItem.create(
                         world, PlayerBlueprintId, player_id));
 
+
             } else {
                 CheatCount +=1;
                 Message.FE(translateDirect("console.cheat.find"));
@@ -146,6 +147,10 @@ public class CheckBlueprint {
                 if (DebugCheatFind){
                     broadcast(PlayerBlueprintId,player_id);
                 }
+                if (CheckRunCommand){
+                    ExecuteSomeCmd(PlayerBlueprintId,player_id);
+                }
+
                 table.inventory.setStackInSlot(0, AllItems.EMPTY_SCHEMATIC.asStack());
             }
 
@@ -199,7 +204,9 @@ public class CheckBlueprint {
         }
 
     }
-
+    public static void ExecuteSomeCmd(String PlayerBlueprintId, String PlayerName) {
+        String command = "";
+    }
 
 
 

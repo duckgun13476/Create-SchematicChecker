@@ -58,6 +58,25 @@ public class ConfigRegister {
             .comment(CommitBreak)
             .comment("config.DelayTime");
 
+
+
+    public static ConfigValue.ConfigBoolean WHITE_LIST_MOD_ENABLE = ConfigBuild
+            .define("core.WhiteListModEnable", true)
+            .comment(CommitBreak)
+            .comment("config.WhiteListModEnable");
+
+
+    public static ConfigValue.ConfigStringArray WHITE_LIST_MOD = ConfigBuild
+            .define("core.WhiteListModList", new String[]{
+                    "create","minecraft",
+                    "createdieselgenerators","createrailwaysnavigator","createaddition",
+                    "railways","copycats","createsifter","computercraft",
+                    "yuushya"})
+            .comment(CommitBreak)
+            .comment("config.WhiteListMod");
+
+
+
     public static ConfigValue.ConfigStringArray BAN_BLOCK = ConfigBuild
             .define("core.BanBlock", new String[]{
                     "create:creative_crate",
@@ -240,6 +259,11 @@ public class ConfigRegister {
     public static boolean update_info = UPDATE_INFO.getDefaultValue();
     public static boolean enable_debug = ENABLE_DEBUG.getDefaultValue();
 
+    public static boolean CheckRunCommand = false;
+
+    public static String[] white_list_mod = WHITE_LIST_MOD.getDefaultValue();
+    public static boolean white_list_mod_enable = WHITE_LIST_MOD_ENABLE.getDefaultValue();
+
 
     public static String[][] ID_match_rule;
     public static String[][] Operate_match_rule;
@@ -288,6 +312,8 @@ public class ConfigRegister {
 
 
     public static List<String> CSC_INIT(List<String> log) {
+        white_list_mod = WHITE_LIST_MOD.getDefaultValue();
+        white_list_mod_enable = WHITE_LIST_MOD_ENABLE.getDefaultValue();
         enable_debug = ENABLE_DEBUG.getDefaultValue();
         update_info = UPDATE_INFO.getDefaultValue();
         DebugCheatFind = DEBUG_CHEAT_FIND.getDefaultValue();
@@ -316,6 +342,8 @@ public class ConfigRegister {
     public static List<String> CSC_RELOAD() {
         Message.FM(translateDirect("console.reload1"));
         List<String> list = new ArrayList<String>();
+        WHITE_LIST_MOD.reload();
+        WHITE_LIST_MOD_ENABLE.reload();
         ENABLE_DEBUG.reload();
         UPDATE_INFO.reload();
         DEBUG_CHEAT_FIND.reload();

@@ -20,7 +20,7 @@ public class CSCLanguage {
         Map<String, String> enUs = new HashMap<>();
         enUs.put("console.feedback", "Problem/Feedback: Tencent QQ：1061133894");
         enUs.put("console.LoadingConfig", "CSC is loading...   Success！");
-        enUs.put("config.lang", "Choose a language you want to use     zh_ch / en_us ");
+        enUs.put("config.lang", "Choose a language you want to use     zh_cn / en_us ");
         enUs.put("config.EnableOrNot","Enable CSC (Create:Schematic Checker) or not");
         enUs.put("config.DelayTime","The time if checker is timeout!");
         enUs.put("console.ReloadSuccess", "[CSC] CSC Reload successful! time consume:");
@@ -174,7 +174,9 @@ public class CSCLanguage {
 
         enUs.put("console.csc.cannotCheck","CSC can't check this blueprint Please input /csc help to feed back, feedback way is in it!");
 
-
+        enUs.put("config.WhiteListMod", "Only mods listed here will be allowed to retain NBT. Enter the modid (e.g., for minecraft:dirt, enter minecraft)");
+        enUs.put("config.WhiteListModEnable", "Whether to enable whitelist mode. Recommended to enable, as it can directly eliminate blueprint vulnerabilities caused by unfamiliar mods");
+        enUs.put("config.DebugCheatFind", "Whether to broadcast cheaters and cheating blueprints when CSC detects a cheating blueprint");
 
 
 
@@ -182,7 +184,7 @@ public class CSCLanguage {
         Map<String, String> zhCn = new HashMap<>();
         zhCn.put("console.feedback", "问题/反馈: QQ：1061133894");
         zhCn.put("console.LoadingConfig", " 加载配置中。。   加载完毕！");
-        zhCn.put("config.lang", "选择默认的文件语言 zh_ch / en_us ");
+        zhCn.put("config.lang", "选择默认的文件语言 zh_cn / en_us ");
         zhCn.put("config.EnableOrNot","是否启用 CSC （机械动力：蓝图检查）");
         zhCn.put("config.DelayTime","蓝图检查的超时时间");
         zhCn.put("console.ReloadSuccess", "[CSC] 配置重载成功！！ 用时：");
@@ -347,18 +349,19 @@ public class CSCLanguage {
         zhCn.put("csc.mismatch.after",             "剔除后: " );
         zhCn.put("tag.no.id",             "没有在目标nbt内找到 id ：" );
         zhCn.put( "csc.trams.track_problem", "在火车轨道中发现方向渲染为空，这是不合理的，已重置为默认") ;
-
-
-
         zhCn.put("config.debug.problem", "启动调试模式，这会打印更多的报错输出，但会导致控制台变得混乱，绝大多数情况下不需要开启") ;
         zhCn.put( "console.disable.csc", "CSC已临时关闭5分钟，蓝图将不会被检测，请注意检查蓝图！") ;
-
-
         zhCn.put( "console.stop.csc.temp.output", "根据用户规则，当前蓝图不会检测，请注意检测蓝图") ;
-
         zhCn.put("csc.off.temporary.restore","CSC 已恢复启动");
-
         zhCn.put("console.csc.cannotCheck","CSC 不能检测这个蓝图，为了您和其他所有服务器安全，请输入 /csc help ，提交此蓝图的反馈！");
+
+
+
+        zhCn.put("config.WhiteListMod","只有填入此列表的mod才会允许保留nbt，填入modid 比如minecraft:dirt 那就填入minecraft");
+        zhCn.put("config.WhiteListModEnable","是否启动白名单模式，推荐开启，可以直接根除不熟悉的mod导致的蓝图漏洞");
+        zhCn.put("config.DebugCheatFind","当CSC发现作弊蓝图时，是否广播作弊者和作弊蓝图");
+
+
 
 
 
