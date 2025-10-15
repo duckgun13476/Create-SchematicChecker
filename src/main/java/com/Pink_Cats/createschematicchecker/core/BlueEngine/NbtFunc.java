@@ -4,6 +4,7 @@ import com.Pink_Cats.createschematicchecker.lang.Message;
 import net.minecraft.nbt.*;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.Pink_Cats.createschematicchecker.FancyConfig.ConfigRegister.*;
 import static com.Pink_Cats.createschematicchecker.core.BlueEngine.BlockSweeper.ClearBanBlock;
@@ -71,7 +72,7 @@ public class NbtFunc {
             for (int i = 0; i < blocks.size(); i++) {
                 CompoundTag block = blocks.getCompound(i);
                 String id = BlockGetId(block, palette);
-
+                blockCounts.put(id, blockCounts.getOrDefault(id, 0) + 1);
 
                 //clipboard
                 if (id.equals("createbigcannons:fuzed_block")) {
@@ -667,8 +668,14 @@ public class NbtFunc {
 
         if (type.equals("block")) {
             String id = BlockGetId(data,PaletteBlockData);
+            if (white_list_mod_enable){
+                if (!isIsWhiteListMod(id)) {
+                    //Clear because not need!
+                    data = new CompoundTag();
+                }
+            }
+
             if (TEST_DEBUG_ID) {Message.FE("ID: " + id);}
-            blockCounts.put(id, blockCounts.getOrDefault(id, 0) + 1);
 
 
             if (HasBanBlock) {
@@ -679,6 +686,40 @@ public class NbtFunc {
         }
         if (type.equals("palette")) {
             String id = PaletteGetId(data);
+            if (white_list_mod_enable){
+                if (!isIsWhiteListMod(id)) {
+                    //Clear because not need!
+                    CompoundTag Properties = null;
+                    if (data != null) {
+                        Properties = data.getCompound("Properties");
+                        for (int para=0; para<50 ; para++) {
+                            boolean next = false;
+                            for (String key : Properties.getAllKeys()) {
+                                String TagValue = Properties.get(key).toString();
+                                if (TagValue.contains("true") || TagValue.contains("false")) {
+                                    Properties.remove(key);
+                                    next = true;
+                                    break;
+                                }
+                                if (isValidTagValue(TagValue)) {
+                                    Properties.remove(key);
+                                    next = true;
+                                    break;
+                                }
+                            }
+                            if (!next) {
+                                break;
+                            }
+
+                        }
+
+
+
+                    }
+
+                }
+            }
+
             if (id.equals("create:track")){
                 CompoundTag Properties = data.getCompound("Properties");
                 String track_shape = NoQuotes(data.getCompound("Properties")
@@ -718,7 +759,28 @@ public class NbtFunc {
     }
 
 
+    private static boolean isIsWhiteListMod(String id) {
+        boolean Is_WhiteListMod = false;
+        for (String modID : SortModId(white_list_mod)){
+            if (id.contains(modID)) {
+                Is_WhiteListMod = true;
+                break;
+            }
+        }
+        return Is_WhiteListMod;
+    }
 
+    public static boolean isValidTagValue(String tagValue) {
+        // 使用正则表达式检查，注意引号的转义
+        return tagValue.matches("[0-9\"']*");
+    }
+
+
+    public static String[] SortModId(String[] whiteList) {
+        return Arrays.stream(whiteList)
+                .map(modID -> modID + ":")
+                .toArray(String[]::new);
+    }
 
 }
 
