@@ -192,7 +192,7 @@ dependencies {
     modImplementation("curse.maven:create-328085:6641603")
     //Quark
     modImplementation("curse.maven:lets-do-vinery-704465:6965751")
-
+    modImplementation("curse.maven:copycats-968398:6650089")
     modImplementation("curse.maven:architectury-api-419699:5137938")
     //modImplementation("curse.maven:quark-243121:6427817")
     //modImplementation("curse.maven:zeta-968868:6432578")
