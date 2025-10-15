@@ -191,7 +191,9 @@ dependencies {
     modImplementation("net.createmod.ponder:Ponder-Forge-${minecraft_version}:${ponder_version}")
     modImplementation("curse.maven:create-328085:6641603")
     //Quark
+    modImplementation("curse.maven:lets-do-vinery-704465:6965751")
 
+    modImplementation("curse.maven:architectury-api-419699:5137938")
     //modImplementation("curse.maven:quark-243121:6427817")
     //modImplementation("curse.maven:zeta-968868:6432578")
     //implementation 'com.google.code.gson:gson:2.8.9' // 更新版本
