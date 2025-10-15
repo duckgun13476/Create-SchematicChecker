@@ -199,11 +199,13 @@ public class NbtFunc {
 
 
                         if (!Item.toString().equals("{}")) {
+                            Tag count = Item.get("Count");
+                            if (count==null) {
+                                count = Item.get("count");
+                            }
 
                             int consumedItem_count = StringToInt(
-                                    Item.get("Count")
-                                            .toString()
-                                            .replaceAll("[b;]", ""));
+                                    count.toString().replaceAll("[b;]", ""));
 
 
 
