@@ -204,13 +204,9 @@ public class BlockSweeper {
     }
 
 
-
-
     // tool func
-
     public static CompoundTag BlockClearID(CompoundTag Data) {
         CompoundTag result = new CompoundTag();
-
         return Data;
     }
 

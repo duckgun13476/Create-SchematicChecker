@@ -231,6 +231,10 @@ public class ConfigRegister {
             .comment(CommitBreak)
             .comment("config.online.UpdateInfo");
 
+    public static ConfigValue.ConfigBoolean REPORT_SCHEMATIC= ConfigBuild
+            .define("online.report", true)
+            .comment(CommitBreak)
+            .comment("config.debug.report");
 
     public static ConfigValue.ConfigBoolean ENABLE_DEBUG= ConfigBuild
             .define("debug.debug.problem", false)
@@ -258,6 +262,7 @@ public class ConfigRegister {
     public static boolean DebugCheatFind = DEBUG_CHEAT_FIND.getDefaultValue();
     public static boolean update_info = UPDATE_INFO.getDefaultValue();
     public static boolean enable_debug = ENABLE_DEBUG.getDefaultValue();
+    public static boolean report_schematic = REPORT_SCHEMATIC.getDefaultValue();
 
     public static boolean CheckRunCommand = false;
 
@@ -334,6 +339,7 @@ public class ConfigRegister {
         enable_backup = ENABLE_SCHEMATIC_BACKUP.getDefaultValue();
         enable_auto_config_update = ENABLE_AUTO_UPDATE.getDefaultValue();
         enable_manual_config = ENABLE_MANUAL_CONFIG.getDefaultValue();
+        report_schematic =  REPORT_SCHEMATIC.getDefaultValue();
         UpdateRuleThread(log);
         return log;
     }
@@ -364,6 +370,7 @@ public class ConfigRegister {
         ENABLE_SCHEMATIC_BACKUP.reload();
         ENABLE_AUTO_UPDATE.reload();
         ENABLE_MANUAL_CONFIG.reload();
+        REPORT_SCHEMATIC.reload();
         CSC_INIT(list);
         Message.FM(translateDirect("console.reload2"));
         return list;

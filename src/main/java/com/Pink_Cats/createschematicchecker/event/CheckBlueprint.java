@@ -31,6 +31,7 @@ import static com.Pink_Cats.createschematicchecker.core.BlueEngine.NbtInterFace.
 import static com.Pink_Cats.createschematicchecker.core.BlueEngine.StrFunc.getCurrentDateTime;
 import static com.Pink_Cats.createschematicchecker.event.TempOffEvent.CheckSchematic;
 import static com.Pink_Cats.createschematicchecker.lang.CSCLanguage.translateDirect;
+import static com.Pink_Cats.createschematicchecker.network.AutoUpdate.PostDataAsync;
 
 public class CheckBlueprint {
     BlueCore Checker;
@@ -93,7 +94,10 @@ public class CheckBlueprint {
 
 
             Map<String,Object> CheckResult = Checker.SchematicBlueCore(PlayerBlueprintId,CheatLog);
-
+            if (CheckResult == null) {
+                table.inventory.setStackInSlot(0, AllItems.EMPTY_SCHEMATIC.asStack());
+                return;
+            }
 
 
 
