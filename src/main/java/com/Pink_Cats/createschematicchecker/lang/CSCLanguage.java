@@ -177,7 +177,11 @@ public class CSCLanguage {
         enUs.put("config.WhiteListMod", "Only mods listed here will be allowed to retain NBT. Enter the modid (e.g., for minecraft:dirt, enter minecraft)");
         enUs.put("config.WhiteListModEnable", "Whether to enable whitelist mode. Recommended to enable, as it can directly eliminate blueprint vulnerabilities caused by unfamiliar mods");
         enUs.put("config.DebugCheatFind", "Whether to broadcast cheaters and cheating blueprints when CSC detects a cheating blueprint");
+        enUs.put("console.cheat.sign","Sign has command to cheat");
 
+        enUs.put("config.debug.report","Whether to upload uncheck schematics. Default is true, this can help many people and CSC!");
+
+        enUs.put("core.decode.ZipError","Oops！Schematic might broken！");
 
 
         // zh_cn
@@ -361,9 +365,9 @@ public class CSCLanguage {
         zhCn.put("config.WhiteListModEnable","是否启动白名单模式，推荐开启，可以直接根除不熟悉的mod导致的蓝图漏洞");
         zhCn.put("config.DebugCheatFind","当CSC发现作弊蓝图时，是否广播作弊者和作弊蓝图");
 
-
-
-
+        zhCn.put("console.cheat.sign","包含执行指令的告示牌！");
+        zhCn.put("config.debug.report","如果出现了CSC检测不了的蓝图是否自动上传，默认开启，这可以帮助更多的人，也可以让CSC变得更好！");
+        zhCn.put("core.decode.ZipError","蓝图发生了解析错误，蓝图可能已经损坏~");
 
 
         //enUs.put(" ")

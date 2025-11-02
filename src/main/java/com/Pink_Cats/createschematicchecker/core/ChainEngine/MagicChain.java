@@ -117,7 +117,6 @@ public class MagicChain {
                             //inside Engine
 
                             String[] ListChain = new String[Chain.length-i-1];;
-                            // 将元素添加到新的字符串列表中
                             System.arraycopy(Chain, i+1, ListChain, 0, Chain.length - i-1);
                             //Message.FM("ListChain"+ Arrays.toString(ListChain));
 

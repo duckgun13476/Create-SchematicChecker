@@ -1,10 +1,16 @@
+import net.darkhax.curseforgegradle.TaskPublishCurseForge
+
+//Copyright@2025 publish method from youkashomecoming
+
+
 plugins {
     id 'net.neoforged.moddev' version '2.0.107'
     id 'java-library'
     id 'maven-publish'
+    id 'net.darkhax.curseforgegradle' version '[1.1.24,)'
     id "dev.ithundxr.silk" version "0.11.15"
-    id 'idea'
-    id "me.modmuss50.mod-publish-plugin" version "0.8.3"
+    id "me.modmuss50.mod-publish-plugin" version "1.0.0"
+    id "idea"
 }
 
 apply from: "./gradle/java.gradle"
@@ -161,7 +167,27 @@ tasks.configureEach { task ->
     println "Available task: ${task.name}"
 }
 
+tasks.register('PublishInfo') {
+    doLast {
+        println "Reobfuscated JAR file path: ${jar.archiveFile.get().asFile.absolutePath}"
+        def versionParts = mod_version.split("-")
+        println "version = \"$minecraft_version-$mod_version\"\n" +
+                "    displayName = \"${display_name}_v${versionParts[0]}_for_Create_v${versionParts[1]}\""
+        def propertiesFile = file('api.properties')
+        if (propertiesFile.exists()) {
+            def properties = new Properties()
+            properties.load(new FileInputStream(propertiesFile))
+            def cfToken = properties.getProperty("CF_TOKEN")
+            def modrinthToken = properties.getProperty("MODRINTH_TOKEN")
 
+            println "CF_TOKEN: $cfToken"
+            println "MODRINTH_TOKEN: $modrinthToken"
+        } else {
+            println "api.properties not exist"
+        }
+    }
+    group = 'Publishing'
+}
 
 jar {
     from('LICENSE.txt') {
@@ -175,89 +201,77 @@ jar {
 
 }
 
-tasks.register('printReobfJarPath') {
-    // 在配置阶段获取所需的属性
-    def mod_version = project.findProperty("mod_version") ?: "unknown_version"
-    def minecraft_version = project.findProperty("minecraft_version") ?: "unknown_minecraft_version"
-    def display_name = project.findProperty("display_name") ?: "unknown_display_name"
-    def jarPath = tasks.jar.archiveFile.get().asFile.absolutePath
 
-    // 读取 api.properties 文件
-    def properties = new Properties()
-    def propertiesFile = file('api.properties')
-    if (propertiesFile.exists()) {
-        properties.load(new FileInputStream(propertiesFile))
-    } else {
-        println "api.properties not exist"
-    }
 
-    // 在 doLast 中使用局部变量和已加载的属性
-    doLast {
-        // 使用已存储的属性
-        println "Reobfuscated JAR file path: $jarPath"
-        // 分割版本信息
-        def versionParts = mod_version.split("-")
-        println "version = \"$minecraft_version-$mod_version\"\n" +
-                "    displayName = \"${display_name}_v${versionParts[0]}_for_Create_neoforge_v${versionParts[1]}\""
 
-        // 打印 CF_TOKEN 和 MODRINTH_TOKEN
-        def cfToken = properties.getProperty("CF_TOKEN", "not found")
-        def modrinthToken = properties.getProperty("MODRINTH_TOKEN", "not found")
-
-        println "CF_TOKEN: $cfToken"
-        println "MODRINTH_TOKEN: $modrinthToken"
-    }
+tasks.register('publishAll') {
+    dependsOn 'publishCurseForge'
+    dependsOn 'publishMods'
+    group = 'Publishing'
 }
 
 
-publishMods {
-    def forge_p = true
-    def modrinth_p =  true
 
+
+
+
+
+
+
+tasks.register('publishCurseForge', TaskPublishCurseForge) {
+    dependsOn 'jar'
     def propertiesFile = file('api.properties')
     def properties = new Properties()
     properties.load(new FileInputStream(propertiesFile))
-    def cfTokenGet = properties.getProperty("CF_TOKEN")
+
+    var cfToken = properties.getProperty("CF_TOKEN")
+    apiToken = cfToken
+    def versionParts = mod_version.split("-")
+
+    def mainFile = upload(curseforge_id, new File("./build/libs/${mod_id}-${mod_version}.jar"))
+    mainFile.changelog = new File("./update/${versionParts[0]}-changelog.md").text.split("\n\n\n")[0]
+    mainFile.addEnvironment("Client", "Server")
+    mainFile.addGameVersion("${minecraft_version}")
+    mainFile.addModLoader("Forge","NeoForge")
+    mainFile.addRequirement("create")
+
+
+    mainFile.displayName = "${display_name}_v${versionParts[0]}_for_Create_v${versionParts[1]}"
+
+    mainFile.addOptional(
+            "jei",
+            "observable")
+    mainFile.releaseType = publish_version //beta release. is alpha.
+    disableVersionDetection()
+}
+
+
+
+
+publishMods {
+    def propertiesFile = file('api.properties')
+    def properties = new Properties()
+    properties.load(new FileInputStream(propertiesFile))
     def modrinthTokenGet = properties.getProperty("MODRINTH_TOKEN")
+    def versionParts = mod_version.split("-")
 
-
-    file =  jar.archiveFile
-    changelog = rootProject.file("update/neoforge_${minecraft_version}-${mod_version}.md").text
+    file = jar.archiveFile
+    changelog = rootProject.file("./update/${versionParts[0]}-changelog.md").text
     type = STABLE
     version = "$minecraft_version-$mod_version"
-    def versionParts = mod_version.split("-")
-    displayName = "${display_name}_v${versionParts[0]}_for_Create_neoforge_v${versionParts[1]}"
+    displayName = "${display_name}_v${versionParts[0]}_for_Create_v${versionParts[1]}"
 
 
     modLoaders.add("neoforge")
 
-    var cfToken = cfTokenGet
-    if(cfToken != null) {
-        if (forge_p)
-        {
-            curseforge {
-                accessToken = cfTokenGet
-                projectId = "${curseforge_id}"
-                minecraftVersions.add(minecraft_version)
-                clientRequired = true
-                serverRequired = true
-                requires("create")
-                optional("observable")
-            }
-        }
-
-    }
     var mrToken = modrinthTokenGet
     if(mrToken != null) {
-        if (modrinth_p)
-        {
-            modrinth {
-                accessToken = modrinthTokenGet
-                projectId = "${modrinth_id}"
-                minecraftVersions.add(minecraft_version)
-                requires("create")
-                optional("observable")
-            }
+        modrinth {
+            accessToken = mrToken
+            projectId = "${modrinth_id}"
+            minecraftVersions.add(minecraft_version)
+            requires("create")
+            optional("jei","observable")
         }
     }
 }
@@ -266,8 +280,12 @@ publishMods {
 
 
 
-
-
+tasks.register('runPython', Exec) {
+    commandLine 'publishing/.venv/Scripts/python', 'publishing/get.py'
+    doFirst {
+        println "script publishing..."
+    }
+}
 
 
 
@@ -279,8 +297,6 @@ idea {
     }
 }
 
-
-
 String calculateGitHash() {
     try {
         def output = providers.exec {
@@ -291,6 +307,7 @@ String calculateGitHash() {
         return "unknown"
     }
 }
+
 
 boolean hasUnstaged() {
     try {

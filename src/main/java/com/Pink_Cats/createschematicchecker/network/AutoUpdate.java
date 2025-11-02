@@ -55,6 +55,14 @@ public class AutoUpdate {
         });
     }
 
+    public static void ReportProblem(String filepath) {
+        executor.submit(() -> {
+
+            AutoUpdateThread(filepath);
+        });
+    }
+
+
     public static void PostDataAsync(String filepath) {
         if (enable_auto_config_update)
         {
