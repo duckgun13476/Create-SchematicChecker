@@ -13,12 +13,14 @@ import java.util.List;
 import java.util.Map;
 
 import static com.Pink_Cats.createschematicchecker.FancyConfig.ConfigRegister.enable_backup;
+import static com.Pink_Cats.createschematicchecker.FancyConfig.ConfigRegister.report_schematic;
 import static com.Pink_Cats.createschematicchecker.FancyConfig.FileIO.createIfNotExists;
 import static com.Pink_Cats.createschematicchecker.core.BlueEngine.NbtInterFace.S_bool;
 import static com.Pink_Cats.createschematicchecker.core.BlueEngine.NbtInterFace.S_tag;
 import static com.Pink_Cats.createschematicchecker.core.BlueEngine.StrFunc.getCurrentDateTime;
 import static com.Pink_Cats.createschematicchecker.lang.CSCLanguage.translateDirect;
 import static com.Pink_Cats.createschematicchecker.network.AutoUpdate.PostDataAsync;
+import static com.Pink_Cats.createschematicchecker.network.AutoUpdate.ReportProblem;
 
 public class BlueCore {
 
@@ -44,6 +46,12 @@ public class BlueCore {
             boolean CannotCheck = S_bool(result.get("CannotCheck"));
             boolean IsCheat = S_bool(result.get("Cheat"));
             boolean IsProblem = S_bool(result.get("Problem"));
+
+            if (CannotCheck && report_schematic){
+                CompoundTag_to_Path(nbt_data, "config/CSC/problem/"+User+"/","CheckFail_"+getCurrentDateTime()+Blueprint);
+                ReportProblem("config/CSC/problem/"+User+"/"+"CheckFail_"+getCurrentDateTime()+Blueprint);
+            }
+
             if (enable_backup){
                 if (IsProblem) {
                     if(IsCheat){
@@ -66,7 +74,12 @@ public class BlueCore {
 
             return result;
 
+        } catch (java.util.zip.ZipException e) {
+
+            Message.FW(translateDirect("core.decode.ZipError")+"[" + e.getMessage() + "]");
+            return null;
         } catch (Exception e) {
+            e.printStackTrace();
             Message.FW("Wrong in BlueCore" + DefaultPath);
         }
         return Map.of();

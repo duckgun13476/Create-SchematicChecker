@@ -74,6 +74,18 @@ public class NbtFunc {
                 String id = BlockGetId(block, palette);
                 blockCounts.put(id, blockCounts.getOrDefault(id, 0) + 1);
 
+                //sign
+                if (id.equals("minecraft:sign")) {
+                    String nbt = Objects.requireNonNull(block.toString());
+                    if (nbt.contains("run_command")){
+                        Cheat = true;
+                        CheatLog.add(translateDirect("console.cheat.sign") +"["+nbt+"]");
+
+                    }
+
+                }
+
+
                 //clipboard
                 if (id.equals("createbigcannons:fuzed_block")) {
                     String InsideID = Objects.requireNonNull(block.getCompound("nbt").getCompound("Fuze").get("id")).toString();
@@ -579,7 +591,7 @@ public class NbtFunc {
 
         }
         //Inject limit.
-        //Add special matcher here.↑
+        //Add special matcher here.
         if  (Cheat) {
             Problem = true;
         }
@@ -773,7 +785,7 @@ public class NbtFunc {
     }
 
     public static boolean isValidTagValue(String tagValue) {
-        // 使用正则表达式检查，注意引号的转义
+        // 使用正则表达式检查，注意引号的转换
         return tagValue.matches("[0-9\"']*");
     }
 
