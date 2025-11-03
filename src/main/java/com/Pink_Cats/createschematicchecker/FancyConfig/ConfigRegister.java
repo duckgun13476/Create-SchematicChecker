@@ -29,6 +29,8 @@ public class ConfigRegister {
         Object languageValue = ConfigHook.readToml(ConfigPath).get("Language");
         DefineLanguage = (languageValue != null) ? languageValue.toString() : "en_us";
     }
+
+
     public static ConfigValue.ConfigString LANGUAGE = ConfigBuild
             .define( "Language", "en_us")
             .comment(CommitBreak)
@@ -138,7 +140,8 @@ public class ConfigRegister {
 
     public static ConfigValue.ConfigStringArray BAN_ENTITY = ConfigBuild
             .define("core.BanEntity", new String[]{
-                    "minecraft:armor_stand"})
+                    "minecraft:armor_stand",
+                    "create:crafting_blueprint"})
             .comment(CommitBreak)
             .comment("config.BanEntity")
             .comment("config.BanEntity2");

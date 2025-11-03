@@ -546,6 +546,8 @@ public class NbtFunc {
                 if (entityRes.toString().equals("{}")) {
                     entity = new CompoundTag();
                     IsEntityKilled = true;
+                    entities.remove(i);
+                    i -= 1;
 
                 }else {
                     entity = S_tag(entityRes);
