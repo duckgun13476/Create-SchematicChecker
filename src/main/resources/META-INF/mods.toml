@@ -1,33 +1,33 @@
 modLoader = "javafml" #mandatory
-loaderVersion = "[47,)" #mandatory This is typically bumped every Minecraft version by Forge. See our download page for lists of versions.
+loaderVersion = "[40,)" #mandatory This is typically bumped every Minecraft version by Forge. See our download page for lists of versions.
 license = "GNU LGPL 3.0"
 [[mods]]
-modId = "${mod_id}" #mandatory
-version = "${mod_version}" #mandatory
-displayName = "${mod_name}" #mandatory
-authors = "Pink_Cats" #optional
-logoFile="icon.png"
-description = '''${mod_description}'''
-displayURL="https://modrinth.com/project/createschematicchecker"
+    modId = "${mod_id}" #mandatory
+    version = "${mod_version}" #mandatory
+    displayName = "${mod_name}" #mandatory
+    authors = "Pink_Cats" #optional
+    logoFile="icon.png"
+    description = '''${mod_description}'''
+    displayURL="https://modrinth.com/project/createschematicchecker"
 
 [[dependencies."${mod_id}"]]
-modId = "forge"
-mandatory = true
-versionRange = "[47.0.0,)"
-ordering = "NONE"
-side = "BOTH"
+    modId="forge"
+    mandatory=true
+    versionRange="[43.2.3,)"
+    ordering="NONE"
+    side="BOTH"
 
 [[dependencies."${mod_id}"]]
-modId = "minecraft"
-mandatory = true
-versionRange = "[1.20,1.21)"
-ordering = "NONE"
-side = "BOTH"
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.19.2,1.20)"
+    ordering="NONE"
+    side="BOTH"
 
 [[dependencies."${mod_id}"]]
-modId="create"
-mandatory=true
-versionRange="[0.5.1.f,0.5.2)"
-ordering="NONE"
-side="BOTH"
+    modId="create"
+    mandatory=true
+    versionRange="[0.5.1.e,0.5.2)"
+    ordering="NONE"
+    side="BOTH"
 

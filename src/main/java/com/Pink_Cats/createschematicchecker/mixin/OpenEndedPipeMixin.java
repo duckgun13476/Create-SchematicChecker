@@ -79,7 +79,7 @@ public class OpenEndedPipeMixin extends FlowSource {
 
         }
 
-        if (!waterlog && !state.canBeReplaced()) {
+        if (!waterlog && !state.getMaterial().isReplaceable()) {
             cir.setReturnValue(empty);
             cir.cancel();
             return;

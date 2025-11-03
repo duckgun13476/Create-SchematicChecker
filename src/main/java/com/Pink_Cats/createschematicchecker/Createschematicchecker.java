@@ -1,6 +1,5 @@
 package com.Pink_Cats.createschematicchecker;
 import com.Pink_Cats.createschematicchecker.FancyConfig.ConfigRegister;
-import com.Pink_Cats.createschematicchecker.core.BlueEngine.NbtInterFace;
 import com.Pink_Cats.createschematicchecker.lang.Message;
 import com.simibubi.create.infrastructure.config.AllConfigs;
 import com.simibubi.create.infrastructure.config.CKinetics;

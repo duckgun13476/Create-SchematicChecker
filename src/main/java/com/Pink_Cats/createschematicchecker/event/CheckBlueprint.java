@@ -6,7 +6,6 @@ import com.simibubi.create.AllItems;
 import com.simibubi.create.content.schematics.SchematicItem;
 import com.simibubi.create.content.schematics.table.SchematicTableBlockEntity;
 import net.minecraft.ChatFormatting;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtIo;
 import net.minecraft.network.chat.Component;
@@ -31,7 +30,6 @@ import static com.Pink_Cats.createschematicchecker.core.BlueEngine.NbtInterFace.
 import static com.Pink_Cats.createschematicchecker.core.BlueEngine.StrFunc.getCurrentDateTime;
 import static com.Pink_Cats.createschematicchecker.event.TempOffEvent.CheckSchematic;
 import static com.Pink_Cats.createschematicchecker.lang.CSCLanguage.translateDirect;
-import static com.Pink_Cats.createschematicchecker.network.AutoUpdate.PostDataAsync;
 
 public class CheckBlueprint {
     BlueCore Checker;
@@ -81,7 +79,8 @@ public class CheckBlueprint {
                 Checker.CompoundTag_to_Path(nbt_data, DefaultPath+User+"/",Blueprint);
 
                 table.inventory.setStackInSlot(1, SchematicItem.create(
-                        world.holderLookup(Registries.BLOCK), Blueprint, player_id));
+                        PlayerBlueprintId, player.getGameProfile()
+                        .getName()));
                 return;
             }
 
@@ -139,9 +138,8 @@ public class CheckBlueprint {
                 }
 
                 table.inventory.setStackInSlot(1, SchematicItem.create(
-                        world.holderLookup(Registries.BLOCK), PlayerBlueprintId, player_id));
-
-
+                        PlayerBlueprintId, player.getGameProfile()
+                                .getName()));
             } else {
                 CheatCount +=1;
                 Message.FE(translateDirect("console.cheat.find"));

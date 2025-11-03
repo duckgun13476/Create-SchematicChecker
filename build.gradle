@@ -187,15 +187,15 @@ dependencies {
     implementation 'org.jetbrains:annotations:22.0.0'
 
     //Create
-    modImplementation("curse.maven:create-328085:5838779")
+    modImplementation("curse.maven:create-328085:5797604")
     modImplementation("com.tterrag.registrate:Registrate:${registrate_version}")
     compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:0.4.1"))
 
-    modImplementation("curse.maven:create-big-cannons-646668:6064368")
+    //modImplementation("curse.maven:create-big-cannons-646668:6064368")
     //Quark
-    modImplementation("curse.maven:lets-do-vinery-704465:6965751")
+    //modImplementation("curse.maven:lets-do-vinery-704465:6965751")
 
-    modImplementation("curse.maven:architectury-api-419699:5137938")
+    //modImplementation("curse.maven:architectury-api-419699:5137938")
     //modImplementation("curse.maven:quark-243121:6427817")
     //modImplementation("curse.maven:zeta-968868:6432578")
     //implementation 'com.google.code.gson:gson:2.8.9' // 更新版本
