@@ -172,7 +172,7 @@ tasks.register('PublishInfo') {
         println "Reobfuscated JAR file path: ${jar.archiveFile.get().asFile.absolutePath}"
         def versionParts = mod_version.split("-")
         println "version = \"$minecraft_version-$mod_version\"\n" +
-                "    displayName = \"${display_name}_v${versionParts[0]}_for_Create_v${versionParts[1]}\""
+                "    displayName = \"${display_name}_v${versionParts[0]}_for_Create_v${versionParts[1]}_norforge\""
         def propertiesFile = file('api.properties')
         if (propertiesFile.exists()) {
             def properties = new Properties()
@@ -189,9 +189,11 @@ tasks.register('PublishInfo') {
     group = 'Publishing'
 }
 
+def mod_ids = "createschematicchecker"
 jar {
+    archiveFileName = "${mod_id}-${mod_version}-neoforge-${minecraft_version}.jar"
     from('LICENSE.txt') {
-        rename { "${it}_${archivesBaseName}" }
+        rename { "${it}_${mod_ids}" }
 
     }
     manifest.attributes([
@@ -228,15 +230,15 @@ tasks.register('publishCurseForge', TaskPublishCurseForge) {
     apiToken = cfToken
     def versionParts = mod_version.split("-")
 
-    def mainFile = upload(curseforge_id, new File("./build/libs/${mod_id}-${mod_version}.jar"))
+    def mainFile = upload(curseforge_id, new File("./build/libs/${mod_id}-${mod_version}-neoforge-${minecraft_version}.jar"))
     mainFile.changelog = new File("./update/${versionParts[0]}-changelog.md").text.split("\n\n\n")[0]
     mainFile.addEnvironment("Client", "Server")
     mainFile.addGameVersion("${minecraft_version}")
-    mainFile.addModLoader("Forge","NeoForge")
+    mainFile.addModLoader("NeoForge")
     mainFile.addRequirement("create")
 
 
-    mainFile.displayName = "${display_name}_v${versionParts[0]}_for_Create_v${versionParts[1]}"
+    mainFile.displayName = "${display_name}_v${versionParts[0]}_for_Create_v${versionParts[1]}_neoforge"
 
     mainFile.addOptional(
             "jei",
@@ -259,8 +261,7 @@ publishMods {
     changelog = rootProject.file("./update/${versionParts[0]}-changelog.md").text
     type = STABLE
     version = "$minecraft_version-$mod_version"
-    displayName = "${display_name}_v${versionParts[0]}_for_Create_v${versionParts[1]}"
-
+    displayName = "${display_name}_v${versionParts[0]}_for_Create_v${versionParts[1]}_neoforge"
 
     modLoaders.add("neoforge")
 
