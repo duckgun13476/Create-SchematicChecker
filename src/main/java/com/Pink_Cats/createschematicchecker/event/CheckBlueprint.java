@@ -156,7 +156,8 @@ public class CheckBlueprint {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
+            if (enable_debug)
+                e.printStackTrace();
         }
     }
 
