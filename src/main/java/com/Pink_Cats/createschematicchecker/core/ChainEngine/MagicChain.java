@@ -3,6 +3,10 @@ package com.Pink_Cats.createschematicchecker.core.ChainEngine;
 import com.Pink_Cats.createschematicchecker.lang.Message;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.Tag;
+import org.antlr.runtime.misc.IntArray;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
@@ -19,7 +23,9 @@ import static com.Pink_Cats.createschematicchecker.lang.CSCLanguage.translateDir
 public class MagicChain {
 
 
-    public static Map<String,Object> MagicChainClear(CompoundTag data,String chain,int find_count,String type){
+    private static final Logger log = LoggerFactory.getLogger(MagicChain.class);
+
+    public static Map<String,Object> MagicChainClear(CompoundTag data, String chain, int find_count, String type, String idKeyIn){
         HashMap<String,Object> magicChain = new HashMap<>();
         String[] BaseChain = ChainSplit(chain);
         boolean Cheat = false;
@@ -27,19 +33,22 @@ public class MagicChain {
         ResultTagList.add(data);
 
         //Is a magic
-        ArrayList<CompoundTag> ResultCompoundTag = S_TagList(MagicEngine(ResultTagList,BaseChain));
-        for (CompoundTag tag : ResultCompoundTag) {
+        ArrayList<Object> ResultCompoundTag = MagicEngine(ResultTagList,BaseChain,idKeyIn);
+
+        //ArrayList<CompoundTag> ResultCompoundTag = S_TagList(ChainRes);
+
+        for (Object tag : ResultCompoundTag) {
             if (type.equals("id"))
                 {
-                    find_count = SweeperIfHasId(tag,find_count,2+3);  //3 allow deep count
-
-
-
-                    if (find_count == -100)
-                    {
-                        Message.FE(translateDirect("check.csc.cheat.filter"));
+                    if (tag instanceof CompoundTag tag1) {
+                        find_count = SweeperIfHasId(tag1, find_count, 2 + 3);  //3 allow deep count
+                        if (find_count == -100) {
+                            Message.FE(translateDirect("check.csc.cheat.filter"));
+                        }
                     }
                 }
+
+
 
 
             if (type.contains("operate"))
@@ -48,26 +57,75 @@ public class MagicChain {
                     for (int index = 1; index < operate_chain.length; index++) {
                         String[] knife = KnifeSplit(operate_chain[index]);
                         if (operate_chain[index].contains("clear")) {
-                            String S_result = tag.getCompound(knife[1]).toString();
-                            int totalCount = CountToClear(S_result,ban_block);
-                            find_count = find_count - totalCount;
-                            tag.remove(knife[1]);
+                            if (tag instanceof CompoundTag tag1) {
+                                String S_result = tag1.getCompound(knife[1]).toString();
+                                int totalCount = CountToClear(S_result,ban_block);
+                                find_count = find_count - totalCount;
+                                tag1.remove(knife[1]);
+                            }
                         }
 
                         if (operate_chain[index].contains("replace")) {
-                            tag.put(knife[1],TagString(knife[2])) ;
+                            if (tag instanceof CompoundTag tag1) {
+                                tag1.put(knife[1], TagString(knife[2]));
+                            }
                         }
 
 
                         if (operate_chain[index].contains("limit")) {
                             int DownLimit = StringToInt(knife[2]);
                             int UpLimit = StringToInt(knife[3]);
-                            int ActualCount = StringToInt(Objects.requireNonNull(tag.get(knife[1])).toString());
-                            if (ActualCount>UpLimit){
-                                tag.put(knife[1],TagInt(UpLimit) );
-                            } else if (ActualCount < DownLimit) {
-                                tag.put(knife[1],TagInt(DownLimit) );
+
+
+                            int ActualCount = 0;
+                            if (tag instanceof CompoundTag tag1) {
+                                Tag res = tag1.get(knife[1]);
+                                ActualCount = StringToInt(Objects.requireNonNull(res).toString());
+                            } else if (tag instanceof int[] tag1) {
+                                switch (knife[1]) {
+                                    case "X" -> ActualCount = tag1[0];
+                                    case "Y" -> ActualCount = tag1[1];
+                                    case "Z" -> ActualCount = tag1[2];
+                                }
+                            } else {
+                                //Message.debug(Arrays.toString(tag));
+                                throw new IllegalArgumentException("Wrong in Char Match: " + tag.getClass().getName() + " " + String.valueOf(tag));
                             }
+
+                            try {
+
+                                if (ActualCount > UpLimit) {
+                                    if (tag instanceof CompoundTag tag1)
+                                        tag1.put(knife[1], TagInt(UpLimit));
+
+                                    if (tag instanceof int[] tag1){
+                                        switch (knife[1]) {
+                                            case "X" ->  tag1[0] = UpLimit;
+                                            case "Y" ->  tag1[1] = UpLimit;
+                                            case "Z" ->  tag1[2] = UpLimit;
+                                        }
+                                    }
+
+                                } else if (ActualCount < DownLimit) {
+                                    if (tag instanceof CompoundTag tag1)
+                                        tag1.put(knife[1], TagInt(DownLimit));
+
+                                    if (tag instanceof int[] tag1){
+                                        switch (knife[1]) {
+                                            case "X" ->  tag1[0] = DownLimit;
+                                            case "Y" ->  tag1[1] = DownLimit;
+                                            case "Z" ->  tag1[2] = DownLimit;
+                                        }
+                                    }
+
+                                }
+                            } catch (Exception e) {
+                                Message.debug(ResultTagList);
+                                Message.debug(Arrays.toString(BaseChain));
+                                Message.debug(knife[0] + knife[1] + knife[2]);
+                                throw e;
+                            }
+
                         }
 
                         //Message.FM("operate result"+tag);
@@ -87,11 +145,17 @@ public class MagicChain {
 
 
 
-    public static ArrayList<Object> MagicEngine(ArrayList<Object> DataArray,String[] Chain){
+    public static ArrayList<Object> MagicEngine(ArrayList<Object> DataArray,String[] Chain,String id){
         ArrayList<Object> ResultList = new ArrayList<>();
 
         for (Object TagItem : DataArray) {
             for(int i=0;i<Chain.length;i++){
+
+                //if (id.equals("create:mechanical_arm")){
+                //    Message.debug("- 0 0" +Arrays.toString(Chain)+"- 0 0"+Chain[i]);
+                   // Message.debug("- 0 0" + TagItem +"--"+(Chain.length==i+1));
+                //}
+
                 boolean IsArrayList = false;
                 if (Chain[i].contains("$")){
                     IsArrayList = true;
@@ -103,13 +167,24 @@ public class MagicChain {
                 if (Chain.length==i+1)
                 {
                     //Message.FM("Is the last chain");    //  EngineDebug
-                    if (TagItem instanceof CompoundTag CompoundTagItem){
-                        ResultList.add(CompoundTagItem);
-                        //Message.FM(ResultList);
+                    ResultList.add(TagItem);
+                    //Message.FM(ResultList);
 
-                    }
                 }
                 else {
+                    //if (Chain[i].equals("X") || Chain[i].equals("Y") || Chain[i].equals("Z")) {
+                    //    Message.debug("- 0 0" +Chain[i]);
+                    //    Message.debug(TagItem);
+                    //}
+
+                    //if (id.equals("create:mechanical_arm")) {
+                    //    Message.debug("TagItem 的类型是: " + TagItem.getClass().getName());
+                    //    if (TagItem instanceof CompoundTag CompoundTagItem) {
+                    //        Message.debug(Arrays.toString(CompoundTagItem.getIntArray("Pos")));
+                    //    }
+                    //}
+
+
                     if (TagItem instanceof CompoundTag CompoundTagItem){
                         if ( IsArrayList ) {
 
@@ -138,16 +213,19 @@ public class MagicChain {
                                 //Message.FM("entity"+entity);
                             }
                             //Message.FM("EntryList"+EntryList);
-                            ResultList = MagicEngine(EntryList,ListChain);
+                            ResultList = MagicEngine(EntryList,ListChain,id);
                             //Message.FM("End from inside Engine");
                             break;
 
                         }
-
-                        else  {
+                    else  {
                             //Message.FM("pick start"+CompoundTagItem);
                             //Message.FM(Chain[i]);
                             TagItem = CompoundTagItem.getCompound(Chain[i]);
+                            if (TagItem.toString().equals("{}")){
+                                TagItem = CompoundTagItem.getIntArray(Chain[i]);
+                            }
+
                             //Message.FM("pick result"+ TagItem);                             //Debug is here
                         }
                     }
