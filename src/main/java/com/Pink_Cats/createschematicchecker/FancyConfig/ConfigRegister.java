@@ -205,7 +205,10 @@ public class ConfigRegister {
             .comment("config.maxConveyorCheatLimit")
             .comment("config.maxConveyorCheatLimit2");
 
-
+    public static ConfigValue.ConfigInt MAX_CONVEYOR_DEGREE = ConfigBuild
+            .define("function.maxConveyorAllowDegree",45)
+            .comment(CommitBreak)
+            .comment("config.maxConveyorAllowDegree");
 
 
     public static ConfigValue.ConfigBoolean ENABLE_AUTO_UPDATE = ConfigBuild
@@ -266,6 +269,7 @@ public class ConfigRegister {
     public static boolean update_info = UPDATE_INFO.getDefaultValue();
     public static boolean enable_debug = ENABLE_DEBUG.getDefaultValue();
     public static boolean report_schematic = REPORT_SCHEMATIC.getDefaultValue();
+    public static int max_conveyor_degree = MAX_CONVEYOR_DEGREE.getDefaultValue();
 
     public static boolean CheckRunCommand = false;
 
@@ -343,6 +347,7 @@ public class ConfigRegister {
         enable_auto_config_update = ENABLE_AUTO_UPDATE.getDefaultValue();
         enable_manual_config = ENABLE_MANUAL_CONFIG.getDefaultValue();
         report_schematic =  REPORT_SCHEMATIC.getDefaultValue();
+        max_conveyor_degree = MAX_CONVEYOR_DEGREE.getDefaultValue();
         UpdateRuleThread(log);
         return log;
     }
@@ -374,6 +379,7 @@ public class ConfigRegister {
         ENABLE_AUTO_UPDATE.reload();
         ENABLE_MANUAL_CONFIG.reload();
         REPORT_SCHEMATIC.reload();
+        MAX_CONVEYOR_DEGREE.reload();
         CSC_INIT(list);
         Message.FM(translateDirect("console.reload2"));
         return list;
