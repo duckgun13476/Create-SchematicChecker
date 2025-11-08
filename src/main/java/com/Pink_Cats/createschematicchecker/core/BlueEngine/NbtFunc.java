@@ -5,7 +5,6 @@ import com.Pink_Cats.createschematicchecker.lang.Message;
 import net.minecraft.nbt.*;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static com.Pink_Cats.createschematicchecker.FancyConfig.ConfigRegister.*;
 import static com.Pink_Cats.createschematicchecker.core.BlueEngine.BlockSweeper.ClearBanBlock;
@@ -17,7 +16,6 @@ import static com.Pink_Cats.createschematicchecker.core.BlueEngine.StrFunc.*;
 import static com.Pink_Cats.createschematicchecker.core.BlueEngine.TagFunc.BlockGetId;
 import static com.Pink_Cats.createschematicchecker.core.attach.Math.StringToInt;
 import static com.Pink_Cats.createschematicchecker.lang.CSCLanguage.translateDirect;
-import static com.mojang.text2speech.Narrator.LOGGER;
 
 public class NbtFunc {
     //test para
@@ -371,12 +369,12 @@ public class NbtFunc {
             for (int i = 0; i < Location.size(); i++) {
                 for (int[] item : Destination.get(i)) {
                     //45 angle check
-                    if (Math.max(Math.abs(item[0]),Math.abs(item[2])-2) < Math.abs(item[1]) ) {
+                    double AB = new ConveyorDegree(item[0], item[2]).calculateHypotenuse() - 2;
+                    ConveyorDegree triangle = new ConveyorDegree(AB, item[1]);
+                    double angleA = triangle.calculateAngleA();
 
-                        double AB = new ConveyorDegree(item[0], item[2]).calculateHypotenuse() - 2;
-                        ConveyorDegree triangle = new ConveyorDegree(AB, item[1]);
 
-                        double angleA = triangle.calculateAngleA();
+                    if (angleA > max_conveyor_degree+1) {
 
                         //double angleB = triangle.calculateAngleB();
                         //Message.debug(AB+"  "+angleA+"  "+angleB);
@@ -542,7 +540,6 @@ public class NbtFunc {
             //FluidTank Mismatch Check
             if (ControllerCount != FindTankCount)
             {
-
                 CheatLog.add(translateDirect("console.cheat.FluidTank.mismatch")+"["+ControllerCount + "|" + FindTankCount+"]");
                 Cheat = true;
             }
@@ -672,10 +669,10 @@ public class NbtFunc {
 
         }
 
+        String HasTag = HasBanTag(data.toString());
+        if (!HasTag.isEmpty()) {
 
-        if (HasBanTag(data.toString())) {
-
-            Message.FW(translateDirect("config.tag.mismatch.output") + data);
+            Message.FW(translateDirect("config.tag.mismatch.output") +"["+HasTag+"]"+translateDirect("config.tag.mismatch.output2")+ data);
             IsNotMatch = true;
 
         }

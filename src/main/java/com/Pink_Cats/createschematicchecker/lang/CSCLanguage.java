@@ -139,8 +139,10 @@ public class CSCLanguage {
         enUs.put("config.online.enableManualConfig6",    "Limit: When setting Limit, you can specify the upper and lower bounds of a variable. The format required is operate.limit$VariableName$LowerBound$UpperBound");
         enUs.put("config.online.enableManualConfig7",    "Clear: When set to Clear, the corresponding NBT will be removed. The format required is operate.clear$VariableName");
         enUs.put("config.online.enableManualConfig8",    "Replace: When set to Replace, the corresponding NBT tag will be replaced (only strings can be replaced). The format required is operate.replace$VariableName$Result");
-        enUs.put( "config.tag.mismatch.output",    "Warning: Forbidden Tag found in the schematic | Block NBT data=>");
-        enUs.put( "console.problemOutput",             "Schematic verification mismatch occurred! Player:");
+        enUs.put( "config.tag.mismatch.output",    "Warning: Forbidden Tag found in the schematic ");
+        enUs.put( "config.tag.mismatch.output2",    " | Block NBT data=>");
+
+        enUs.put( "console.problemOutput",             "Schematic verification mismatch occurred or find sth. from config! Player:");
         enUs.put( "console.problemOutput2",             "   Schematic:");
         enUs.put( "console.cheat.createbigcannons",             "The item in the cannon shell is not a cannon fuse!=>");
         enUs.put( "console.cheat.clipboard",             "The clipboard contains tags that shouldn't exist, as this is impossible!=>");
@@ -182,6 +184,7 @@ public class CSCLanguage {
         enUs.put("config.debug.report","Whether to upload uncheck schematics. Default is true, this can help many people and CSC!");
 
         enUs.put("core.decode.ZipError","Oops！Schematic might broken！");
+        enUs.put("config.maxConveyorAllowDegree", "Conveyor's max degree, Can't get more than 45degree in Create. Only change nbt can.");
 
 
         // zh_cn
@@ -317,8 +320,9 @@ public class CSCLanguage {
         zhCn.put( "config.online.enableManualConfig6",    "limit 当设置limit时，可以指定变量的上下限，需要使用 operate.limit$变量名$下限$上限  的格式");
         zhCn.put( "config.online.enableManualConfig7",    "clear 当设置为清除时，对应的nbt会被剔除，需要使用 operate.clear$变量名  的格式");
         zhCn.put( "config.online.enableManualConfig8",    "replace 当设置为替换时，对应的nbt标签会被替换 只能替换字符串，需要使用 operate.replace$变量名$结果 的格式");
-        zhCn.put( "config.tag.mismatch.output",    "警告：在蓝图内发现被禁止的Tag | 方块nbt数据=》");
-        zhCn.put( "console.problemOutput",             "蓝图出现校验不匹配！玩家：");
+        zhCn.put( "config.tag.mismatch.output",    "警告：在蓝图内发现被禁止的Tag ");
+        zhCn.put( "config.tag.mismatch.output2",    " | 方块nbt数据=》");
+        zhCn.put( "console.problemOutput",             "蓝图出现校验不匹配或检测到了配置中的扫描内容。 玩家：");
         zhCn.put( "console.problemOutput2",             "   蓝图：");
         zhCn.put( "console.cheat.createbigcannons",             "火炮炮弹内的物品不是火炮的引信！=》");
         zhCn.put( "console.cheat.clipboard",             "剪贴板包含不应该存在的标签，因为这是不可能的！=》");
@@ -368,6 +372,9 @@ public class CSCLanguage {
         zhCn.put("console.cheat.sign","包含执行指令的告示牌！");
         zhCn.put("config.debug.report","如果出现了CSC检测不了的蓝图是否自动上传，默认开启，这可以帮助更多的人，也可以让CSC变得更好！");
         zhCn.put("core.decode.ZipError","蓝图发生了解析错误，蓝图可能已经损坏~");
+
+        zhCn.put("config.maxConveyorAllowDegree", "链式传动轮的最大允许角度 原版默认为45° 任何大于此值都篡改了蓝图nbt，但此设置允许自定义");
+
 
 
         //enUs.put(" ")
