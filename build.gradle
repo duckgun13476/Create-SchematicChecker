@@ -283,6 +283,10 @@ jar {
 }
 
 
+reobfJar {
+    archiveFileName = "${package_name}-${mod_version}-forge-${minecraft_version}.jar"
+}
+
 
 
 tasks.register('publishAll') {
@@ -309,7 +313,7 @@ tasks.register('publishCurseForge', TaskPublishCurseForge) {
     apiToken = cfToken
     def versionParts = mod_version.split("-")
 
-    def mainFile = upload(curseforge_id, new File("./build/libs/${mod_id}-${mod_version}.jar"))
+    def mainFile = upload(curseforge_id, new File("./build/libs/${package_name}-${mod_version}-forge-${minecraft_version}.jar"))
     mainFile.changelog = new File("./update/${versionParts[0]}-changelog.md").text.split("\n\n\n")[0]
     mainFile.addEnvironment("Client", "Server")
     mainFile.addGameVersion("${minecraft_version}")
