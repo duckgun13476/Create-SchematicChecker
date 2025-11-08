@@ -55,7 +55,7 @@ public class BlockSweeper {
                         if (id.equals(idKey)) {
                             for (int i = 1; i < idLogic.length; i++) {
                                 String logicValue = idLogic[1];
-                                ChainResult = MagicChainClear(Data, logicValue, totalCount, "id");
+                                ChainResult = MagicChainClear(Data, logicValue, totalCount, "id",id);
                                 Data = S_tag(ChainResult.get("data"));
                                 totalCount = S_int(ChainResult.get("find_count"));
                             }
@@ -82,7 +82,7 @@ public class BlockSweeper {
                                 "nbt.Controller.id", totalCount,
                                 "operate" +
                                         ".clear$tag" +
-                                        ".replace$id$create:linked_controller");
+                                        ".replace$id$create:linked_controller",id);
                         Data = S_tag(ChainResult.get("data"));
                         totalCount = S_int(ChainResult.get("find_count"));
                     }
@@ -92,7 +92,7 @@ public class BlockSweeper {
                                 "nbt.Item.id", totalCount,
                                 "operate" +
                                         ".clear$tag" +
-                                        ".replace$id$create:clipboard");
+                                        ".replace$id$create:clipboard",id);
                         Data = S_tag(ChainResult.get("data"));
                         totalCount = S_int(ChainResult.get("find_count"));
                     }
@@ -102,7 +102,7 @@ public class BlockSweeper {
                         ChainResult = MagicChainClear(Data,
                                 "nbt.ScrollValue", totalCount,
                                 "operate" +
-                                        ".limit$ScrollValue$-180$180");
+                                        ".limit$ScrollValue$-180$180",id);
                         Data = S_tag(ChainResult.get("data"));
                         totalCount = S_int(ChainResult.get("find_count"));
                     }
@@ -115,7 +115,7 @@ public class BlockSweeper {
                         try {
                             if (id.equals(idKey)) {
                                 for (int i = 1; i < idLogic.length; i++) {
-                                    ChainResult = MagicChainClear(Data, chain, totalCount, surgery);
+                                    ChainResult = MagicChainClear(Data, chain, totalCount, surgery,idKey);
                                     Data = S_tag(ChainResult.get("data"));
                                     totalCount = S_int(ChainResult.get("find_count"));
                                 }
@@ -126,8 +126,11 @@ public class BlockSweeper {
                             Message.FE(translateDirect("check.chain.rule.block")+
                                     (sequence)+1+translateDirect("check.chain.rule.rule")+
                                     idKey+"|"+chain+"|"+surgery+"]");
-                            if (enable_debug)
+                            if (enable_debug) {
+                                Message.debug(idLogic[0]+"|"+idLogic[1]+"|"+idLogic[2]);
+                                Message.debug(Data);
                                 e.printStackTrace();
+                            }
                         }
 
                     }
@@ -140,7 +143,7 @@ public class BlockSweeper {
                         ChainResult = MagicChainClear(Data,
                                 "Properties.treasure", totalCount,
                                 "operate" +
-                                        ".replace$treasure$false");
+                                        ".replace$treasure$false",id);
                         Data = S_tag(ChainResult.get("data"));
                         totalCount = S_int(ChainResult.get("find_count"));
                     }
@@ -149,7 +152,7 @@ public class BlockSweeper {
                         ChainResult = MagicChainClear(Data,
                                 "Properties.level", totalCount,
                                 "operate" +
-                                        ".replace$level$0");
+                                        ".replace$level$0",id);
                         Data = S_tag(ChainResult.get("data"));
                         totalCount = S_int(ChainResult.get("find_count"));
                     }
