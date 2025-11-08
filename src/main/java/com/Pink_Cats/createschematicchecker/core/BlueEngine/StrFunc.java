@@ -30,15 +30,15 @@ public class StrFunc {
     }
 
 
-    public static boolean HasBanTag(String data){
+    public static String HasBanTag(String data){
         String LowData = data.toLowerCase();
         for (String item : ban_tag){
             String LowItem = item.toLowerCase();
             if (LowData.contains(LowItem)){
-                return true;
+                return LowItem ;
             }
         }
-        return false;
+        return "";
     }
 
     public static boolean isInBanTag( String target) {

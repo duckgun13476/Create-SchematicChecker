@@ -288,6 +288,10 @@ jar {
 }
 
 
+reobfJar {
+    archiveFileName = "${package_name}-${mod_version}-forge-${minecraft_version}.jar"
+}
+
 
 
 tasks.register('publishAll') {
