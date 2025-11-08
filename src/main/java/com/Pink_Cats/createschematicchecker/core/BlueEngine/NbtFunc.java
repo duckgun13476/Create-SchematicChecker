@@ -1,5 +1,6 @@
 package com.Pink_Cats.createschematicchecker.core.BlueEngine;
 
+import com.Pink_Cats.createschematicchecker.core.attach.ConveyorDegree;
 import com.Pink_Cats.createschematicchecker.lang.Message;
 import net.minecraft.nbt.*;
 
@@ -364,15 +365,25 @@ public class NbtFunc {
 
 
 
-            //conveyor mismatch
+            //conveyor mismatch  -5  6  -3
             List<String> mismatch_conveyor_controller = new ArrayList<>(List.of());
             List<String> mismatch_conveyor_destination = new ArrayList<>(List.of());
             for (int i = 0; i < Location.size(); i++) {
                 for (int[] item : Destination.get(i)) {
                     //45 angle check
                     if (Math.max(Math.abs(item[0]),Math.abs(item[2])-2) < Math.abs(item[1]) ) {
+
+                        double AB = new ConveyorDegree(item[0], item[2]).calculateHypotenuse() - 2;
+                        ConveyorDegree triangle = new ConveyorDegree(AB, item[1]);
+
+                        double angleA = triangle.calculateAngleA();
+
+                        //double angleB = triangle.calculateAngleB();
+                        //Message.debug(AB+"  "+angleA+"  "+angleB);
+
+
                         Cheat = true;
-                        CheatLog.add(translateDirect("console.cheat.conveyor.angle"));
+                        CheatLog.add(translateDirect("console.cheat.conveyor.angle")+" "+ String.format("%.2f", Math.abs(angleA))+"°");
                     }
                     int Length = Math.max(
                             Math.max(

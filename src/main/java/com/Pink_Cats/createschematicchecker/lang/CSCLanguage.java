@@ -109,7 +109,7 @@ public class CSCLanguage {
         enUs.put("console.cheat.copycats.count",       "Copycat item quantity does not match!");
         enUs.put("console.cheat.belt.count",           "Number of mismatched conveyor belts exceeds cheat threshold! [Threshold | Actual Quantity]");
         enUs.put("console.cheat.belt.mismatch",        "Conveyor belt quantity does not match!");
-        enUs.put("console.cheat.conveyor.angle",       "Chain drive wheel angle has been tampered with, exceeding 45 degrees!");
+        enUs.put("console.cheat.conveyor.angle",       "Chain drive wheel angle has been tampered with, exceeding 45 degrees. Actual:");
         enUs.put("console.cheat.conveyor.distance",    "Chain drive wheel length exceeds the upper limit in configuration file [Actual Value | Configured Value]");
         enUs.put("console.cheat.conveyor.limit",       "Number of mismatched chain drive wheels exceeds the cheat threshold in configuration file! [Actual Value | Configured Value]");
         enUs.put("console.cheat.crafter.mismatch",     "Mechanical Crafter entity data does not match!");
@@ -288,7 +288,7 @@ public class CSCLanguage {
         zhCn.put( "console.cheat.copycats.count",             "伪装板的物品数量不匹配！");
         zhCn.put( "console.cheat.belt.count",             "传送带不匹配的传送带超过作弊阈值！[阈值|实际数量]");
         zhCn.put( "console.cheat.belt.mismatch",             "传送带数量不匹配！");
-        zhCn.put( "console.cheat.conveyor.angle",             "链式传动轮的角度被篡改，超过了45度！");
+        zhCn.put( "console.cheat.conveyor.angle",             "链式传动轮的角度被篡改，超过了45度 实际值：");
         zhCn.put( "console.cheat.conveyor.distance",             "链式传动轮的长度超过了配置文件的上限 [实际值|配置值]");
         zhCn.put( "console.cheat.conveyor.limit",             "链式传动轮不匹配的数量超过了配置文件的作弊阈值！ [实际值|配置值]");
         zhCn.put( "console.cheat.crafter.mismatch",             "动力合成器的实体数据不匹配！");

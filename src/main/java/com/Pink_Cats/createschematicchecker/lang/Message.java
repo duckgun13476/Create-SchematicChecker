@@ -2,6 +2,7 @@ package com.Pink_Cats.createschematicchecker.lang;
 
 import com.Pink_Cats.createschematicchecker.Createschematicchecker;
 
+import static com.Pink_Cats.createschematicchecker.FancyConfig.ConfigRegister.enable_debug;
 import static com.Pink_Cats.createschematicchecker.database.SingleLog.CSC_MES;
 import static com.Pink_Cats.createschematicchecker.database.SingleLog.CSC_WARN;
 
@@ -44,6 +45,14 @@ public class Message {
         String messageString = String.valueOf(message);
         Createschematicchecker.LOGGER.info(CYAN+LOGO+MAGENTA + "{}" + RESET, messageString);
         CSC_MES.log("[INFO] "+messageString);
+    }
+
+    public static void debug(Object message) {
+        if (enable_debug) {
+            String messageString = String.valueOf(message);
+            Createschematicchecker.LOGGER.info(CYAN + "[Debug]" + MAGENTA + "{}" + RESET, messageString);
+            CSC_MES.log("[DevelopDebug] " + messageString);
+        }
     }
 
 
