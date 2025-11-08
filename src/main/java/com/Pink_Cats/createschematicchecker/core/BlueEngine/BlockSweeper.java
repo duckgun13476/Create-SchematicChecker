@@ -126,7 +126,8 @@ public class BlockSweeper {
                             Message.FE(translateDirect("check.chain.rule.block")+
                                     (sequence)+1+translateDirect("check.chain.rule.rule")+
                                     idKey+"|"+chain+"|"+surgery+"]");
-                            //e.printStackTrace();
+                            if (enable_debug)
+                                e.printStackTrace();
                         }
 
                     }
