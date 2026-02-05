@@ -96,7 +96,7 @@ public abstract class handleFinishedUploadMixin {
         String id = TL_ID.get();
         if (id == null) id = player.getGameProfile().getName() + "/" + schematic;
 
-        SchematicUploadEvent uploadEvent = new SchematicUploadEvent(player, playerSchematicId,schematic, world, table);//构建一个事件
+        SchematicUploadEvent uploadEvent = new SchematicUploadEvent(player, id, schematic);
         NeoForge.EVENT_BUS.post(uploadEvent);
 
         TL_WORLD.remove();
