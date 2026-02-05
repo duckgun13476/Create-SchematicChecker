@@ -1,9 +1,9 @@
 package com.Pink_Cats.createschematicchecker.event;
 
+import com.Pink_Cats.createschematicchecker.Compat.PendingSchematicStore;
 import com.Pink_Cats.createschematicchecker.core.BlueCore;
 import com.Pink_Cats.createschematicchecker.lang.Message;
 import com.simibubi.create.AllItems;
-import com.simibubi.create.content.schematics.SchematicItem;
 import com.simibubi.create.content.schematics.table.SchematicTableBlockEntity;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
@@ -13,9 +13,12 @@ import net.minecraft.network.chat.Style;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.server.ServerLifecycleHooks;
 
 import java.io.File;
@@ -30,23 +33,25 @@ import static com.Pink_Cats.createschematicchecker.core.BlueEngine.NbtInterFace.
 import static com.Pink_Cats.createschematicchecker.core.BlueEngine.StrFunc.getCurrentDateTime;
 import static com.Pink_Cats.createschematicchecker.event.TempOffEvent.CheckSchematic;
 import static com.Pink_Cats.createschematicchecker.lang.CSCLanguage.translateDirect;
-import static com.Pink_Cats.createschematicchecker.network.AutoUpdate.PostDataAsync;
+import static com.cak.pattern_schematics.registry.PatternSchematicsRegistry.EMPTY_PATTERN_SCHEMATIC;
+import static com.cak.pattern_schematics.registry.PatternSchematicsRegistry.PATTERN_SCHEMATIC;
+
 
 public class CheckBlueprint {
-    BlueCore Checker;
+
+    private final BlueCore Checker;
 
     public CheckBlueprint(BlueCore _filter) {
         Checker = _filter;
         MinecraftForge.EVENT_BUS.register(this);
     }
 
-
     @SubscribeEvent
     public void OnSchematicUpload(SchematicUploadEvent event) {
-        new Thread(() -> handleBlueprintUpload(event)).start();
+        new Thread(() -> handleBlueprintUpload(event), "CSC-SchematicScan").start();
     }
 
-    //Robust Fix (run in main loop)
+    // run on main server thread
     private void runOnServerMainThread(ServerPlayer player, Runnable task) {
         if (player == null) return;
         if (player.getServer() == null) return;
@@ -59,139 +64,150 @@ public class CheckBlueprint {
     }
 
 
+    private void applyResult(ServerPlayer player, String id, boolean pass) {
+        runOnServerMainThread(player, () -> {
+            var list = ModList.get();
+            boolean HAS_PATTERN = list != null && list.isLoaded("create_pattern_schematics");
+            PendingSchematicStore.PendingMeta meta = PendingSchematicStore.takeMeta(id);
+            ItemStack pending = PendingSchematicStore.takeStack(id);
+
+            if (meta == null) {
+                PendingSchematicStore.drop(id);
+                return;
+            }
+
+            Level w = player.getServer().getLevel(meta.dim);
+            if (w == null) return;
+
+            BlockEntity be = w.getBlockEntity(meta.pos);
+            if (!(be instanceof SchematicTableBlockEntity table)) return;
+            if (table.isRemoved()) return;
+            if (pass) {
+                // restore to slot1 (keeps the other mod's item type)
+                if (pending != null && !pending.isEmpty()) {
+                    table.inventory.setStackInSlot(1, pending);
+                }
+            } else {
+                System.out.println(HAS_PATTERN);
+
+                // reject: slot0 empty schematic, slot1 stays empty
+                if (HAS_PATTERN) {
+                    if (pending.getItem().equals(PATTERN_SCHEMATIC.asItem()))
+                        table.inventory.setStackInSlot(0, EMPTY_PATTERN_SCHEMATIC.asStack());
+                    else
+                        table.inventory.setStackInSlot(0, AllItems.EMPTY_SCHEMATIC.asStack());
+                }
+
+                if (!HAS_PATTERN) {
+                    table.inventory.setStackInSlot(0, AllItems.EMPTY_SCHEMATIC.asStack());
+                }
+
+            }
+        });
+    }
+
     private void handleBlueprintUpload(SchematicUploadEvent event) {
         try {
-            // simulate delay
-            //Thread.sleep(4000);
-
-
-            SchematicTableBlockEntity table = event.Table;
-            Level world = event.World;
             ServerPlayer player = event.Player;
-            String PlayerBlueprintId = event.SchematicPath;
+            if (player == null || player.getServer() == null) return;
+
+
+            String id = event.SchematicPath;
+            String schematicName = event.SchematicId;
             String player_id = player.getGameProfile().getName();
 
-
-            if (table.isRemoved()) {
-                return;
-            }
-
-
-            if (!CheckSchematic)
-            {
+            if (!CheckSchematic) {
                 Message.FE(translateDirect("console.stop.csc.temp.output"));
+
                 String DefaultPath = "./schematics/uploaded/";
-                //String DefaultPath = System.getProperty("user.dir");
-                String path = DefaultPath + PlayerBlueprintId;
+                String path = DefaultPath + id;
+
                 CompoundTag nbt_data = Path_to_CompoundTag(path);
-                String User = PlayerBlueprintId.split("/")[0];
-                String Blueprint = PlayerBlueprintId.split("/")[1];
-                if (enable_backup)
-                {
-                    Checker.CompoundTag_to_Path(nbt_data, "config/CSC/backup/"+User+"/",getCurrentDateTime()+Blueprint);
+                String User = id.split("/")[0];
+                String Blueprint = id.split("/")[1];
+
+                if (enable_backup) {
+                    Checker.CompoundTag_to_Path(nbt_data, "config/CSC/backup/" + User + "/", getCurrentDateTime() + Blueprint);
                 }
-                Checker.CompoundTag_to_Path(nbt_data, DefaultPath+User+"/",Blueprint);
+                Checker.CompoundTag_to_Path(nbt_data, DefaultPath + User + "/", Blueprint);
 
-
-                runOnServerMainThread(player, () -> {
-                table.inventory.setStackInSlot(1, SchematicItem.create(
-                        world, Blueprint, player_id));
-                });
+                applyResult(player, id, true); // pass: restore slot1
                 return;
             }
-
-
 
             List<String> CheatLog = new ArrayList<>();
-
             long startTime = System.currentTimeMillis();
 
-
-
-            Map<String,Object> CheckResult = Checker.SchematicBlueCore(PlayerBlueprintId,CheatLog);
-            if (CheckResult == null) {
-                runOnServerMainThread(player, () -> {
-                    table.inventory.setStackInSlot(0, AllItems.EMPTY_SCHEMATIC.asStack());
-                });
-                return;
-            }
-
-
-
-
-            CheckCount++;
-            boolean IsCheatSchematic = S_bool(CheckResult.get("Cheat"));
-            boolean IsProblem = S_bool(CheckResult.get("Problem"));
-            boolean CannotCheck = S_bool(CheckResult.get("CannotCheck"));
+            Map<String, Object> CheckResult = Checker.SchematicBlueCore(id, CheatLog);
 
             long endTime = System.currentTimeMillis();
             long executionTime = endTime - startTime;
 
-            //Message.FE(player.getGameProfile().getName());
+            String displayName = removeFirstPathComponent(id);
 
-            //Message.FE(PlayerBlueprintId);
-            PlayerBlueprintId = removeFirstPathComponent(PlayerBlueprintId);
-            if (!CheatLog.isEmpty()){
+            if (!CheatLog.isEmpty()) {
                 for (String s : CheatLog) {
                     Message.FE(s);
                 }
             }
-            //Message.FE(PlayerBlueprintId);
             Message.FP(translateDirect("console.total.time") + executionTime + " ms");
 
-            if (CannotCheck) {
-                Message.FE(translateDirect("console.csc.cannotCheck"));
+            if (CheckResult == null) {
 
-                runOnServerMainThread(player, () -> {
-                    table.inventory.setStackInSlot(0, AllItems.EMPTY_SCHEMATIC.asStack());
-                });
-
+                // treat as cannotCheck => reject
+                applyResult(player, id, false);
                 return;
             }
 
+            CheckCount++;
 
+            boolean IsCheatSchematic = S_bool(CheckResult.get("Cheat"));
+            boolean IsProblem = S_bool(CheckResult.get("Problem"));
+            boolean CannotCheck = S_bool(CheckResult.get("CannotCheck"));
+
+            if (CannotCheck) {
+                Message.FE(translateDirect("console.csc.cannotCheck"));
+                applyResult(player, id, false);
+                return;
+            }
 
             if (!IsCheatSchematic) {
-                if (IsProblem){
-                    ProblemCount +=1;
-                    Message.FW(translateDirect("console.problemOutput")+player_id+
-                            translateDirect("console.problemOutput2")+PlayerBlueprintId);
-
+                if (IsProblem) {
+                    ProblemCount += 1;
+                    Message.FW(translateDirect("console.problemOutput") + player_id
+                            + translateDirect("console.problemOutput2") + displayName);
                 }
-                String finalPlayerBlueprintId = PlayerBlueprintId;
 
-                runOnServerMainThread(player, () -> {
-                table.inventory.setStackInSlot(1, SchematicItem.create(
-                        world, finalPlayerBlueprintId, player_id));
-                });
-
+                // pass => restore pending stack
+                applyResult(player, id, true);
 
             } else {
-                CheatCount +=1;
+                CheatCount += 1;
                 Message.FE(translateDirect("console.cheat.find"));
-                Message.FE(translateDirect("console.CheatOutput")+player_id+
-                        translateDirect("console.CheatOutput2")+PlayerBlueprintId);
-                if (DebugCheatFind){
-                    broadcast(PlayerBlueprintId,player_id);
+                Message.FE(translateDirect("console.CheatOutput") + player_id
+                        + translateDirect("console.CheatOutput2") + displayName);
+
+                if (DebugCheatFind) {
+                    broadcast(displayName, player_id);
                 }
-                if (CheckRunCommand){
-                    ExecuteSomeCmd(PlayerBlueprintId,player_id);
+                if (CheckRunCommand) {
+                    ExecuteSomeCmd(displayName, player_id);
                 }
-                runOnServerMainThread(player, () -> {
-                table.inventory.setStackInSlot(0, AllItems.EMPTY_SCHEMATIC.asStack());
-                });
+
+                // reject => slot0 empty
+                applyResult(player, id, false);
             }
 
         } catch (Exception e) {
-            if (enable_debug)
-                e.printStackTrace();
+            if (enable_debug) e.printStackTrace();
         }
     }
 
     public CompoundTag Path_to_CompoundTag(String SchematicPath) throws IOException {
         File BluePrint = new File(SchematicPath);
-        FileInputStream file_stream = new FileInputStream(BluePrint);
-        return NbtIo.readCompressed(file_stream);
+        try (FileInputStream file_stream = new FileInputStream(BluePrint)) {
+            return NbtIo.readCompressed(file_stream);
+        }
     }
 
     public String removeFirstPathComponent(String path) {
@@ -202,39 +218,24 @@ public class CheckBlueprint {
         return path;
     }
 
-
     public static List<ServerPlayer> getAllOnlinePlayers() {
-        // 1. 获取服务器实例（ Forge 提供的工具类）
         MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
-        if (server == null) {
-            // 服务器未启动时返回空列表
-            return new ArrayList<>();
-        }
-
-        // 2. 获取所有在线玩家（返回的是不可修改列表，建议转为新列表）
+        if (server == null) return new ArrayList<>();
         return new ArrayList<>(server.getPlayerList().getPlayers());
     }
 
     public static void broadcast(String PlayerBlueprintId, String PlayerName) {
-
-        for (final Player player : getAllOnlinePlayers())
-        {
+        for (final Player player : getAllOnlinePlayers()) {
             player.sendSystemMessage(
                     Component.literal(
-                            translateDirect("console.CheatOutput")+PlayerName+
-                            translateDirect("console.CheatOutput2")+PlayerBlueprintId
-
-                    )
+                                    translateDirect("console.CheatOutput") + PlayerName +
+                                            translateDirect("console.CheatOutput2") + PlayerBlueprintId
+                            )
                             .setStyle(Style.EMPTY.withColor(ChatFormatting.GOLD)));
         }
-
     }
+
     public static void ExecuteSomeCmd(String PlayerBlueprintId, String PlayerName) {
         String command = "";
     }
-
-
-
-
 }
-        //player.sendSystemMessage(Component.literal(""));
