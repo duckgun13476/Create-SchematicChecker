@@ -46,6 +46,19 @@ public class CheckBlueprint {
         new Thread(() -> handleBlueprintUpload(event)).start();
     }
 
+    //Robust Fix (run in main loop)
+    private void runOnServerMainThread(ServerPlayer player, Runnable task) {
+        if (player == null) return;
+        if (player.getServer() == null) return;
+
+        if (player.getServer().isSameThread()) {
+            task.run();
+        } else {
+            player.getServer().execute(task);
+        }
+    }
+
+
     private void handleBlueprintUpload(SchematicUploadEvent event) {
         try {
             // simulate delay
@@ -79,10 +92,11 @@ public class CheckBlueprint {
                 }
                 Checker.CompoundTag_to_Path(nbt_data, DefaultPath+User+"/",Blueprint);
 
+
+                runOnServerMainThread(player, () -> {
                 table.inventory.setStackInSlot(1, SchematicItem.create(
                         world, Blueprint, player_id));
-
-
+                });
                 return;
             }
 
@@ -96,7 +110,9 @@ public class CheckBlueprint {
 
             Map<String,Object> CheckResult = Checker.SchematicBlueCore(PlayerBlueprintId,CheatLog);
             if (CheckResult == null) {
-                table.inventory.setStackInSlot(0, AllItems.EMPTY_SCHEMATIC.asStack());
+                runOnServerMainThread(player, () -> {
+                    table.inventory.setStackInSlot(0, AllItems.EMPTY_SCHEMATIC.asStack());
+                });
                 return;
             }
 
@@ -125,7 +141,11 @@ public class CheckBlueprint {
 
             if (CannotCheck) {
                 Message.FE(translateDirect("console.csc.cannotCheck"));
-                table.inventory.setStackInSlot(0, AllItems.EMPTY_SCHEMATIC.asStack());
+
+                runOnServerMainThread(player, () -> {
+                    table.inventory.setStackInSlot(0, AllItems.EMPTY_SCHEMATIC.asStack());
+                });
+
                 return;
             }
 
@@ -138,9 +158,12 @@ public class CheckBlueprint {
                             translateDirect("console.problemOutput2")+PlayerBlueprintId);
 
                 }
+                String finalPlayerBlueprintId = PlayerBlueprintId;
 
+                runOnServerMainThread(player, () -> {
                 table.inventory.setStackInSlot(1, SchematicItem.create(
-                        world, PlayerBlueprintId, player_id));
+                        world, finalPlayerBlueprintId, player_id));
+                });
 
 
             } else {
@@ -154,8 +177,9 @@ public class CheckBlueprint {
                 if (CheckRunCommand){
                     ExecuteSomeCmd(PlayerBlueprintId,player_id);
                 }
-
+                runOnServerMainThread(player, () -> {
                 table.inventory.setStackInSlot(0, AllItems.EMPTY_SCHEMATIC.asStack());
+                });
             }
 
         } catch (Exception e) {
