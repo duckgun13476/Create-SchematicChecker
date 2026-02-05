@@ -57,9 +57,6 @@ public class Createschematicchecker {
 
     }
 
-
-
-
     private void commonSetup(final FMLCommonSetupEvent event) {
         Message.FM(translateDirect("console.LoadingConfig"));
         List<String> log = List.of();
@@ -115,11 +112,11 @@ public class Createschematicchecker {
             this.mod = mod;
         }
 
-        // 只有Mod事件（如ModConfigEvent）放在这里
+
         @SubscribeEvent
         public void onReload(ModConfigEvent.Reloading event) {
             try {
-                CSC_RELOAD(); // 直接调用主类的方法
+                CSC_RELOAD();
             } catch (Exception ex) {
                 Message.FE(translateDirect("console.ConfigReloadError"));
             }
@@ -138,7 +135,7 @@ public class Createschematicchecker {
             this.mod = mod;
         }
 
-        // 所有通用游戏事件放在这里
+        // All normal event
         @SubscribeEvent
         public void onServerStarting(ServerStartingEvent event) {
             //CscConfigIO();
@@ -173,5 +170,3 @@ public class Createschematicchecker {
 
 
 }
-
-
