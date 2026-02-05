@@ -197,7 +197,7 @@ dependencies {
 
     //modImplementation("curse.maven:architectury-api-419699:5137938")
 
-    modImplementation("curse.maven:create-pattern-schematics-1072349:7207725")
+    modImplementation("curse.maven:create-pattern-schematics-1072349:5882974")
 
     //modImplementation("curse.maven:quark-243121:6427817")
     //modImplementation("curse.maven:zeta-968868:6432578")

@@ -9,7 +9,7 @@ public class CSCLanguage {
 
     private static final String DEFAULT_LANGUAGE = "en_us";
     private static final String mc_version = "1.20.1";
-    public static final String csc_version = "0.21";
+    public static final String csc_version = "0.21.14";
 
 
     // 定义不同语言的翻译字典
@@ -112,10 +112,10 @@ public class CSCLanguage {
         enUs.put("console.cheat.conveyor.angle",       "Chain drive wheel angle has been tampered with, exceeding 45 degrees. Actual:");
         enUs.put("console.cheat.conveyor.distance",    "Chain drive wheel length exceeds the upper limit in configuration file [Actual Value | Configured Value]");
         enUs.put("console.cheat.conveyor.limit",       "Number of mismatched chain drive wheels exceeds the cheat threshold in configuration file! [Actual Value | Configured Value]");
-        enUs.put("console.cheat.crafter.mismatch",     "Mechanical Crafter entity data does not match!");
-        enUs.put("console.cheat.crafter.attach",       "Mechanical Crafters considered the same entity are not connected to each other!");
+        enUs.put("console.cheat.crafter.mismatch",     "Create Crafter entity data does not match!");
+        enUs.put("console.cheat.crafter.attach",       "Create Crafter considered the same entity are not connected to each other!");
         enUs.put("console.cheat.FluidTank.mismatch",   "Fluid Tank Controller quantity does not match! [Number of Controllers | Number of Tanks Found]");
-        enUs.put("console.CheatOutput",                "Cheat schematic detected! Player:");
+        enUs.put("console.CheatOutput",                "Cheat or incomplete schematic detected! Player:");
         enUs.put("console.CheatOutput2",               "   Schematic:");
         enUs.put("console.debug.itemDetail",           "Meow, output schematic item list!");
 
@@ -297,7 +297,7 @@ public class CSCLanguage {
         zhCn.put( "console.cheat.crafter.mismatch",             "动力合成器的实体数据不匹配！");
         zhCn.put( "console.cheat.crafter.attach",             "被视为同一实体的动力合成器没有相互连接！");
         zhCn.put( "console.cheat.FluidTank.mismatch",             "流体储罐控制器数量不匹配！[控制器数量|找到的容器数量]");
-        zhCn.put( "console.CheatOutput",             "嘟嘟嘟！侦测到作弊蓝图！玩家：");
+        zhCn.put( "console.CheatOutput",             "嘟嘟嘟！侦测到作弊或不完整的蓝图！玩家：");
         zhCn.put( "console.CheatOutput2",             "   蓝图：");
         zhCn.put( "console.debug.itemDetail",             "呜喵，输出蓝图物品列表！");
 

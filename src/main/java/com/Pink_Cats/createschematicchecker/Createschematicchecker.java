@@ -50,7 +50,6 @@ public class Createschematicchecker {
         modEventBus.addListener(this::commonSetup);
         MinecraftForge.EVENT_BUS.register(this);
 
-        //ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.SPEC);
 
         BlueCore shifter = new BlueCore();   //创建一个新的过滤器
 
