@@ -1,71 +1,107 @@
 package com.Pink_Cats.createschematicchecker.mixin;
 
-import com.Pink_Cats.createschematicchecker.lang.Message;
-import com.simibubi.create.AllBlocks;
+import com.Pink_Cats.createschematicchecker.Compat.PendingSchematicStore;
 import com.simibubi.create.content.schematics.ServerSchematicLoader;
 import com.simibubi.create.content.schematics.table.SchematicTableBlockEntity;
 import com.Pink_Cats.createschematicchecker.event.SchematicUploadEvent;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import org.spongepowered.asm.mixin.Mixin;
 import net.neoforged.neoforge.common.NeoForge;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
+
 import java.util.Map;
 
-import static com.Pink_Cats.createschematicchecker.lang.CSCLanguage.translateDirect;
-
-
-@Mixin(value = ServerSchematicLoader.class,remap = false)
+@Mixin(value = ServerSchematicLoader.class, remap = false)
 public abstract class handleFinishedUploadMixin {
 
-
+    @Unique
+    private static final ThreadLocal<Level> TL_WORLD = new ThreadLocal<>();
+    @Unique
+    private static final ThreadLocal<BlockPos> TL_POS = new ThreadLocal<>();
 
     @Shadow
     private Map<String, ServerSchematicLoader.SchematicUploadEntry> activeUploads;
 
-    @Shadow
-    public abstract SchematicTableBlockEntity getTable(Level world, BlockPos pos);
+    @Unique
+    private static final ThreadLocal<String> TL_ID = new ThreadLocal<>();
+    @Unique
+    private static final ThreadLocal<ServerPlayer> TL_PLAYER = new ThreadLocal<>();
 
 
-    @Inject(method = "handleFinishedUpload", at = @At("HEAD"), cancellable = true,remap = false)
-    public void OnSchematicOnLoaded(ServerPlayer player, String schematic, CallbackInfo ctr) {
+    @Inject(method = "handleFinishedUpload", at = @At("HEAD"), remap = false)
+    private void onHead(ServerPlayer player, String schematic, CallbackInfo ci) {
+        TL_PLAYER.set(player);
+        TL_ID.set(player.getGameProfile().getName() + "/" + schematic);
+    }
 
-        String playerSchematicId = player.getGameProfile()
-                .getName() + "/" + schematic;
 
-        if (activeUploads.containsKey(playerSchematicId)) {
-            try {
-                activeUploads.get(playerSchematicId).stream.close();    //关闭输入流
-                ServerSchematicLoader.SchematicUploadEntry removed = activeUploads.remove(playerSchematicId);
-                Level world = removed.world;
-                BlockPos pos = removed.tablePos;//获取蓝图桌的位置
+    @Inject(
+            method = "handleFinishedUpload",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lcom/simibubi/create/content/schematics/ServerSchematicLoader;getTable(Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;)Lcom/simibubi/create/content/schematics/table/SchematicTableBlockEntity;",
+                    shift = At.Shift.BEFORE
+            ),
+            locals = LocalCapture.CAPTURE_FAILSOFT,
+            remap = false
+    )
+    private void captureWorldPos(ServerPlayer player, String schematic, CallbackInfo ci, String playerSchematicId, ServerSchematicLoader.SchematicUploadEntry removed, Level world, BlockPos pos, BlockState blockState) {
+        TL_WORLD.set(world);
+        TL_POS.set(pos);
+    }
 
-                Message.FM(translateDirect( "console.newSchematic")+ playerSchematicId);
 
-                if (pos == null)
-                    return;
+    @Redirect(
+            method = "handleFinishedUpload",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lcom/simibubi/create/content/schematics/table/SchematicTableBlockEntity$SchematicTableInventory;setStackInSlot(ILnet/minecraft/world/item/ItemStack;)V"
+            ),
+            remap = true
+    )
+    private void interceptSlot1(SchematicTableBlockEntity.SchematicTableInventory inventory, int slot, ItemStack stack) {
 
-                BlockState blockState = world.getBlockState(pos);
-
-                if (AllBlocks.SCHEMATIC_TABLE.get() != blockState.getBlock())
-                    return;
-
-                SchematicTableBlockEntity table = getTable(world, pos);//获取蓝图桌实例
-                if (table == null)
-                    return;
-                table.finishUpload();
-                SchematicUploadEvent uploadEvent = new SchematicUploadEvent(player, playerSchematicId,schematic, world, table);//构建一个事件
-                NeoForge.EVENT_BUS.post(uploadEvent);
-
-                ctr.cancel();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+        if (slot != 1) {
+            inventory.setStackInSlot(slot, stack);
+            return;
         }
+
+        String id = TL_ID.get();
+        Level w = TL_WORLD.get();
+        BlockPos p = TL_POS.get();
+
+        if (id != null && stack != null && !stack.isEmpty() && w != null && p != null) {
+            PendingSchematicStore.put(id, stack.copy(), w.dimension(), p);
+        } else if (id != null && stack != null && !stack.isEmpty()) {
+            PendingSchematicStore.put(id, stack.copy(), null, null);
+        }
+
+        // Pick blueprint
+        inventory.setStackInSlot(1, ItemStack.EMPTY);
+    }
+
+
+    @Inject(method = "handleFinishedUpload", at = @At("TAIL"), remap = false)
+    private void fireEvent(ServerPlayer player, String schematic, CallbackInfo ci) {
+        String id = TL_ID.get();
+        if (id == null) id = player.getGameProfile().getName() + "/" + schematic;
+
+        SchematicUploadEvent uploadEvent = new SchematicUploadEvent(player, playerSchematicId,schematic, world, table);//构建一个事件
+        NeoForge.EVENT_BUS.post(uploadEvent);
+
+        TL_WORLD.remove();
+        TL_POS.remove();
+        TL_ID.remove();
+        TL_PLAYER.remove();
     }
 }
