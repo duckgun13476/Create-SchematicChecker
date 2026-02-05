@@ -5,7 +5,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.eventbus.api.Event;
 
-public class SchematicUploadEvent extends Event {//蓝图上传事件
+public class SchematicUploadEvent extends Event {
     public String SchematicPath;
     public ServerPlayer Player;
     public String SchematicId;
@@ -22,6 +22,15 @@ public class SchematicUploadEvent extends Event {//蓝图上传事件
         World = World_P;
         Table = SchematicTableBlock;
 
+    }
+
+
+    public SchematicUploadEvent(ServerPlayer player, String schematicPath, String schematicId) {
+        Player = player;
+        SchematicPath = schematicPath;
+        SchematicId = schematicId;
+        World = null;
+        Table = null;
     }
 }
 
