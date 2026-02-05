@@ -196,16 +196,13 @@ dependencies {
     //modImplementation("curse.maven:lets-do-vinery-704465:6965751")
 
     //modImplementation("curse.maven:architectury-api-419699:5137938")
+
+    modImplementation("curse.maven:create-pattern-schematics-1072349:7207725")
+
     //modImplementation("curse.maven:quark-243121:6427817")
     //modImplementation("curse.maven:zeta-968868:6432578")
     //implementation 'com.google.code.gson:gson:2.8.9' // 更新版本
     //modImplementation(jarJar( group: 'com.moandjiezana.toml', name: 'toml4j', version: '0.7.2'))
-    // Specify the version of Minecraft to use.
-    // Any artifact can be supplied so long as it has a "userdev" classifier artifact and is a compatible patcher artifact.
-    // The "userdev" classifier will be requested and setup by ForgeGradle.
-    // If the group id is "net.minecraft" and the artifact id is one of ["client", "server", "joined"],
-    // then special handling is done to allow a setup of a vanilla dependency without the use of an external repository.
-    //minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 
     // Example mod dependency with JEI - using fg.deobf() ensures the dependency is remapped to your development mappings
     // The JEI API is declared for compile time use, while the full JEI artifact is used at runtime
@@ -230,10 +227,6 @@ dependencies {
 //        annotationProcessor "org.spongepowered:mixin:${mixin_version}:processor"
     //}
 }
-
-
-
-
 
 processResources {
     def buildProps = project.properties.clone()
