@@ -14,6 +14,7 @@ import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.event.server.ServerStoppingEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -41,7 +42,11 @@ public class Createschematicchecker {
 
     public Createschematicchecker() {
 
-        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+        // Only for 1.20.1 forge
+        ModLoadingContext modLoadingContext = getModLoadingContextViaReflection();
+        FMLJavaModLoadingContext modContext = modLoadingContext.extension();
+        IEventBus modEventBus = modContext.getModEventBus();
+
         // 添加监听器
         modEventBus.addListener(this::commonSetup);
         MinecraftForge.EVENT_BUS.register(this);
@@ -145,6 +150,18 @@ public class Createschematicchecker {
 
     }
 
+    //Tool Func
+    @SuppressWarnings("unchecked")
+    private static ModLoadingContext getModLoadingContextViaReflection() {
+        try {
+            Field contextField = ModLoadingContext.class.getDeclaredField("context");
+            contextField.setAccessible(true);
+            ThreadLocal<ModLoadingContext> contextThreadLocal = (ThreadLocal<ModLoadingContext>) contextField.get(null);
+            return contextThreadLocal.get();
 
+        } catch (Exception e) {
+            throw new RuntimeException("CreateLazyTick got ERROR in Init:", e);
+        }
+    }
 
 }
