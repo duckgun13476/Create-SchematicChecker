@@ -137,7 +137,7 @@ public class NbtFileUploader {
     private static final String UPLOAD_API_URL = "https://mc.aisaveworld.tech:8144/uploadfile/";
     //private static final String LOCAL_NBT_FILE_PATH = "uploaded/battery.nbt";
 
-    private static final int TIMEOUT_MS = 10000;
+    private static final int TIMEOUT_MS = 3000;
 
 
 
