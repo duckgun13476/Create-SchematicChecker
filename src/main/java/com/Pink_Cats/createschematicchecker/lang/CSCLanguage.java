@@ -103,7 +103,7 @@ public class CSCLanguage {
         enUs.put( "console.newSchematic",             "New Schematic Uploaded: 》");
         enUs.put( "console.thread.new",             "thread run！goal =》");
         enUs.put( "console.total.time",             "bibi~ scan success time consume：");
-        enUs.put( "console.cheat.find",             "Find cheat schematic！");
+        enUs.put( "console.cheat.find",             "Find cheat/problem schematic！");
 
         enUs.put("console.cheat.copycats",             "Copycat item quantity is abnormal or items do not match layers! [Actual Quantity | Expected Quantity] [Included Items | Disguised Layers] =>");
         enUs.put("console.cheat.copycats.count",       "Copycat item quantity does not match!");
@@ -282,7 +282,7 @@ public class CSCLanguage {
         zhCn.put( "console.newSchematic",             "发现新的蓝图上传喵~ =》");
         zhCn.put( "console.thread.new",             "线程启动！目标=》");
         zhCn.put( "console.total.time",             "滴滴~ 扫描完毕 用时：");
-        zhCn.put( "console.cheat.find",             "发现作弊蓝图！");
+        zhCn.put( "console.cheat.find",             "发现异常蓝图！");
 
 
 
