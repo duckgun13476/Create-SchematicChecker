@@ -1,6 +1,7 @@
 package com.Pink_Cats.createschematicchecker.event;
 
 import com.Pink_Cats.createschematicchecker.Compat.PendingSchematicStore;
+import com.Pink_Cats.createschematicchecker.Compat.pattern_schematics.PatternSchematicsCompat;
 import com.Pink_Cats.createschematicchecker.core.BlueCore;
 import com.Pink_Cats.createschematicchecker.lang.Message;
 import com.simibubi.create.AllItems;
@@ -33,8 +34,6 @@ import static com.Pink_Cats.createschematicchecker.core.BlueEngine.NbtInterFace.
 import static com.Pink_Cats.createschematicchecker.core.BlueEngine.StrFunc.getCurrentDateTime;
 import static com.Pink_Cats.createschematicchecker.event.TempOffEvent.CheckSchematic;
 import static com.Pink_Cats.createschematicchecker.lang.CSCLanguage.translateDirect;
-import static com.cak.pattern_schematics.registry.PatternSchematicsRegistry.EMPTY_PATTERN_SCHEMATIC;
-import static com.cak.pattern_schematics.registry.PatternSchematicsRegistry.PATTERN_SCHEMATIC;
 
 
 public class CheckBlueprint {
@@ -92,14 +91,17 @@ public class CheckBlueprint {
 
                 // reject: slot0 empty schematic, slot1 stays empty
                 if (HAS_PATTERN) {
-                    if (pending.getItem().equals(PATTERN_SCHEMATIC.asStack().getItem()))
-                        table.inventory.setStackInSlot(0, EMPTY_PATTERN_SCHEMATIC.asStack());
-                    else
-
+                    if (pending != null && PatternSchematicsCompat.isPatternSchematicItem(pending.getItem())) {
+                        ItemStack empty = PatternSchematicsCompat.getEmptyPatternSchematicStack();
+                        if (!empty.isEmpty()) {
+                            table.inventory.setStackInSlot(0, empty);
+                        } else {
+                            table.inventory.setStackInSlot(0, AllItems.EMPTY_SCHEMATIC.asStack());
+                        }
+                    } else {
                         table.inventory.setStackInSlot(0, AllItems.EMPTY_SCHEMATIC.asStack());
-                }
-
-                if (!HAS_PATTERN) {
+                    }
+                } else {
                     table.inventory.setStackInSlot(0, AllItems.EMPTY_SCHEMATIC.asStack());
                 }
 
