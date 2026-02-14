@@ -113,7 +113,8 @@ dependencies {
     runtimeOnly("dev.engine-room.flywheel:flywheel-neoforge-${minecraft_version}:${flywheel_version}")
     implementation("com.tterrag.registrate:Registrate:${registrate_version}")
     implementation "curse.maven:copycats-968398:6650033"
-    implementation "curse.maven:create-pattern-schematics-1072349:7155413"
+
+    //implementation "curse.maven:create-pattern-schematics-1072349:7155413"
 
 
     compileOnly("mezz.jei:jei-${minecraft_version}-neoforge-api:${jei_version}")
