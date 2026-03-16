@@ -2,7 +2,6 @@ package com.Pink_Cats.createschematicchecker.mixin;
 
 
 import com.simibubi.create.AllFluids;
-import com.simibubi.create.content.fluids.FlowSource;
 import com.simibubi.create.content.fluids.OpenEndedPipe;
 import com.simibubi.create.content.fluids.pipes.VanillaFluidTargets;
 import com.simibubi.create.foundation.advancement.AdvancementBehaviour;
@@ -29,7 +28,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.WATERLOGGED;
 
 @Mixin(value = OpenEndedPipe.class,remap = false)
-public class OpenEndedPipeMixin extends FlowSource {
+public class OpenEndedPipeMixin {
 
     @Unique
     private static final BooleanProperty createSchematicChecker$LAVALOGGED = BooleanProperty.create("lavalogged");
@@ -42,11 +41,6 @@ public class OpenEndedPipeMixin extends FlowSource {
 
     @Shadow
     private BlockPos pos;
-
-    public OpenEndedPipeMixin(net.createmod.catnip.math.BlockFace location) {
-        super(location);
-    }
-
 
     @Inject(method = "removeFluidFromSpace", at = @At("HEAD"), cancellable = true,remap = false)
     private void removeFluidFromSpace(boolean simulate, CallbackInfoReturnable<FluidStack> cir) {

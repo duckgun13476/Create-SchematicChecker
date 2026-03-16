@@ -107,14 +107,15 @@ repositories {
 
 
 dependencies {
-    implementation("com.simibubi.create:create-${minecraft_version}:${create_version}:slim") { transitive = false }
-    implementation("net.createmod.ponder:Ponder-NeoForge-${minecraft_version}:${ponder_version}")
-    compileOnly("dev.engine-room.flywheel:flywheel-neoforge-api-${minecraft_version}:${flywheel_version}")
-    runtimeOnly("dev.engine-room.flywheel:flywheel-neoforge-${minecraft_version}:${flywheel_version}")
-    implementation("com.tterrag.registrate:Registrate:${registrate_version}")
+    //implementation("com.simibubi.create:create-${minecraft_version}:${create_version}:slim") { transitive = false }
+    //implementation("net.createmod.ponder:Ponder-NeoForge-${minecraft_version}:${ponder_version}")
+    //compileOnly("dev.engine-room.flywheel:flywheel-neoforge-api-${minecraft_version}:${flywheel_version}")
+    //runtimeOnly("dev.engine-room.flywheel:flywheel-neoforge-${minecraft_version}:${flywheel_version}")
+    compileOnly("com.tterrag.registrate:Registrate:MC1.21-1.3.0+67")
     implementation "curse.maven:copycats-968398:6650033"
 
-    //implementation "curse.maven:create-pattern-schematics-1072349:7155413"
+    implementation "curse.maven:create-328085:7408951"
+    implementation "net.createmod.ponder:ponder-neoforge:1.0.81+mc1.21.1"
 
 
     compileOnly("mezz.jei:jei-${minecraft_version}-neoforge-api:${jei_version}")
