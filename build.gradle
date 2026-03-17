@@ -22,6 +22,9 @@ group = mod_group_id
 version = mod_version
 archivesBaseName = mod_id
 String gitHash = "${calculateGitHash() + (hasUnstaged() ? "-modified" : "")}"
+String configuredMinecraftVersion = providers.gradleProperty("minecraft_version").get()
+String configuredModVersion = providers.gradleProperty("mod_version").get()
+String cscDisplayVersion = configuredModVersion.split("-", 2)[0]
 
 idea {
     module {
@@ -217,6 +220,49 @@ dependencies {
     // This maps to ./libs/coolmod-${mc_version}-${coolmod_version}.jar
     // The group id is ignored when searching -- in this case, it is "blank"
     // implementation fg.deobf("blank:coolmod-${mc_version}:${coolmod_version}")
+tasks.register('syncCSCLanguageVersion') {
+    def targetFile = file('src/main/java/com/Pink_Cats/createschematicchecker/lang/CSCLanguage.java')
+    inputs.property('minecraftVersion', configuredMinecraftVersion)
+    inputs.property('cscVersion', cscDisplayVersion)
+    outputs.file(targetFile)
+
+    doLast {
+        String content = targetFile.getText('UTF-8')
+        content = content.replaceFirst(
+                /public static final String mc_version = ".*?";/,
+                "public static final String mc_version = \"${configuredMinecraftVersion}\";"
+        )
+        content = content.replaceFirst(
+                /public static final String csc_version = ".*?";/,
+                "public static final String csc_version = \"${cscDisplayVersion}\";"
+        )
+        targetFile.write(content, 'UTF-8')
+    }
+}
+
+tasks.named('compileJava').configure {
+    dependsOn(tasks.named('syncCSCLanguageVersion'))
+}
+
+// This block of code expands all declared replace properties in the specified resource targets.
+// A missing property will result in an error. Properties are expanded using ${} Groovy notation.
+var generateModMetadata = tasks.register("generateModMetadata", ProcessResources) {
+    var replaceProperties = [minecraft_version      : minecraft_version,
+                             minecraft_version_range: minecraft_version_range,
+                             neo_version            : neo_version,
+                             neo_version_range      : neo_version_range,
+                             loader_version_range   : loader_version_range,
+                             mod_id                 : mod_id,
+                             mod_name               : mod_name,
+                             mod_license            : mod_license,
+                             mod_version            : mod_version,
+                             mod_authors            : mod_authors,
+                             mod_description        : mod_description]
+    inputs.properties replaceProperties
+    expand replaceProperties
+    from "src/main/templates"
+    into "build/generated/sources/modMetadata"
+}
 
     // For more info:
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
