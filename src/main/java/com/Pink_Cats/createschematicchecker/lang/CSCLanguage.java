@@ -23,7 +23,7 @@ public class CSCLanguage {
         enUs.put("config.lang", "Choose a language you want to use     zh_cn / en_us ");
         enUs.put("config.EnableOrNot","Enable CSC (Create:Schematic Checker) or not");
         enUs.put("config.DelayTime","The time if checker is timeout!");
-        enUs.put("console.ReloadSuccess", "[CSC] CSC Reload successful! time consume:");
+        enUs.put("console.ReloadSuccess", "CSC Reload successful! time consume:");
         enUs.put("config.BanTag", "BanTag. If any block has tag in this list will be cleared!");
         enUs.put("core.BanBlock", "The Block or Item you don't want to emerge in Schematic");
         enUs.put("core.BanBlock2", "Any block will clear if remove method failed!");
@@ -194,7 +194,7 @@ public class CSCLanguage {
         zhCn.put("config.lang", "选择默认的文件语言 zh_cn / en_us ");
         zhCn.put("config.EnableOrNot","是否启用 CSC （机械动力：蓝图检查）");
         zhCn.put("config.DelayTime","蓝图检查的超时时间");
-        zhCn.put("console.ReloadSuccess", "[CSC] 配置重载成功！！ 用时：");
+        zhCn.put("console.ReloadSuccess", "配置重载成功！！ 用时：");
         zhCn.put("config.BanTag", "禁止标签，任何方块如果内部包含此列表的标签，都会被清除！");
         zhCn.put("core.BanBlock", "被禁止的方块或物品，如果被填入，CSC将尝试剔除方块实体内的对应物品。");
         zhCn.put("core.BanBlock2", "如果剔除失败，CSC会将该物品清除实体数据，方块仍然可以打印，但会失去nbt数据。");

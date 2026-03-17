@@ -10,6 +10,7 @@ import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -255,6 +256,10 @@ public class ConfigRegister {
             .comment(CommitBreak)
             .comment("config.debug.problem");
 
+    static {
+        syncConfigComments();
+    }
+
 
     public static String language = LANGUAGE.getDefaultValue();
     public static String user_uuid = UUID.getDefaultValue();
@@ -341,6 +346,7 @@ public class ConfigRegister {
         maxConveyorCheatLimit = MAX_CONVEYOR_CHEAT_LIMIT.getDefaultValue();
         maxBeltCheatLimit = MAX_BELT_CHEAT_LIMIT.getDefaultValue();
         language = LANGUAGE.getDefaultValue();
+        DefineLanguage = language;
         user_uuid = UUID.getDefaultValue();
         enable_csc = ENABLE.getDefaultValue();
         ban_block = BAN_BLOCK.getDefaultValue();
@@ -356,6 +362,7 @@ public class ConfigRegister {
         enable_manual_config = ENABLE_MANUAL_CONFIG.getDefaultValue();
         report_schematic =  REPORT_SCHEMATIC.getDefaultValue();
         max_conveyor_degree = MAX_CONVEYOR_DEGREE.getDefaultValue();
+        syncConfigComments();
         UpdateRuleThread(log);
         return log;
     }
@@ -414,6 +421,65 @@ public class ConfigRegister {
         } catch (IOException e) {
             throw new RuntimeException("Failed to recover invalid config.toml: " + e.getMessage(), e);
         }
+    }
+
+    private static void syncConfigComments() {
+        syncComments("Language",
+                CommitBreak,
+                "config.explain1",
+                "config.explain2",
+                "config.explain3",
+                "config.explain4",
+                "config.explain5",
+                "config.explain6",
+                "config.explain7",
+                "config.explain8",
+                "config.explain9",
+                "config.explain10",
+                "config.lang");
+        syncComments("core.Enable", CommitBreak, "config.EnableOrNot");
+        syncComments("core.DelayTime", CommitBreak, "config.DelayTime");
+        syncComments("core.WhiteListModEnable", CommitBreak, "config.WhiteListModEnable");
+        syncComments("core.WhiteListModList", CommitBreak, "config.WhiteListMod");
+        syncComments("core.BanBlock", CommitBreak, "core.BanBlock", "core.BanBlock2");
+        syncComments("core.BanTag", CommitBreak, "config.BanTag");
+        syncComments("core.KillEntity", CommitBreak, "config.KillEntity", "config.KillEntity2", "config.KillEntity3");
+        syncComments("core.BanEntity", CommitBreak, "config.BanEntity", "config.BanEntity2");
+        syncComments("core.whitelistEntity", CommitBreak, "config.whitelistEntity", "config.whitelistEntity2", "config.whitelistEntity3");
+        syncComments("debug.DebugTotalBlock", CommitBreak, "config.DebugTotalBlock");
+        syncComments("debug.DebugCheatFind", CommitBreak, "config.DebugCheatFind");
+        syncComments("debug.EnableBackup", CommitBreak, "config.EnableBackup", "config.EnableBackup2", "config.EnableBackup3");
+        syncComments("function.checkBelt", CommitBreak, "config.checkBelt", "config.checkBelt2");
+        syncComments("function.TryRemoveBeltNotKill", CommitBreak, "config.TryRemoveBeltNotKill", "config.TryRemoveBeltNotKill2");
+        syncComments("function.maxBeltCheatLimit", CommitBreak, "config.maxBeltCheatLimit", "config.maxBeltCheatLimit2");
+        syncComments("function.maxConveyorCheatDistanceLimit", CommitBreak, "config.maxConveyorCheatDistanceLimit", "config.maxConveyorCheatDistanceLimit2");
+        syncComments("function.maxConveyorCheatLimit", CommitBreak, "config.maxConveyorCheatLimit", "config.maxConveyorCheatLimit2");
+        syncComments("function.maxConveyorAllowDegree", CommitBreak, "config.maxConveyorAllowDegree");
+        syncComments("online.enableAutoUpdate", CommitBreak,
+                "config.online.enableAutoUpdate1",
+                "config.online.enableAutoUpdate2",
+                "config.online.enableAutoUpdate3",
+                "config.online.enableAutoUpdate4",
+                "config.online.enableAutoUpdate5");
+        syncComments("online.enableManualConfig", CommitBreak,
+                "config.online.enableManualConfig1",
+                "config.online.enableManualConfig2",
+                "config.online.enableManualConfig3",
+                "config.online.enableManualConfig4",
+                "config.online.enableManualConfig5",
+                "config.online.enableManualConfig6",
+                "config.online.enableManualConfig7",
+                "config.online.enableManualConfig8");
+        syncComments("online.UpdateInfo", CommitBreak, "config.online.UpdateInfo");
+        syncComments("online.report", CommitBreak, "config.debug.report");
+        syncComments("debug.debug.problem", CommitBreak, "config.debug.problem");
+    }
+
+    private static void syncComments(String key, String... commentKeys) {
+        List<String> comments = Arrays.stream(commentKeys)
+                .map(translateKey -> CommitBreak.equals(translateKey) ? CommitBreak : translateDirect(translateKey))
+                .toList();
+        tomlEditor.syncCommentsAboveKey(key, comments);
     }
 
 

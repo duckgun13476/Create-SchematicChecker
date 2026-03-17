@@ -3,6 +3,8 @@ package com.Pink_Cats.createschematicchecker.echo;
 import com.Pink_Cats.createschematicchecker.FancyConfig.ConfigRegister;
 import com.Pink_Cats.createschematicchecker.event.TempOffEvent;
 import com.Pink_Cats.createschematicchecker.lang.Message;
+import com.Pink_Cats.createschematicchecker.online.SimpleHeartbeatPusher;
+import com.Pink_Cats.createschematicchecker.online.VersionChecker;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import net.minecraft.ChatFormatting;
@@ -52,28 +54,25 @@ public class Commands {
                                                 executionTime = endTime - startTime;
 
                                                 if (!ReloadResult.isEmpty()) {
+                                                    Message.FE(translateDirect("console.manual.config.error"));
                                                     if (player != null) {
                                                         player.sendSystemMessage(Component.literal(translateDirect("console.manual.config.error"))
                                                                 .setStyle(Style.EMPTY.withColor(ChatFormatting.RED)));
                                                     }
                                                     for (String s : ReloadResult) {
+                                                        Message.FE("| " + s);
                                                         if (player != null) {
-                                                            Message.FE("| " + s);
                                                             player.sendSystemMessage(Component.literal("| " + s)
                                                                     .setStyle(Style.EMPTY.withColor(ChatFormatting.RED)));
                                                         }
                                                     }
-
-
-                                                }else {
+                                                } else {
+                                                    Message.FM(translateDirect("console.ReloadSuccess") + executionTime + "ms");
                                                     if (player != null) {
-                                                        player.sendSystemMessage(Component.literal(translateDirect("console.ReloadSuccess")+executionTime + "ms")
+                                                        player.sendSystemMessage(Component.literal(translateDirect("console.ReloadSuccess") + executionTime + "ms")
                                                                 .setStyle(Style.EMPTY.withColor(ChatFormatting.GREEN)));
                                                     }
                                                 }
-
-
-
                                             }catch (Exception ex){
                                                 Message.FE(translateDirect("console.error")+ex.getMessage());
                                             }
@@ -184,6 +183,18 @@ public class Commands {
 
 
                         )
+                        .then(net.minecraft.commands.Commands.literal("online")
+                                .then(net.minecraft.commands.Commands.literal("test")
+                                        .executes(context -> runOnlineTest(context.getSource(), "all"))
+                                        .then(net.minecraft.commands.Commands.literal("heartbeat")
+                                                .executes(context -> runOnlineTest(context.getSource(), "heartbeat")))
+                                        .then(net.minecraft.commands.Commands.literal("version")
+                                                .executes(context -> runOnlineTest(context.getSource(), "version")))
+                                        .then(net.minecraft.commands.Commands.literal("rules")
+                                                .executes(context -> runOnlineTest(context.getSource(), "rules")))
+                                        .then(net.minecraft.commands.Commands.literal("feedback")
+                                                .executes(context -> runOnlineTest(context.getSource(), "feedback")))
+                                ))
 
 
 
@@ -342,6 +353,66 @@ public class Commands {
 
         player.sendSystemMessage(Component.literal(translateDirect("console.csc.liner"))
                 .setStyle(Style.EMPTY.withColor(ChatFormatting.GOLD)));
+    }
+
+    private static int runOnlineTest(CommandSourceStack source, String mode) {
+        Player player = source.getPlayer();
+        try {
+            sendTestMessage(player, ChatFormatting.GOLD, "[CSC] Online test start: " + mode);
+
+            if (mode.equals("heartbeat") || mode.equals("all")) {
+                String payload = SimpleHeartbeatPusher.buildHeartbeatPayload();
+                String response = SimpleHeartbeatPusher.debugHeartbeat();
+                sendTestMessage(player, ChatFormatting.AQUA, "[heartbeat] payload=" + payload);
+                sendTestMessage(player, response == null || response.isEmpty() ? ChatFormatting.RED : ChatFormatting.GREEN,
+                        "[heartbeat] response=" + shorten(response));
+            }
+
+            if (mode.equals("version") || mode.equals("all")) {
+                String version = VersionChecker.debugFetchServerVersion();
+                sendTestMessage(player, ChatFormatting.GREEN, "[version] serverVersion=" + version);
+            }
+
+            if (mode.equals("rules") || mode.equals("all")) {
+                String rulePath = VersionChecker.debugSyncRules();
+                sendTestMessage(player, rulePath == null ? ChatFormatting.RED : ChatFormatting.GREEN,
+                        "[rules] localPath=" + rulePath);
+            }
+
+            if (mode.equals("feedback") || mode.equals("all")) {
+                String feedback = VersionChecker.debugFetchServerFeedback();
+                sendTestMessage(player, feedback == null || feedback.isEmpty() ? ChatFormatting.RED : ChatFormatting.GREEN,
+                        "[feedback] response=" + shorten(feedback));
+            }
+
+            sendTestMessage(player, ChatFormatting.GOLD, "[CSC] Online test end: " + mode);
+        } catch (Exception ex) {
+            if (enable_debug) {
+                Message.FE("[CSC] Online test failed: " + ex.getMessage());
+                sendTestMessage(player, ChatFormatting.RED, "[CSC] Online test failed: " + ex.getMessage());
+            }
+        }
+        return Command.SINGLE_SUCCESS;
+    }
+
+    private static void sendTestMessage(Player player, ChatFormatting color, String text) {
+        if (!enable_debug) {
+            return;
+        }
+        Message.FM(text);
+        if (player != null) {
+            player.sendSystemMessage(Component.literal(text).setStyle(Style.EMPTY.withColor(color)));
+        }
+    }
+
+    private static String shorten(String value) {
+        if (value == null) {
+            return "null";
+        }
+        if (value.length() <= 180) {
+            return value;
+        }
+        return value.substring(0, 180) + "...";
     }
 
 

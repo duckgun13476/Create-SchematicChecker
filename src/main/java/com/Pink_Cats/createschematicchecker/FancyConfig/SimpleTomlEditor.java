@@ -4,6 +4,7 @@ import com.Pink_Cats.createschematicchecker.lang.Message;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
@@ -235,7 +236,7 @@ public class SimpleTomlEditor {
                 writer.write(content.toString());
             }
             if (HasKey){
-                return removeTrailingEmptyLines(key_line.toString());
+                return removeTrailingEmptyLines(key_line.toString()).trim();
             }else  {
                 return value;
             }
@@ -433,25 +434,115 @@ public class SimpleTomlEditor {
                 return;
             }
 
+            int sameCommentCount = 0;
+            int commentBlockStart = keyLineIndex;
             for (int i = keyLineIndex - 1; i >= 0; i--) {
                 String aboveLine = lines.get(i).trim();
                 if (aboveLine.equals("# " + comment)) {
-                    return;
+                    sameCommentCount++;
                 }
                 if (!aboveLine.startsWith("#")) {
                     break;
                 }
+                commentBlockStart = i;
+            }
+
+            if (sameCommentCount == 1) {
+                return;
             }
 
             StringBuilder content = new StringBuilder();
+            boolean keptExpectedComment = false;
             for (int i = 0; i < lines.size(); i++) {
+                if (i >= commentBlockStart && i < keyLineIndex && lines.get(i).trim().equals("# " + comment)) {
+                    if (keptExpectedComment) {
+                        continue;
+                    }
+                    keptExpectedComment = true;
+                }
                 if (i == keyLineIndex) {
-                    content.append(Space4(keyParts.length - 1))
-                            .append("# ")
-                            .append(comment)
-                            .append(System.lineSeparator());
+                    if (!keptExpectedComment) {
+                        content.append(Space4(keyParts.length - 1))
+                                .append("# ")
+                                .append(comment)
+                                .append(System.lineSeparator());
+                    }
                 }
                 content.append(lines.get(i)).append(System.lineSeparator());
+            }
+
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
+                writer.write(content.toString());
+            }
+        } catch (IOException e) {
+            Message.FE(e.getMessage());
+        }
+    }
+
+    public void syncCommentsAboveKey(String key, List<String> comments) {
+        try {
+            String[] keyParts = key.split("\\.");
+            boolean inList = keyParts.length <= 1;
+            String father = inList ? "" : GetCurrentLineStringTitle(keyParts, keyParts.length - 2);
+            String children = GetCurrentLineStringTitle(keyParts, keyParts.length - 1);
+
+            List<String> lines = new ArrayList<>();
+            try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    lines.add(line);
+                }
+            }
+
+            int keyLineIndex = -1;
+            for (int i = 0; i < lines.size(); i++) {
+                String currentLine = lines.get(i);
+                if (!inList && currentLine.trim().startsWith(father)) {
+                    inList = true;
+                }
+                if (inList && trimALL(currentLine.trim()).startsWith(children + "=")) {
+                    keyLineIndex = i;
+                    break;
+                }
+            }
+
+            if (keyLineIndex < 0) {
+                Message.FE("Key not found: " + children);
+                return;
+            }
+
+            int commentBlockStart = keyLineIndex;
+            for (int i = keyLineIndex - 1; i >= 0; i--) {
+                String aboveLine = lines.get(i).trim();
+                if (aboveLine.startsWith("#")) {
+                    commentBlockStart = i;
+                    continue;
+                }
+                break;
+            }
+
+            List<String> expectedBlock = new ArrayList<>();
+            String indent = Space4(keyParts.length - 1);
+            for (String comment : comments) {
+                expectedBlock.add(indent + "# " + comment);
+            }
+
+            List<String> existingBlock = commentBlockStart < keyLineIndex
+                    ? new ArrayList<>(lines.subList(commentBlockStart, keyLineIndex))
+                    : Collections.emptyList();
+
+            if (existingBlock.equals(expectedBlock)) {
+                return;
+            }
+
+            List<String> rebuiltLines = new ArrayList<>();
+            rebuiltLines.addAll(lines.subList(0, commentBlockStart));
+            rebuiltLines.addAll(expectedBlock);
+            rebuiltLines.addAll(lines.subList(keyLineIndex, lines.size()));
+
+            StringBuilder content = new StringBuilder();
+            for (String line : rebuiltLines) {
+                content.append(line).append(System.lineSeparator());
             }
 
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
