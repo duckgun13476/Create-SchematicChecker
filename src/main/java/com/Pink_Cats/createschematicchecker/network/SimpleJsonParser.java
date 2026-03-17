@@ -385,6 +385,9 @@ public class SimpleJsonParser {
                 //package_frogport
                 {"create:package_frogport","nbt.Inventory", "operate.clear$Inventory"},
 
+                //clipboard_ 1.21.1 neoforge
+                {"create:clipboard","nbt.components.create:clipboard_content.copied_values", "operate.clear$copied_values"},
+
 
         };
 

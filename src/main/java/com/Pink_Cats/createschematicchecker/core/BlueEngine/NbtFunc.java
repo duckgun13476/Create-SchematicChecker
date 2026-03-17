@@ -73,6 +73,10 @@ public class NbtFunc {
                     CompoundTag block = blocks.getCompound(i);
                     String id = BlockGetId(block, palette);
                     blockCounts.put(id, blockCounts.getOrDefault(id, 0) + 1);
+                    Message.diag("[Diag][NbtFunc][BLOCK] index=" + i
+                            + ", id=" + id
+                            + ", size=" + block.size()
+                            + ", pos=" + block.get("pos"));
 
                     //sign
                     if (id.equals("minecraft:sign")) {
@@ -100,13 +104,29 @@ public class NbtFunc {
                     //createbigcannons:fuzed_block
                     if (id.equals("create:clipboard")) {
                         String nbt = Objects.requireNonNull(block.toString());
+                        boolean hasAttributeModifiers = nbt.contains("AttributeModifiers:");
+                        boolean hasAttributeName = nbt.contains("AttributeName:");
+                        boolean hasUsingConvertsTo = nbt.contains("using_converts_to");
+                        boolean hasBundleContents = nbt.contains("bundle_contents");
+                        boolean hasModifiers = nbt.contains("modifiers:");
+                        boolean hasInfinityAmount = nbt.contains("amount:infinityd");
+                        boolean hasContainer = nbt.contains("minecraft:container");
+                        Message.diag("[Diag][NbtFunc][CLIPBOARD] index=" + i + ", nbt=" + nbt);
+                        Message.diag("[Diag][NbtFunc][CLIPBOARD_FLAGS] index=" + i
+                                + ", AttributeModifiers=" + hasAttributeModifiers
+                                + ", AttributeName=" + hasAttributeName
+                                + ", using_converts_to=" + hasUsingConvertsTo
+                                + ", bundle_contents=" + hasBundleContents
+                                + ", modifiers=" + hasModifiers
+                                + ", amount:infinityd=" + hasInfinityAmount
+                                + ", minecraft:container=" + hasContainer);
 
-                        if (nbt.contains("AttributeModifiers:") || nbt.contains("AttributeName:") ||
-                                nbt.contains("using_converts_to") ||
-                                nbt.contains("bundle_contents") ||
-                                nbt.contains("modifiers:") ||
-                                nbt.contains("amount:infinityd") ||
-                                nbt.contains("minecraft:container")) {
+                        if (hasAttributeModifiers || hasAttributeName ||
+                                hasUsingConvertsTo ||
+                                hasBundleContents ||
+                                hasModifiers ||
+                                hasInfinityAmount ||
+                                hasContainer) {
                             Cheat = true;
                             CheatLog.add(translateDirect("console.cheat.clipboard"));
                             CheatLog.add("-》 " + nbt);
@@ -299,12 +319,18 @@ public class NbtFunc {
 
 
                     if (block.size() > 2) {
+                        String beforeBlock = block.toString();
 
                         blockResult = BaseBlockHandle(block, "block", palette, i, CheatLog);
 
                         block = S_tag(blockResult.get("Data"));
                         Cheat = S_bool(blockResult.get("Cheat")) || Cheat;
                         IsNotMatch = S_bool(blockResult.get("IsNotMatch")) || IsNotMatch;
+                        Message.diag("[Diag][NbtFunc][BASE_BLOCK_RESULT] index=" + i
+                                + ", id=" + id
+                                + ", resultCheat=" + S_bool(blockResult.get("Cheat"))
+                                + ", resultIsNotMatch=" + S_bool(blockResult.get("IsNotMatch"))
+                                + ", changed=" + (block != null && !beforeBlock.equals(block.toString())));
 
                     }
 
@@ -625,6 +651,10 @@ public class NbtFunc {
         result.put("Problem",Problem);
         result.put("nbt_data", nbt_data);
         result.put("Cheat",Cheat);
+        Message.diag("[Diag][NbtFunc][FINAL] cheat=" + Cheat
+                + ", problem=" + Problem
+                + ", cannotCheck=" + CannotCheck
+                + ", isNotMatch=" + IsNotMatch);
         return result;
     }
 
@@ -635,6 +665,7 @@ public class NbtFunc {
         boolean HasBanBlock = false;
         boolean IsNotMatch  = false;
         Map<String, Object> result = new HashMap<>();
+        String beforeData = data == null ? "null" : data.toString();
 
         if (type.equals("entity")) {
 
@@ -789,6 +820,11 @@ public class NbtFunc {
         result.put("Cheat", Cheat);
         result.put("Data", data);
         result.put("IsNotMatch", IsNotMatch);
+        Message.diag("[Diag][NbtFunc][BASE_HANDLE] type=" + type
+                + ", sequence=" + sequence
+                + ", cheat=" + Cheat
+                + ", isNotMatch=" + IsNotMatch
+                + ", changed=" + !Objects.equals(beforeData, data == null ? "null" : data.toString()));
         return result;
 
     }
