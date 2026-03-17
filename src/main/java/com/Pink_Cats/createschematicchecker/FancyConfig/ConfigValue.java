@@ -35,7 +35,7 @@ public class ConfigValue {
         }
 
         public ConfigString comment(String comment) {
-            tomlEditor.insertCommentAboveKey(key, CSCLanguage.translateDirect(comment));
+            tomlEditor.insertCommentAboveKeyIfMissing(key, CSCLanguage.translateDirect(comment));
             return this;
         }
 
@@ -103,7 +103,7 @@ public class ConfigValue {
         }
 
         public ConfigBoolean comment(String comment) {
-            tomlEditor.insertCommentAboveKey(key, CSCLanguage.translateDirect(comment));
+            tomlEditor.insertCommentAboveKeyIfMissing(key, CSCLanguage.translateDirect(comment));
             return this;
         }
 
@@ -177,7 +177,7 @@ public class ConfigValue {
         }
 
         public ConfigInt comment(String comment) {
-            tomlEditor.insertCommentAboveKey(key, CSCLanguage.translateDirect(comment));
+            tomlEditor.insertCommentAboveKeyIfMissing(key, CSCLanguage.translateDirect(comment));
             return this;
         }
 
@@ -251,7 +251,7 @@ public class ConfigValue {
         }
 
         public ConfigStringArray comment(String comment) {
-            tomlEditor.insertCommentAboveKey(key, CSCLanguage.translateDirect(comment));
+            tomlEditor.insertCommentAboveKeyIfMissing(key, CSCLanguage.translateDirect(comment));
             return this;
         }
 

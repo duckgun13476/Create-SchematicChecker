@@ -401,6 +401,67 @@ public class SimpleTomlEditor {
         }
     }
 
+    public void insertCommentAboveKeyIfMissing(String key, String comment) {
+        try {
+            String[] keyParts = key.split("\\.");
+            boolean inList = keyParts.length <= 1;
+            String father = inList ? "" : GetCurrentLineStringTitle(keyParts, keyParts.length - 2);
+            String children = GetCurrentLineStringTitle(keyParts, keyParts.length - 1);
+
+            List<String> lines = new ArrayList<>();
+            try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    lines.add(line);
+                }
+            }
+
+            int keyLineIndex = -1;
+            for (int i = 0; i < lines.size(); i++) {
+                String currentLine = lines.get(i);
+                if (!inList && currentLine.trim().startsWith(father)) {
+                    inList = true;
+                }
+                if (inList && trimALL(currentLine.trim()).startsWith(children + "=")) {
+                    keyLineIndex = i;
+                    break;
+                }
+            }
+
+            if (keyLineIndex < 0) {
+                Message.FE("Key not found: " + children);
+                return;
+            }
+
+            for (int i = keyLineIndex - 1; i >= 0; i--) {
+                String aboveLine = lines.get(i).trim();
+                if (aboveLine.equals("# " + comment)) {
+                    return;
+                }
+                if (!aboveLine.startsWith("#")) {
+                    break;
+                }
+            }
+
+            StringBuilder content = new StringBuilder();
+            for (int i = 0; i < lines.size(); i++) {
+                if (i == keyLineIndex) {
+                    content.append(Space4(keyParts.length - 1))
+                            .append("# ")
+                            .append(comment)
+                            .append(System.lineSeparator());
+                }
+                content.append(lines.get(i)).append(System.lineSeparator());
+            }
+
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
+                writer.write(content.toString());
+            }
+        } catch (IOException e) {
+            Message.FE(e.getMessage());
+        }
+    }
+
 
 
 
