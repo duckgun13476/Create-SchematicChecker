@@ -3,6 +3,12 @@ package com.Pink_Cats.createschematicchecker.FancyConfig;
 
 import com.Pink_Cats.createschematicchecker.lang.Message;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -21,11 +27,13 @@ public class ConfigRegister {
     }
     public static final String CommitBreak = "#----------------------------------------------------------------------";
     static final String ConfigPath = "config/CSC/config.toml";
+    static {
+        ensureValidConfigToml();
+    }
     private static final ConfigValue ConfigBuild = new ConfigValue();
     private static final SimpleTomlEditor tomlEditor = new SimpleTomlEditor(ConfigPath);
     public static String DefineLanguage;
     static {
-        tomlEditor.removeAllComments();
         Object languageValue = ConfigHook.readToml(ConfigPath).get("Language");
         DefineLanguage = (languageValue != null) ? languageValue.toString() : "en_us";
     }
@@ -354,6 +362,7 @@ public class ConfigRegister {
 
 
     public static List<String> CSC_RELOAD() {
+        ensureValidConfigToml();
         Message.FM(translateDirect("console.reload1"));
         List<String> list = new ArrayList<String>();
         WHITE_LIST_MOD.reload();
@@ -383,6 +392,28 @@ public class ConfigRegister {
         CSC_INIT(list);
         Message.FM(translateDirect("console.reload2"));
         return list;
+    }
+
+    private static void ensureValidConfigToml() {
+        String validateResult = ConfigHook.validateToml(ConfigPath);
+        if (validateResult == null) {
+            return;
+        }
+
+        try {
+            Path configFile = Path.of(ConfigPath);
+            if (Files.exists(configFile)) {
+                String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy_MM_dd_HH_mm_ss"));
+                String originalFileName = configFile.getFileName().toString();
+                Path backupFile = configFile.resolveSibling(originalFileName + ".problem_" + timestamp+".toml");
+                Files.move(configFile, backupFile, StandardCopyOption.REPLACE_EXISTING);
+                Message.FE("[CSC] Invalid config.toml detected, moved to " + backupFile.toAbsolutePath() + ". Reason: " + validateResult);
+            }
+            Files.deleteIfExists(Path.of(ConfigPath));
+            Files.createFile(Path.of(ConfigPath));
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to recover invalid config.toml: " + e.getMessage(), e);
+        }
     }
 
 

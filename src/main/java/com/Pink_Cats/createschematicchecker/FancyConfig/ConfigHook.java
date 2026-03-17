@@ -8,6 +8,75 @@ import java.util.Map;
 
 public class ConfigHook {
 
+    public static String validateToml(String filePath) {
+        File file = new File(filePath);
+        if (!file.exists()) {
+            return null;
+        }
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            String line;
+            int lineNumber = 0;
+            boolean readingArray = false;
+            String arrayKey = null;
+
+            while ((line = reader.readLine()) != null) {
+                lineNumber++;
+                String trimmed = line.trim();
+
+                if (trimmed.isEmpty() || trimmed.startsWith("#")) {
+                    continue;
+                }
+
+                if (readingArray) {
+                    String cleanLine = trimmed.split("#", 2)[0].trim();
+                    if (cleanLine.endsWith("]")) {
+                        readingArray = false;
+                        arrayKey = null;
+                    }
+                    continue;
+                }
+
+                if (trimmed.startsWith("[")) {
+                    if (!trimmed.endsWith("]")) {
+                        return "Invalid table header at line " + lineNumber + ": " + trimmed;
+                    }
+                    if (trimmed.length() <= 2) {
+                        return "Empty table header at line " + lineNumber;
+                    }
+                    continue;
+                }
+
+                if (!trimmed.contains("=")) {
+                    return "Invalid key-value pair at line " + lineNumber + ": " + trimmed;
+                }
+
+                String[] parts = trimmed.split("=", 2);
+                String key = parts[0].trim();
+                String value = parts[1].trim();
+                if (key.isEmpty()) {
+                    return "Empty key at line " + lineNumber;
+                }
+                if (value.isEmpty()) {
+                    return "Empty value for key '" + key + "' at line " + lineNumber;
+                }
+
+                if (value.startsWith("[") && !value.endsWith("]")) {
+                    readingArray = true;
+                    arrayKey = key;
+                }
+            }
+
+            if (readingArray) {
+                return "Unclosed array for key '" + arrayKey + "'";
+            }
+        } catch (IOException e) {
+            return "Unable to read config: " + e.getMessage();
+        }
+
+        return null;
+    }
+
     public static void writeToml(String filePath, Map<String, String> tomlData) throws IOException {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
             for (Map.Entry<String, String> entry : tomlData.entrySet()) {
