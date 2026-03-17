@@ -32,13 +32,19 @@ public class BlueCore {
         //String DefaultPath = System.getProperty("user.dir");
         String path = DefaultPath + blueprintId;
         Message.FD(translateDirect("console.thread.new")+path);
+        Message.diag("[Diag][BlueCore][START] blueprintId=" + blueprintId + ", fullPath=" + path);
         try {
             CompoundTag nbt_data = Path_to_CompoundTag(path);
             String User = blueprintId.split("/")[0];
             String Blueprint = blueprintId.split("/")[1];
+            Message.diag("[Diag][BlueCore][SPLIT] user=" + User
+                    + ", blueprintSegment=" + Blueprint
+                    + ", slashCount=" + blueprintId.chars().filter(ch -> ch == '/').count());
             //SchematicOutput(nbt_data);
             if (enable_backup)
             {
+                Message.diag("[Diag][BlueCore][BACKUP] outputDir=config/CSC/backup/" + User + "/"
+                        + ", outputFile=" + getCurrentDateTime() + Blueprint);
                 CompoundTag_to_Path(nbt_data, "config/CSC/backup/"+User+"/",getCurrentDateTime()+Blueprint);
             }
 
@@ -46,8 +52,13 @@ public class BlueCore {
             boolean CannotCheck = S_bool(result.get("CannotCheck"));
             boolean IsCheat = S_bool(result.get("Cheat"));
             boolean IsProblem = S_bool(result.get("Problem"));
+            Message.diag("[Diag][BlueCore][NBTCHECK] cannotCheck=" + CannotCheck
+                    + ", isCheat=" + IsCheat
+                    + ", isProblem=" + IsProblem);
 
             if (CannotCheck && report_schematic){
+                Message.diag("[Diag][BlueCore][REPORT] outputDir=config/CSC/problem/" + User + "/"
+                        + ", outputFile=CheckFail_" + getCurrentDateTime() + Blueprint);
                 CompoundTag_to_Path(nbt_data, "config/CSC/problem/"+User+"/","CheckFail_"+getCurrentDateTime()+Blueprint);
                 ReportProblem("config/CSC/problem/"+User+"/"+"CheckFail_"+getCurrentDateTime()+Blueprint);
             }
@@ -55,9 +66,13 @@ public class BlueCore {
             if (enable_backup){
                 if (IsProblem) {
                     if(IsCheat){
+                        Message.diag("[Diag][BlueCore][REPORT] outputDir=config/CSC/problem/" + User + "/"
+                                + ", outputFile=Cheat_" + getCurrentDateTime() + Blueprint);
                         CompoundTag_to_Path(nbt_data, "config/CSC/problem/"+User+"/","Cheat_"+getCurrentDateTime()+Blueprint);
                         PostDataAsync("config/CSC/problem/"+User+"/"+"Cheat_"+getCurrentDateTime()+Blueprint);
                     }else {
+                        Message.diag("[Diag][BlueCore][REPORT] outputDir=config/CSC/problem/" + User + "/"
+                                + ", outputFile=Problem_" + getCurrentDateTime() + Blueprint);
                         CompoundTag_to_Path(nbt_data, "config/CSC/problem/"+User+"/","Problem_"+getCurrentDateTime()+Blueprint);
                         PostDataAsync("config/CSC/problem/"+User+"/"+"Problem_"+getCurrentDateTime()+Blueprint);
                     }
@@ -69,6 +84,8 @@ public class BlueCore {
 
             //SchematicOutput(S_tag(result.get("nbt_data")));
 
+            Message.diag("[Diag][BlueCore][WRITEBACK] outputDir=" + DefaultPath+User+"/"
+                    + ", outputFile=" + Blueprint);
             CompoundTag_to_Path(S_tag(result.get("nbt_data")), DefaultPath+User+"/",Blueprint);
 
 
@@ -77,9 +94,11 @@ public class BlueCore {
         } catch (java.util.zip.ZipException e) {
 
             Message.FW(translateDirect("core.decode.ZipError")+"[" + e.getMessage() + "]");
+            Message.diag("[Diag][BlueCore][ZIP_EXCEPTION] blueprintId=" + blueprintId + ", fullPath=" + path + ", error=" + e);
             return null;
         } catch (Exception e) {
             e.printStackTrace();
+            Message.diag("[Diag][BlueCore][EXCEPTION] blueprintId=" + blueprintId + ", fullPath=" + path + ", error=" + e);
             Message.FW("Wrong in BlueCore" + DefaultPath);
         }
         return Map.of();
@@ -99,6 +118,10 @@ public class BlueCore {
     public void CompoundTag_to_Path(CompoundTag compoundTag, String outputPath,String file) throws IOException {
         createIfNotExists(outputPath);
         File outputFile = new File(outputPath,file);
+        Message.diag("[Diag][BlueCore][FILE_WRITE] outputPath=" + outputPath
+                + ", file=" + file
+                + ", absoluteTarget=" + outputFile.getAbsolutePath()
+                + ", parentExists=" + (outputFile.getParentFile() != null && outputFile.getParentFile().exists()));
         FileOutputStream fileOutputStream = new FileOutputStream(outputFile);
         NbtIo.writeCompressed(compoundTag, fileOutputStream);
         fileOutputStream.close();
