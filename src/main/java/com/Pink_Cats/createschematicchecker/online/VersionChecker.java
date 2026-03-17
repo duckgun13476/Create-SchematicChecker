@@ -274,6 +274,19 @@ public class VersionChecker {
         return null;
     }
 
+    public static String debugFetchServerVersion() throws IOException {
+        disableSSLVerification();
+        return fetchServerVersion("https://mc.aisaveworld.tech:8144/Version");
+    }
+
+    public static String debugFetchServerFeedback() throws Exception {
+        return fetchDataByGet("https://mc.aisaveworld.tech:8144/server_feedback");
+    }
+
+    public static String debugSyncRules() {
+        return UpdateMainThread();
+    }
+
 
 
     public static void main(String[] args) throws Exception {

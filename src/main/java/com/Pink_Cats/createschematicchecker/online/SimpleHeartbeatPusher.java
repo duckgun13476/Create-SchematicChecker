@@ -42,7 +42,7 @@ public class SimpleHeartbeatPusher {
 
     public static void HeartBeatTask(){
         try {
-            String jsonData = getString();
+            String jsonData = buildHeartbeatPayload();
             String Return = OnlineHandler("heartbeat", jsonData);
             Map<String,String> Data = parseJsonToMap(Return);
             if (!Objects.equals(Data.get("version"), csc_version)){
@@ -65,7 +65,7 @@ public class SimpleHeartbeatPusher {
         }
     }
 
-    private static @NotNull String getString() {
+    public static @NotNull String buildHeartbeatPayload() {
         String cleanUuid = user_uuid.replaceAll("[\\r\\n]", "");
         String jsonData = String.format("{" +
                 "\"uuid\":\"%s\"," +
@@ -77,6 +77,10 @@ public class SimpleHeartbeatPusher {
                 "\"ProblemCount\":%d" +
                 "}", cleanUuid, GuardTime, CheatCount, CheckCount, ProblemCount);
         return jsonData;
+    }
+
+    public static String debugHeartbeat() {
+        return OnlineHandler("heartbeat", buildHeartbeatPayload());
     }
 
 
