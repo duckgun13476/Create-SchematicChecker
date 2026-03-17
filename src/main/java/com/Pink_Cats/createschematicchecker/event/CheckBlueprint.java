@@ -69,25 +69,41 @@ public class CheckBlueprint {
             boolean HAS_PATTERN = list != null && list.isLoaded("create_pattern_schematics");
             PendingSchematicStore.PendingMeta meta = PendingSchematicStore.takeMeta(id);
             ItemStack pending = PendingSchematicStore.takeStack(id);
+            Message.diag("[Diag][CheckBlueprint][APPLY] id=" + id
+                    + ", pass=" + pass
+                    + ", hasMeta=" + (meta != null)
+                    + ", hasPending=" + (pending != null && !pending.isEmpty())
+                    + ", hasPattern=" + HAS_PATTERN);
 
             if (meta == null) {
+                Message.diag("[Diag][CheckBlueprint][APPLY] meta missing for id=" + id);
                 PendingSchematicStore.drop(id);
                 return;
             }
 
             Level w = player.getServer().getLevel(meta.dim);
-            if (w == null) return;
+            if (w == null) {
+                Message.diag("[Diag][CheckBlueprint][APPLY] world missing for id=" + id + ", dim=" + meta.dim.location());
+                return;
+            }
 
             BlockEntity be = w.getBlockEntity(meta.pos);
-            if (!(be instanceof SchematicTableBlockEntity table)) return;
-            if (table.isRemoved()) return;
+            if (!(be instanceof SchematicTableBlockEntity table)) {
+                Message.diag("[Diag][CheckBlueprint][APPLY] table missing for id=" + id + ", pos=" + meta.pos);
+                return;
+            }
+            if (table.isRemoved()) {
+                Message.diag("[Diag][CheckBlueprint][APPLY] table removed for id=" + id + ", pos=" + meta.pos);
+                return;
+            }
             if (pass) {
                 // restore to slot1 (keeps the other mod's item type)
                 if (pending != null && !pending.isEmpty()) {
+                    Message.diag("[Diag][CheckBlueprint][APPLY] restoring slot1 for id=" + id + ", stack=" + pending);
                     table.inventory.setStackInSlot(1, pending);
                 }
             } else {
-                System.out.println(HAS_PATTERN);
+                Message.diag("[Diag][CheckBlueprint][APPLY] rejecting upload for id=" + id + ", hasPattern=" + HAS_PATTERN);
 
                 // reject: slot0 empty schematic, slot1 stays empty
                 if (HAS_PATTERN) {
@@ -118,6 +134,9 @@ public class CheckBlueprint {
             String id = event.SchematicPath;
             String schematicName = event.SchematicId;
             String player_id = player.getGameProfile().getName();
+            Message.diag("[Diag][CheckBlueprint][START] player=" + player_id
+                    + ", eventPath=" + id
+                    + ", schematicName=" + schematicName);
 
             if (!CheckSchematic) {
                 Message.FE(translateDirect("console.stop.csc.temp.output"));
@@ -128,6 +147,10 @@ public class CheckBlueprint {
                 CompoundTag nbt_data = Path_to_CompoundTag(path);
                 String User = id.split("/")[0];
                 String Blueprint = id.split("/")[1];
+                Message.diag("[Diag][CheckBlueprint][BYPASS] fullPath=" + path
+                        + ", user=" + User
+                        + ", blueprintSegment=" + Blueprint
+                        + ", slashCount=" + id.chars().filter(ch -> ch == '/').count());
 
                 if (enable_backup) {
                     Checker.CompoundTag_to_Path(nbt_data, "config/CSC/backup/" + User + "/", getCurrentDateTime() + Blueprint);
@@ -142,6 +165,9 @@ public class CheckBlueprint {
             long startTime = System.currentTimeMillis();
 
             Map<String, Object> CheckResult = Checker.SchematicBlueCore(id, CheatLog);
+            Message.diag("[Diag][CheckBlueprint][RESULT] id=" + id
+                    + ", resultIsNull=" + (CheckResult == null)
+                    + ", resultKeys=" + (CheckResult == null ? "null" : CheckResult.keySet()));
 
             long endTime = System.currentTimeMillis();
             long executionTime = endTime - startTime;
@@ -202,6 +228,7 @@ public class CheckBlueprint {
             }
 
         } catch (Exception e) {
+            Message.diag("[Diag][CheckBlueprint][EXCEPTION] " + e);
             if (enable_debug) e.printStackTrace();
         }
     }
