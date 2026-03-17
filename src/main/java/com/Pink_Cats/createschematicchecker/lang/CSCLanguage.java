@@ -20,7 +20,7 @@ public class CSCLanguage {
     private static final String RESOURCE_ROOT = "assets/createschematicchecker/lang/";
     private static final Map<String, Map<String, String>> jsonLanguageDictionary = new HashMap<>();
 
-    public static final String mc_version = "1.21.1";
+    public static final String mc_version = "1.20.1";
     public static final String csc_version = "0.21.15";
 
     public static String translateDirect(String key) {
