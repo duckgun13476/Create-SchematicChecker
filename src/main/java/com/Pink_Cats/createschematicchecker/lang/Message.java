@@ -55,5 +55,9 @@ public class Message {
         }
     }
 
+    public static void diag(Object message) {
+        debug(message);
+    }
+
 
 }
