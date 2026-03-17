@@ -21,6 +21,9 @@ group = "com.${mod_authors}.${mod_id}"
 version = "${minecraft_version}-${mod_version}"
 archivesBaseName = mod_id
 String gitHash = "${calculateGitHash() + (hasUnstaged() ? "-modified" : "")}"
+String configuredMinecraftVersion = providers.gradleProperty("minecraft_version").get()
+String configuredModVersion = providers.gradleProperty("mod_version").get()
+String cscDisplayVersion = configuredModVersion.split("-", 2)[0]
 
 repositories {
     mavenLocal()
@@ -123,6 +126,30 @@ dependencies {
     runtimeOnly("mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}")
 
 
+}
+
+tasks.register('syncCSCLanguageVersion') {
+    def targetFile = file('src/main/java/com/Pink_Cats/createschematicchecker/lang/CSCLanguage.java')
+    inputs.property('minecraftVersion', configuredMinecraftVersion)
+    inputs.property('cscVersion', cscDisplayVersion)
+    outputs.file(targetFile)
+
+    doLast {
+        String content = targetFile.getText('UTF-8')
+        content = content.replaceFirst(
+                /public static final String mc_version = ".*?";/,
+                "public static final String mc_version = \"${configuredMinecraftVersion}\";"
+        )
+        content = content.replaceFirst(
+                /public static final String csc_version = ".*?";/,
+                "public static final String csc_version = \"${cscDisplayVersion}\";"
+        )
+        targetFile.write(content, 'UTF-8')
+    }
+}
+
+tasks.named('compileJava').configure {
+    dependsOn(tasks.named('syncCSCLanguageVersion'))
 }
 
 // This block of code expands all declared replace properties in the specified resource targets.
