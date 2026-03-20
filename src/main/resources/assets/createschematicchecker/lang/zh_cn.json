@@ -1,7 +1,7 @@
 {
   "console.feedback": "问题/反馈: QQ：1061133894",
   "console.LoadingConfig": " 加载配置中。。   加载完毕！",
-  "config.lang": "选择默认的文件语言 zh_cn / en_us ",
+  "config.lang": "选择默认的文件语言 zh_cn / zh_tw / ja_jp / en_us ",
   "config.EnableOrNot": "是否启用 CSC （机械动力：蓝图检查）",
   "config.DelayTime": "蓝图检查的超时时间",
   "console.ReloadSuccess": "配置重载成功！！ 用时：",
