@@ -21,7 +21,7 @@ public class CSCLanguage {
     private static final Map<String, Map<String, String>> jsonLanguageDictionary = new HashMap<>();
 
     public static final String mc_version = "1.21.1";
-    public static final String csc_version = "0.21.15";
+    public static final String csc_version = "0.21.16";
 
     public static String translateDirect(String key) {
         String translation = getTranslation(normalizeLanguage(DefineLanguage), key);

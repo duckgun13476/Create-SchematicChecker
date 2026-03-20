@@ -197,12 +197,17 @@ tasks.configureEach { task ->
 }
 
 tasks.register('PublishInfo') {
+    dependsOn(tasks.named('jar'))
+    def jarFileProvider = tasks.named('jar', Jar).flatMap { it.archiveFile }
+    def modVersionValue = mod_version
+    def minecraftVersionValue = minecraft_version
+    def displayNameValue = display_name
+    def propertiesFile = project.file('api.properties')
     doLast {
-        println "Reobfuscated JAR file path: ${jar.archiveFile.get().asFile.absolutePath}"
-        def versionParts = mod_version.split("-")
-        println "version = \"$minecraft_version-$mod_version\"\n" +
-                "    displayName = \"${display_name}_v${versionParts[0]}_for_Create_v${versionParts[1]}_norforge\""
-        def propertiesFile = file('api.properties')
+        println "Reobfuscated JAR file path: ${jarFileProvider.get().asFile.absolutePath}"
+        def versionParts = modVersionValue.split("-")
+        println "version = \"$minecraftVersionValue-$modVersionValue\"\n" +
+                "    displayName = \"${displayNameValue}_v${versionParts[0]}_for_Create_v${versionParts[1]}_norforge\""
         if (propertiesFile.exists()) {
             def properties = new Properties()
             properties.load(new FileInputStream(propertiesFile))
