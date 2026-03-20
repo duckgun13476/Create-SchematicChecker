@@ -39,6 +39,8 @@
   "config.checkBelt2": "同时还会导致区块数据包含传送带实体，增加带宽，同时，不完整的传送带可以复制传动杆和传送带",
   "config.TryRemoveBeltNotKill": "当传送带被检测出不完整时，是否清除不完整的传送带而不是直接阻止蓝图",
   "config.TryRemoveBeltNotKill2": "此功能还在Beta版本，这可以在传送带不完整时，正常打印蓝图，只是不完整的传送带不会打印",
+  "config.TryRemoveFluidTankNotKill": "当流体储罐控制器数量不匹配时，是否剔除储罐并允许继续上传。",
+  "config.TryRemoveFluidTankNotKill2": "关闭后将恢复原逻辑：记录 mismatch 并判定作弊，阻止上传。",
   "console.csc.list": "IdMatchRuleAll        列出全部的 ID  剔除规则",
   "console.csc.list2": "OperateMatchRuleAll   列出全部的 nbt 操作规则",
   "console.csc.list3": "IdMatchRule           列出 本地手动配置 和 自动更新 的 ID 剔除规则",
