@@ -80,8 +80,14 @@ public class ConfigRegister {
     public static ConfigValue.ConfigStringArray WHITE_LIST_MOD = ConfigBuild
             .define("core.WhiteListModList", new String[]{
                     "create","minecraft",
-                    "createdieselgenerators","createrailwaysnavigator","createaddition",
-                    "railways","copycats","createsifter","computercraft",
+                    "createdieselgenerators",
+                    "createrailwaysnavigator",
+                    "createaddition",
+                    "railways"
+                    ,"copycats",
+                    "createsifter",
+                    "computercraft",
+                    "mekanism",
                     "yuushya"})
             .comment(CommitBreak)
             .comment("config.WhiteListMod");
