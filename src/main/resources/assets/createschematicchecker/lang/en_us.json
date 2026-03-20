@@ -39,6 +39,8 @@
   "config.checkBelt2": "It may also cause chunk data to include belt entities, increasing bandwidth usage. Additionally, incomplete belts can duplicate shafts and belts.",
   "config.TryRemoveBeltNotKill": "When incomplete belts are detected, whether to remove them instead of blocking the entire blueprint.",
   "config.TryRemoveBeltNotKill2": "This feature is still in Beta. It allows the blueprint to be printed normally, but incomplete belts will not be printed.",
+  "config.TryRemoveFluidTankNotKill": "When a fluid tank controller/tank count mismatch is detected, remove mismatched fluid tanks instead of blocking the entire blueprint.",
+  "config.TryRemoveFluidTankNotKill2": "If disabled, fluid tank mismatch keeps the original behavior: mark as cheat and block upload.",
   "console.csc.list": "IdMatchRuleAll        List all ID exclusion rules",
   "console.csc.list2": "OperateMatchRuleAll   List all NBT operation rules",
   "console.csc.list3": "IdMatchRule           List ID exclusion rules from local manual configuration and automatic updates",
