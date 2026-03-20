@@ -573,9 +573,23 @@ public class NbtFunc {
             //FluidTank Mismatch Check
             if (ControllerCount != FindTankCount)
             {
-
-                CheatLog.add(translateDirect("console.cheat.FluidTank.mismatch")+"["+ControllerCount + "|" + FindTankCount+"]");
-                Cheat = true;
+                if (remove_fluid_tank_instead_kill) {
+                    int removedTankCount = 0;
+                    for (int i = 0; i < blocks.size(); i++) {
+                        CompoundTag block = blocks.getCompound(i);
+                        String id = BlockGetId(block, palette);
+                        if (id.equals("create:fluid_tank")) {
+                            blocks.remove(i);
+                            i -= 1;
+                            removedTankCount++;
+                        }
+                    }
+                    CheatLog.add(translateDirect("console.cheat.FluidTank.mismatch")+"["+ControllerCount + "|" + FindTankCount + "]");
+                    CheatLog.add("[FluidTank] cleared mismatched tanks: " + removedTankCount);
+                } else {
+                    CheatLog.add(translateDirect("console.cheat.FluidTank.mismatch")+"["+ControllerCount + "|" + FindTankCount+"]");
+                    Cheat = true;
+                }
             }
 
 
