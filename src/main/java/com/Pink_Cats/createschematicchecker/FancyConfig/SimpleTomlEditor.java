@@ -553,6 +553,190 @@ public class SimpleTomlEditor {
         }
     }
 
+    /**
+     * Ensure a key is located inside its parent TOML table.
+     * Example: function.xxx should stay inside [function].
+     */
+    public void relocateKeyToParentSectionIfNeeded(String key) {
+        String[] keyParts = key.split("\\.");
+        if (keyParts.length <= 1) {
+            return;
+        }
+
+        String parentSection = GetCurrentLineStringTitle(keyParts, keyParts.length - 2);
+        String childKey = GetCurrentLineStringTitle(keyParts, keyParts.length - 1);
+
+        try {
+            List<String> lines = new ArrayList<>();
+            try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    lines.add(line);
+                }
+            }
+
+            int parentStart = -1;
+            for (int i = 0; i < lines.size(); i++) {
+                if (lines.get(i).trim().equals(parentSection)) {
+                    parentStart = i;
+                    break;
+                }
+            }
+            if (parentStart < 0) {
+                return;
+            }
+
+            int parentEnd = lines.size();
+            for (int i = parentStart + 1; i < lines.size(); i++) {
+                String t = lines.get(i).trim();
+                if (t.startsWith("[") && t.endsWith("]")) {
+                    parentEnd = i;
+                    break;
+                }
+            }
+
+            int keyLineIndex = -1;
+            for (int i = 0; i < lines.size(); i++) {
+                if (trimALL(lines.get(i).trim()).startsWith(childKey + "=")) {
+                    keyLineIndex = i;
+                    break;
+                }
+            }
+            if (keyLineIndex < 0) {
+                return;
+            }
+
+            if (keyLineIndex > parentStart && keyLineIndex < parentEnd) {
+                return;
+            }
+
+            int blockStart = keyLineIndex;
+            for (int i = keyLineIndex - 1; i >= 0; i--) {
+                String t = lines.get(i).trim();
+                if (t.startsWith("#")) {
+                    blockStart = i;
+                    continue;
+                }
+                break;
+            }
+
+            // Include multiline value block (e.g. arrays) so relocation keeps value integrity.
+            int blockEnd = keyLineIndex;
+            String keyLine = lines.get(keyLineIndex);
+            int eqIndex = keyLine.indexOf('=');
+            if (eqIndex >= 0) {
+                String valuePart = keyLine.substring(eqIndex + 1).trim();
+                if (valuePart.startsWith("[")) {
+                    int bracketDepth = countChar(valuePart, '[') - countChar(valuePart, ']');
+                    while (bracketDepth > 0 && blockEnd + 1 < lines.size()) {
+                        blockEnd++;
+                        String nextLine = lines.get(blockEnd);
+                        bracketDepth += countChar(nextLine, '[') - countChar(nextLine, ']');
+                    }
+                }
+            }
+
+            List<String> block = new ArrayList<>(lines.subList(blockStart, blockEnd + 1));
+            lines.subList(blockStart, blockEnd + 1).clear();
+
+            if (blockStart < parentStart) {
+                parentStart -= block.size();
+            }
+
+            parentEnd = lines.size();
+            for (int i = parentStart + 1; i < lines.size(); i++) {
+                String t = lines.get(i).trim();
+                if (t.startsWith("[") && t.endsWith("]")) {
+                    parentEnd = i;
+                    break;
+                }
+            }
+
+            int insertIndex = parentEnd;
+            if (insertIndex > 0 && !lines.get(insertIndex - 1).trim().isEmpty()) {
+                lines.add(insertIndex, "");
+                insertIndex++;
+            }
+            lines.addAll(insertIndex, block);
+
+            StringBuilder content = new StringBuilder();
+            for (String line : lines) {
+                content.append(line).append(System.lineSeparator());
+            }
+
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
+                writer.write(content.toString());
+            }
+        } catch (IOException e) {
+            Message.FE(e.getMessage());
+        }
+    }
+
+    private static int countChar(String input, char ch) {
+        int count = 0;
+        for (int i = 0; i < input.length(); i++) {
+            if (input.charAt(i) == ch) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    /**
+     * Remove redundant blank lines inside sections while preserving section boundaries.
+     */
+    public void compactBlankLinesInSections() {
+        try {
+            List<String> lines = new ArrayList<>();
+            try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    lines.add(line);
+                }
+            }
+
+            StringBuilder content = new StringBuilder();
+            boolean inSection = false;
+            boolean pendingBlankOutsideSection = false;
+
+            for (String line : lines) {
+                String trimmed = line.trim();
+                boolean isSectionHeader = trimmed.startsWith("[") && trimmed.endsWith("]");
+                boolean isBlank = trimmed.isEmpty();
+
+                if (isSectionHeader) {
+                    if (content.length() > 0 && !content.toString().endsWith(System.lineSeparator() + System.lineSeparator())) {
+                        content.append(System.lineSeparator());
+                    }
+                    content.append(line).append(System.lineSeparator());
+                    inSection = true;
+                    pendingBlankOutsideSection = false;
+                    continue;
+                }
+
+                if (isBlank) {
+                    if (inSection) {
+                        continue;
+                    }
+                    if (!pendingBlankOutsideSection) {
+                        content.append(System.lineSeparator());
+                        pendingBlankOutsideSection = true;
+                    }
+                    continue;
+                }
+
+                content.append(line).append(System.lineSeparator());
+                pendingBlankOutsideSection = false;
+            }
+
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
+                writer.write(content.toString());
+            }
+        } catch (IOException e) {
+            Message.FE(e.getMessage());
+        }
+    }
+
 
 
 

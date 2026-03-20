@@ -194,6 +194,12 @@ public class ConfigRegister {
             .comment("config.TryRemoveBeltNotKill")
             .comment("config.TryRemoveBeltNotKill2");
 
+    public static ConfigValue.ConfigBoolean TRY_REMOVE_PROBLEM_FLUID_TANK_NOT_KILL = ConfigBuild
+            .define("function.TryRemoveFluidTankNotKill", true)
+            .comment(CommitBreak)
+            .comment("config.TryRemoveFluidTankNotKill")
+            .comment("config.TryRemoveFluidTankNotKill2");
+
     public static ConfigValue.ConfigInt MAX_BELT_CHEAT_LIMIT = ConfigBuild
             .define("function.maxBeltCheatLimit", 10)
             .comment(CommitBreak)
@@ -252,7 +258,7 @@ public class ConfigRegister {
             .comment("config.debug.report");
 
     public static ConfigValue.ConfigBoolean ENABLE_DEBUG= ConfigBuild
-            .define("debug.debug.problem", false)
+            .define("debug.problem", false)
             .comment(CommitBreak)
             .comment("config.debug.problem");
 
@@ -270,6 +276,7 @@ public class ConfigRegister {
     public static boolean debug_total_block = DEBUG_TOTAL_BLOCK.getDefaultValue();
     public static boolean check_belt = CHECK_BELT_MISMATCH.getDefaultValue();
     public static boolean remove_belt_instead_kill = TRY_REMOVE_PROBLEM_BELT_NOT_KILL.getDefaultValue();
+    public static boolean remove_fluid_tank_instead_kill = TRY_REMOVE_PROBLEM_FLUID_TANK_NOT_KILL.getDefaultValue();
     public static String[] ban_entity = BAN_ENTITY.getDefaultValue();
     public static String[] whitelist_entity = WHITELIST_ENTITY.getDefaultValue();
     public static boolean enable_backup = ENABLE_SCHEMATIC_BACKUP.getDefaultValue();
@@ -355,6 +362,7 @@ public class ConfigRegister {
         debug_total_block = DEBUG_TOTAL_BLOCK.getDefaultValue();
         check_belt = CHECK_BELT_MISMATCH.getDefaultValue();
         remove_belt_instead_kill = TRY_REMOVE_PROBLEM_BELT_NOT_KILL.getDefaultValue();
+        remove_fluid_tank_instead_kill = TRY_REMOVE_PROBLEM_FLUID_TANK_NOT_KILL.getDefaultValue();
         whitelist_entity = WHITELIST_ENTITY.getDefaultValue();
         ban_entity = BAN_ENTITY.getDefaultValue();
         enable_backup = ENABLE_SCHEMATIC_BACKUP.getDefaultValue();
@@ -389,6 +397,7 @@ public class ConfigRegister {
         DEBUG_TOTAL_BLOCK.reload();
         CHECK_BELT_MISMATCH.reload();
         TRY_REMOVE_PROBLEM_BELT_NOT_KILL.reload();
+        TRY_REMOVE_PROBLEM_FLUID_TANK_NOT_KILL.reload();
         WHITELIST_ENTITY.reload();
         BAN_ENTITY.reload();
         ENABLE_SCHEMATIC_BACKUP.reload();
@@ -451,6 +460,7 @@ public class ConfigRegister {
         syncComments("debug.EnableBackup", CommitBreak, "config.EnableBackup", "config.EnableBackup2", "config.EnableBackup3");
         syncComments("function.checkBelt", CommitBreak, "config.checkBelt", "config.checkBelt2");
         syncComments("function.TryRemoveBeltNotKill", CommitBreak, "config.TryRemoveBeltNotKill", "config.TryRemoveBeltNotKill2");
+        syncComments("function.TryRemoveFluidTankNotKill", CommitBreak, "config.TryRemoveFluidTankNotKill", "config.TryRemoveFluidTankNotKill2");
         syncComments("function.maxBeltCheatLimit", CommitBreak, "config.maxBeltCheatLimit", "config.maxBeltCheatLimit2");
         syncComments("function.maxConveyorCheatDistanceLimit", CommitBreak, "config.maxConveyorCheatDistanceLimit", "config.maxConveyorCheatDistanceLimit2");
         syncComments("function.maxConveyorCheatLimit", CommitBreak, "config.maxConveyorCheatLimit", "config.maxConveyorCheatLimit2");
@@ -472,10 +482,12 @@ public class ConfigRegister {
                 "config.online.enableManualConfig8");
         syncComments("online.UpdateInfo", CommitBreak, "config.online.UpdateInfo");
         syncComments("online.report", CommitBreak, "config.debug.report");
-        syncComments("debug.debug.problem", CommitBreak, "config.debug.problem");
+        syncComments("debug.problem", CommitBreak, "config.debug.problem");
+        tomlEditor.compactBlankLinesInSections();
     }
 
     private static void syncComments(String key, String... commentKeys) {
+        tomlEditor.relocateKeyToParentSectionIfNeeded(key);
         List<String> comments = Arrays.stream(commentKeys)
                 .map(translateKey -> CommitBreak.equals(translateKey) ? CommitBreak : translateDirect(translateKey))
                 .toList();
