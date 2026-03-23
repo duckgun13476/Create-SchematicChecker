@@ -208,7 +208,50 @@ public class BlockSweeper {
     }
 
 
+    public static boolean TagSweepHelper(CompoundTag Data,String HasTag){
+
+
+        int TagCount = countBanTag(Data.toString());
+        int SafeCount = 0;
+        CompoundTag a = Data.getCompound("nbt");
+        CompoundTag FilterSlot = a.getCompound("Filter");
+        if (!FilterSlot.toString().equals("{}")) {
+            CompoundTag components = FilterSlot.getCompound("components");
+            if (!components.toString().equals("{}")) {
+                if (components.contains("!minecraft:attribute_modifiers"))
+                    SafeCount++;
+            }
+        }
+
+        if (SafeCount == TagCount)
+            return false;
+        else {
+            Message.FW(translateDirect("config.tag.mismatch.output") + "[" + HasTag + "]" + translateDirect("config.tag.mismatch.output2") + Data);
+            return true;
+        }
+    }
+
+
     // tool func
+    public static int countBanTag(String data) {
+        String lowData = data.toLowerCase();
+        int count = 0;
+
+        for (String item : ban_tag) {
+            String lowItem = item.toLowerCase();
+            int index = 0;
+
+            while ((index = lowData.indexOf(lowItem, index)) != -1) {
+                count++;
+                index += lowItem.length();
+            }
+        }
+
+        return count;
+    }
+
+
+
     public static CompoundTag BlockClearID(CompoundTag Data) {
         CompoundTag result = new CompoundTag();
         return Data;
