@@ -1,1 +1,0 @@
-1. Fix neoforge clipboard check problem and also strength other version.
