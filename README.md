@@ -1,207 +1,214 @@
-# CSC 机械动力：蓝图检查
+# CSC Create: Schematic Checker  
 
 ---
 
-### ~~玩bug蓝图的熊孩子的对策杀手（bushi~~
+### ~~A countermeasure against griefers who use bugged schematics (just kidding)~~  
 
-1. 欢迎您使用CSC，CSC（原名 Create:SchematicChecker | 机械动力：蓝图校验 ）是专为机械动力与全部机械动力附属而定制的蓝图扫描模组,它可以阻止任何已经记录在案的潜在/恶性漏洞。这些恶性漏洞包括但不限于：复制物品、卡顿服务器甚至崩溃服务器、获取创造物品、获取服务器控制权等。而触发它们仅需上传固定修改参数的蓝图，这使得破坏服务器变得轻而易举，只要服务器不禁用蓝图炮，那么任何人都可以随意的以极低的成本和极少的时间破坏服务器、崩溃服务器、获取任意创造物品，永久性的破坏任何机械动力生存服务器。此模组转为此问题而设计，永久解决机械动力蓝图的任何弊病！CSC 允许用户自定义黑名单标签、方块，允许自定义剔除规则，允许对蓝图的校验结果进行详细的配置和自定义。由于蓝图的通用性，这使得CSC，只要配置文件设计合理，就可以检测包括机械动力和机械动力的所有附属mod的任何作弊蓝图！
-2. 如果用户同意，CSC甚至可以选择联网更新自动同步规则到本地服务器，只要CSC团队发现了新的漏洞， 那么就会自动更新配置文件，来实现不需要重启服务器即可自动剔除潜在的漏洞。
+1. Welcome to CSC. CSC (formerly known as Create:SchematicChecker | Create: Schematic Validation) is a dedicated schematic-scanning mod tailored for Create and all its addons. It can block any recorded potential/malicious vulnerabilities, including but not limited to: item duplication, server lag or even crashes, obtaining creative items, and gaining control of the server. Triggering these vulnerabilities only requires uploading schematics with fixed modified parameters, which makes sabotaging the server extremely easy. As long as the server does not disable schematic cannons, anyone can randomly sabotage the server, crash it, obtain any creative items, and permanently damage any Create survival server—with extremely low costs and minimal time. This mod is designed specifically to address this issue, providing a permanent solution to all problems related to Create schematics!
+CSC allows users to customize blacklisted tags and blocks, define custom removal rules, and configure and customize the detailed results of schematic validation. Thanks to the universality of schematics, as long as the configuration file is properly designed, CSC can detect any cheating schematics from Create and all its addon mods.
 
-![icon.png](icon.png)
+2. If the user agrees, CSC can even optionally connect to the internet to automatically sync rules to the local server. Whenever the CSC team discovers a new vulnerability, the configuration file will be updated automatically—enabling the automatic removal of potential vulnerabilities without the need to restart the server.
 
 
-## 答疑/问题反馈/帮助  QQ群：1061133894 
----
-## 概述
-这是一个基于JAVA的机械动力附属。
-该MOD的全部检测功能完全异步，因此不会占用任何服务器主线程性能！
 
-允许自定义规则。它能够自动筛查蓝图文件夹下的所有 bug 与异常蓝图，防止任何恶意篡改 NBT 的蓝图流入 Minecraft 服务器。
+<img width="1920" height="1080" alt="439597651-6bdcd06c-c454-41f0-aa1d-7f8b882064f8" src="https://github.com/user-attachments/assets/85848717-c13d-4c70-8049-6c136a387021" />
 
-它可以修复极其大量的机械动力蓝图相关漏洞，包括最新版本的大量潜在蓝图漏洞，所有相关的修复与问题来源都已经在最后列出
-![已经修复的机械动力漏洞](https://github.com/duckgun13476/CreateSchematicsChecker-Python?tab=readme-ov-file#%E9%92%88%E5%AF%B9%E5%B7%B2%E7%9F%A5%E9%97%AE%E9%A2%98%E7%9A%84%E4%BF%AE%E5%A4%8D)
-![如何使用](https://github.com/duckgun13476/CreateSchematicsChecker-Python?tab=readme-ov-file#%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95)
 
-## 功能
-- **自动筛查**：自动检查蓝图文件夹下的所有蓝图，识别并过滤出潜在的 bug 与异常蓝图，确保服务器安全。
-- **高度自定义规则**：允许用户自定义规则，以针对特定模组实现特殊的 NBT 扫描。
-- **传送带篡改校验**：使用全校验算法对 0.5.1 和 6.0.0 版本的传送带进行校验，阻止传送带蓝图的 bug 与复制、卡服、崩服特性。
-- **齿轮传动轮配对校验**：在 6.0.0 版本后，基于简单匹配逻辑进行齿轮传动轮的配对校验，防止已知蓝图 bug 与复制特性。
-- **多种恶意 NBT 筛查**：针对多种恶意 NBT 篡改值进行筛查，确保蓝图的安全性。
-- **自动云端同步**：自动更新 NBT 检查规则，让恶意新出的bug蓝图无处可逃。
-- **自动更新规则**：已实现自动更新规则功能，确保规则始终保持最新状态。
 
+## Q&A / Bug Reports / Support | QQ Group: 1061133894  
 ---
 
-## 使用方法：
-#### 根据您的机械动力版本选择合适的版本即可↓
+## Overview  
+This is a Java-based addon (mod) for Create (Create: Mechanics of Engineering).  
+All of this mod’s detection features run **completely asynchronously**, so they do not consume any of the server’s main thread resources!  
 
-## 自定义规则和配置
+It supports custom rules and automatically scans all schematics in the schematic folder for bugs and anomalies, preventing any maliciously tampered NBT schematics from entering your Minecraft server.  
 
-- 日志文件在 `log` 文件夹内，每次上传的蓝图都保存在`save`文件夹下。
-- 规则文件一般情况下不需要改变，如果需要，则您只需要按照需求填入即可：
+It fixes a vast number of Create schematic-related vulnerabilities—including numerous potential blueprint bugs in the latest versions. All relevant fixes and sources of issues are listed at the end.  
+![Fixed Create Vulnerabilities](https://github.com/duckgun13476/CreateSchematicsChecker-Python?tab=readme-ov-file#%E9%92%88%E5%AF%B9%E5%B7%B2%E7%9F%A5%E9%97%AE%E9%A2%98%E7%9A%84%E4%BF%AE%E5%A4%8D)  
+![Usage Guide](https://github.com/duckgun13476/CreateSchematicsChecker-Python?tab=readme-ov-file#%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95)  
+
+
+## Features  
+- **Automatic Scanning**: Automatically checks all schematics in the schematic folder, identifies and filters out potential bugged or anomalous schematics to ensure server security.  
+- **Highly Customizable Rules**: Allows users to define custom rules for targeted NBT scanning of specific mods.  
+- **Conveyor Belt Tampering Validation**: Uses a full-validation algorithm to verify conveyor belts in versions 0.5.1 and 6.0.0, blocking bugged conveyor schematics (e.g., duplication, server lag, or crash exploits).  
+- **Gear/Cogwheel Pairing Validation**: Implements basic matching logic for gear/cogwheel pairs in versions 6.0.0+, preventing known schematic bugs and duplication exploits.  
+- **Malicious NBT Scanning**: Detects various types of maliciously tampered NBT values to ensure schematic safety.  
+- **Automatic Cloud Sync**: Automatically updates NBT check rules to block newly discovered bugged schematics.  
+- **Auto-Rule Updates**: Fully implements automatic rule updates to keep protection up-to-date.  
+
+
+---
+
+## Usage:  
+#### Select the appropriate version based on your Create mod version ↓  
+
+
+## Custom Rules & Configuration  
+
+- Log files are stored in the `log` folder; all uploaded schematics are saved in the `save` folder.  
+- Rule files generally do not need modification, but if customization is required, simply edit the following fields as needed:  
    ```toml
-   # 核心配置
+   # Core Configuration
    [check]
-   # 检查频率 默认为0.5秒
+   # Scanning frequency (default: 0.5 seconds)
    check_frequency = 0.5
-   # 是否自动清理被禁止的方块
+   # Whether to automatically remove banned blocks
    fast_handle = false
-   # 是否统计蓝图内方块信息，会占用一定性能，但可以可视化
+   # Whether to count block data in schematics (uses minor resources but enables visualization)
    count_block = false
-   # 是否剔除蓝图内的全部实体，这会导致创造打印蓝图不包含实体，但是可以杜绝全部实体相关的复制漏洞
+   # Whether to remove all entities from schematics (disables entity spawning in creative schematics but blocks all entity-related duplication exploits)
    kill_entity = true
-   # 禁止的实体，填入后将会剔除蓝图内的此实体
+   # Banned entities (entities listed here will be removed from schematics)
    ban_entity = [
    "minecraft:armor_stand"
    ]
-   # 禁止的tag，由于nbt的递归隐藏机制，如果填入的tag在蓝图内检测到，就会将蓝图清空，因为nbt数据结构无法针对tag剔除进行修复
+   # Banned tags: Due to NBT’s recursive hiding mechanism, if a listed tag is detected, the entire schematic will be cleared (NBT structures cannot be partially fixed for tag removal)
    ban_tags = [
    "AttributeModifiers",
-   "Enchantments",  # 附魔标签，这会阻止创造蓝图，但也会导致蓝图不能带有附魔特性，因为它们的结构相同
-   "using_converts_to",  # 食物标签，阻止返回复制特性
-   "bundle_contents"  # 存储袋标签，阻止复制特性
+   "Enchantments",  # Enchantment tags (blocks creative schematics but also prevents enchanted properties in schematics, as their structures are identical)
+   "using_converts_to",  # Food tags (blocks return/duplication exploits)
+   "bundle_contents"  # Bundle tags (blocks duplication exploits)
    ]
-   # 禁止的方块，填入后将会剔除蓝图内的此类方块，如果剔除不完全，则会清空蓝图
+   # Banned blocks (blocks listed here will be removed from schematics; if removal fails, the entire schematic will be cleared)
    ban_block = [
    "create:creative_crate",
    "create:creative_fluid_tank",
    "create:creative_motor",
    "create:creative_blaze_cake",
    "create:handheld_worldshaper",
-   "minecraft:command_block",  # 不多说了，这玩意是命令方块
-   "minecraft:kelp"  # 这可以阻止绝大多数gt机，他们极其卡顿！
+   "minecraft:command_block",  # Speaks for itself—this is a command block
+   "minecraft:kelp"  # Blocks most GT machines (they cause severe lag!)
    ]
-   
-   ```
-
+   ```  
 
 
 ---
 
-## 针对已知问题的修复
+## Fixes for Known Issues  
 
-- **1. 修复** 使用讲台、剪贴板打印出创造物品的恶性漏洞。
-  - [X] [视频链接](https://www.bilibili.com/video/BV1sDp4ePEVp)
+- **1. Fixed**: Exploit allowing creative items to be printed via Lecterns or Clipboards.  
+  - [X] [Video Link](https://www.bilibili.com/video/BV1sDp4ePEVp)  
 
-- **2. 修复** 阀门数据篡改导致的变量缓存溢出，这会导致阀门实体内存无法回收，同时导致内存泄漏。（无限阀门旋转特性）  
-  - [X] [视频链接](https://www.bilibili.com/video/BV1UdC9YjET5)
+- **2. Fixed**: Valve data tampering causing variable cache overflow (leads to uncollectible valve entity memory and memory leaks, i.e., "infinite valve spinning" exploit).  
+  - [X] [Video Link](https://www.bilibili.com/video/BV1UdC9YjET5)  
 
-- **3. 修复** 剪贴板复制特性，附魔标签剔除 | 这可以复制创造物品，打印带创造属性的剪贴板  
-  - [X] [视频链接](https://www.bilibili.com/video/BV1SXC9YEEeW)
+- **3. Fixed**: Clipboard duplication exploit (enchantment tag removal) | Allows duplication of creative items and printing of clipboards with creative properties.  
+  - [X] [Video Link](https://www.bilibili.com/video/BV1SXC9YEEeW)  
 
-- **4. 修复** 阻止传送带修改打印上限超过一千格 | 这会导致渲染器溢出崩溃客户端，传送带的弱加载区块会卡服
-  - [X] [视频链接](https://www.bilibili.com/video/BV1SXC9YEEeW)
-- **5. 修复** 阻止打印 -1 长度传送带 | 这会在旧版本崩溃 Forge 原生服务器。  
-  - [X] [视频链接](https://www.bilibili.com/video/BV1u9ytY2E8R)
+- **4. Fixed**: Blocked conveyor belt length modifications exceeding 1000 blocks | Causes renderer overflow (client crashes) and lag from weakly loaded conveyor chunks.  
+  - [X] [Video Link](https://www.bilibili.com/video/BV1SXC9YEEeW)  
 
-- **6. 修复** 恶意利用修改传送带长度导致的巨量传送带破区块 | 这会导致服务器极其卡顿，破坏 CPU，崩溃服务器，还有概率导致存档损坏  
-  - [X] [视频链接](https://www.bilibili.com/video/BV1NwybY3ERY)
+- **5. Fixed**: Blocked printing of conveyor belts with -1 length | Crashes vanilla Forge servers in older versions.  
+  - [X] [Video Link](https://www.bilibili.com/video/BV1u9ytY2E8R)  
 
-- **7. 修复** 锦致装饰的翁在旧版本的无限 GT 特性，可以无限开宝藏 | 使用 GT 会导致服务器巨量卡顿  
-  - [X] [视频链接](https://www.bilibili.com/video/BV1LUS9YCEk1)
+- **6. Fixed**: Malicious conveyor length modifications causing massive conveyor "chunk breaking" | Leads to severe server lag, CPU damage, server crashes, and potential world corruption.  
+  - [X] [Video Link](https://www.bilibili.com/video/BV1NwybY3ERY)  
 
-- **8. 修复** 恶意修改弹射置物台弹射力量产生的屠龙炮 | 这会直接导致 Forge 端崩服，极快的弹射速度会导致服务器直接卡死，弹射路径的区块全部会极快的生成  
-  - [X] [视频链接](https://www.bilibili.com/video/BV1itXDY3EwJ)  
-  - [X] [视频链接](https://www.bilibili.com/video/BV13RKneEEFG)
+- **7. Fixed**: Infinite GT (Game Tick) exploit with Kintsugi Decor’s Urns in older versions (allows infinite treasure opening) | GT exploits cause extreme server lag.  
+  - [X] [Video Link](https://www.bilibili.com/video/BV1LUS9YCEk1)  
 
-- **9. 修复** 恶意修改过滤器使其内部 NBT 过大 | 将其放进漏斗会导致其在判定时产生极高的游戏卡顿刻
-  - [X] 暂时还没视频
-- **10. 修复** 恶意修改超长的链式传动轮匹配 | 这会导致巨量的卡服问题  
-  - [X] [视频链接](https://www.bilibili.com/video/BV1vz9bY7EW5)
+- **8. Fixed**: Maliciously modified Ejector Plate launch force creating "dragon-slaying cannons" | Instantly crashes Forge servers; ultra-fast launches cause immediate server freezes and rapid chunk generation along the launch path.  
+  - [X] [Video Link](https://www.bilibili.com/video/BV1itXDY3EwJ)  
+  - [X] [Video Link](https://www.bilibili.com/video/BV13RKneEEFG)  
 
-- **11. 修复** 添加标签 use convert to 会返回任意创造物品的漏洞  
-  - [X] [视频链接](https://www.bilibili.com/video/BV1c19tYsEBL)
+- **9. Fixed**: Maliciously modified Filters with excessively large NBT data | Causes extreme game tick lag when placed in Hoppers.  
+  - [X] No video available yet  
 
-- **12. 修复** 篡改动力臂距离到不合理的距离导致的超远距离传输 | 在某些情况下会因为距离问题直接导致崩服  
-  - [X] [视频链接](https://www.bilibili.com/video/BV1XpXYYDEt7)
+- **10. Fixed**: Maliciously modified超长 chain drive wheel pairings | Causes severe server lag.  
+  - [X] [Video Link](https://www.bilibili.com/video/BV1vz9bY7EW5)  
 
-- **13. 修复** 篡改链式传动轮的匹配目标到虚空导致的 90° 锁链 | 这会在某些情况下崩服  
-  - [X] [视频链接](https://www.bilibili.com/video/BV1nddcYSEWQ)
+- **11. Fixed**: Exploit adding the "using_converts_to" tag to obtain arbitrary creative items.  
+  - [X] [Video Link](https://www.bilibili.com/video/BV1c19tYsEBL)  
 
-- **14. 修复** 传送带的奇怪扭曲形式导致的传送带与传动杆复制  
-  - [X] [视频链接](https://www.bilibili.com/video/BV1omdmYrE3S)
+- **12. Fixed**: Tampered Mechanical Arm distances causing ultra-long-range item transport | Crashes servers in certain scenarios.  
+  - [X] [Video Link](https://www.bilibili.com/video/BV1XpXYYDEt7)  
 
-- **15. 修复** 恶意修改链式传动轮的匹配对象到几千个时导致的服务器巨量卡顿和锁链复制特性  
-  - [X] [视频链接](https://www.bilibili.com/video/BV1Ze5Wz7EB2)
+- **13. Fixed**: Tampered chain drive wheels targeting the void causing 90° chain glitches | Crashes servers in certain scenarios.  
+  - [X] [Video Link](https://www.bilibili.com/video/BV1nddcYSEWQ)  
 
-- **16. 修复** 恶意修改机械手的返还物品导致的无限产出漏洞(比如为机械手加入safenbt列表)  
-  - [X] [视频链接](https://www.bilibili.com/video/BV1udtYzwEQN)
+- **14. Fixed**: Oddly distorted conveyor belts causing conveyor/rod duplication.  
+  - [X] [Video Link](https://www.bilibili.com/video/BV1omdmYrE3S)  
 
-- **17. 修复** 机械手在伪装板模组下的物品复制特性  
-  - [X] [视频链接](https://www.bilibili.com/video/BV1dubezLEp7)
+- **15. Fixed**: Maliciously modified chain drive wheels with thousands of targets causing severe server lag and chain duplication.  
+  - [X] [Video Link](https://www.bilibili.com/video/BV1Ze5Wz7EB2)  
 
-- **18. 修复** 在安山漏斗可以返还过滤器的漏洞
-  - [X] [视频链接](https://www.bilibili.com/video/BV1UrEGzmEDU)
-- **19. 修复** 可以使用烧毁标签来获得创造物品的漏洞  
-  - [X] [视频链接](https://www.bilibili.com/video/BV1UrEGzmEDU)
+- **16. Fixed**: Maliciously modified Mechanical Arms with infinite item output exploits (e.g., adding "safenbt" lists to Arms).  
+  - [X] [Video Link](https://www.bilibili.com/video/BV1udtYzwEQN)  
 
-- **20. 修复** 可以使用实体（盔甲架）导致的任何复制特性和获取创造物品特性 | 使用实体剔除功能  
-  - [X] [视频链接](https://www.bilibili.com/video/BV1wtRNYaE5m)
+- **17. Fixed**: Mechanical Arm item duplication with the Camouflage Panels mod.  
+  - [X] [Video Link](https://www.bilibili.com/video/BV1dubezLEp7)  
 
-- **21. 修复** 轧机在物品附加的某个发行版本创造物品恶性获取漏洞  
-  - [X] [视频链接](https://www.bilibili.com/video/BV1b4eyzGEoj)
+- **18. Fixed**: Exploit allowing Filters to be retrieved via Andesite Hoppers.  
+  - [X] [Video Link](https://www.bilibili.com/video/BV1UrEGzmEDU)  
 
-- **22. 修复** 附魔工业在某个版本会打印创造标签的恶性附属漏洞  
-  - [X] [视频链接](https://www.bilibili.com/video/BV1GKemzWEKm)
+- **19. Fixed**: Exploit using "burn" tags to obtain creative items.  
+  - [X] [Video Link](https://www.bilibili.com/video/BV1UrEGzmEDU)  
 
-- **23. 修复** 创意传动会打印无限能源电池的特性  
-  - [X] [视频链接](https://www.bilibili.com/video/BV193vAzNEJ2)
+- **20. Fixed**: Any duplication or creative item exploits involving entities (Armor Stands) | Uses entity removal feature.  
+  - [X] [Video Link](https://www.bilibili.com/video/BV1wtRNYaE5m)  
 
-- **24. 修复** 集成农业会打印鸡舍实现 GT 机卡服的特性  
-  - [X] [视频链接](https://www.bilibili.com/video/BV13nh2z5EvT)
+- **21. Fixed**: Exploit allowing creative item acquisition via Rollers in specific versions.  
+  - [X] [Video Link](https://www.bilibili.com/video/BV1b4eyzGEoj)  
 
-- **25. 修复** 利用nbt漏洞实现的运行指令恶性bug
-  - [X] [视频链接](https://www.bilibili.com/video/BV1rZY5z1Eo6)
+- **22. Fixed**: Malicious addon exploit in Enigmatica: Industrialization allowing creative tag printing.  
+  - [X] [Video Link](https://www.bilibili.com/video/BV1GKemzWEKm)  
 
-- **26. 修复** 6.0.+版本下可以篡改流体储罐导致容量异常的bug
+- **23. Fixed**: Create: Crafts & Additions exploit allowing infinite energy cell printing.  
+  - [X] [Video Link](https://www.bilibili.com/video/BV193vAzNEJ2)  
 
-  - [X] [视频链接](https://www.bilibili.com/video/BV1hSnMzCE6A/)
+- **24. Fixed**: Integrated Dynamics exploit allowing Chicken Coop printing (causes GT machine lag).  
+  - [X] [Video Link](https://www.bilibili.com/video/BV13nh2z5EvT)  
 
+- **25. Fixed**: Malicious NBT exploit allowing command execution.  
+  - [X] [Video Link](https://www.bilibili.com/video/BV1rZY5z1Eo6)  
 
-- **27. 修复** 夸克铁丝网的无限岩浆漏洞。
-  - [X] [视频链接](https://www.bilibili.com/video/BV1hSnMzCE6A/)
+- **26. Fixed**: Exploit in version 6.0.+ allowing fluid tank capacity tampering.  
+  - [X] [Video Link](https://www.bilibili.com/video/BV1hSnMzCE6A/)  
 
+- **27. Fixed**: Quark Wire Mesh infinite lava exploit.  
+  - [X] [Video Link](https://www.bilibili.com/video/BV1hSnMzCE6A/)  
 
-- **28. 修复** 通过修改动力合成器实现的虚空传送物品漏洞。 
-  - [X] [视频链接](https://www.bilibili.com/video/BV1hSnMzCE6A/)
+- **28. Fixed**: Exploit allowing item teleportation to the void via modified Mechanical Synthesizers.  
+  - [X] [Video Link](https://www.bilibili.com/video/BV1hSnMzCE6A/)  
 
+- **29. Fixed**: Exploit allowing item teleportation to the void via modified Mechanical Synthesizers.  
+  - [X] [No sample video found]()  
 
-- **29. 修复** 通过修改动力合成器实现的虚空传送物品漏洞。
-  - [X] [没找到样例视频]()
+- **30. Fixed**: Maliciously modified Super Glue causing excessive adhesion checks (leads to severe server lag or crashes).  
+  - [X] [No sample video found]()  
 
-    
-- **30. 修复** 通过修改强力胶导致的超大黏着检测引起的服务器巨量卡顿甚至崩溃。
-  - [X] [没找到样例视频]()
+- **31. Fixed**: Maliciously modified Casing Chassis/Angled Chassis causing excessive adhesion checks (leads to severe server lag or crashes).  
+  - [X] [No sample video found]()  
 
-- **31. 修复** 通过修改机壳地盘、斜向地盘导致的超大黏着检测引起的服务器巨量卡顿甚至崩溃。
-  - [X] [没找到样例视频]()
-  - 
-- **32. 检测** 通过修改机械动力：火炮的炮弹引信导致的获取任意创造物品的漏洞。
-  - [X] [没找到样例视频]()
+- **32. Detected**: Exploit allowing arbitrary creative item acquisition via modified Create: Cannons (tampered fuse data).  
+  - [X] [No sample video found]()  
 
-- **33. 修复**:打印暮色森林模组的巨型方块会无视地形破坏基岩并且直接复制巨型方块的漏洞
-  - [X] [没找到样例视频]()
+- **33. Detected**: Fixed a bug where printing giant blocks from the Twilight Forest mod would ignore the terrain and break bedrock.
+  - [X] [No sample video found]()
 
-## 致谢
- - 特别感谢 crackun24 
-   - 参考了Mixin部分代码。
- - 特别致谢：
-   - 起飞的玫瑰、恐鱼、air、crackun24、runner、CTR服主 等总计15个机械动力公益服服主，它们为这个脚本提供了检查样本和后续辅助处理。
----
- - 特别特别致谢 B站 up主 一只不屑的屑蜘蛛 
-   - **如果不是这 sb 熊孩子故意用蓝图崩了作者开的公益服好几次、在不知道多少服传bug蓝图破坏服务器、在作者在b站发修复时给作者拉黑、还在b站造谣诋毁作者，也不会有这个项目，蓝图bug也不会这么快有不错的解决方案！**
-
-
-## 依赖
-- Minecraft
-- Create
+## Acknowledgments  
+ - Special thanks to **crackun24**  
+   - For reference Mixin code.  
+ - Additional thanks to:  
+   - Qifei de Meigui (Rose of Takeoff), Kong Yu (Fearful Fish), air, crackun24, runner, CTR Server Owner, and 17 other Create public server owners—who provided test samples and post-fix support for this project.  
 
 ---
 
-### 优点：
-- 包含Python项目的全部优点。
-### 缺点：
-- 版本覆盖支持不全，针对1.18以及更低版本不支持，这些版本需要使用python版本
+ - **Extra Special Thanks** to Bilibili UP OWNER (content creator) **一只不屑的屑蜘蛛** (A Disdainful Trash Spider)  
+   - *If this griefer hadn’t intentionally crashed the author’s public server multiple times with bugged schematics, spread bugged schematics across countless servers, blocked the author on Bilibili, and spread rumors to slander the author when the fix was posted—this project would never have existed, and Create schematic bugs would not have been resolved so quickly!*  
+
+
+## Dependencies  
+- Minecraft  
+- Create  
+
 
 ---
+
+### Pros:  
+- Inherits all advantages of the Python version of the project.  
+
+### Cons:  
+- Incomplete version support: Does not support versions 1.18 or lower. Use the Python version for these versions.

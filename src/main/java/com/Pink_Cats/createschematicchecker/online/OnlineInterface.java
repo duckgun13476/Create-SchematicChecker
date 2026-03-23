@@ -3,6 +3,7 @@ package com.Pink_Cats.createschematicchecker.online;
 import javax.net.ssl.HttpsURLConnection;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.net.URI;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
@@ -29,7 +30,8 @@ public class OnlineInterface {
 
     private static String SimpleHeartbeatPush(String RequestUrl,String data){
         try {
-            HttpsURLConnection conn = (HttpsURLConnection) new URL(RequestUrl).openConnection();
+            URL url = URI.create(RequestUrl).toURL();
+            HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
             conn.setRequestMethod("POST");
             conn.setDoOutput(true); // 允许写入请求体（POST 必需）
             conn.setConnectTimeout(3000); // 3秒连接超时

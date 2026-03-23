@@ -79,7 +79,7 @@ public class VersionChecker {
     }
 
     private static @NotNull HttpsURLConnection getUrlConnection(String targetUrl) throws IOException {
-        URL url = new URL(targetUrl);
+        URL url = URI.create(targetUrl).toURL();
         HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
 
         // 2. 配置 GET 请求参数（GET 请求无请求体，核心是设置请求方法和必要头信息）
@@ -93,7 +93,7 @@ public class VersionChecker {
 
     // 请求服务器版本（POST）
     private static String fetchServerVersion(String versionUrl) throws IOException {
-        URL url = new URL(versionUrl);
+        URL url = URI.create(versionUrl).toURL();
         HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
         conn.setRequestMethod("POST");
         conn.setDoOutput(true);
@@ -127,7 +127,7 @@ public class VersionChecker {
     //get
     private static String fetchServerVersionByGet(String versionUrl) throws IOException {
         // 1. 初始化 HTTPS 连接（与原函数一致，仅请求方法改为 GET）
-        URL url = new URL(versionUrl);
+        URL url = URI.create(versionUrl).toURL();
         HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
         conn.setRequestMethod("GET"); // 核心修改：将 POST 改为 GET
         // 保留原函数的 Content-Type（即使 GET 无请求体，保持头信息与原函数一致，避免接口兼容性问题）
@@ -158,7 +158,7 @@ public class VersionChecker {
     // 下载 JSON 文件
     private static void downloadFile(String baseUrl, String version, String savePath) throws IOException {
         String fileUrl = baseUrl + "?version=" + URLEncoder.encode(version, StandardCharsets.UTF_8);
-        URL url = new URL(fileUrl);
+        URL url = URI.create(fileUrl).toURL();
         HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
         conn.setRequestMethod("GET");
 
