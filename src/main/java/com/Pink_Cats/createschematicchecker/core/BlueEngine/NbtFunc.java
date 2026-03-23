@@ -8,6 +8,7 @@ import java.util.*;
 
 import static com.Pink_Cats.createschematicchecker.FancyConfig.ConfigRegister.*;
 import static com.Pink_Cats.createschematicchecker.core.BlueEngine.BlockSweeper.ClearBanBlock;
+import static com.Pink_Cats.createschematicchecker.core.BlueEngine.BlockSweeper.TagSweepHelper;
 import static com.Pink_Cats.createschematicchecker.core.BlueEngine.TagFunc.PaletteGetId;
 import static com.Pink_Cats.createschematicchecker.core.ChainEngine.ConveyorInterface.StringPickHalfPos;
 import static com.Pink_Cats.createschematicchecker.core.ChainEngine.ConveyorInterface.StringPickPos;
@@ -724,11 +725,11 @@ public class NbtFunc {
 
         String HasTag = HasBanTag(data.toString());
         if (!HasTag.isEmpty()) {
-
-            Message.FW(translateDirect("config.tag.mismatch.output") +"["+HasTag+"]"+translateDirect("config.tag.mismatch.output2")+ data);
-            IsNotMatch = true;
-
+            IsNotMatch = TagSweepHelper(data,HasTag);
         }
+
+
+
 
         if (HasBanBlock(data.toString())) {
             HasBanBlock = true;
