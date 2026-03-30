@@ -1,0 +1,35 @@
+ext.readPublishingProperties = {
+    def propertiesFile = file('api.properties')
+    if (!propertiesFile.exists()) {
+        return null
+    }
+
+    def properties = new Properties()
+    properties.load(new FileInputStream(propertiesFile))
+    return properties
+}
+
+ext.readVersionParts = {
+    return mod_version.split("-")
+}
+
+ext.readPrimaryChangelog = {
+    return file("./update/changelog.md").text.split("\n\n\n")[0]
+}
+
+ext.readFullChangelog = {
+    return rootProject.file("./update/changelog.md").text
+}
+
+tasks.register('publishAll') {
+    dependsOn 'publishCurseForge'
+    dependsOn 'publishMods'
+    group = 'Publishing'
+}
+
+tasks.register('runPython', Exec) {
+    commandLine 'publishing/.venv/Scripts/python', 'publishing/get.py'
+    doFirst {
+        println "script publishing..."
+    }
+}

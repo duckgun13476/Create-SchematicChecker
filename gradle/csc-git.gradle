@@ -1,0 +1,25 @@
+ext.calculateGitHash = {
+    try {
+        def output = providers.exec {
+            commandLine("git", "rev-parse", "HEAD")
+        }
+        return output.standardOutput.asText.get().trim()
+    } catch (Throwable ignored) {
+        return "unknown"
+    }
+}
+
+ext.hasUnstaged = {
+    try {
+        def output = providers.exec {
+            commandLine("git", "status", "--porcelain")
+        }
+        String result = output.standardOutput.asText.get().replace("/M gradlew(\\.bat)?/", "").trim()
+        if (!result.isEmpty()) {
+            println("Found stageable results:\n ${result}\n")
+        }
+        return !result.isEmpty()
+    } catch (Throwable ignored) {
+        return false
+    }
+}

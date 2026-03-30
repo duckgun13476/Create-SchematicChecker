@@ -1,0 +1,36 @@
+def commonJavaDir = rootProject.file('common/src/main/java')
+def commonResourcesDir = rootProject.file('common/src/main/resources')
+
+sourceSets {
+    main {
+        java.srcDir(commonJavaDir)
+        resources.srcDir(commonResourcesDir)
+    }
+}
+
+tasks.register('syncCSCLanguageVersion') {
+    def targetFile = file('src/main/java/com/Pink_Cats/createschematicchecker/lang/CSCLanguage.java')
+    inputs.property('minecraftVersion', providers.gradleProperty('minecraft_version'))
+    inputs.property('cscVersion', providers.gradleProperty('mod_version').map { it.split("-", 2)[0] })
+    outputs.file(targetFile)
+
+    doLast {
+        String configuredMinecraftVersion = providers.gradleProperty("minecraft_version").get()
+        String configuredModVersion = providers.gradleProperty("mod_version").get()
+        String cscDisplayVersion = configuredModVersion.split("-", 2)[0]
+        String content = targetFile.getText('UTF-8')
+        content = content.replaceFirst(
+                /public static final String mc_version = ".*?";/,
+                "public static final String mc_version = \"${configuredMinecraftVersion}\";"
+        )
+        content = content.replaceFirst(
+                /public static final String csc_version = ".*?";/,
+                "public static final String csc_version = \"${cscDisplayVersion}\";"
+        )
+        targetFile.write(content, 'UTF-8')
+    }
+}
+
+tasks.named('compileJava').configure {
+    dependsOn(tasks.named('syncCSCLanguageVersion'))
+}

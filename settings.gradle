@@ -1,7 +1,13 @@
 rootProject.name = 'Create-SchematicChecker'
 
 include 'common'
-include 'forge-1.19.2'
+include 'forge-1.19.2-0.5.1i'
 include 'forge-1.20.1-0.5.1j'
-include 'forge-1.20.1-6.0.+'
-include 'neoforge-1.21.1-6.0.+'
+include 'forge-1.20.1-6.0.x'
+include 'neoforge-1.21.1-6.0.x'
+
+project(':common').projectDir = file('common')
+project(':forge-1.19.2-0.5.1i').projectDir = file('project/forge/1.19.2-0.5.1i')
+project(':forge-1.20.1-0.5.1j').projectDir = file('project/forge/1.20.1-0.5.1j')
+project(':forge-1.20.1-6.0.x').projectDir = file('project/forge/1.20.1-6.0.x')
+project(':neoforge-1.21.1-6.0.x').projectDir = file('project/neoforge/1.21.1-6.0.x')
