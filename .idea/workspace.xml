@@ -4,75 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d1ad948e-a44e-4a7d-81f5-9ec1abaa8ab2" name="更改" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/LICENSE.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/README_zh.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradle.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradle/java.gradle" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradle/property_loader.gradle" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradlew" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradlew.bat" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/icon.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/publishing/auto_publish.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/settings.gradle" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/Pink_Cats/createschematicchecker/Compat/PendingSchematicStore.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/Pink_Cats/createschematicchecker/Compat/pattern_schematics/PatternSchematicsCompat.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/Pink_Cats/createschematicchecker/Config.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/Pink_Cats/createschematicchecker/Createschematicchecker.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/Pink_Cats/createschematicchecker/FancyConfig/ConfigHook.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/Pink_Cats/createschematicchecker/FancyConfig/ConfigRegister.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/Pink_Cats/createschematicchecker/FancyConfig/ConfigValue.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/Pink_Cats/createschematicchecker/FancyConfig/FileIO.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/Pink_Cats/createschematicchecker/FancyConfig/SimpleTomlEditor.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/Pink_Cats/createschematicchecker/core/BlueCore.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/Pink_Cats/createschematicchecker/core/BlueEngine/BlockSweeper.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/Pink_Cats/createschematicchecker/core/BlueEngine/FilterInterface.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/Pink_Cats/createschematicchecker/core/BlueEngine/NbtFunc.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/Pink_Cats/createschematicchecker/core/BlueEngine/NbtInterFace.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/Pink_Cats/createschematicchecker/core/BlueEngine/StrFunc.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/Pink_Cats/createschematicchecker/core/BlueEngine/TagFunc.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/Pink_Cats/createschematicchecker/core/ChainEngine/ConveyorData.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/Pink_Cats/createschematicchecker/core/ChainEngine/ConveyorInterface.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/Pink_Cats/createschematicchecker/core/ChainEngine/MagicChain.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/Pink_Cats/createschematicchecker/core/EngineTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/Pink_Cats/createschematicchecker/core/attach/ConveyorDegree.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/Pink_Cats/createschematicchecker/core/attach/Math.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/Pink_Cats/createschematicchecker/core/hook.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/Pink_Cats/createschematicchecker/core/run.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/Pink_Cats/createschematicchecker/database/DataCount.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/Pink_Cats/createschematicchecker/database/LogInteractive.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/Pink_Cats/createschematicchecker/database/SingleLog.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/Pink_Cats/createschematicchecker/echo/Commands.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/Pink_Cats/createschematicchecker/echo/EchoCommand.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/Pink_Cats/createschematicchecker/event/CheckBlueprint.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/Pink_Cats/createschematicchecker/event/SchematicUploadEvent.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/Pink_Cats/createschematicchecker/event/TempOffEvent.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/Pink_Cats/createschematicchecker/lang/CSCLanguage.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/Pink_Cats/createschematicchecker/lang/Message.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/Pink_Cats/createschematicchecker/lang/mes.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/Pink_Cats/createschematicchecker/mixin/OpenEndedPipeMixin.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/Pink_Cats/createschematicchecker/mixin/handleFinishedUploadMixin.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/Pink_Cats/createschematicchecker/network/AutoUpdate.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/Pink_Cats/createschematicchecker/network/SimpleJsonParser.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/Pink_Cats/createschematicchecker/network/rule_io.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/Pink_Cats/createschematicchecker/online/NbtFileUploader.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/Pink_Cats/createschematicchecker/online/OnlineInterface.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/Pink_Cats/createschematicchecker/online/SimpleHeartbeatPusher.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/Pink_Cats/createschematicchecker/online/VersionChecker.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/META-INF/mods.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/createschematicchecker/lang/en_us.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/createschematicchecker/lang/ja_jp.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/createschematicchecker/lang/zh_cn.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/createschematicchecker/lang/zh_tw.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/createschematicchecker.mixins.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/icon.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/pack.mcmeta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/update/changelog.md" beforeDir="false" />
+    <list default="true" id="d1ad948e-a44e-4a7d-81f5-9ec1abaa8ab2" name="更改" comment="Change project structure.">
+      <change afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/common/build.gradle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/settings.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -123,6 +59,7 @@
     "git-widget-placeholder": "forge-combined-main",
     "junie.onboarding.icon.badge.shown": "true",
     "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/F/MC_Project_Combined/Create-SchematicChecker/common",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -135,6 +72,14 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\F\MC_Project_Combined\Create-SchematicChecker\common" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\F\MC_Project_Combined\Create-SchematicChecker" />
+    </key>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -150,8 +95,17 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1774869177142</updated>
-      <workItem from="1774869178218" duration="875000" />
+      <workItem from="1774869178218" duration="2031000" />
     </task>
+    <task id="LOCAL-00001" summary="Change project structure.">
+      <option name="closed" value="true" />
+      <created>1774870105317</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1774870105317</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -167,5 +121,9 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Change project structure." />
+    <option name="LAST_COMMIT_MESSAGE" value="Change project structure." />
   </component>
 </project>
