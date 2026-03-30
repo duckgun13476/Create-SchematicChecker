@@ -1,10 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="GradleMigrationSettings" migrationVersion="1" />
   <component name="GradleSettings">
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="gradleJvm" value="azul-21" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/common" />
+            <option value="$PROJECT_DIR$/project/forge/1.19.2-0.5.1i" />
+            <option value="$PROJECT_DIR$/project/forge/1.20.1-0.5.1j" />
+            <option value="$PROJECT_DIR$/project/forge/1.20.1-6.0.x" />
+            <option value="$PROJECT_DIR$/project/neoforge/1.21.1-6.0.x" />
+          </set>
+        </option>
+        <option name="resolveExternalAnnotations" value="true" />
       </GradleProjectSettings>
     </option>
   </component>

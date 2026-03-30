@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Gradle Imported" enabled="true">
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.github.llamalad7/mixinextras-common/0.4.1/a7f425cc49de7f10d008a9a676f5f023ebac13bb/mixinextras-common-0.4.1.jar" />
+        </processorPath>
+        <module name="Create-SchematicChecker.forge-1.20.1-0.5.1j.main" />
+        <module name="Create-SchematicChecker.forge-1.19.2-0.5.1i.main" />
+        <module name="Create-SchematicChecker.forge-1.20.1-6.0.x.main" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel target="17" />
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="Create-SchematicChecker.forge-1.19.2-0.5.1i.main" options="-Xdiags:verbose" />
+      <module name="Create-SchematicChecker.forge-1.20.1-0.5.1j.main" options="-Xdiags:verbose" />
+      <module name="Create-SchematicChecker.forge-1.20.1-6.0.x.main" options="-Xdiags:verbose" />
+      <module name="Create-SchematicChecker.neoforge-1.21.1-6.0.x.main" options="-Xdiags:verbose" />
+    </option>
+  </component>
+</project>

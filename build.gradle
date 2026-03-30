@@ -1,16 +1,10 @@
+plugins {
+    id 'idea'
+    id 'org.jetbrains.gradle.plugin.idea-ext' version '1.2'
+}
+
 allprojects {
     repositories {
         mavenCentral()
-    }
-}
-
-subprojects {
-    apply plugin: 'idea'
-
-    idea {
-        module {
-            downloadSources = true
-            downloadJavadoc = true
-        }
     }
 }

@@ -4,35 +4,75 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d1ad948e-a44e-4a7d-81f5-9ec1abaa8ab2" name="更改" comment="New plugin and project structure.">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradle/csc-common.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/gradle/csc-common.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradle/csc-publishing-common.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/gradle/csc-publishing-common.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/forge/1.19.2-0.5.1i/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/forge/1.19.2-0.5.1i/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/project/forge/1.19.2-0.5.1i/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/forge/1.19.2-0.5.1i/gradle/property_loader.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/project/forge/1.19.2-0.5.1i/gradle/property_loader.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/forge/1.19.2-0.5.1i/publishing/auto_publish.py" beforeDir="false" afterPath="$PROJECT_DIR$/auto_publish.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/forge/1.19.2-0.5.1i/update/changelog.md" beforeDir="false" afterPath="$PROJECT_DIR$/update/changelog.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/forge/1.20.1-0.5.1j/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/forge/1.20.1-0.5.1j/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/project/forge/1.20.1-0.5.1j/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/forge/1.20.1-0.5.1j/gradle/property_loader.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/project/forge/1.20.1-0.5.1j/gradle/property_loader.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/forge/1.20.1-0.5.1j/publishing/auto_publish.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/forge/1.20.1-0.5.1j/update/changelog.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/forge/1.20.1-6.0.x/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/forge/1.20.1-6.0.x/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/project/forge/1.20.1-6.0.x/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/forge/1.20.1-6.0.x/gradle/property_loader.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/project/forge/1.20.1-6.0.x/gradle/property_loader.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/forge/1.20.1-6.0.x/publishing/auto_publish.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/forge/1.20.1-6.0.x/update/changelog.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/neoforge/1.21.1-6.0.x/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/neoforge/1.21.1-6.0.x/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/project/neoforge/1.21.1-6.0.x/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/neoforge/1.21.1-6.0.x/gradle/property_loader.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/project/neoforge/1.21.1-6.0.x/gradle/property_loader.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/neoforge/1.21.1-6.0.x/publishing/auto_publish.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/neoforge/1.21.1-6.0.x/update/changelog.md" beforeDir="false" />
+    <list default="true" id="d1ad948e-a44e-4a7d-81f5-9ec1abaa8ab2" name="更改" comment="Fix path problem.">
+      <change beforePath="$PROJECT_DIR$/project/forge/1.19.2-0.5.1i/src/main/resources/pack.mcmeta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/project/forge/1.20.1-0.5.1j/src/main/resources/pack.mcmeta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/project/forge/1.20.1-6.0.x/src/main/resources/pack.mcmeta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/project/neoforge/1.21.1-6.0.x/src/main/resources/pack.mcmeta" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ExternalProjectsData">
+    <projectState path="$PROJECT_DIR$">
+      <ProjectState />
+    </projectState>
+  </component>
+  <component name="ExternalProjectsManager">
+    <system id="GRADLE">
+      <state>
+        <task path="$PROJECT_DIR$">
+          <activation />
+        </task>
+        <projects_view>
+          <tree_state>
+            <expand>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="Create-SchematicChecker" type="f1a62948:ProjectNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="Create-SchematicChecker" type="f1a62948:ProjectNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="Create-SchematicChecker" type="f1a62948:ProjectNode" />
+                <item name="forge-1.19.2-0.5.1i" type="2d1252cf:ModuleNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="Create-SchematicChecker" type="f1a62948:ProjectNode" />
+                <item name="forge-1.19.2-0.5.1i" type="2d1252cf:ModuleNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="Create-SchematicChecker" type="f1a62948:ProjectNode" />
+                <item name="neoforge-1.21.1-6.0.x" type="2d1252cf:ModuleNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="Create-SchematicChecker" type="f1a62948:ProjectNode" />
+                <item name="neoforge-1.21.1-6.0.x" type="2d1252cf:ModuleNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="Create-SchematicChecker" type="f1a62948:ProjectNode" />
+                <item name="neoforge-1.21.1-6.0.x" type="2d1252cf:ModuleNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+                <item name="mod development" type="c8890929:TasksNode$1" />
+              </path>
+            </expand>
+            <select />
+          </tree_state>
+        </projects_view>
+      </state>
+    </system>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
@@ -42,26 +82,26 @@
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "duckgun13476"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;duckgun13476&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/duckgun13476/Create-SchematicChecker.git",
-    "accountId": "50710dc8-e388-47e1-9f7f-75c224fa2e94"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/duckgun13476/Create-SchematicChecker.git&quot;,
+    &quot;accountId&quot;: &quot;50710dc8-e388-47e1-9f7f-75c224fa2e94&quot;
   }
-}]]></component>
+}</component>
   <component name="McpProjectServerCommands">
     <commands />
     <urls />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 4,
-  "fromUser": false
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 4,
+  &quot;fromUser&quot;: false
+}</component>
   <component name="ProjectId" id="3Bf9IQbjD4BTgWegDAKJKWzVxod" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -69,12 +109,17 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Gradle.Create-SchematicChecker [:forge-1.19.2-0.5.1i:runClient].executor": "Run",
+    "Gradle.Create-SchematicChecker [:neoforge-1.21.1-6.0.x:runClient].executor": "Run",
+    "Gradle.Create-SchematicChecker [runClient].executor": "Run",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.MCP Project settings loaded": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
     "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
+    "external.system.has.shared.sources": "true",
     "git-widget-placeholder": "forge-combined-main",
     "junie.onboarding.icon.badge.shown": "true",
     "kotlin-language-version-configured": "true",
@@ -103,6 +148,286 @@
       <recent name="C:\F\MC_Project_Combined\Create-SchematicChecker\forge" />
     </key>
   </component>
+  <component name="RunManager" selected="Gradle.Create-SchematicChecker [:neoforge-1.21.1-6.0.x:runClient]">
+    <configuration name="forge-1.19.2-0.5.1i - Client" type="Application" factoryName="Application">
+      <envs>
+        <env name="MOD_CLASSES" value="createschematicchecker%%C:\F\MC_Project_Combined\Create-SchematicChecker\project\forge\1.19.2-0.5.1i\build\classes\java\main;createschematicchecker%%C:\F\MC_Project_Combined\Create-SchematicChecker\project\forge\1.19.2-0.5.1i\build\resources\main" />
+      </envs>
+      <option name="MAIN_CLASS_NAME" value="net.neoforged.devlaunch.Main" />
+      <module name="Create-SchematicChecker.forge-1.19.2-0.5.1i.main" />
+      <option name="PROGRAM_PARAMETERS" value="@C:\\F\\MC_Project_Combined\\Create-SchematicChecker\\project\\forge\\1.19.2-0.5.1i\\build\\moddev\\clientRunProgramArgs.txt" />
+      <option name="VM_PARAMETERS" value="@C:\\F\\MC_Project_Combined\\Create-SchematicChecker\\project\\forge\\1.19.2-0.5.1i\\build\\moddev\\clientRunVmArgs.txt -Dfml.modFolders=createschematicchecker%%C:\\F\\MC_Project_Combined\\Create-SchematicChecker\\project\\forge\\1.19.2-0.5.1i\\build\\classes\\java\\main;createschematicchecker%%C:\\F\\MC_Project_Combined\\Create-SchematicChecker\\project\\forge\\1.19.2-0.5.1i\\build\\resources\\main" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/project/forge/1.19.2-0.5.1i/run" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="forge-1.19.2-0.5.1i - Data" type="Application" factoryName="Application">
+      <envs>
+        <env name="MOD_CLASSES" value="createschematicchecker%%C:\F\MC_Project_Combined\Create-SchematicChecker\project\forge\1.19.2-0.5.1i\build\classes\java\main;createschematicchecker%%C:\F\MC_Project_Combined\Create-SchematicChecker\project\forge\1.19.2-0.5.1i\build\resources\main" />
+      </envs>
+      <option name="MAIN_CLASS_NAME" value="net.neoforged.devlaunch.Main" />
+      <module name="Create-SchematicChecker.forge-1.19.2-0.5.1i.main" />
+      <option name="PROGRAM_PARAMETERS" value="@C:\\F\\MC_Project_Combined\\Create-SchematicChecker\\project\\forge\\1.19.2-0.5.1i\\build\\moddev\\dataRunProgramArgs.txt" />
+      <option name="VM_PARAMETERS" value="@C:\\F\\MC_Project_Combined\\Create-SchematicChecker\\project\\forge\\1.19.2-0.5.1i\\build\\moddev\\dataRunVmArgs.txt -Dfml.modFolders=createschematicchecker%%C:\\F\\MC_Project_Combined\\Create-SchematicChecker\\project\\forge\\1.19.2-0.5.1i\\build\\classes\\java\\main;createschematicchecker%%C:\\F\\MC_Project_Combined\\Create-SchematicChecker\\project\\forge\\1.19.2-0.5.1i\\build\\resources\\main" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/project/forge/1.19.2-0.5.1i/run" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="forge-1.19.2-0.5.1i - GameTestServer" type="Application" factoryName="Application">
+      <envs>
+        <env name="MOD_CLASSES" value="createschematicchecker%%C:\F\MC_Project_Combined\Create-SchematicChecker\project\forge\1.19.2-0.5.1i\build\classes\java\main;createschematicchecker%%C:\F\MC_Project_Combined\Create-SchematicChecker\project\forge\1.19.2-0.5.1i\build\resources\main" />
+      </envs>
+      <option name="MAIN_CLASS_NAME" value="net.neoforged.devlaunch.Main" />
+      <module name="Create-SchematicChecker.forge-1.19.2-0.5.1i.main" />
+      <option name="PROGRAM_PARAMETERS" value="@C:\\F\\MC_Project_Combined\\Create-SchematicChecker\\project\\forge\\1.19.2-0.5.1i\\build\\moddev\\gameTestServerRunProgramArgs.txt" />
+      <option name="VM_PARAMETERS" value="@C:\\F\\MC_Project_Combined\\Create-SchematicChecker\\project\\forge\\1.19.2-0.5.1i\\build\\moddev\\gameTestServerRunVmArgs.txt -Dfml.modFolders=createschematicchecker%%C:\\F\\MC_Project_Combined\\Create-SchematicChecker\\project\\forge\\1.19.2-0.5.1i\\build\\classes\\java\\main;createschematicchecker%%C:\\F\\MC_Project_Combined\\Create-SchematicChecker\\project\\forge\\1.19.2-0.5.1i\\build\\resources\\main" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/project/forge/1.19.2-0.5.1i/run/gametest" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="forge-1.19.2-0.5.1i - Server" type="Application" factoryName="Application">
+      <envs>
+        <env name="MOD_CLASSES" value="createschematicchecker%%C:\F\MC_Project_Combined\Create-SchematicChecker\project\forge\1.19.2-0.5.1i\build\classes\java\main;createschematicchecker%%C:\F\MC_Project_Combined\Create-SchematicChecker\project\forge\1.19.2-0.5.1i\build\resources\main" />
+      </envs>
+      <option name="MAIN_CLASS_NAME" value="net.neoforged.devlaunch.Main" />
+      <module name="Create-SchematicChecker.forge-1.19.2-0.5.1i.main" />
+      <option name="PROGRAM_PARAMETERS" value="@C:\\F\\MC_Project_Combined\\Create-SchematicChecker\\project\\forge\\1.19.2-0.5.1i\\build\\moddev\\serverRunProgramArgs.txt" />
+      <option name="VM_PARAMETERS" value="@C:\\F\\MC_Project_Combined\\Create-SchematicChecker\\project\\forge\\1.19.2-0.5.1i\\build\\moddev\\serverRunVmArgs.txt -Dfml.modFolders=createschematicchecker%%C:\\F\\MC_Project_Combined\\Create-SchematicChecker\\project\\forge\\1.19.2-0.5.1i\\build\\classes\\java\\main;createschematicchecker%%C:\\F\\MC_Project_Combined\\Create-SchematicChecker\\project\\forge\\1.19.2-0.5.1i\\build\\resources\\main" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/project/forge/1.19.2-0.5.1i/run/server" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="forge-1.20.1-0.5.1j - Client" type="Application" factoryName="Application">
+      <envs>
+        <env name="MOD_CLASSES" value="createschematicchecker%%C:\F\MC_Project_Combined\Create-SchematicChecker\project\forge\1.20.1-0.5.1j\build\classes\java\main;createschematicchecker%%C:\F\MC_Project_Combined\Create-SchematicChecker\project\forge\1.20.1-0.5.1j\build\resources\main" />
+      </envs>
+      <option name="MAIN_CLASS_NAME" value="net.neoforged.devlaunch.Main" />
+      <module name="Create-SchematicChecker.forge-1.20.1-0.5.1j.main" />
+      <option name="PROGRAM_PARAMETERS" value="@C:\\F\\MC_Project_Combined\\Create-SchematicChecker\\project\\forge\\1.20.1-0.5.1j\\build\\moddev\\clientRunProgramArgs.txt" />
+      <option name="VM_PARAMETERS" value="@C:\\F\\MC_Project_Combined\\Create-SchematicChecker\\project\\forge\\1.20.1-0.5.1j\\build\\moddev\\clientRunVmArgs.txt -Dfml.modFolders=createschematicchecker%%C:\\F\\MC_Project_Combined\\Create-SchematicChecker\\project\\forge\\1.20.1-0.5.1j\\build\\classes\\java\\main;createschematicchecker%%C:\\F\\MC_Project_Combined\\Create-SchematicChecker\\project\\forge\\1.20.1-0.5.1j\\build\\resources\\main" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/project/forge/1.20.1-0.5.1j/run" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="forge-1.20.1-0.5.1j - Data" type="Application" factoryName="Application">
+      <envs>
+        <env name="MOD_CLASSES" value="createschematicchecker%%C:\F\MC_Project_Combined\Create-SchematicChecker\project\forge\1.20.1-0.5.1j\build\classes\java\main;createschematicchecker%%C:\F\MC_Project_Combined\Create-SchematicChecker\project\forge\1.20.1-0.5.1j\build\resources\main" />
+      </envs>
+      <option name="MAIN_CLASS_NAME" value="net.neoforged.devlaunch.Main" />
+      <module name="Create-SchematicChecker.forge-1.20.1-0.5.1j.main" />
+      <option name="PROGRAM_PARAMETERS" value="@C:\\F\\MC_Project_Combined\\Create-SchematicChecker\\project\\forge\\1.20.1-0.5.1j\\build\\moddev\\dataRunProgramArgs.txt" />
+      <option name="VM_PARAMETERS" value="@C:\\F\\MC_Project_Combined\\Create-SchematicChecker\\project\\forge\\1.20.1-0.5.1j\\build\\moddev\\dataRunVmArgs.txt -Dfml.modFolders=createschematicchecker%%C:\\F\\MC_Project_Combined\\Create-SchematicChecker\\project\\forge\\1.20.1-0.5.1j\\build\\classes\\java\\main;createschematicchecker%%C:\\F\\MC_Project_Combined\\Create-SchematicChecker\\project\\forge\\1.20.1-0.5.1j\\build\\resources\\main" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/project/forge/1.20.1-0.5.1j/run" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="forge-1.20.1-0.5.1j - GameTestServer" type="Application" factoryName="Application">
+      <envs>
+        <env name="MOD_CLASSES" value="createschematicchecker%%C:\F\MC_Project_Combined\Create-SchematicChecker\project\forge\1.20.1-0.5.1j\build\classes\java\main;createschematicchecker%%C:\F\MC_Project_Combined\Create-SchematicChecker\project\forge\1.20.1-0.5.1j\build\resources\main" />
+      </envs>
+      <option name="MAIN_CLASS_NAME" value="net.neoforged.devlaunch.Main" />
+      <module name="Create-SchematicChecker.forge-1.20.1-0.5.1j.main" />
+      <option name="PROGRAM_PARAMETERS" value="@C:\\F\\MC_Project_Combined\\Create-SchematicChecker\\project\\forge\\1.20.1-0.5.1j\\build\\moddev\\gameTestServerRunProgramArgs.txt" />
+      <option name="VM_PARAMETERS" value="@C:\\F\\MC_Project_Combined\\Create-SchematicChecker\\project\\forge\\1.20.1-0.5.1j\\build\\moddev\\gameTestServerRunVmArgs.txt -Dfml.modFolders=createschematicchecker%%C:\\F\\MC_Project_Combined\\Create-SchematicChecker\\project\\forge\\1.20.1-0.5.1j\\build\\classes\\java\\main;createschematicchecker%%C:\\F\\MC_Project_Combined\\Create-SchematicChecker\\project\\forge\\1.20.1-0.5.1j\\build\\resources\\main" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/project/forge/1.20.1-0.5.1j/run/gametest" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="forge-1.20.1-0.5.1j - Server" type="Application" factoryName="Application">
+      <envs>
+        <env name="MOD_CLASSES" value="createschematicchecker%%C:\F\MC_Project_Combined\Create-SchematicChecker\project\forge\1.20.1-0.5.1j\build\classes\java\main;createschematicchecker%%C:\F\MC_Project_Combined\Create-SchematicChecker\project\forge\1.20.1-0.5.1j\build\resources\main" />
+      </envs>
+      <option name="MAIN_CLASS_NAME" value="net.neoforged.devlaunch.Main" />
+      <module name="Create-SchematicChecker.forge-1.20.1-0.5.1j.main" />
+      <option name="PROGRAM_PARAMETERS" value="@C:\\F\\MC_Project_Combined\\Create-SchematicChecker\\project\\forge\\1.20.1-0.5.1j\\build\\moddev\\serverRunProgramArgs.txt" />
+      <option name="VM_PARAMETERS" value="@C:\\F\\MC_Project_Combined\\Create-SchematicChecker\\project\\forge\\1.20.1-0.5.1j\\build\\moddev\\serverRunVmArgs.txt -Dfml.modFolders=createschematicchecker%%C:\\F\\MC_Project_Combined\\Create-SchematicChecker\\project\\forge\\1.20.1-0.5.1j\\build\\classes\\java\\main;createschematicchecker%%C:\\F\\MC_Project_Combined\\Create-SchematicChecker\\project\\forge\\1.20.1-0.5.1j\\build\\resources\\main" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/project/forge/1.20.1-0.5.1j/run/server" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="forge-1.20.1-6.0.x - Client" type="Application" factoryName="Application">
+      <envs>
+        <env name="MOD_CLASSES" value="createschematicchecker%%C:\F\MC_Project_Combined\Create-SchematicChecker\project\forge\1.20.1-6.0.x\build\classes\java\main;createschematicchecker%%C:\F\MC_Project_Combined\Create-SchematicChecker\project\forge\1.20.1-6.0.x\build\resources\main" />
+      </envs>
+      <option name="MAIN_CLASS_NAME" value="net.neoforged.devlaunch.Main" />
+      <module name="Create-SchematicChecker.forge-1.20.1-6.0.x.main" />
+      <option name="PROGRAM_PARAMETERS" value="@C:\\F\\MC_Project_Combined\\Create-SchematicChecker\\project\\forge\\1.20.1-6.0.x\\build\\moddev\\clientRunProgramArgs.txt" />
+      <option name="VM_PARAMETERS" value="@C:\\F\\MC_Project_Combined\\Create-SchematicChecker\\project\\forge\\1.20.1-6.0.x\\build\\moddev\\clientRunVmArgs.txt -Dfml.modFolders=createschematicchecker%%C:\\F\\MC_Project_Combined\\Create-SchematicChecker\\project\\forge\\1.20.1-6.0.x\\build\\classes\\java\\main;createschematicchecker%%C:\\F\\MC_Project_Combined\\Create-SchematicChecker\\project\\forge\\1.20.1-6.0.x\\build\\resources\\main" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/project/forge/1.20.1-6.0.x/run" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="forge-1.20.1-6.0.x - Data" type="Application" factoryName="Application">
+      <envs>
+        <env name="MOD_CLASSES" value="createschematicchecker%%C:\F\MC_Project_Combined\Create-SchematicChecker\project\forge\1.20.1-6.0.x\build\classes\java\main;createschematicchecker%%C:\F\MC_Project_Combined\Create-SchematicChecker\project\forge\1.20.1-6.0.x\build\resources\main" />
+      </envs>
+      <option name="MAIN_CLASS_NAME" value="net.neoforged.devlaunch.Main" />
+      <module name="Create-SchematicChecker.forge-1.20.1-6.0.x.main" />
+      <option name="PROGRAM_PARAMETERS" value="@C:\\F\\MC_Project_Combined\\Create-SchematicChecker\\project\\forge\\1.20.1-6.0.x\\build\\moddev\\dataRunProgramArgs.txt" />
+      <option name="VM_PARAMETERS" value="@C:\\F\\MC_Project_Combined\\Create-SchematicChecker\\project\\forge\\1.20.1-6.0.x\\build\\moddev\\dataRunVmArgs.txt -Dfml.modFolders=createschematicchecker%%C:\\F\\MC_Project_Combined\\Create-SchematicChecker\\project\\forge\\1.20.1-6.0.x\\build\\classes\\java\\main;createschematicchecker%%C:\\F\\MC_Project_Combined\\Create-SchematicChecker\\project\\forge\\1.20.1-6.0.x\\build\\resources\\main" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/project/forge/1.20.1-6.0.x/run" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="forge-1.20.1-6.0.x - GameTestServer" type="Application" factoryName="Application">
+      <envs>
+        <env name="MOD_CLASSES" value="createschematicchecker%%C:\F\MC_Project_Combined\Create-SchematicChecker\project\forge\1.20.1-6.0.x\build\classes\java\main;createschematicchecker%%C:\F\MC_Project_Combined\Create-SchematicChecker\project\forge\1.20.1-6.0.x\build\resources\main" />
+      </envs>
+      <option name="MAIN_CLASS_NAME" value="net.neoforged.devlaunch.Main" />
+      <module name="Create-SchematicChecker.forge-1.20.1-6.0.x.main" />
+      <option name="PROGRAM_PARAMETERS" value="@C:\\F\\MC_Project_Combined\\Create-SchematicChecker\\project\\forge\\1.20.1-6.0.x\\build\\moddev\\gameTestServerRunProgramArgs.txt" />
+      <option name="VM_PARAMETERS" value="@C:\\F\\MC_Project_Combined\\Create-SchematicChecker\\project\\forge\\1.20.1-6.0.x\\build\\moddev\\gameTestServerRunVmArgs.txt -Dfml.modFolders=createschematicchecker%%C:\\F\\MC_Project_Combined\\Create-SchematicChecker\\project\\forge\\1.20.1-6.0.x\\build\\classes\\java\\main;createschematicchecker%%C:\\F\\MC_Project_Combined\\Create-SchematicChecker\\project\\forge\\1.20.1-6.0.x\\build\\resources\\main" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/project/forge/1.20.1-6.0.x/run/gametest" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="forge-1.20.1-6.0.x - Server" type="Application" factoryName="Application">
+      <envs>
+        <env name="MOD_CLASSES" value="createschematicchecker%%C:\F\MC_Project_Combined\Create-SchematicChecker\project\forge\1.20.1-6.0.x\build\classes\java\main;createschematicchecker%%C:\F\MC_Project_Combined\Create-SchematicChecker\project\forge\1.20.1-6.0.x\build\resources\main" />
+      </envs>
+      <option name="MAIN_CLASS_NAME" value="net.neoforged.devlaunch.Main" />
+      <module name="Create-SchematicChecker.forge-1.20.1-6.0.x.main" />
+      <option name="PROGRAM_PARAMETERS" value="@C:\\F\\MC_Project_Combined\\Create-SchematicChecker\\project\\forge\\1.20.1-6.0.x\\build\\moddev\\serverRunProgramArgs.txt" />
+      <option name="VM_PARAMETERS" value="@C:\\F\\MC_Project_Combined\\Create-SchematicChecker\\project\\forge\\1.20.1-6.0.x\\build\\moddev\\serverRunVmArgs.txt -Dfml.modFolders=createschematicchecker%%C:\\F\\MC_Project_Combined\\Create-SchematicChecker\\project\\forge\\1.20.1-6.0.x\\build\\classes\\java\\main;createschematicchecker%%C:\\F\\MC_Project_Combined\\Create-SchematicChecker\\project\\forge\\1.20.1-6.0.x\\build\\resources\\main" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/project/forge/1.20.1-6.0.x/run/server" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="neoforge-1.21.1-6.0.x - Client" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="net.neoforged.devlaunch.Main" />
+      <module name="Create-SchematicChecker.neoforge-1.21.1-6.0.x.main" />
+      <option name="PROGRAM_PARAMETERS" value="@C:\\F\\MC_Project_Combined\\Create-SchematicChecker\\project\\neoforge\\1.21.1-6.0.x\\build\\moddev\\clientRunProgramArgs.txt" />
+      <option name="VM_PARAMETERS" value="@C:\\F\\MC_Project_Combined\\Create-SchematicChecker\\project\\neoforge\\1.21.1-6.0.x\\build\\moddev\\clientRunVmArgs.txt -Dfml.modFolders=createschematicchecker%%C:\\F\\MC_Project_Combined\\Create-SchematicChecker\\project\\neoforge\\1.21.1-6.0.x\\build\\classes\\java\\main;createschematicchecker%%C:\\F\\MC_Project_Combined\\Create-SchematicChecker\\project\\neoforge\\1.21.1-6.0.x\\build\\resources\\main" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/project/neoforge/1.21.1-6.0.x/run" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="neoforge-1.21.1-6.0.x - Data" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="net.neoforged.devlaunch.Main" />
+      <module name="Create-SchematicChecker.neoforge-1.21.1-6.0.x.main" />
+      <option name="PROGRAM_PARAMETERS" value="@C:\\F\\MC_Project_Combined\\Create-SchematicChecker\\project\\neoforge\\1.21.1-6.0.x\\build\\moddev\\dataRunProgramArgs.txt" />
+      <option name="VM_PARAMETERS" value="@C:\\F\\MC_Project_Combined\\Create-SchematicChecker\\project\\neoforge\\1.21.1-6.0.x\\build\\moddev\\dataRunVmArgs.txt -Dfml.modFolders=createschematicchecker%%C:\\F\\MC_Project_Combined\\Create-SchematicChecker\\project\\neoforge\\1.21.1-6.0.x\\build\\classes\\java\\main;createschematicchecker%%C:\\F\\MC_Project_Combined\\Create-SchematicChecker\\project\\neoforge\\1.21.1-6.0.x\\build\\resources\\main" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/project/neoforge/1.21.1-6.0.x/run" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="neoforge-1.21.1-6.0.x - GameTestServer" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="net.neoforged.devlaunch.Main" />
+      <module name="Create-SchematicChecker.neoforge-1.21.1-6.0.x.main" />
+      <option name="PROGRAM_PARAMETERS" value="@C:\\F\\MC_Project_Combined\\Create-SchematicChecker\\project\\neoforge\\1.21.1-6.0.x\\build\\moddev\\gameTestServerRunProgramArgs.txt" />
+      <option name="VM_PARAMETERS" value="@C:\\F\\MC_Project_Combined\\Create-SchematicChecker\\project\\neoforge\\1.21.1-6.0.x\\build\\moddev\\gameTestServerRunVmArgs.txt -Dfml.modFolders=createschematicchecker%%C:\\F\\MC_Project_Combined\\Create-SchematicChecker\\project\\neoforge\\1.21.1-6.0.x\\build\\classes\\java\\main;createschematicchecker%%C:\\F\\MC_Project_Combined\\Create-SchematicChecker\\project\\neoforge\\1.21.1-6.0.x\\build\\resources\\main" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/project/neoforge/1.21.1-6.0.x/run" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="neoforge-1.21.1-6.0.x - Server" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="net.neoforged.devlaunch.Main" />
+      <module name="Create-SchematicChecker.neoforge-1.21.1-6.0.x.main" />
+      <option name="PROGRAM_PARAMETERS" value="@C:\\F\\MC_Project_Combined\\Create-SchematicChecker\\project\\neoforge\\1.21.1-6.0.x\\build\\moddev\\serverRunProgramArgs.txt" />
+      <option name="VM_PARAMETERS" value="@C:\\F\\MC_Project_Combined\\Create-SchematicChecker\\project\\neoforge\\1.21.1-6.0.x\\build\\moddev\\serverRunVmArgs.txt -Dfml.modFolders=createschematicchecker%%C:\\F\\MC_Project_Combined\\Create-SchematicChecker\\project\\neoforge\\1.21.1-6.0.x\\build\\classes\\java\\main;createschematicchecker%%C:\\F\\MC_Project_Combined\\Create-SchematicChecker\\project\\neoforge\\1.21.1-6.0.x\\build\\resources\\main" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/project/neoforge/1.21.1-6.0.x/run" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Create-SchematicChecker [:forge-1.19.2-0.5.1i:runClient]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":forge-1.19.2-0.5.1i:runClient" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <ExternalSystemDebugDisabled>false</ExternalSystemDebugDisabled>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>false</RunAsTest>
+      <GradleProfilingDisabled>false</GradleProfilingDisabled>
+      <GradleCoverageDisabled>false</GradleCoverageDisabled>
+      <method v="2" />
+    </configuration>
+    <configuration name="Create-SchematicChecker [:neoforge-1.21.1-6.0.x:runClient]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":neoforge-1.21.1-6.0.x:runClient" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <ExternalSystemDebugDisabled>false</ExternalSystemDebugDisabled>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>false</RunAsTest>
+      <GradleProfilingDisabled>false</GradleProfilingDisabled>
+      <GradleCoverageDisabled>false</GradleCoverageDisabled>
+      <method v="2" />
+    </configuration>
+    <configuration name="Create-SchematicChecker [runClient]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="runClient" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <ExternalSystemDebugDisabled>false</ExternalSystemDebugDisabled>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>false</RunAsTest>
+      <GradleProfilingDisabled>false</GradleProfilingDisabled>
+      <GradleCoverageDisabled>false</GradleCoverageDisabled>
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Gradle.Create-SchematicChecker [:neoforge-1.21.1-6.0.x:runClient]" />
+        <item itemvalue="Gradle.Create-SchematicChecker [runClient]" />
+        <item itemvalue="Gradle.Create-SchematicChecker [:forge-1.19.2-0.5.1i:runClient]" />
+      </list>
+    </recent_temporary>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -118,7 +443,8 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1774869177142</updated>
-      <workItem from="1774869178218" duration="5214000" />
+      <workItem from="1774869178218" duration="5751000" />
+      <workItem from="1774875923240" duration="5945000" />
     </task>
     <task id="LOCAL-00001" summary="Change project structure.">
       <option name="closed" value="true" />
@@ -144,7 +470,39 @@
       <option name="project" value="LOCAL" />
       <updated>1774873240473</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Fix path problem.">
+      <option name="closed" value="true" />
+      <created>1774874450453</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1774874450453</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Fix path problem.">
+      <option name="closed" value="true" />
+      <created>1774874535344</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1774874535344</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Fix path problem.">
+      <option name="closed" value="true" />
+      <created>1774881882892</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1774881882892</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Fix path problem.">
+      <option name="closed" value="true" />
+      <created>1774882018524</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1774882018524</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -165,6 +523,7 @@
     <MESSAGE value="Change project structure." />
     <MESSAGE value="Move gradle script." />
     <MESSAGE value="New plugin and project structure." />
-    <option name="LAST_COMMIT_MESSAGE" value="New plugin and project structure." />
+    <MESSAGE value="Fix path problem." />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix path problem." />
   </component>
 </project>

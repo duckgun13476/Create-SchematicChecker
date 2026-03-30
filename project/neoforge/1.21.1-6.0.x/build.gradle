@@ -1,4 +1,5 @@
 import net.darkhax.curseforgegradle.TaskPublishCurseForge
+import groovy.text.SimpleTemplateEngine
 
 //Copyright@2025 publish method from youkashomecoming
 
@@ -6,11 +7,11 @@ import net.darkhax.curseforgegradle.TaskPublishCurseForge
 plugins {
     id 'net.neoforged.moddev' version '2.0.107'
     id 'java-library'
+    id 'idea'
     id 'maven-publish'
     id 'net.darkhax.curseforgegradle' version '1.1.28'
     id "dev.ithundxr.silk" version "0.11.15"
     id "me.modmuss50.mod-publish-plugin" version "1.0.0"
-    id "idea"
 }
 
 apply from: "./gradle/java.gradle"
@@ -130,34 +131,7 @@ dependencies {
 
 }
 
-tasks.register('syncCSCLanguageVersion') {
-    def targetFile = file('src/main/java/com/Pink_Cats/createschematicchecker/lang/CSCLanguage.java')
-    inputs.property('minecraftVersion', configuredMinecraftVersion)
-    inputs.property('cscVersion', cscDisplayVersion)
-    outputs.file(targetFile)
-
-    doLast {
-        String content = targetFile.getText('UTF-8')
-        content = content.replaceFirst(
-                /public static final String mc_version = ".*?";/,
-                "public static final String mc_version = \"${configuredMinecraftVersion}\";"
-        )
-        content = content.replaceFirst(
-                /public static final String csc_version = ".*?";/,
-                "public static final String csc_version = \"${cscDisplayVersion}\";"
-        )
-        targetFile.write(content, 'UTF-8')
-    }
-}
-
-tasks.named('compileJava').configure {
-    dependsOn(tasks.named('syncCSCLanguageVersion'))
-}
-
-// This block of code expands all declared replace properties in the specified resource targets.
-// A missing property will result in an error. Properties are expanded using ${} Groovy notation.
-var generateModMetadata = tasks.register("generateModMetadata", ProcessResources) {
-    var replaceProperties = [minecraft_version      : minecraft_version,
+def modMetadataProperties = [minecraft_version      : minecraft_version,
                              minecraft_version_range: minecraft_version_range,
                              neo_version            : neo_version,
                              neo_version_range      : neo_version_range,
@@ -168,15 +142,39 @@ var generateModMetadata = tasks.register("generateModMetadata", ProcessResources
                              mod_version            : mod_version,
                              mod_authors            : mod_authors,
                              mod_description        : mod_description]
-    inputs.properties replaceProperties
-    expand replaceProperties
-    from "src/main/templates"
-    into "build/generated/sources/modMetadata"
+
+def generatedModMetadataDir = layout.buildDirectory.dir("generated/sources/modMetadata")
+
+tasks.register("generateModMetadata") {
+    inputs.properties(modMetadataProperties)
+    inputs.dir("src/main/templates")
+    outputs.dir(generatedModMetadataDir)
+
+    doLast {
+        def templateRoot = file("src/main/templates")
+        def outputRoot = generatedModMetadataDir.get().asFile
+        def engine = new SimpleTemplateEngine()
+
+        fileTree(templateRoot).visit { details ->
+            if (details.directory) {
+                return
+            }
+
+            def relativePath = details.relativePath.pathString
+            def outputFile = new File(outputRoot, relativePath)
+            outputFile.parentFile.mkdirs()
+
+            def rendered = engine.createTemplate(details.file.getText('UTF-8'))
+                    .make(modMetadataProperties)
+                    .toString()
+            outputFile.setText(rendered, 'UTF-8')
+        }
+    }
 }
 
 // Include the output of "generateModMetadata" as an input directory for the build
 // this works with both building through Gradle and the IDE.
-sourceSets.main.resources.srcDir generateModMetadata
+sourceSets.main.resources.srcDir generatedModMetadataDir
 // To avoid having to run "generateModMetadata" manually, make it run on every project reload
 neoForge.ideSyncTask generateModMetadata
 
