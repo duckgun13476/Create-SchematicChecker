@@ -1,5 +1,5 @@
 ext.readPublishingProperties = {
-    def propertiesFile = file('api.properties')
+    def propertiesFile = rootProject.file('api.properties')
     if (!propertiesFile.exists()) {
         return null
     }
@@ -14,11 +14,11 @@ ext.readVersionParts = {
 }
 
 ext.readPrimaryChangelog = {
-    return file("./update/changelog.md").text.split("\n\n\n")[0]
+    return rootProject.file("update/changelog.md").text.split("\n\n\n")[0]
 }
 
 ext.readFullChangelog = {
-    return rootProject.file("./update/changelog.md").text
+    return rootProject.file("update/changelog.md").text
 }
 
 tasks.register('publishAll') {

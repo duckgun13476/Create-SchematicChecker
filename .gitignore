@@ -1,0 +1,8 @@
+/api.properties
+
+
+# Windows shortcuts
+*.lnk
+
+.gradle
+build/

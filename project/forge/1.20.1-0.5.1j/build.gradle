@@ -20,10 +20,11 @@ apply from: "gradle/property_loader.gradle"
 
 group = mod_group_id
 version = mod_version
-archivesBaseName = mod_id
+String archiveBaseName = mod_id
+
 String gitHash = "${calculateGitHash() + (hasUnstaged() ? "-modified" : "")}"
-String configuredMinecraftVersion = providers.gradleProperty("minecraft_version").get()
-String configuredModVersion = providers.gradleProperty("mod_version").get()
+String configuredMinecraftVersion = project.findProperty("minecraft_version").toString()
+String configuredModVersion = project.findProperty("mod_version").toString()
 String cscDisplayVersion = configuredModVersion.split("-", 2)[0]
 
 idea {
@@ -297,7 +298,7 @@ tasks.register('PublishInfo') {
         def versionParts = mod_version.split("-")
         println "version = \"$minecraft_version-$mod_version\"\n" +
                 "    displayName = \"${package_name}_v${versionParts[0]}_for_Create_v${versionParts[1]}\""
-        def propertiesFile = file('api.properties')
+        def propertiesFile = rootProject.file('api.properties')
         if (propertiesFile.exists()) {
             def properties = new Properties()
             properties.load(new FileInputStream(propertiesFile))
@@ -316,7 +317,7 @@ tasks.register('PublishInfo') {
 
 jar {
     from('LICENSE.txt') {
-        rename { "${it}_${archivesBaseName}" }
+        rename { "${it}_${archiveBaseName}" }
 
     }
     manifest.attributes([
@@ -349,7 +350,7 @@ tasks.register('publishAll') {
 
 tasks.register('publishCurseForge', TaskPublishCurseForge) {
     dependsOn 'reobfJar'
-    def propertiesFile = file('api.properties')
+    def propertiesFile = rootProject.file('api.properties')
     def properties = new Properties()
     properties.load(new FileInputStream(propertiesFile))
 
@@ -358,7 +359,7 @@ tasks.register('publishCurseForge', TaskPublishCurseForge) {
     def versionParts = mod_version.split("-")
 
     def mainFile = upload(curseforge_id, new File("./build/libs/${package_name}-${mod_version}-forge-${minecraft_version}.jar"))
-    mainFile.changelog = new File("./update/changelog.md").text.split("\n\n\n")[0]
+    mainFile.changelog = rootProject.file("update/changelog.md").text.split("\n\n\n")[0]
     mainFile.addEnvironment("Client", "Server")
     mainFile.addGameVersion("${minecraft_version}")
     mainFile.addModLoader("Forge","NeoForge")
@@ -378,14 +379,14 @@ tasks.register('publishCurseForge', TaskPublishCurseForge) {
 
 
 publishMods {
-    def propertiesFile = file('api.properties')
+    def propertiesFile = rootProject.file('api.properties')
     def properties = new Properties()
     properties.load(new FileInputStream(propertiesFile))
     def modrinthTokenGet = properties.getProperty("MODRINTH_TOKEN")
     def versionParts = mod_version.split("-")
 
     file = reobfJar.archiveFile
-    changelog = rootProject.file("./update/changelog.md").text
+    changelog = rootProject.file("update/changelog.md").text
     type = STABLE
     version = "$minecraft_version-$mod_version"
     displayName = "${display_name}_v${versionParts[0]}_for_Create_v${versionParts[1]}"

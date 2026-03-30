@@ -1,3 +1,11 @@
+ext.requireBuildProperty = { String name ->
+    def value = project.findProperty(name)
+    if (value == null) {
+        throw new GradleException("Missing build property '${name}' for project '${project.path}'")
+    }
+    return value.toString()
+}
+
 def commonJavaDir = rootProject.file('common/src/main/java')
 def commonResourcesDir = rootProject.file('common/src/main/resources')
 
@@ -10,13 +18,13 @@ sourceSets {
 
 tasks.register('syncCSCLanguageVersion') {
     def targetFile = file('src/main/java/com/Pink_Cats/createschematicchecker/lang/CSCLanguage.java')
-    inputs.property('minecraftVersion', providers.gradleProperty('minecraft_version'))
-    inputs.property('cscVersion', providers.gradleProperty('mod_version').map { it.split("-", 2)[0] })
+    inputs.property('minecraftVersion', requireBuildProperty('minecraft_version'))
+    inputs.property('cscVersion', requireBuildProperty('mod_version').split("-", 2)[0])
     outputs.file(targetFile)
 
     doLast {
-        String configuredMinecraftVersion = providers.gradleProperty("minecraft_version").get()
-        String configuredModVersion = providers.gradleProperty("mod_version").get()
+        String configuredMinecraftVersion = requireBuildProperty("minecraft_version")
+        String configuredModVersion = requireBuildProperty("mod_version")
         String cscDisplayVersion = configuredModVersion.split("-", 2)[0]
         String content = targetFile.getText('UTF-8')
         content = content.replaceFirst(

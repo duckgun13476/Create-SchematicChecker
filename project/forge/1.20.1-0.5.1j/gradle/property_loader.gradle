@@ -10,6 +10,17 @@
 import groovy.json.JsonSlurper
 import org.codehaus.groovy.runtime.MethodClosure
 
+def localGradleProperties = project.file("gradle.properties")
+if (localGradleProperties.exists()) {
+    def props = new Properties()
+    localGradleProperties.withInputStream { props.load(it) }
+    props.each { key, value ->
+        if (!project.hasProperty(key)) {
+            project.ext.set(key.toString(), value)
+        }
+    }
+}
+
 // Auto detects a secret file and injects it.
 if (project.rootProject.hasProperty("secretFile")) {
     project.logger.lifecycle("Automatically loading properties from the secretFile")

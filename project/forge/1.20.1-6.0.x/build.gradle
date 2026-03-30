@@ -23,10 +23,10 @@ apply from: rootProject.file("gradle/csc-publishing-common.gradle")
 
 group = mod_group_id
 version = mod_version
-archivesBaseName = mod_id
+String archiveBaseName = mod_id
 String gitHash = "${calculateGitHash() + (hasUnstaged() ? "-modified" : "")}"
-String configuredMinecraftVersion = providers.gradleProperty("minecraft_version").get()
-String configuredModVersion = providers.gradleProperty("mod_version").get()
+String configuredMinecraftVersion = project.findProperty("minecraft_version").toString()
+String configuredModVersion = project.findProperty("mod_version").toString()
 String cscDisplayVersion = configuredModVersion.split("-", 2)[0]
 
 idea {
@@ -292,7 +292,7 @@ tasks.register('PublishInfo') {
 
 jar {
     from('LICENSE.txt') {
-        rename { "${it}_${archivesBaseName}" }
+        rename { "${it}_${archiveBaseName}" }
 
     }
     manifest.attributes([

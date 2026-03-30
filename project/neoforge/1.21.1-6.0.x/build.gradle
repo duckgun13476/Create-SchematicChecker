@@ -22,10 +22,9 @@ apply from: rootProject.file("gradle/csc-publishing-common.gradle")
 
 group = "com.${mod_authors}.${mod_id}"
 version = "${minecraft_version}-${mod_version}"
-archivesBaseName = mod_id
 String gitHash = "${calculateGitHash() + (hasUnstaged() ? "-modified" : "")}"
-String configuredMinecraftVersion = providers.gradleProperty("minecraft_version").get()
-String configuredModVersion = providers.gradleProperty("mod_version").get()
+String configuredMinecraftVersion = project.findProperty("minecraft_version").toString()
+String configuredModVersion = project.findProperty("mod_version").toString()
 String cscDisplayVersion = configuredModVersion.split("-", 2)[0]
 
 repositories {
