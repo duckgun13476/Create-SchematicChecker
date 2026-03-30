@@ -1,5 +1,6 @@
 package com.Pink_Cats.createschematicchecker.lang;
 
+import com.Pink_Cats.createschematicchecker.Createschematicchecker;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -19,9 +20,8 @@ public class CSCLanguage {
     private static final String DEFAULT_LANGUAGE = "en_us";
     private static final String RESOURCE_ROOT = "assets/createschematicchecker/lang/";
     private static final Map<String, Map<String, String>> jsonLanguageDictionary = new HashMap<>();
-
-    public static final String mc_version = "1.19.2";
-    public static final String csc_version = "0.21.18";
+    public static final String mc_version = Createschematicchecker.MC_VERSION;
+    public static final String csc_version = Createschematicchecker.CSC_VERSION;
 
     public static String translateDirect(String key) {
         String translation = getTranslation(normalizeLanguage(DefineLanguage), key);

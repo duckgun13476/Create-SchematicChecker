@@ -37,6 +37,8 @@ public class Createschematicchecker {
     // Define mod id in a common place for everything to reference
     public static final String MODID = "createschematicchecker";
     public static final Logger LOGGER = LogUtils.getLogger();
+    public static final String MC_VERSION = "1.19.2";
+    public static final String CSC_VERSION = "0.21.18";
 
 
     public Createschematicchecker() {

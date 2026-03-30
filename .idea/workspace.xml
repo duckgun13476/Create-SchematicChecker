@@ -4,12 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d1ad948e-a44e-4a7d-81f5-9ec1abaa8ab2" name="更改" comment="Fix path problem.">
-      <change beforePath="$PROJECT_DIR$/project/forge/1.19.2-0.5.1i/src/main/resources/pack.mcmeta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/forge/1.20.1-0.5.1j/src/main/resources/pack.mcmeta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/forge/1.20.1-6.0.x/src/main/resources/pack.mcmeta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/neoforge/1.21.1-6.0.x/src/main/resources/pack.mcmeta" beforeDir="false" />
-    </list>
+    <list default="true" id="d1ad948e-a44e-4a7d-81f5-9ec1abaa8ab2" name="更改" comment="Plant message code." />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -444,7 +439,7 @@
       <option name="presentableId" value="Default" />
       <updated>1774869177142</updated>
       <workItem from="1774869178218" duration="5751000" />
-      <workItem from="1774875923240" duration="5945000" />
+      <workItem from="1774875923240" duration="7398000" />
     </task>
     <task id="LOCAL-00001" summary="Change project structure.">
       <option name="closed" value="true" />
@@ -502,7 +497,23 @@
       <option name="project" value="LOCAL" />
       <updated>1774882018524</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Fix path problem.">
+      <option name="closed" value="true" />
+      <created>1774882306656</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1774882306656</updated>
+    </task>
+    <task id="LOCAL-00009" summary="Plant message code.">
+      <option name="closed" value="true" />
+      <created>1774883437508</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1774883437508</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -524,6 +535,7 @@
     <MESSAGE value="Move gradle script." />
     <MESSAGE value="New plugin and project structure." />
     <MESSAGE value="Fix path problem." />
-    <option name="LAST_COMMIT_MESSAGE" value="Fix path problem." />
+    <MESSAGE value="Plant message code." />
+    <option name="LAST_COMMIT_MESSAGE" value="Plant message code." />
   </component>
 </project>
