@@ -4,7 +4,7 @@ import com.Pink_Cats.createschematicchecker.lang.CSCLanguage;
 import com.Pink_Cats.createschematicchecker.lang.Message;
 
 import static com.Pink_Cats.createschematicchecker.FancyConfig.ConfigRegister.ConfigPath;
-import static com.Pink_Cats.createschematicchecker.core.BlueEngine.StrFunc.NoAir;
+import static com.Pink_Cats.createschematicchecker.core.attach.Math.trimALL;
 
 public class ConfigValue {
 
@@ -80,7 +80,7 @@ public class ConfigValue {
         if (configOperateResult instanceof Boolean) {
             return new ConfigBoolean(key, (Boolean) configOperateResult);
         } else if (configOperateResult instanceof String strValue) {
-            strValue = NoAir(strValue);
+            strValue = trimALL(strValue);
             // 如果是 String 类型，尝试将其转换为布尔值
             if ("true".equals(strValue)){
                 return new ConfigBoolean(key, true);
@@ -127,7 +127,7 @@ public class ConfigValue {
             if (configOperateResult instanceof Boolean) {
                 value = (boolean) configOperateResult; // 更新当前值
             } else if (configOperateResult instanceof String strValue) {
-            strValue = NoAir(strValue);
+            strValue = trimALL(strValue);
             // 如果是 String 类型，尝试将其转换为布尔值
                 value = "true".equals(strValue);
             } else {
@@ -313,7 +313,7 @@ public class ConfigValue {
     public static String[] processArrayString(String strValue) {
         // 去掉方括号和空格
         strValue = strValue.replaceAll("[\\[\\]\" {}XYZ]", "");
-        strValue = NoAir(strValue);
+        strValue = trimALL(strValue);
         // 使用逗号分割字符串
         return strValue.split(",");
     }
@@ -321,7 +321,7 @@ public class ConfigValue {
     public static String[] processArrayPos(String strValue) {
         // 去掉方括号和空格
         strValue = strValue.replaceAll("[\\[\\]\" {}XYZ:]", "");
-        strValue = NoAir(strValue);
+        strValue = trimALL(strValue);
         // 使用逗号分割字符串
         return strValue.split(",");
     }
@@ -329,7 +329,7 @@ public class ConfigValue {
     public static String[] ChainSplit(String strValue) {
         // 去掉方括号和空格
         strValue = strValue.replaceAll("[\\[\\]\" ]", "");
-        strValue = NoAir(strValue);
+        strValue = trimALL(strValue);
         // 使用.分割字符串
         return strValue.split("\\.");
     }
@@ -339,7 +339,7 @@ public class ConfigValue {
     public static String[] KnifeSplit(String strValue) {
         // 去掉方括号和空格
         strValue = strValue.replaceAll("[\\[\\]\" ]", "");
-        strValue = NoAir(strValue);
+        strValue = trimALL(strValue);
         // 使用.分割字符串
         return strValue.split("\\$");
     }

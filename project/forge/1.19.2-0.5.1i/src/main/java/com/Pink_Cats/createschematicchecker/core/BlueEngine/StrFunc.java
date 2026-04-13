@@ -13,7 +13,6 @@ import java.util.Set;
 
 import static com.Pink_Cats.createschematicchecker.FancyConfig.ConfigRegister.*;
 import static com.Pink_Cats.createschematicchecker.core.BlueEngine.NbtInterFace.StrTag;
-import static com.Pink_Cats.createschematicchecker.lang.CSCLanguage.translateDirect;
 
 public class StrFunc {
 

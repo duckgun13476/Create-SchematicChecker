@@ -1,7 +1,6 @@
 package com.Pink_Cats.createschematicchecker.core.ChainEngine;
 
 import static com.Pink_Cats.createschematicchecker.FancyConfig.ConfigValue.processArrayPos;
-import static com.Pink_Cats.createschematicchecker.FancyConfig.ConfigValue.processArrayString;
 import static com.Pink_Cats.createschematicchecker.core.attach.Math.StringToFloat;
 import static com.Pink_Cats.createschematicchecker.core.attach.Math.StringToInt;
 

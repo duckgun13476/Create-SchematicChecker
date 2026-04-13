@@ -4,7 +4,6 @@ import com.Pink_Cats.createschematicchecker.lang.Message;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
-import org.antlr.runtime.misc.IntArray;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -21,7 +21,6 @@ import java.util.List;
 import static com.Pink_Cats.createschematicchecker.FancyConfig.ConfigRegister.*;
 import static com.Pink_Cats.createschematicchecker.FancyConfig.ConfigRegister.ID_modify_rule_manual;
 import static com.Pink_Cats.createschematicchecker.FancyConfig.ConfigRegister.ID_modify_rule_online;
-import static com.Pink_Cats.createschematicchecker.core.BlueEngine.NbtInterFace.S_bool;
 import static com.Pink_Cats.createschematicchecker.event.TempOffEvent.Temporary_stop;
 import static com.Pink_Cats.createschematicchecker.lang.CSCLanguage.translateDirect;
 import static com.Pink_Cats.createschematicchecker.network.SimpleJsonParser.merge;
