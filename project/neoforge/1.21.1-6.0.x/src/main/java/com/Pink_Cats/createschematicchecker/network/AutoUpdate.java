@@ -5,19 +5,14 @@ import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.event.tick.ServerTickEvent;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+
 
 import static com.Pink_Cats.createschematicchecker.FancyConfig.ConfigRegister.GuardTime;
 import static com.Pink_Cats.createschematicchecker.FancyConfig.ConfigRegister.enable_auto_config_update;
-import static com.Pink_Cats.createschematicchecker.online.NbtFileUploader.AutoUpdateThread;
-import static com.Pink_Cats.createschematicchecker.online.SimpleHeartbeatPusher.HeartBeatTask;
-import static com.Pink_Cats.createschematicchecker.online.VersionChecker.UpdateMainThread;
 
 @EventBusSubscriber
 public class AutoUpdate {
 
-    private static final ExecutorService executor = Executors.newSingleThreadExecutor();
     private static int tick = 0;
     private static int tick_1=0;
     private static final int update_period = 3600;
@@ -48,29 +43,16 @@ public class AutoUpdate {
 
 
     public static void readDataAsync(MinecraftServer Server) {
-
-        executor.submit(() -> {
-            UpdateMainThread();
-            HeartBeatTask();
-        });
+        OnlineTasks.readDataAsync();
     }
 
     public static void ReportProblem(String filepath) {
-        executor.submit(() -> {
-
-            AutoUpdateThread(filepath);
-        });
+        OnlineTasks.reportProblem(filepath);
     }
 
 
     public static void PostDataAsync(String filepath) {
-        if (enable_auto_config_update)
-        {
-            executor.submit(() -> {
-
-                AutoUpdateThread(filepath);
-            });
-        }
+        OnlineTasks.postDataAsync(filepath);
     }
 
 

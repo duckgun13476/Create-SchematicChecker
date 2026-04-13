@@ -8,8 +8,8 @@ import com.simibubi.create.AllItems;
 import com.simibubi.create.content.schematics.table.SchematicTableBlockEntity;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtIo;
+import com.pinkcats.torque.layer.net.minecraft.nbt.CompoundTag;
+import com.pinkcats.torque.layer.net.minecraft.nbt.Nbt;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.server.MinecraftServer;
@@ -237,7 +237,7 @@ public class CheckBlueprint {
     public CompoundTag Path_to_CompoundTag(String SchematicPath) throws IOException {
         File BluePrint = new File(SchematicPath);
         try (FileInputStream file_stream = new FileInputStream(BluePrint)) {
-            return NbtIo.readCompressed(file_stream);
+            return Nbt.readCompressed(file_stream);
         }
     }
 

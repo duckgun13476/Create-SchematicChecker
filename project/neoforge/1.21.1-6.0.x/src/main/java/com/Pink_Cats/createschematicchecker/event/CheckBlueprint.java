@@ -7,9 +7,8 @@ import com.Pink_Cats.createschematicchecker.lang.Message;
 import com.simibubi.create.AllItems;
 import com.simibubi.create.content.schematics.table.SchematicTableBlockEntity;
 import net.minecraft.ChatFormatting;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtAccounter;
-import net.minecraft.nbt.NbtIo;
+import com.pinkcats.torque.layer.net.minecraft.nbt.CompoundTag;
+import com.pinkcats.torque.layer.net.minecraft.nbt.Nbt;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.server.MinecraftServer;
@@ -238,7 +237,7 @@ public class CheckBlueprint {
         DataInputStream stream = new DataInputStream(new BufferedInputStream(
                 new GZIPInputStream(file_stream)));
 
-        return NbtIo.read(stream, NbtAccounter.create(0x20000000L));
+        return Nbt.readCompressed(stream);
 
     }
 

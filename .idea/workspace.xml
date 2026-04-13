@@ -4,28 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d1ad948e-a44e-4a7d-81f5-9ec1abaa8ab2" name="更改" comment="Move common part.">
-      <change afterPath="$PROJECT_DIR$/.idea/modules/common/Create-SchematicChecker.common.main.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/jarRepositories.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradle/csc-common.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/gradle/csc-common.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.jar" beforeDir="false" afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradlew" beforeDir="false" afterPath="$PROJECT_DIR$/gradlew" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/forge/1.19.2-0.5.1i/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/project/forge/1.19.2-0.5.1i/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/forge/1.19.2-0.5.1i/src/main/java/com/Pink_Cats/createschematicchecker/Compat/PendingSchematicStore.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/forge/1.19.2-0.5.1i/src/main/java/com/Pink_Cats/createschematicchecker/Compat/pattern_schematics/PatternSchematicsCompat.java" beforeDir="false" afterPath="$PROJECT_DIR$/project/forge/1.19.2-0.5.1i/src/main/java/com/Pink_Cats/createschematicchecker/Compat/pattern_schematics/PatternSchematicsCompat.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/forge/1.20.1-0.5.1j/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/project/forge/1.20.1-0.5.1j/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/forge/1.20.1-0.5.1j/src/main/java/com/Pink_Cats/createschematicchecker/Compat/PendingSchematicStore.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/forge/1.20.1-0.5.1j/src/main/java/com/Pink_Cats/createschematicchecker/Compat/pattern_schematics/PatternSchematicsCompat.java" beforeDir="false" afterPath="$PROJECT_DIR$/project/forge/1.20.1-0.5.1j/src/main/java/com/Pink_Cats/createschematicchecker/Compat/pattern_schematics/PatternSchematicsCompat.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/forge/1.20.1-6.0.x/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/project/forge/1.20.1-6.0.x/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/forge/1.20.1-6.0.x/src/main/java/com/Pink_Cats/createschematicchecker/Compat/PendingSchematicStore.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/forge/1.20.1-6.0.x/src/main/java/com/Pink_Cats/createschematicchecker/Compat/pattern_schematics/PatternSchematicsCompat.java" beforeDir="false" afterPath="$PROJECT_DIR$/project/forge/1.20.1-6.0.x/src/main/java/com/Pink_Cats/createschematicchecker/Compat/pattern_schematics/PatternSchematicsCompat.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/neoforge/1.21.1-6.0.x/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/project/neoforge/1.21.1-6.0.x/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/neoforge/1.21.1-6.0.x/src/main/java/com/Pink_Cats/createschematicchecker/Compat/PendingSchematicStore.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/neoforge/1.21.1-6.0.x/src/main/java/com/Pink_Cats/createschematicchecker/Compat/pattern_schematics/PatternSchematicsCompat.java" beforeDir="false" afterPath="$PROJECT_DIR$/project/neoforge/1.21.1-6.0.x/src/main/java/com/Pink_Cats/createschematicchecker/Compat/pattern_schematics/PatternSchematicsCompat.java" afterDir="false" />
+    <list default="true" id="d1ad948e-a44e-4a7d-81f5-9ec1abaa8ab2" name="更改" comment="Move Kinetic part.">
+      <change beforePath="$PROJECT_DIR$/project/forge/1.19.2-0.5.1i/src/main/java/com/Pink_Cats/createschematicchecker/echo/EchoCommand.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/project/forge/1.20.1-0.5.1j/src/main/java/com/Pink_Cats/createschematicchecker/echo/EchoCommand.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/project/forge/1.20.1-6.0.x/src/main/java/com/Pink_Cats/createschematicchecker/echo/EchoCommand.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/project/neoforge/1.21.1-6.0.x/src/main/java/com/Pink_Cats/createschematicchecker/echo/EchoCommand.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -33,7 +16,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="EmbeddingIndexingInfo">
-    <option name="cachedIndexableFilesCount" value="831" />
+    <option name="cachedIndexableFilesCount" value="780" />
     <option name="fileBasedEmbeddingIndicesEnabled" value="true" />
   </component>
   <component name="ExternalProjectsData">
@@ -108,40 +91,40 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Gradle.Create-SchematicChecker [:forge-1.19.2-0.5.1i:runClient].executor": "Run",
-    "Gradle.Create-SchematicChecker [:neoforge-1.21.1-6.0.x:runClient].executor": "Run",
-    "Gradle.Create-SchematicChecker [publishToMavenLocal].executor": "Run",
-    "Gradle.Create-SchematicChecker [publish].executor": "Run",
-    "Gradle.Create-SchematicChecker [runClient].executor": "Run",
-    "Gradle.升级 Gradle 包装器.executor": "Run",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.MCP Project settings loaded": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "codeWithMe.voiceChat.enabledByDefault": "false",
-    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
-    "external.system.has.shared.sources": "true",
-    "git-widget-placeholder": "forge-combined-main",
-    "junie.onboarding.icon.badge.shown": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/F/MC_Project_Combined/Create-SchematicChecker",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "项目",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0",
-    "run.code.analysis.last.selected.profile": "pProject Default",
-    "to.speed.mode.migration.done": "true",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Gradle.Create-SchematicChecker [:forge-1.19.2-0.5.1i:runClient].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.Create-SchematicChecker [:neoforge-1.21.1-6.0.x:runClient].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.Create-SchematicChecker [publishToMavenLocal].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.Create-SchematicChecker [publish].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.Create-SchematicChecker [runClient].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.升级 Gradle 包装器.executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.MCP Project settings loaded&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
+    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
+    &quot;external.system.has.shared.sources&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;forge-combined-main&quot;,
+    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/F/MC_Project_Combined/Create-SchematicChecker&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;项目&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
+    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\F\MC_Project_Combined\Create-SchematicChecker" />
@@ -507,7 +490,8 @@
       <workItem from="1776042673027" duration="527000" />
       <workItem from="1776043320575" duration="1191000" />
       <workItem from="1776068173411" duration="76000" />
-      <workItem from="1776068484172" duration="3260000" />
+      <workItem from="1776068484172" duration="6016000" />
+      <workItem from="1776078565914" duration="948000" />
     </task>
     <task id="LOCAL-00001" summary="Change project structure.">
       <option name="closed" value="true" />
@@ -589,7 +573,31 @@
       <option name="project" value="LOCAL" />
       <updated>1774883940365</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="Move patternschematic part.">
+      <option name="closed" value="true" />
+      <created>1776075790291</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1776075790291</updated>
+    </task>
+    <task id="LOCAL-00012" summary="Move Kinetic part.">
+      <option name="closed" value="true" />
+      <created>1776079242670</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1776079242670</updated>
+    </task>
+    <task id="LOCAL-00013" summary="Move Kinetic part.">
+      <option name="closed" value="true" />
+      <created>1776079251179</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1776079251179</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -612,6 +620,8 @@
     <MESSAGE value="New plugin and project structure." />
     <MESSAGE value="Fix path problem." />
     <MESSAGE value="Plant message code." />
-    <option name="LAST_COMMIT_MESSAGE" value="Plant message code." />
+    <MESSAGE value="Move patternschematic part." />
+    <MESSAGE value="Move Kinetic part." />
+    <option name="LAST_COMMIT_MESSAGE" value="Move Kinetic part." />
   </component>
 </project>
