@@ -1,5 +1,7 @@
 package com.Pink_Cats.createschematicchecker.core.attach;
 
+import static com.Pink_Cats.createschematicchecker.event.TempOffTicker.getStopTick;
+
 public class ConveyorDegree {
 
     // for conveyor
@@ -37,7 +39,6 @@ public class ConveyorDegree {
         double angleA = triangle.calculateAngleA();
         double angleB = triangle.calculateAngleB();
         double angleC = triangle.calculateAngleC();
-
         System.out.println("slide length: " + hypotenuse);
         System.out.println("A: " + angleA + "degree");
         System.out.println("B: " + angleB + "degree");

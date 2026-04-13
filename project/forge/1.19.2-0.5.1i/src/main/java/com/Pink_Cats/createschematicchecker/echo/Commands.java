@@ -1,7 +1,9 @@
 package com.Pink_Cats.createschematicchecker.echo;
 
+import com.Pink_Cats.createschematicchecker.echo.CommandText;
+
 import com.Pink_Cats.createschematicchecker.FancyConfig.ConfigRegister;
-import com.Pink_Cats.createschematicchecker.event.TempOffEvent;
+import com.Pink_Cats.createschematicchecker.event.TempOffTicker;
 import com.Pink_Cats.createschematicchecker.lang.Message;
 import com.Pink_Cats.createschematicchecker.online.SimpleHeartbeatPusher;
 import com.Pink_Cats.createschematicchecker.online.VersionChecker;
@@ -21,7 +23,7 @@ import java.util.List;
 import static com.Pink_Cats.createschematicchecker.FancyConfig.ConfigRegister.*;
 import static com.Pink_Cats.createschematicchecker.FancyConfig.ConfigRegister.ID_modify_rule_manual;
 import static com.Pink_Cats.createschematicchecker.FancyConfig.ConfigRegister.ID_modify_rule_online;
-import static com.Pink_Cats.createschematicchecker.event.TempOffEvent.Temporary_stop;
+import static com.Pink_Cats.createschematicchecker.event.TempOffTicker.Temporary_stop;
 import static com.Pink_Cats.createschematicchecker.lang.CSCLanguage.translateDirect;
 import static com.Pink_Cats.createschematicchecker.network.SimpleJsonParser.merge;
 
@@ -259,7 +261,7 @@ public class Commands {
         player.sendSystemMessage(Component.literal(translateDirect("csc.off.temporary.restore"))
                 .setStyle(Style.EMPTY.withColor(ChatFormatting.GOLD)));
 
-        TempOffEvent.StopTick  = 5;
+        TempOffTicker.StopTick  = 5;
 
     }
 
@@ -364,7 +366,7 @@ public class Commands {
                 String response = SimpleHeartbeatPusher.debugHeartbeat();
                 sendTestMessage(player, ChatFormatting.AQUA, "[heartbeat] payload=" + payload);
                 sendTestMessage(player, response == null || response.isEmpty() ? ChatFormatting.RED : ChatFormatting.GREEN,
-                        "[heartbeat] response=" + shorten(response));
+                        "[heartbeat] response=" + CommandText.shorten(response));
             }
 
             if (mode.equals("version") || mode.equals("all")) {
@@ -381,7 +383,7 @@ public class Commands {
             if (mode.equals("feedback") || mode.equals("all")) {
                 String feedback = VersionChecker.debugFetchServerFeedback();
                 sendTestMessage(player, feedback == null || feedback.isEmpty() ? ChatFormatting.RED : ChatFormatting.GREEN,
-                        "[feedback] response=" + shorten(feedback));
+                        "[feedback] response=" + CommandText.shorten(feedback));
             }
 
             sendTestMessage(player, ChatFormatting.GOLD, "[CSC] Online test end: " + mode);
@@ -403,16 +405,5 @@ public class Commands {
             player.sendSystemMessage(Component.literal(text).setStyle(Style.EMPTY.withColor(color)));
         }
     }
-
-    private static String shorten(String value) {
-        if (value == null) {
-            return "null";
-        }
-        if (value.length() <= 180) {
-            return value;
-        }
-        return value.substring(0, 180) + "...";
-    }
-
 
 }

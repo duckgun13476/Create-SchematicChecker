@@ -30,7 +30,8 @@ import java.util.zip.GZIPInputStream;
 import static com.Pink_Cats.createschematicchecker.FancyConfig.ConfigRegister.*;
 import static com.Pink_Cats.createschematicchecker.core.BlueEngine.NbtInterFace.S_bool;
 import static com.Pink_Cats.createschematicchecker.core.BlueEngine.StrFunc.getCurrentDateTime;
-import static com.Pink_Cats.createschematicchecker.event.TempOffEvent.CheckSchematic;
+import static com.Pink_Cats.createschematicchecker.event.TempOffTicker.CheckSchematic;
+import static com.Pink_Cats.createschematicchecker.event.BlueprintPaths.removeFirstPathComponent;
 import static com.Pink_Cats.createschematicchecker.lang.CSCLanguage.translateDirect;
 
 
@@ -239,14 +240,6 @@ public class CheckBlueprint {
 
         return Nbt.readCompressed(stream);
 
-    }
-
-    public String removeFirstPathComponent(String path) {
-        int firstSlashIndex = path.indexOf("/");
-        if (firstSlashIndex != -1) {
-            return path.substring(firstSlashIndex + 1);
-        }
-        return path;
     }
 
     public static List<ServerPlayer> getAllOnlinePlayers() {
