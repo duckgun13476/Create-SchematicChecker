@@ -12,15 +12,11 @@ import net.minecraftforge.registries.ForgeRegistries;
  */
 public final class PatternSchematicsCompat {
 
-    private static final String EMPTY_PATTERN_SCHEMATIC_ID = "create_pattern_schematics:empty_pattern_schematic";
-    private static final String PATTERN_SCHEMATIC_NAMESPACE = "create_pattern_schematics";
-    private static final String PATTERN_SCHEMATIC_PATH = "pattern_schematic";
-
     private PatternSchematicsCompat() {
     }
 
     public static ItemStack getEmptyPatternSchematicStack() {
-        ResourceLocation id = ResourceLocation.tryParse(EMPTY_PATTERN_SCHEMATIC_ID);
+        ResourceLocation id = ResourceLocation.tryParse(PatternSchematicsIds.EMPTY_PATTERN_SCHEMATIC_ID);
         if (id == null) {
             return ItemStack.EMPTY;
         }
@@ -39,7 +35,6 @@ public final class PatternSchematicsCompat {
         ResourceLocation key = ForgeRegistries.ITEMS.getKey(item);
         if (key == null) return false;
 
-        return PATTERN_SCHEMATIC_NAMESPACE.equals(key.getNamespace())
-                && PATTERN_SCHEMATIC_PATH.equals(key.getPath());
+        return PatternSchematicsIds.isPatternSchematicId(key.getNamespace(), key.getPath());
     }
 }

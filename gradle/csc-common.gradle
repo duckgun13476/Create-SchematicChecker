@@ -42,3 +42,7 @@ tasks.register('syncCSCLanguageVersion') {
 tasks.named('compileJava').configure {
     dependsOn(tasks.named('syncCSCLanguageVersion'))
 }
+
+tasks.matching { it.name == 'sourcesJar' }.configureEach {
+    dependsOn(tasks.named('syncCSCLanguageVersion'))
+}

@@ -5,6 +5,14 @@ plugins {
 
 allprojects {
     repositories {
+        maven {
+            name = "PinkCatsLocal"
+            url = uri("C:/F/Maven")
+        }
         mavenCentral()
+    }
+
+    configurations.configureEach {
+        resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
     }
 }

@@ -12,3 +12,4 @@ build/
 /project/forge/1.20.1-0.5.1j/run/
 /project/forge/1.20.1-6.0.x/run/
 /project/neoforge/1.21.1-6.0.x/run/
+/tools/analyze-mc-imports.ps1

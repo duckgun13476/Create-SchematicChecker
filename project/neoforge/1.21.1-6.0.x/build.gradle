@@ -113,6 +113,13 @@ repositories {
 
 
 dependencies {
+    implementation("com.PinkCats.torque:TorqueAPI-layer-api:1.0-SNAPSHOT") {
+        changing = true
+    }
+    implementation("com.PinkCats.torque:TorqueAPI-1.21.1-neoforge:1.0-SNAPSHOT") {
+        changing = true
+    }
+
     //implementation("com.simibubi.create:create-${minecraft_version}:${create_version}:slim") { transitive = false }
     //implementation("net.createmod.ponder:Ponder-NeoForge-${minecraft_version}:${ponder_version}")
     //compileOnly("dev.engine-room.flywheel:flywheel-neoforge-api-${minecraft_version}:${flywheel_version}")

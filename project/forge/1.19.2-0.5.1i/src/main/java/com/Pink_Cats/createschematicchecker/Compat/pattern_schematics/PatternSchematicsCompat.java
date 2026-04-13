@@ -14,8 +14,8 @@ public final class PatternSchematicsCompat {
 
     public static ItemStack getEmptyPatternSchematicStack() {
         var id = new ResourceLocation(
-                "create_pattern_schematics",
-                "empty_pattern_schematic"
+                PatternSchematicsIds.MOD_ID,
+                PatternSchematicsIds.EMPTY_PATTERN_SCHEMATIC_PATH
         );
 
         var item = ForgeRegistries.ITEMS.getValue(id);
@@ -33,7 +33,6 @@ public final class PatternSchematicsCompat {
         var key = ForgeRegistries.ITEMS.getKey(item);
         if (key == null) return false;
 
-        return key.getNamespace().equals("create_pattern_schematics")
-                && key.getPath().equals("pattern_schematic");
+        return PatternSchematicsIds.isPatternSchematicId(key.getNamespace(), key.getPath());
     }
 }

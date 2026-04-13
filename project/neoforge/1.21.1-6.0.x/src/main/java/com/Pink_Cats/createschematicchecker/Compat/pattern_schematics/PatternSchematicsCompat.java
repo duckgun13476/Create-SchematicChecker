@@ -14,8 +14,8 @@ public final class PatternSchematicsCompat {
 
     public static ItemStack getEmptyPatternSchematicStack() {
         var id = ResourceLocation.fromNamespaceAndPath(
-                "create_pattern_schematics",
-                "empty_pattern_schematic"
+                PatternSchematicsIds.MOD_ID,
+                PatternSchematicsIds.EMPTY_PATTERN_SCHEMATIC_PATH
         );
 
         var item = BuiltInRegistries.ITEM.get(id);
@@ -32,7 +32,6 @@ public final class PatternSchematicsCompat {
 
         var key = BuiltInRegistries.ITEM.getKey(item);
 
-        return key.getNamespace().equals("create_pattern_schematics")
-                && key.getPath().equals("pattern_schematic");
+        return PatternSchematicsIds.isPatternSchematicId(key.getNamespace(), key.getPath());
     }
 }

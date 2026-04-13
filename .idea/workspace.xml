@@ -4,42 +4,28 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d1ad948e-a44e-4a7d-81f5-9ec1abaa8ab2" name="更改" comment="Plant message code.">
-      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
+    <list default="true" id="d1ad948e-a44e-4a7d-81f5-9ec1abaa8ab2" name="更改" comment="Move common part.">
+      <change afterPath="$PROJECT_DIR$/.idea/modules/common/Create-SchematicChecker.common.main.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/jarRepositories.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/forge/1.19.2-0.5.1i/src/main/java/com/Pink_Cats/createschematicchecker/FancyConfig/ConfigHook.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/com/Pink_Cats/createschematicchecker/FancyConfig/ConfigHook.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/forge/1.19.2-0.5.1i/src/main/java/com/Pink_Cats/createschematicchecker/FancyConfig/ConfigRegister.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/com/Pink_Cats/createschematicchecker/FancyConfig/ConfigRegister.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/forge/1.19.2-0.5.1i/src/main/java/com/Pink_Cats/createschematicchecker/FancyConfig/ConfigValue.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/com/Pink_Cats/createschematicchecker/FancyConfig/ConfigValue.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/forge/1.19.2-0.5.1i/src/main/java/com/Pink_Cats/createschematicchecker/FancyConfig/FileIO.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/com/Pink_Cats/createschematicchecker/FancyConfig/FileIO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/forge/1.19.2-0.5.1i/src/main/java/com/Pink_Cats/createschematicchecker/FancyConfig/SimpleTomlEditor.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/com/Pink_Cats/createschematicchecker/FancyConfig/SimpleTomlEditor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/forge/1.19.2-0.5.1i/src/main/java/com/Pink_Cats/createschematicchecker/core/BlueEngine/StrFunc.java" beforeDir="false" afterPath="$PROJECT_DIR$/project/forge/1.19.2-0.5.1i/src/main/java/com/Pink_Cats/createschematicchecker/core/BlueEngine/StrFunc.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/forge/1.19.2-0.5.1i/src/main/java/com/Pink_Cats/createschematicchecker/core/ChainEngine/ConveyorInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/project/forge/1.19.2-0.5.1i/src/main/java/com/Pink_Cats/createschematicchecker/core/ChainEngine/ConveyorInterface.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/forge/1.19.2-0.5.1i/src/main/java/com/Pink_Cats/createschematicchecker/core/ChainEngine/MagicChain.java" beforeDir="false" afterPath="$PROJECT_DIR$/project/forge/1.19.2-0.5.1i/src/main/java/com/Pink_Cats/createschematicchecker/core/ChainEngine/MagicChain.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/forge/1.19.2-0.5.1i/src/main/java/com/Pink_Cats/createschematicchecker/core/attach/ConveyorDegree.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/com/Pink_Cats/createschematicchecker/core/attach/ConveyorDegree.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/forge/1.19.2-0.5.1i/src/main/java/com/Pink_Cats/createschematicchecker/core/attach/Math.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/com/Pink_Cats/createschematicchecker/core/attach/Math.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/forge/1.19.2-0.5.1i/src/main/java/com/Pink_Cats/createschematicchecker/echo/Commands.java" beforeDir="false" afterPath="$PROJECT_DIR$/project/forge/1.19.2-0.5.1i/src/main/java/com/Pink_Cats/createschematicchecker/echo/Commands.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/forge/1.19.2-0.5.1i/src/main/java/com/Pink_Cats/createschematicchecker/mixin/OpenEndedPipeMixin.java" beforeDir="false" afterPath="$PROJECT_DIR$/project/forge/1.19.2-0.5.1i/src/main/java/com/Pink_Cats/createschematicchecker/mixin/OpenEndedPipeMixin.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/forge/1.20.1-0.5.1j/src/main/java/com/Pink_Cats/createschematicchecker/FancyConfig/ConfigHook.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/forge/1.20.1-0.5.1j/src/main/java/com/Pink_Cats/createschematicchecker/FancyConfig/ConfigRegister.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/forge/1.20.1-0.5.1j/src/main/java/com/Pink_Cats/createschematicchecker/FancyConfig/ConfigValue.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/forge/1.20.1-0.5.1j/src/main/java/com/Pink_Cats/createschematicchecker/FancyConfig/FileIO.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/forge/1.20.1-0.5.1j/src/main/java/com/Pink_Cats/createschematicchecker/FancyConfig/SimpleTomlEditor.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/forge/1.20.1-0.5.1j/src/main/java/com/Pink_Cats/createschematicchecker/core/attach/ConveyorDegree.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/forge/1.20.1-0.5.1j/src/main/java/com/Pink_Cats/createschematicchecker/core/attach/Math.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/forge/1.20.1-6.0.x/src/main/java/com/Pink_Cats/createschematicchecker/FancyConfig/ConfigHook.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/forge/1.20.1-6.0.x/src/main/java/com/Pink_Cats/createschematicchecker/FancyConfig/ConfigRegister.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/forge/1.20.1-6.0.x/src/main/java/com/Pink_Cats/createschematicchecker/FancyConfig/ConfigValue.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/forge/1.20.1-6.0.x/src/main/java/com/Pink_Cats/createschematicchecker/FancyConfig/FileIO.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/forge/1.20.1-6.0.x/src/main/java/com/Pink_Cats/createschematicchecker/FancyConfig/SimpleTomlEditor.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/forge/1.20.1-6.0.x/src/main/java/com/Pink_Cats/createschematicchecker/core/attach/ConveyorDegree.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/forge/1.20.1-6.0.x/src/main/java/com/Pink_Cats/createschematicchecker/core/attach/Math.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/neoforge/1.21.1-6.0.x/src/main/java/com/Pink_Cats/createschematicchecker/FancyConfig/ConfigHook.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/neoforge/1.21.1-6.0.x/src/main/java/com/Pink_Cats/createschematicchecker/FancyConfig/ConfigRegister.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/neoforge/1.21.1-6.0.x/src/main/java/com/Pink_Cats/createschematicchecker/FancyConfig/ConfigValue.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/neoforge/1.21.1-6.0.x/src/main/java/com/Pink_Cats/createschematicchecker/FancyConfig/FileIO.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/neoforge/1.21.1-6.0.x/src/main/java/com/Pink_Cats/createschematicchecker/FancyConfig/SimpleTomlEditor.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/neoforge/1.21.1-6.0.x/src/main/java/com/Pink_Cats/createschematicchecker/core/attach/ConveyorDegree.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/neoforge/1.21.1-6.0.x/src/main/java/com/Pink_Cats/createschematicchecker/core/attach/Math.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gradle/csc-common.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/gradle/csc-common.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.jar" beforeDir="false" afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gradlew" beforeDir="false" afterPath="$PROJECT_DIR$/gradlew" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project/forge/1.19.2-0.5.1i/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/project/forge/1.19.2-0.5.1i/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project/forge/1.19.2-0.5.1i/src/main/java/com/Pink_Cats/createschematicchecker/Compat/PendingSchematicStore.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/project/forge/1.19.2-0.5.1i/src/main/java/com/Pink_Cats/createschematicchecker/Compat/pattern_schematics/PatternSchematicsCompat.java" beforeDir="false" afterPath="$PROJECT_DIR$/project/forge/1.19.2-0.5.1i/src/main/java/com/Pink_Cats/createschematicchecker/Compat/pattern_schematics/PatternSchematicsCompat.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project/forge/1.20.1-0.5.1j/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/project/forge/1.20.1-0.5.1j/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project/forge/1.20.1-0.5.1j/src/main/java/com/Pink_Cats/createschematicchecker/Compat/PendingSchematicStore.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/project/forge/1.20.1-0.5.1j/src/main/java/com/Pink_Cats/createschematicchecker/Compat/pattern_schematics/PatternSchematicsCompat.java" beforeDir="false" afterPath="$PROJECT_DIR$/project/forge/1.20.1-0.5.1j/src/main/java/com/Pink_Cats/createschematicchecker/Compat/pattern_schematics/PatternSchematicsCompat.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project/forge/1.20.1-6.0.x/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/project/forge/1.20.1-6.0.x/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project/forge/1.20.1-6.0.x/src/main/java/com/Pink_Cats/createschematicchecker/Compat/PendingSchematicStore.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/project/forge/1.20.1-6.0.x/src/main/java/com/Pink_Cats/createschematicchecker/Compat/pattern_schematics/PatternSchematicsCompat.java" beforeDir="false" afterPath="$PROJECT_DIR$/project/forge/1.20.1-6.0.x/src/main/java/com/Pink_Cats/createschematicchecker/Compat/pattern_schematics/PatternSchematicsCompat.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project/neoforge/1.21.1-6.0.x/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/project/neoforge/1.21.1-6.0.x/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project/neoforge/1.21.1-6.0.x/src/main/java/com/Pink_Cats/createschematicchecker/Compat/PendingSchematicStore.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/project/neoforge/1.21.1-6.0.x/src/main/java/com/Pink_Cats/createschematicchecker/Compat/pattern_schematics/PatternSchematicsCompat.java" beforeDir="false" afterPath="$PROJECT_DIR$/project/neoforge/1.21.1-6.0.x/src/main/java/com/Pink_Cats/createschematicchecker/Compat/pattern_schematics/PatternSchematicsCompat.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -47,7 +33,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="EmbeddingIndexingInfo">
-    <option name="cachedIndexableFilesCount" value="807" />
+    <option name="cachedIndexableFilesCount" value="831" />
     <option name="fileBasedEmbeddingIndicesEnabled" value="true" />
   </component>
   <component name="ExternalProjectsData">
@@ -67,6 +53,17 @@
               <path>
                 <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
                 <item name="Create-SchematicChecker" type="f1a62948:ProjectNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="Create-SchematicChecker" type="f1a62948:ProjectNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="Create-SchematicChecker" type="f1a62948:ProjectNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+                <item name="publishing" type="c8890929:TasksNode$1" />
               </path>
             </expand>
             <select />
@@ -115,7 +112,10 @@
   "keyToString": {
     "Gradle.Create-SchematicChecker [:forge-1.19.2-0.5.1i:runClient].executor": "Run",
     "Gradle.Create-SchematicChecker [:neoforge-1.21.1-6.0.x:runClient].executor": "Run",
+    "Gradle.Create-SchematicChecker [publishToMavenLocal].executor": "Run",
+    "Gradle.Create-SchematicChecker [publish].executor": "Run",
     "Gradle.Create-SchematicChecker [runClient].executor": "Run",
+    "Gradle.升级 Gradle 包装器.executor": "Run",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.MCP Project settings loaded": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
@@ -154,7 +154,7 @@
       <recent name="C:\F\MC_Project_Combined\Create-SchematicChecker\forge" />
     </key>
   </component>
-  <component name="RunManager" selected="Gradle.Create-SchematicChecker [:forge-1.19.2-0.5.1i:runClient]">
+  <component name="RunManager" selected="Gradle.Create-SchematicChecker [publish]">
     <configuration name="forge-1.19.2-0.5.1i - Client" type="Application" factoryName="Application">
       <envs>
         <env name="MOD_CLASSES" value="createschematicchecker%%C:\F\MC_Project_Combined\Create-SchematicChecker\project\forge\1.19.2-0.5.1i\build\classes\java\main;createschematicchecker%%C:\F\MC_Project_Combined\Create-SchematicChecker\project\forge\1.19.2-0.5.1i\build\resources\main" />
@@ -401,6 +401,56 @@
       <GradleCoverageDisabled>false</GradleCoverageDisabled>
       <method v="2" />
     </configuration>
+    <configuration name="Create-SchematicChecker [publishToMavenLocal]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="publishToMavenLocal" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <ExternalSystemDebugDisabled>false</ExternalSystemDebugDisabled>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>false</RunAsTest>
+      <GradleProfilingDisabled>false</GradleProfilingDisabled>
+      <GradleCoverageDisabled>false</GradleCoverageDisabled>
+      <method v="2" />
+    </configuration>
+    <configuration name="Create-SchematicChecker [publish]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="publish" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <ExternalSystemDebugDisabled>false</ExternalSystemDebugDisabled>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>false</RunAsTest>
+      <GradleProfilingDisabled>false</GradleProfilingDisabled>
+      <GradleCoverageDisabled>false</GradleCoverageDisabled>
+      <method v="2" />
+    </configuration>
     <configuration name="Create-SchematicChecker [runClient]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -428,6 +478,8 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Gradle.Create-SchematicChecker [publish]" />
+        <item itemvalue="Gradle.Create-SchematicChecker [publishToMavenLocal]" />
         <item itemvalue="Gradle.Create-SchematicChecker [:forge-1.19.2-0.5.1i:runClient]" />
         <item itemvalue="Gradle.Create-SchematicChecker [:neoforge-1.21.1-6.0.x:runClient]" />
         <item itemvalue="Gradle.Create-SchematicChecker [runClient]" />
@@ -454,6 +506,8 @@
       <workItem from="1774911042254" duration="62000" />
       <workItem from="1776042673027" duration="527000" />
       <workItem from="1776043320575" duration="1191000" />
+      <workItem from="1776068173411" duration="76000" />
+      <workItem from="1776068484172" duration="3260000" />
     </task>
     <task id="LOCAL-00001" summary="Change project structure.">
       <option name="closed" value="true" />

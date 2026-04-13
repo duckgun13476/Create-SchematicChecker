@@ -12,6 +12,7 @@ public class PendingSchematicStore {
     public static class PendingMeta {
         public final ResourceKey<Level> dim;
         public final BlockPos pos;
+
         public PendingMeta(ResourceKey<Level> dim, BlockPos pos) {
             this.dim = dim;
             this.pos = pos;
