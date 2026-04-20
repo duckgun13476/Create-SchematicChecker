@@ -10,12 +10,14 @@
         <module name="Create-SchematicChecker.forge-1.20.1-0.5.1j.main" />
         <module name="Create-SchematicChecker.forge-1.19.2-0.5.1i.main" />
         <module name="Create-SchematicChecker.forge-1.20.1-6.0.x.main" />
+        <module name="Create-SchematicChecker.forge-1.18.2-0.5.1i.main" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel target="17" />
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="Create-SchematicChecker.forge-1.18.2-0.5.1i.main" options="-Xdiags:verbose" />
       <module name="Create-SchematicChecker.forge-1.19.2-0.5.1i.main" options="-Xdiags:verbose" />
       <module name="Create-SchematicChecker.forge-1.20.1-0.5.1j.main" options="-Xdiags:verbose" />
       <module name="Create-SchematicChecker.forge-1.20.1-6.0.x.main" options="-Xdiags:verbose" />

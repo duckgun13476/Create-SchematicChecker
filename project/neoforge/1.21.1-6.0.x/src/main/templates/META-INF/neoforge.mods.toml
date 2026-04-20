@@ -33,6 +33,13 @@ license = "GNU LGPL 3.0"
     ordering = "NONE"
     side = "BOTH"
 
+[[dependencies."${mod_id}"]]
+    modId = "torqueapi"
+    type = "required"
+    versionRange = "[1.0-SNAPSHOT,)"
+    ordering = "NONE"
+    side = "BOTH"
+
 
 [[dependencies."${mod_id}"]]
     modId="create"

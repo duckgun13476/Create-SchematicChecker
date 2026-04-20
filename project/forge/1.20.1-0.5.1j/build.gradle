@@ -190,11 +190,12 @@ repositories {
 }
 
 dependencies {
-    implementation("com.PinkCats.torque:TorqueAPI-layer-api:1.0-SNAPSHOT") {
+    compileOnly("com.pinkcats.torque:TorqueAPI-layer-api:1.0-SNAPSHOT") {
         changing = true
     }
-    implementation("com.PinkCats.torque:TorqueAPI-1.20.1-forge:1.0-SNAPSHOT") {
+    implementation("com.pinkcats.torque:TorqueAPI-1.20.1-forge:1.0-SNAPSHOT") {
         changing = true
+        transitive = false
     }
 
     implementation 'org.jetbrains:annotations:22.0.0'

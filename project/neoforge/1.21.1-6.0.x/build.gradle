@@ -113,11 +113,12 @@ repositories {
 
 
 dependencies {
-    implementation("com.PinkCats.torque:TorqueAPI-layer-api:1.0-SNAPSHOT") {
+    compileOnly("com.pinkcats.torque:TorqueAPI-layer-api:1.0-SNAPSHOT") {
         changing = true
     }
-    implementation("com.PinkCats.torque:TorqueAPI-1.21.1-neoforge:1.0-SNAPSHOT") {
+    implementation("com.pinkcats.torque:TorqueAPI-1.21.1-neoforge:1.0-SNAPSHOT") {
         changing = true
+        transitive = false
     }
 
     //implementation("com.simibubi.create:create-${minecraft_version}:${create_version}:slim") { transitive = false }
@@ -182,6 +183,9 @@ tasks.register("generateModMetadata") {
 // Include the output of "generateModMetadata" as an input directory for the build
 // this works with both building through Gradle and the IDE.
 sourceSets.main.resources.srcDir generatedModMetadataDir
+tasks.named('processResources').configure {
+    dependsOn(tasks.named('generateModMetadata'))
+}
 // To avoid having to run "generateModMetadata" manually, make it run on every project reload
 neoForge.ideSyncTask generateModMetadata
 

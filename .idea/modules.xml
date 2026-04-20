@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/common/Create-SchematicChecker.common.main.iml" filepath="$PROJECT_DIR$/.idea/modules/common/Create-SchematicChecker.common.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/project/forge/1.18.2-0.5.1i/Create-SchematicChecker.forge-1.18.2-0.5.1i.main.iml" filepath="$PROJECT_DIR$/.idea/modules/project/forge/1.18.2-0.5.1i/Create-SchematicChecker.forge-1.18.2-0.5.1i.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/project/forge/1.19.2-0.5.1i/Create-SchematicChecker.forge-1.19.2-0.5.1i.main.iml" filepath="$PROJECT_DIR$/.idea/modules/project/forge/1.19.2-0.5.1i/Create-SchematicChecker.forge-1.19.2-0.5.1i.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/project/forge/1.20.1-0.5.1j/Create-SchematicChecker.forge-1.20.1-0.5.1j.main.iml" filepath="$PROJECT_DIR$/.idea/modules/project/forge/1.20.1-0.5.1j/Create-SchematicChecker.forge-1.20.1-0.5.1j.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/project/forge/1.20.1-6.0.x/Create-SchematicChecker.forge-1.20.1-6.0.x.main.iml" filepath="$PROJECT_DIR$/.idea/modules/project/forge/1.20.1-6.0.x/Create-SchematicChecker.forge-1.20.1-6.0.x.main.iml" />

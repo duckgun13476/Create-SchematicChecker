@@ -25,6 +25,13 @@ license = "GNU LGPL 3.0"
     side="BOTH"
 
 [[dependencies."${mod_id}"]]
+    modId="torqueapi"
+    mandatory=true
+    versionRange="[1.0-SNAPSHOT,)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies."${mod_id}"]]
     modId="create"
     mandatory=true
     versionRange="[0.5.1.e,0.5.2)"
