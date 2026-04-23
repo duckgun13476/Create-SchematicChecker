@@ -126,7 +126,6 @@ if (curseForgeTaskClass == null) {
 }
 
 tasks.register('PublishInfo') {
-    dependsOn readPublishArtifactTaskName()
     group = 'Publishing'
 
     doLast {

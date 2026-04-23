@@ -1,6 +1,7 @@
 plugins {
     id 'idea'
     id 'org.jetbrains.gradle.plugin.idea-ext' version '1.2'
+    id 'fabric-loom' version '1.10.5' apply false
 }
 
 allprojects {
@@ -17,16 +18,17 @@ allprojects {
     }
 }
 
-def publishableProjectPaths = subprojects
-        .findAll { project -> project.name ==~ /^(fabric|forge|neoforge)-.*/ }
-        .collect { project -> project.path }
-
 tasks.register('publishInfoAllVersions') {
     group = 'Publishing'
-    dependsOn publishableProjectPaths.collect { projectPath -> "${projectPath}:PublishInfo" }
+    dependsOn ':global:publishInfoAllVersions'
 }
 
 tasks.register('publishAllVersions') {
     group = 'Publishing'
-    dependsOn publishableProjectPaths.collect { projectPath -> "${projectPath}:publishAll" }
+    dependsOn ':global:publishAllVersions'
+}
+
+tasks.register('packageAllVersions') {
+    group = 'Publishing'
+    dependsOn ':global:packageAllVersions'
 }

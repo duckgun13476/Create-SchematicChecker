@@ -9,6 +9,7 @@ pluginManagement {
 rootProject.name = 'Create-SchematicChecker'
 
 include 'common'
+include 'global'
 include 'forge-1.18.2-0.5.1i'
 include 'forge-1.19.2-0.5.1i'
 include 'forge-1.20.1-0.5.1j'
@@ -19,6 +20,7 @@ include 'fabric-1.20.1-6.0.x'
 include 'neoforge-1.21.1-6.0.x'
 
 project(':common').projectDir = file('common')
+project(':global').projectDir = file('global')
 project(':forge-1.18.2-0.5.1i').projectDir = file('project/forge/1.18.2-0.5.1i')
 project(':forge-1.19.2-0.5.1i').projectDir = file('project/forge/1.19.2-0.5.1i')
 project(':forge-1.20.1-0.5.1j').projectDir = file('project/forge/1.20.1-0.5.1j')

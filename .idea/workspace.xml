@@ -4,24 +4,18 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d1ad948e-a44e-4a7d-81f5-9ec1abaa8ab2" name="更改" comment="Summary Gradle config and properties.&#10;Plant CSC to fabric with API.">
+    <list default="true" id="d1ad948e-a44e-4a7d-81f5-9ec1abaa8ab2" name="更改" comment="Summary publish.">
+      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.tmp/Flywheel-fabric-1.19.2" beforeDir="false" afterPath="$PROJECT_DIR$/.tmp/Flywheel-fabric-1.19.2" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/common/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/java/com/Pink_Cats/createschematicchecker/lang/CSCLanguage.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/com/Pink_Cats/createschematicchecker/lang/CSCLanguage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/java/com/Pink_Cats/createschematicchecker/lang/Message.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/com/Pink_Cats/createschematicchecker/lang/Message.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/java/com/Pink_Cats/createschematicchecker/lang/mes.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/com/Pink_Cats/createschematicchecker/lang/mes.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradle/csc-common.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/gradle/csc-common.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gradle/csc-common.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle/csc-common.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gradle/csc-publishing-common.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/gradle/csc-publishing-common.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/project/fabric/1.19.2-0.5.1i/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/project/fabric/1.19.2-0.5.1i/build.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/project/fabric/1.20.1-6.0.x/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/project/fabric/1.20.1-6.0.x/build.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/project/fabric/1.21.1-6.0.x/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/project/fabric/1.21.1-6.0.x/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/forge/1.18.2-0.5.1i/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/project/forge/1.18.2-0.5.1i/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/forge/1.19.2-0.5.1i/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/project/forge/1.19.2-0.5.1i/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/forge/1.20.1-0.5.1j/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/project/forge/1.20.1-0.5.1j/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/forge/1.20.1-6.0.x/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/project/forge/1.20.1-6.0.x/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/neoforge/1.21.1-6.0.x/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/project/neoforge/1.21.1-6.0.x/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project/stubs/create-fabric/1.21.1/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/project/stubs/create-fabric/1.21.1/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/settings.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/settings.gradle" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,17 +47,25 @@
               <path>
                 <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
                 <item name="Create-SchematicChecker" type="f1a62948:ProjectNode" />
+                <item name="global" type="2d1252cf:ModuleNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="Create-SchematicChecker" type="f1a62948:ProjectNode" />
+                <item name="global" type="2d1252cf:ModuleNode" />
                 <item name="Tasks" type="e4a08cd1:TasksNode" />
               </path>
               <path>
                 <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
                 <item name="Create-SchematicChecker" type="f1a62948:ProjectNode" />
+                <item name="global" type="2d1252cf:ModuleNode" />
                 <item name="Tasks" type="e4a08cd1:TasksNode" />
                 <item name="build" type="c8890929:TasksNode$1" />
               </path>
               <path>
                 <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
                 <item name="Create-SchematicChecker" type="f1a62948:ProjectNode" />
+                <item name="global" type="2d1252cf:ModuleNode" />
                 <item name="Tasks" type="e4a08cd1:TasksNode" />
                 <item name="publishing" type="c8890929:TasksNode$1" />
               </path>
@@ -116,6 +118,7 @@
     "Gradle.Create-SchematicChecker [:fabric-1.21.1-6.0.x:runClient].executor": "Run",
     "Gradle.Create-SchematicChecker [:forge-1.18.2-0.5.1i:runClient].executor": "Run",
     "Gradle.Create-SchematicChecker [:forge-1.19.2-0.5.1i:runClient].executor": "Run",
+    "Gradle.Create-SchematicChecker [:global:publishInfoAllVersions].executor": "Run",
     "Gradle.Create-SchematicChecker [:neoforge-1.21.1-6.0.x:runClient].executor": "Run",
     "Gradle.Create-SchematicChecker [PublishInfo].executor": "Run",
     "Gradle.Create-SchematicChecker [jar].executor": "Run",
@@ -161,7 +164,7 @@
       <recent name="C:\F\MC_Project_Combined\Create-SchematicChecker\forge" />
     </key>
   </component>
-  <component name="RunManager" selected="Gradle.Create-SchematicChecker [jar]">
+  <component name="RunManager" selected="Gradle.Create-SchematicChecker [:global:publishInfoAllVersions]">
     <configuration name="forge-1.18.2-0.5.1i - Client" type="Application" factoryName="Application">
       <envs>
         <env name="MOD_CLASSES" value="createschematicchecker%%C:\F\MC_Project_Combined\Create-SchematicChecker\project\forge\1.18.2-0.5.1i\build\classes\java\main;createschematicchecker%%C:\F\MC_Project_Combined\Create-SchematicChecker\project\forge\1.18.2-0.5.1i\build\resources\main" />
@@ -485,7 +488,7 @@
       <GradleCoverageDisabled>false</GradleCoverageDisabled>
       <method v="2" />
     </configuration>
-    <configuration name="Create-SchematicChecker [:forge-1.18.2-0.5.1i:runClient]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="Create-SchematicChecker [:global:publishInfoAllVersions]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -496,7 +499,7 @@
         </option>
         <option name="taskNames">
           <list>
-            <option value=":forge-1.18.2-0.5.1i:runClient" />
+            <option value=":global:publishInfoAllVersions" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -537,11 +540,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Gradle.Create-SchematicChecker [jar]" />
+        <item itemvalue="Gradle.Create-SchematicChecker [:global:publishInfoAllVersions]" />
         <item itemvalue="Gradle.Create-SchematicChecker [PublishInfo]" />
+        <item itemvalue="Gradle.Create-SchematicChecker [jar]" />
         <item itemvalue="Gradle.Create-SchematicChecker [:fabric-1.19.2-0.5.1i:runClient]" />
         <item itemvalue="Gradle.Create-SchematicChecker [:fabric-1.21.1-6.0.x:runClient]" />
-        <item itemvalue="Gradle.Create-SchematicChecker [:forge-1.18.2-0.5.1i:runClient]" />
       </list>
     </recent_temporary>
   </component>
@@ -577,7 +580,7 @@
       <workItem from="1776670480652" duration="594000" />
       <workItem from="1776673501930" duration="2319000" />
       <workItem from="1776730354522" duration="4274000" />
-      <workItem from="1776905656835" duration="8517000" />
+      <workItem from="1776905656835" duration="12083000" />
     </task>
     <task id="LOCAL-00001" summary="Change project structure.">
       <option name="closed" value="true" />
@@ -763,7 +766,15 @@
       <option name="project" value="LOCAL" />
       <updated>1776929443601</updated>
     </task>
-    <option name="localTasksCounter" value="24" />
+    <task id="LOCAL-00024" summary="Summary publish.">
+      <option name="closed" value="true" />
+      <created>1776940230441</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1776940230441</updated>
+    </task>
+    <option name="localTasksCounter" value="25" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -805,6 +816,7 @@
     <MESSAGE value="Add layer for 1.18.2." />
     <MESSAGE value="Summary Gradle config and properties." />
     <MESSAGE value="Summary Gradle config and properties.&#10;Plant CSC to fabric with API." />
-    <option name="LAST_COMMIT_MESSAGE" value="Summary Gradle config and properties.&#10;Plant CSC to fabric with API." />
+    <MESSAGE value="Summary publish." />
+    <option name="LAST_COMMIT_MESSAGE" value="Summary publish." />
   </component>
 </project>
