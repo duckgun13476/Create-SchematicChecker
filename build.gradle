@@ -16,3 +16,17 @@ allprojects {
         resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
     }
 }
+
+def publishableProjectPaths = subprojects
+        .findAll { project -> project.name ==~ /^(fabric|forge|neoforge)-.*/ }
+        .collect { project -> project.path }
+
+tasks.register('publishInfoAllVersions') {
+    group = 'Publishing'
+    dependsOn publishableProjectPaths.collect { projectPath -> "${projectPath}:PublishInfo" }
+}
+
+tasks.register('publishAllVersions') {
+    group = 'Publishing'
+    dependsOn publishableProjectPaths.collect { projectPath -> "${projectPath}:publishAll" }
+}

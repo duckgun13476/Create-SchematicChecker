@@ -1,6 +1,8 @@
 plugins {
     id 'fabric-loom' version '1.10.+'
     id 'maven-publish'
+    id 'net.darkhax.curseforgegradle' version '1.1.28'
+    id "me.modmuss50.mod-publish-plugin" version "1.0.0"
     id 'idea'
 }
 
@@ -8,6 +10,12 @@ apply from: rootProject.file("gradle/csc-property-loader.gradle")
 apply from: "./gradle/java.gradle"
 apply from: rootProject.file("gradle/csc-git.gradle")
 apply from: rootProject.file("gradle/csc-common.gradle")
+
+ext.csc_publish_artifact_task_name = 'remapJar'
+ext.csc_publish_artifact_relative_path = "build/libs/${package_name}-${mod_version}-fabric-${minecraft_version}.jar"
+ext.csc_publish_loader_id = 'fabric'
+ext.csc_publish_curseforge_loaders = ['Fabric']
+ext.csc_publish_modrinth_loaders = ['fabric']
 
 group = mod_group_id
 version = mod_version
@@ -121,6 +129,8 @@ jar {
 remapJar {
     archiveFileName = "${package_name}-${mod_version}-fabric-${minecraft_version}.jar"
 }
+
+apply from: rootProject.file("gradle/csc-publishing-common.gradle")
 
 publishing {
     publications {

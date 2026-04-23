@@ -1,4 +1,3 @@
-import net.darkhax.curseforgegradle.TaskPublishCurseForge
 import groovy.text.SimpleTemplateEngine
 
 //Copyright@2025 publish method from youkashomecoming
@@ -18,7 +17,12 @@ apply from: rootProject.file("gradle/csc-property-loader.gradle")
 apply from: "./gradle/java.gradle"
 apply from: rootProject.file("gradle/csc-git.gradle")
 apply from: rootProject.file("gradle/csc-common.gradle")
-apply from: rootProject.file("gradle/csc-publishing-common.gradle")
+
+ext.csc_publish_artifact_task_name = 'jar'
+ext.csc_publish_artifact_relative_path = "build/libs/${mod_id}-${mod_version}-neoforge-${minecraft_version}.jar"
+ext.csc_publish_loader_id = 'neoforge'
+ext.csc_publish_curseforge_loaders = ['NeoForge']
+ext.csc_publish_modrinth_loaders = ['neoforge']
 
 
 group = "com.${mod_authors}.${mod_id}"
@@ -207,31 +211,6 @@ tasks.configureEach { task ->
     println "Available task: ${task.name}"
 }
 
-tasks.register('PublishInfo') {
-    dependsOn(tasks.named('jar'))
-    def jarFileProvider = tasks.named('jar', Jar).flatMap { it.archiveFile }
-    def modVersionValue = mod_version
-    def minecraftVersionValue = minecraft_version
-    def displayNameValue = display_name
-    doLast {
-        println "Reobfuscated JAR file path: ${jarFileProvider.get().asFile.absolutePath}"
-        def versionParts = readVersionParts()
-        println "version = \"$minecraftVersionValue-$modVersionValue\"\n" +
-                "    displayName = \"${displayNameValue}_v${versionParts[0]}_for_Create_v${versionParts[1]}_norforge\""
-        def properties = readPublishingProperties()
-        if (properties != null) {
-            def cfToken = properties.getProperty("CF_TOKEN")
-            def modrinthToken = properties.getProperty("MODRINTH_TOKEN")
-
-            println "CF_TOKEN: $cfToken"
-            println "MODRINTH_TOKEN: $modrinthToken"
-        } else {
-            println "api.properties not exist"
-        }
-    }
-    group = 'Publishing'
-}
-
 def mod_ids = "createschematicchecker"
 jar {
     archiveFileName = "${mod_id}-${mod_version}-neoforge-${minecraft_version}.jar"
@@ -246,6 +225,7 @@ jar {
 
 }
 
+apply from: rootProject.file("gradle/csc-publishing-common.gradle")
 
 
 
@@ -255,58 +235,6 @@ jar {
 
 
 
-tasks.register('publishCurseForge', TaskPublishCurseForge) {
-    dependsOn 'jar'
-    def properties = readPublishingProperties()
-
-    var cfToken = properties?.getProperty("CF_TOKEN")
-    apiToken = cfToken
-    def versionParts = readVersionParts()
-
-    def mainFile = upload(curseforge_id, new File("./build/libs/${mod_id}-${mod_version}-neoforge-${minecraft_version}.jar"))
-    mainFile.changelog = readPrimaryChangelog()
-    mainFile.addEnvironment("Client", "Server")
-    mainFile.addGameVersion("${minecraft_version}")
-    mainFile.addModLoader("NeoForge")
-    mainFile.addRequirement("create")
-
-
-    mainFile.displayName = "${display_name}_v${versionParts[0]}_for_Create_v${versionParts[1]}_neoforge"
-
-    mainFile.addOptional(
-            "jei",
-            "observable")
-    mainFile.releaseType = publish_version //beta release. is alpha.
-    disableVersionDetection()
-}
-
-
-
-
-publishMods {
-    def properties = readPublishingProperties()
-    def modrinthTokenGet = properties?.getProperty("MODRINTH_TOKEN")
-    def versionParts = readVersionParts()
-
-    file = jar.archiveFile
-    changelog = readFullChangelog()
-    type = STABLE
-    version = "$minecraft_version-$mod_version"
-    displayName = "${display_name}_v${versionParts[0]}_for_Create_v${versionParts[1]}_neoforge"
-
-    modLoaders.add("neoforge")
-
-    var mrToken = modrinthTokenGet
-    if(mrToken != null) {
-        modrinth {
-            accessToken = mrToken
-            projectId = "${modrinth_id}"
-            minecraftVersions.add(minecraft_version)
-            requires("create")
-            optional("jei","observable")
-        }
-    }
-}
 
 // IDEA no longer automatically downloads sources/javadoc jars for dependencies, so we need to explicitly enable the behavior.
 idea {

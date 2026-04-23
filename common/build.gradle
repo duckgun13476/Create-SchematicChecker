@@ -5,3 +5,12 @@ plugins {
 java {
     withSourcesJar()
 }
+
+dependencies {
+    compileOnly("com.pinkcats.torque:TorqueAPI-layer-api:1.0-SNAPSHOT") {
+        changing = true
+    }
+    compileOnly 'com.google.code.gson:gson:2.10.1'
+    compileOnly 'org.jetbrains:annotations:22.0.0'
+    compileOnly 'org.slf4j:slf4j-api:2.0.17'
+}

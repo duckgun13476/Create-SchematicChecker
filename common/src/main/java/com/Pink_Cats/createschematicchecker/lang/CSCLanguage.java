@@ -1,6 +1,5 @@
 package com.Pink_Cats.createschematicchecker.lang;
 
-import com.Pink_Cats.createschematicchecker.Createschematicchecker;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -12,6 +11,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Properties;
 
 import static com.Pink_Cats.createschematicchecker.FancyConfig.ConfigRegister.DefineLanguage;
 
@@ -19,9 +19,11 @@ public class CSCLanguage {
 
     private static final String DEFAULT_LANGUAGE = "en_us";
     private static final String RESOURCE_ROOT = "assets/createschematicchecker/lang/";
+    private static final String BUILD_INFO_RESOURCE = "createschematicchecker-build.properties";
     private static final Map<String, Map<String, String>> jsonLanguageDictionary = new HashMap<>();
-    public static final String mc_version = Createschematicchecker.MC_VERSION;
-    public static final String csc_version = Createschematicchecker.CSC_VERSION;
+    private static final Properties buildInfo = loadBuildInfo();
+    public static final String mc_version = buildInfo.getProperty("minecraft_version", "unknown");
+    public static final String csc_version = buildInfo.getProperty("csc_version", "unknown");
 
     public static String translateDirect(String key) {
         String translation = getTranslation(normalizeLanguage(DefineLanguage), key);
@@ -56,6 +58,24 @@ public class CSCLanguage {
         }
 
         return result;
+    }
+
+    private static Properties loadBuildInfo() {
+        Properties properties = new Properties();
+
+        try (InputStream inputStream = CSCLanguage.class.getClassLoader().getResourceAsStream(BUILD_INFO_RESOURCE)) {
+            if (inputStream == null) {
+                return properties;
+            }
+
+            try (Reader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8)) {
+                properties.load(reader);
+            }
+        } catch (Exception ignored) {
+            return new Properties();
+        }
+
+        return properties;
     }
 
     private static String resolveTemplate(String value) {

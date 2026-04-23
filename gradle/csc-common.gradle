@@ -6,6 +6,14 @@ ext.requireBuildProperty = { String name ->
     return value.toString()
 }
 
+ext.readCscDisplayVersion = {
+    def cscDisplayVersion = project.findProperty("mod_version_base")?.toString()
+    if (cscDisplayVersion == null) {
+        cscDisplayVersion = requireBuildProperty('mod_version').split("-", 2)[0]
+    }
+    return cscDisplayVersion
+}
+
 def commonJavaDir = rootProject.file('common/src/main/java')
 def commonResourcesDir = rootProject.file('common/src/main/resources')
 
@@ -18,21 +26,14 @@ sourceSets {
 
 tasks.register('syncCSCLanguageVersion') {
     def targetFile = file('src/main/java/com/Pink_Cats/createschematicchecker/Createschematicchecker.java')
-    def cscDisplayVersion = project.findProperty("mod_version_base")?.toString()
-    if (cscDisplayVersion == null) {
-        cscDisplayVersion = requireBuildProperty('mod_version').split("-", 2)[0]
-    }
+    def cscDisplayVersion = readCscDisplayVersion()
     inputs.property('minecraftVersion', requireBuildProperty('minecraft_version'))
     inputs.property('cscVersion', cscDisplayVersion)
     outputs.file(targetFile)
 
     doLast {
         String configuredMinecraftVersion = requireBuildProperty("minecraft_version")
-        String configuredModVersion = requireBuildProperty("mod_version")
-        String currentCscDisplayVersion = project.findProperty("mod_version_base")?.toString()
-        if (currentCscDisplayVersion == null) {
-            currentCscDisplayVersion = configuredModVersion.split("-", 2)[0]
-        }
+        String currentCscDisplayVersion = readCscDisplayVersion()
         String content = targetFile.getText('UTF-8')
         content = content.replaceFirst(
                 /public static final String MC_VERSION = ".*?";/,
@@ -43,6 +44,19 @@ tasks.register('syncCSCLanguageVersion') {
                 "public static final String CSC_VERSION = \"${currentCscDisplayVersion}\";"
         )
         targetFile.write(content, 'UTF-8')
+    }
+}
+
+tasks.named('processResources').configure {
+    def cscBuildInfoProperties = [
+            minecraft_version: requireBuildProperty('minecraft_version'),
+            csc_version      : readCscDisplayVersion()
+    ]
+
+    inputs.properties(cscBuildInfoProperties)
+
+    filesMatching('createschematicchecker-build.properties') {
+        expand(cscBuildInfoProperties)
     }
 }
 
