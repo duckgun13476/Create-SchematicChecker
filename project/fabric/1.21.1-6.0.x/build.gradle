@@ -1,0 +1,160 @@
+plugins {
+    id 'fabric-loom' version '1.10.+'
+    id 'maven-publish'
+    id 'idea'
+}
+
+apply from: rootProject.file("gradle/csc-property-loader.gradle")
+apply from: "./gradle/java.gradle"
+apply from: rootProject.file("gradle/csc-git.gradle")
+apply from: rootProject.file("gradle/csc-common.gradle")
+
+group = mod_group_id
+version = mod_version
+
+String gitHash = "${calculateGitHash() + (hasUnstaged() ? "-modified" : "")}"
+
+File findNewestJar(File dir, String includePattern) {
+    if (dir == null || !dir.exists()) {
+        return null
+    }
+
+    def candidates = fileTree(dir: dir, include: [includePattern]).files
+            .findAll { file ->
+                file.name.endsWith('.jar') &&
+                        !file.name.endsWith('-sources.jar') &&
+                        !file.name.endsWith('-javadoc.jar')
+            }
+            .sort { a, b -> a.name <=> b.name }
+
+    return candidates ? candidates.last() : null
+}
+
+def pinkcatsMavenRoot = file(project.findProperty('pinkcats_maven_root') ?: 'C:/F/Maven')
+def createFabricRepository = project.findProperty('create_fabric_repo')?.toString()?.trim()
+def createFabricArtifactId = project.findProperty('create_fabric_artifact_id')?.toString()?.trim() ?: "create-fabric-${minecraft_version}"
+def generatedResourcesDir = file('src/generated/resources')
+def accessWidenerFile = file("src/main/resources/${mod_id}.accesswidener")
+def torqueLayerApiJar = findNewestJar(new File(pinkcatsMavenRoot, "com/PinkCats/torque/TorqueAPI-layer-api/${torque_api_version}"), 'TorqueAPI-layer-api-*.jar')
+def torqueFabricJar = findNewestJar(new File(pinkcatsMavenRoot, "com/PinkCats/torque/TorqueAPI-1.21.1-fabric/${torque_api_version}"), 'TorqueAPI-1.21.1-fabric-*.jar')
+
+if (torqueLayerApiJar == null || torqueFabricJar == null) {
+    throw new GradleException("Missing local TorqueAPI Fabric artifacts in ${pinkcatsMavenRoot}. Publish TorqueAPI-layer-api and TorqueAPI-1.21.1-fabric ${torque_api_version} before building the Fabric project.")
+}
+
+repositories {
+    mavenLocal()
+    maven {
+        name = 'PinkCatsLocal'
+        url = uri(pinkcatsMavenRoot)
+    }
+    mavenCentral()
+    maven { url = 'https://maven.fabricmc.net/' }
+    maven { url = 'https://maven.parchmentmc.org/' }
+    maven { url = 'https://mvn.devos.one/releases/' }
+    maven { url = 'https://mvn.devos.one/snapshots/' }
+    maven { url = 'https://maven.createmod.net/' }
+    maven { url = 'https://maven.tterrag.com/' }
+    maven { url = 'https://maven.terraformersmc.com/' }
+    maven { url = 'https://raw.githubusercontent.com/Fuzss/modresources/main/maven/' }
+
+    if (createFabricRepository) {
+        maven {
+            name = 'CreateFabricLocal'
+            url = uri(createFabricRepository)
+        }
+    }
+}
+
+dependencies {
+    minecraft "com.mojang:minecraft:${minecraft_version}"
+    mappings loom.layered {
+        officialMojangMappings()
+        parchment("org.parchmentmc.data:parchment-${minecraft_version}:${parchment_version}@zip")
+    }
+
+    modImplementation "net.fabricmc:fabric-loader:${loader_version}"
+    modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_api_version}"
+
+    compileOnly files(torqueLayerApiJar)
+    runtimeOnly files(torqueLayerApiJar)
+    modImplementation files(torqueFabricJar)
+
+    modImplementation("com.simibubi.create:${createFabricArtifactId}:${create_fabric_version}") {
+        changing = true
+    }
+
+    if ((project.findProperty('modmenu_runtime_enabled') ?: 'false').toBoolean()) {
+        modLocalRuntime("com.terraformersmc:modmenu:${modmenu_version}")
+    }
+}
+
+if (generatedResourcesDir.exists()) {
+    sourceSets.main.resources.srcDir generatedResourcesDir
+}
+
+loom {
+    if (accessWidenerFile.exists()) {
+        accessWidenerPath = accessWidenerFile
+    }
+
+    runs {
+        client {
+            client()
+            runDir = 'run'
+        }
+
+        server {
+            server()
+            runDir = 'run/server'
+        }
+    }
+}
+
+processResources {
+    def properties = [
+            version             : project.version.toString(),
+            mod_id              : project.findProperty('mod_id') ?: '',
+            mod_version         : project.version.toString(),
+            mod_name            : project.findProperty('mod_name') ?: '',
+            mod_description     : project.findProperty('mod_description') ?: '',
+            mod_authors         : project.findProperty('mod_authors') ?: '',
+            mod_license         : project.findProperty('mod_license') ?: '',
+            minecraft_version   : project.findProperty('minecraft_version') ?: '',
+            loader_version      : project.findProperty('loader_version') ?: '',
+            fabric_api_version  : project.findProperty('fabric_api_version') ?: ''
+    ]
+
+    inputs.properties(properties)
+
+    filesMatching('fabric.mod.json') {
+        expand(properties)
+    }
+}
+
+jar {
+    manifest.attributes([
+            "MixinConfigs": "createschematicchecker.mixins.json",
+            "Git-Hash"    : gitHash
+    ])
+}
+
+remapJar {
+    archiveFileName = "${package_name}-${mod_version}-fabric-${minecraft_version}.jar"
+}
+
+publishing {
+    publications {
+        register('mavenJava', MavenPublication) {
+            artifactId = "createschematicchecker-fabric-${minecraft_version}"
+            from components.java
+        }
+    }
+}
+
+idea {
+    module {
+        downloadSources = true
+        downloadJavadoc = true
+    }
+}

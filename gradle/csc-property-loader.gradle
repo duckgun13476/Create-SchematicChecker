@@ -10,10 +10,13 @@
 import groovy.json.JsonSlurper
 import org.codehaus.groovy.runtime.MethodClosure
 
-def localGradleProperties = project.file("gradle.properties")
-if (localGradleProperties.exists()) {
+def loadGradleProperties(propertyFile) {
+    if (!propertyFile?.exists()) {
+        return
+    }
+
     def props = new Properties()
-    localGradleProperties.withInputStream { props.load(it) }
+    propertyFile.withInputStream { props.load(it) }
     props.each { key, value ->
         if (!project.hasProperty(key)) {
             project.ext.set(key.toString(), value)
@@ -21,7 +24,47 @@ if (localGradleProperties.exists()) {
     }
 }
 
-// Auto detects a secret file and injects it.
+def findSharedGradleProperties() {
+    File currentDir = project.projectDir
+    while (currentDir != null) {
+        File candidate = new File(currentDir, "gradle/csc-common.properties")
+        if (candidate.exists()) {
+            return candidate
+        }
+        currentDir = currentDir.parentFile
+    }
+    return null
+}
+
+def sharedGradleProperties = findSharedGradleProperties()
+if (sharedGradleProperties != null) {
+    loadGradleProperties(sharedGradleProperties)
+}
+
+loadGradleProperties(project.file("gradle.properties"))
+
+def configuredModVersion = project.findProperty("mod_version")?.toString()?.trim()
+def modVersionBase = project.findProperty("mod_version_base")?.toString()?.trim()
+def supportedCreateVersion = project.findProperty("supported_create_version")?.toString()?.trim()
+
+if (!modVersionBase && configuredModVersion?.contains("-")) {
+    def versionParts = configuredModVersion.split("-", 2)
+    modVersionBase = versionParts[0]
+    if (!project.hasProperty("mod_version_base")) {
+        project.ext.set("mod_version_base", modVersionBase)
+    }
+    if (!supportedCreateVersion && versionParts.length > 1) {
+        supportedCreateVersion = versionParts[1]
+        if (!project.hasProperty("supported_create_version")) {
+            project.ext.set("supported_create_version", supportedCreateVersion)
+        }
+    }
+}
+
+if (!configuredModVersion && modVersionBase && supportedCreateVersion) {
+    project.ext.set("mod_version", "${modVersionBase}-${supportedCreateVersion}")
+}
+
 if (project.rootProject.hasProperty("secretFile")) {
     project.logger.lifecycle("Automatically loading properties from the secretFile")
     final def secretsFile = project.rootProject.file(project.rootProject.getProperty("secretFile"))
@@ -31,17 +74,13 @@ if (project.rootProject.hasProperty("secretFile")) {
     }
 }
 
-// Loads properties using a specified json file.
 def loadProperties(propertyFile) {
     if (propertyFile.exists()) {
         propertyFile.withReader {
             Object propMap = new JsonSlurper().parse it
 
             for (entry in propMap) {
-
-                // Filter entries that use _comment in the key.
                 if (!entry.key.endsWith("_comment")) {
-
                     project.ext.set(entry.key, entry.value)
                 }
             }
@@ -54,7 +93,6 @@ def loadProperties(propertyFile) {
     }
 }
 
-// Allows other scripts to use these methods.
 ext {
     loadProperties = this.&loadProperties as MethodClosure
 }

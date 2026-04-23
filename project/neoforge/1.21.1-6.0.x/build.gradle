@@ -14,8 +14,8 @@ plugins {
     id "me.modmuss50.mod-publish-plugin" version "1.0.0"
 }
 
+apply from: rootProject.file("gradle/csc-property-loader.gradle")
 apply from: "./gradle/java.gradle"
-apply from: "gradle/property_loader.gradle"
 apply from: rootProject.file("gradle/csc-git.gradle")
 apply from: rootProject.file("gradle/csc-common.gradle")
 apply from: rootProject.file("gradle/csc-publishing-common.gradle")

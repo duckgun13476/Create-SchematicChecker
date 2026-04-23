@@ -14,8 +14,8 @@ plugins {
 }
 
 
+apply from: rootProject.file("gradle/csc-property-loader.gradle")
 apply from: "./gradle/java.gradle"
-apply from: "gradle/property_loader.gradle"
 
 
 

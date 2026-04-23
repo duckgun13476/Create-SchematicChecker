@@ -10,7 +10,12 @@ ext.readPublishingProperties = {
 }
 
 ext.readVersionParts = {
-    return mod_version.split("-")
+    def baseVersion = project.findProperty("mod_version_base")?.toString()
+    def createVersion = project.findProperty("supported_create_version")?.toString()
+    if (baseVersion != null && createVersion != null) {
+        return [baseVersion, createVersion]
+    }
+    return mod_version.split("-", 2)
 }
 
 ext.readPrimaryChangelog = {

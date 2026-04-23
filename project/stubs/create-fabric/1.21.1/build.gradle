@@ -1,0 +1,27 @@
+plugins {
+    id 'fabric-loom' version '1.10.+'
+    id 'java-library'
+}
+
+group = 'local.stub'
+version = '1.21.1'
+
+base {
+    archivesName = 'create-fabric-stubs-1.21.1'
+}
+
+repositories {
+    mavenCentral()
+    maven { url = 'https://maven.fabricmc.net/' }
+}
+
+dependencies {
+    minecraft "com.mojang:minecraft:${minecraft_version}"
+    mappings loom.officialMojangMappings()
+    modImplementation "net.fabricmc:fabric-loader:${loader_version}"
+    modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_api_version}"
+}
+
+java {
+    withSourcesJar()
+}

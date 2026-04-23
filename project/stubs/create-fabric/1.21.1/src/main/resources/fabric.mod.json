@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "id": "create",
+  "version": "1.21.1-stub",
+  "name": "Create Fabric Stub",
+  "description": "Development-only stub for Create Fabric APIs used by Create:Schematic Checker.",
+  "environment": "*",
+  "depends": {
+    "fabricloader": ">=0.19.1",
+    "minecraft": "1.21.1",
+    "java": ">=21",
+    "fabric-api": "*"
+  }
+}

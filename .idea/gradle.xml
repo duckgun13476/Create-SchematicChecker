@@ -10,11 +10,14 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/common" />
+            <option value="$PROJECT_DIR$/project/fabric/1.19.2-0.5.1i" />
+            <option value="$PROJECT_DIR$/project/fabric/1.20.1-6.0.x" />
             <option value="$PROJECT_DIR$/project/forge/1.18.2-0.5.1i" />
             <option value="$PROJECT_DIR$/project/forge/1.19.2-0.5.1i" />
             <option value="$PROJECT_DIR$/project/forge/1.20.1-0.5.1j" />
             <option value="$PROJECT_DIR$/project/forge/1.20.1-6.0.x" />
             <option value="$PROJECT_DIR$/project/neoforge/1.21.1-6.0.x" />
+            <option value="$PROJECT_DIR$/project/stubs/create-fabric/1.21.1" />
           </set>
         </option>
         <option name="resolveExternalAnnotations" value="true" />
