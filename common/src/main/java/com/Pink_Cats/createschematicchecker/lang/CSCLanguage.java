@@ -48,7 +48,7 @@ public class CSCLanguage {
             }
 
             try (Reader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8)) {
-                JsonObject jsonObject = JsonParser.parseReader(reader).getAsJsonObject();
+                JsonObject jsonObject = new JsonParser().parse(reader).getAsJsonObject();
                 for (Map.Entry<String, JsonElement> entry : jsonObject.entrySet()) {
                     result.put(entry.getKey(), resolveTemplate(entry.getValue().getAsString()));
                 }

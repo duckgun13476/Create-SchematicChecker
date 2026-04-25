@@ -32,3 +32,15 @@ tasks.register('packageAllVersions') {
     group = 'Publishing'
     dependsOn ':global:packageAllVersions'
 }
+
+tasks.register('runClientAllVersions') {
+    group = 'Development'
+    description = 'Run the client development environment for all runnable versions.'
+    dependsOn ':global:runClientAllVersions'
+}
+
+tasks.register('runServerAllVersions') {
+    group = 'Development'
+    description = 'Run the server development environment for all runnable versions.'
+    dependsOn ':global:runServerAllVersions'
+}

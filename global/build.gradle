@@ -6,6 +6,19 @@ def publishableProjects = rootProject.subprojects.findAll { project ->
     project.name ==~ /^(fabric|forge|neoforge)-.*/
 }
 
+def runnableProjects = rootProject.subprojects.findAll { project ->
+    project.name ==~ /^(fabric|forge|neoforge)-.*/
+}
+
+def gradleWrapperExecutable = new File(
+        rootProject.projectDir,
+        System.getProperty('os.name').toLowerCase().contains('windows') ? 'gradlew.bat' : 'gradlew'
+)
+
+def aggregateRunTaskPathsFor = { String taskName ->
+    runnableProjects.collect { targetProject -> "${targetProject.path}:${taskName}" }
+}
+
 def finalArtifactTaskNameFor = { Project targetProject ->
     def configuredTaskName = targetProject.findProperty('csc_publish_artifact_task_name')?.toString()?.trim()
     if (configuredTaskName != null && !configuredTaskName.isEmpty()) {
@@ -39,4 +52,20 @@ tasks.register('packageAllVersions') {
     dependsOn publishableProjects.collect { targetProject ->
         "${targetProject.path}:${finalArtifactTaskNameFor(targetProject)}"
     }
+}
+
+tasks.register('runClientAllVersions', Exec) {
+    group = 'Development'
+    description = 'Run the client development environment for all runnable versions from one root command.'
+    workingDir = rootProject.projectDir
+    standardInput = System.in
+    commandLine gradleWrapperExecutable.absolutePath, '--no-configure-on-demand', *aggregateRunTaskPathsFor('runClient')
+}
+
+tasks.register('runServerAllVersions', Exec) {
+    group = 'Development'
+    description = 'Run the server development environment for all runnable versions from one root command.'
+    workingDir = rootProject.projectDir
+    standardInput = System.in
+    commandLine gradleWrapperExecutable.absolutePath, '--no-configure-on-demand', *aggregateRunTaskPathsFor('runServer')
 }

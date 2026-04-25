@@ -1,6 +1,9 @@
 pluginManagement {
     repositories {
         gradlePluginPortal()
+        maven { url = uri('https://maven.minecraftforge.net/') }
+        maven { url = uri('https://repo.spongepowered.org/repository/maven-public') }
+        maven { url = uri('https://maven.parchmentmc.org') }
         maven { url = uri('https://maven.fabricmc.net/') }
         mavenCentral()
     }
@@ -10,6 +13,7 @@ rootProject.name = 'Create-SchematicChecker'
 
 include 'common'
 include 'global'
+include 'forge-1.17.1-0.4'
 include 'forge-1.18.2-0.5.1i'
 include 'forge-1.19.2-0.5.1i'
 include 'forge-1.20.1-0.5.1j'
@@ -22,6 +26,7 @@ include 'neoforge-1.21.1-6.0.x'
 
 project(':common').projectDir = file('common')
 project(':global').projectDir = file('global')
+project(':forge-1.17.1-0.4').projectDir = file('project/forge/1.17.1-0.4')
 project(':forge-1.18.2-0.5.1i').projectDir = file('project/forge/1.18.2-0.5.1i')
 project(':forge-1.19.2-0.5.1i').projectDir = file('project/forge/1.19.2-0.5.1i')
 project(':forge-1.20.1-0.5.1j').projectDir = file('project/forge/1.20.1-0.5.1j')

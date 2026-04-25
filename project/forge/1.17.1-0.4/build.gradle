@@ -1,0 +1,262 @@
+import groovy.text.SimpleTemplateEngine
+
+plugins {
+    id 'java'
+    id 'idea'
+    id 'net.minecraftforge.gradle' version '[6.0.16,6.2)'
+    id 'org.spongepowered.mixin' version '0.7-SNAPSHOT'
+    id 'net.darkhax.curseforgegradle' version '1.1.28'
+    id 'dev.ithundxr.silk' version '0.11.15'
+    id 'me.modmuss50.mod-publish-plugin' version '1.0.0'
+}
+
+File findSharedRootDir(File startDir) {
+    File current = startDir
+    while (current != null) {
+        if (new File(current, 'gradle/csc-common.properties').exists()) {
+            return current
+        }
+        current = current.parentFile
+    }
+    throw new GradleException("Unable to locate shared project root for '${project.projectDir}'")
+}
+
+File sharedRootDir = findSharedRootDir(project.projectDir)
+boolean standaloneVariantBuild = rootProject.projectDir != sharedRootDir
+
+apply from: new File(sharedRootDir, 'gradle/csc-property-loader.gradle')
+apply from: './gradle/java.gradle'
+
+ext.csc_publish_artifact_task_name = 'reobfJar'
+ext.csc_publish_artifact_relative_path = "build/libs/${package_name}-${mod_version}-forge-${minecraft_version}.jar"
+ext.csc_publish_loader_id = 'forge'
+ext.csc_publish_curseforge_loaders = ['Forge', 'NeoForge']
+ext.csc_publish_modrinth_loaders = ['forge', 'neoforge']
+
+group = mod_group_id
+version = mod_version
+
+String gitHash = "${calculateGitHash() + (hasUnstaged() ? '-modified' : '')}"
+String archiveBaseName = mod_id
+
+base {
+    archivesName = mod_id
+}
+
+java {
+    toolchain.languageVersion = JavaLanguageVersion.of(17)
+}
+
+mixin {
+    add sourceSets.main, "${mod_id}.refmap.json"
+    config "${mod_id}.mixins.json"
+}
+
+repositories {
+    maven { url = 'https://modmaven.dev' }
+    maven { url = 'https://maven.createmod.net' }
+    maven { url = 'https://maven.tterrag.com' }
+    maven { url = 'https://raw.githubusercontent.com/Fuzss/modresources/main/maven/' }
+    maven { url = 'https://maven.blamejared.com' }
+    maven {
+        name = 'CurseMaven'
+        url = 'https://www.cursemaven.com'
+        content {
+            includeGroup 'curse.maven'
+        }
+    }
+    maven {
+        name = 'Modrinth'
+        url = 'https://api.modrinth.com/maven'
+        content {
+            includeGroup 'maven.modrinth'
+        }
+    }
+    maven {
+        url = 'https://jitpack.io'
+        content {
+            includeGroup 'com.github.llamalad7.mixinextras'
+        }
+    }
+    maven {
+        url = 'https://maven.saps.dev/minecraft'
+        content {
+            includeGroup 'dev.latvian.mods'
+            includeGroup 'dev.ftb.mods'
+        }
+    }
+    maven {
+        url = 'https://maven.architectury.dev/'
+        content {
+            includeGroup 'dev.architectury'
+        }
+    }
+    mavenLocal()
+}
+
+minecraft {
+    mappings channel: mapping_channel, version: minecraft_version
+    copyIdeResources = true
+
+    if (file('src/main/resources/META-INF/accesstransformer.cfg').exists()) {
+        accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
+    }
+
+    runs {
+        configureEach {
+            property 'forge.logging.markers', ''
+            property 'forge.logging.console.level', 'info'
+            property 'mixin.debug.export', 'true'
+            property 'mixin.debug.verbose', 'true'
+
+            mods {
+                "${mod_id}" {
+                    source sourceSets.main
+                }
+            }
+        }
+
+        client {
+            workingDirectory project.file('run')
+        }
+
+        server {
+            workingDirectory project.file('run/server')
+            arg '--nogui'
+        }
+
+        data {
+            workingDirectory project.file('run')
+            property 'forge.logging.markers', 'REGISTRIES,REGISTRYDUMP'
+            property 'forge.logging.console.level', 'debug'
+            args '--mod', mod_id, '--all',
+                    '--output', file('src/generated/resources').getAbsolutePath(),
+                    '--existing', file('src/main/resources').getAbsolutePath()
+        }
+    }
+}
+
+sourceSets.main.java { srcDir new File(sharedRootDir, 'common/src/main/java') }
+sourceSets.main.resources { srcDir 'src/generated/resources' }
+sourceSets.main.resources { srcDir new File(sharedRootDir, 'common/src/main/resources') }
+
+dependencies {
+    minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
+
+    compileOnly("com.pinkcats.torque:TorqueAPI-layer-api:1.0-SNAPSHOT") {
+        changing = true
+    }
+    implementation(fg.deobf("com.pinkcats.torque:TorqueAPI-1.17.1-forge:1.0-SNAPSHOT")) {
+        changing = true
+        transitive = false
+    }
+
+    implementation 'org.jetbrains:annotations:22.0.0'
+
+    implementation fg.deobf("com.simibubi.create:Create:${create_version}")
+    implementation fg.deobf("com.jozufozu.flywheel:Flywheel-Forge:${flywheel_version}")
+    implementation fg.deobf("com.tterrag.registrate:Registrate:${registrate_version}")
+
+    compileOnly annotationProcessor('io.github.llamalad7:mixinextras-common:0.4.1')
+    annotationProcessor 'org.spongepowered:mixin:0.8.4:processor'
+}
+
+def templatedResourceProperties = [
+        minecraft_version      : project.findProperty('minecraft_version') ?: '',
+        minecraft_version_range: project.findProperty('minecraft_version_range') ?: '',
+        neo_version            : project.findProperty('neo_version') ?: '',
+        neo_version_range      : project.findProperty('neo_version_range') ?: '',
+        loader_version_range   : project.findProperty('loader_version_range') ?: '',
+        mod_id                 : project.findProperty('mod_id') ?: '',
+        mod_name               : project.findProperty('mod_name') ?: '',
+        mod_license            : project.findProperty('mod_license') ?: '',
+        mod_version            : project.findProperty('mod_version') ?: '',
+        csc_version            : project.findProperty('mod_version_base') ?: ((project.findProperty('mod_version') ?: '').toString().split('-', 2)[0]),
+        mod_authors            : project.findProperty('mod_authors') ?: '',
+        mod_description        : project.findProperty('mod_description') ?: '',
+        file                   : [jarVersion: project.version.toString()]
+]
+
+processResources {
+    inputs.properties(templatedResourceProperties)
+
+    filesMatching('createschematicchecker-build.properties') {
+        expand(templatedResourceProperties)
+    }
+
+    doLast {
+        def outputRoot = destinationDir
+        def engine = new SimpleTemplateEngine()
+
+        ['META-INF/mods.toml', 'pack.mcmeta'].each { path ->
+            def inputFile = file("src/main/resources/${path}")
+            if (inputFile.exists()) {
+                def outputFile = new File(outputRoot, path)
+                outputFile.parentFile.mkdirs()
+                def rendered = engine.createTemplate(inputFile.getText('UTF-8'))
+                        .make(templatedResourceProperties)
+                        .toString()
+                outputFile.setText(rendered, 'UTF-8')
+            }
+        }
+    }
+}
+
+compileJava {
+    options.compilerArgs = ['-Xdiags:verbose']
+}
+
+jar {
+    archiveFileName = "${package_name}-${mod_version}-forge-${minecraft_version}.jar"
+
+    from(new File(sharedRootDir, 'LICENSE.txt')) {
+        rename { "${it}_${archiveBaseName}" }
+    }
+
+    manifest.attributes([
+            'MixinConfigs': 'createschematicchecker.mixins.json',
+            'Git-Hash'    : gitHash
+    ])
+
+    finalizedBy 'reobfJar'
+}
+
+if (!standaloneVariantBuild) {
+    apply from: new File(sharedRootDir, 'gradle/csc-publishing-common.gradle')
+} else {
+    tasks.register('PublishInfo') {
+        group = 'Publishing'
+        doLast {
+            println "Standalone build: publishing metadata is only available from the repository root build."
+        }
+    }
+    tasks.register('publishAll') {
+        group = 'Publishing'
+    }
+}
+
+String calculateGitHash() {
+    try {
+        def output = providers.exec {
+            commandLine('git', 'rev-parse', 'HEAD')
+        }
+        return output.standardOutput.asText.get().trim()
+    } catch (Throwable ignored) {
+        return 'unknown'
+    }
+}
+
+boolean hasUnstaged() {
+    try {
+        def output = providers.exec {
+            commandLine('git', 'status', '--porcelain')
+        }
+        String result = output.standardOutput.asText.get().replace('/M gradlew(\\.bat)?/', '').trim()
+        if (!result.isEmpty()) {
+            println("Found stageable results:\n ${result}\n")
+        }
+        return !result.isEmpty()
+    } catch (Throwable ignored) {
+        return false
+    }
+}
