@@ -1,0 +1,207 @@
+plugins {
+    id 'fabric-loom'
+    id 'maven-publish'
+    id 'net.darkhax.curseforgegradle' version '1.1.28'
+    id "me.modmuss50.mod-publish-plugin" version "1.0.0"
+    id 'idea'
+}
+
+apply from: rootProject.file("gradle/csc-property-loader.gradle")
+apply from: "./gradle/java.gradle"
+apply from: rootProject.file("gradle/csc-git.gradle")
+apply from: rootProject.file("gradle/csc-common.gradle")
+
+ext.csc_publish_artifact_task_name = 'remapJar'
+ext.csc_publish_artifact_relative_path = "build/libs/${package_name}-${mod_version}-fabric-${minecraft_version}.jar"
+ext.csc_publish_loader_id = 'fabric'
+ext.csc_publish_curseforge_loaders = ['Fabric']
+ext.csc_publish_modrinth_loaders = ['fabric']
+
+group = mod_group_id
+version = mod_version
+
+String gitHash = "${calculateGitHash() + (hasUnstaged() ? "-modified" : "")}"
+
+def pinkcatsMavenRoot = file(project.findProperty('pinkcats_maven_root') ?: 'C:/F/Maven')
+def createFabricRepository = project.findProperty('create_fabric_repo')?.toString()?.trim()
+def createFabricGroup = project.findProperty('create_fabric_group')?.toString()?.trim() ?: "com.simibubi.create"
+def createFabricArtifactId = project.findProperty('create_fabric_artifact_id')?.toString()?.trim() ?: "create-fabric"
+def flywheelFabricVersion = project.findProperty('flywheel_fabric_version')?.toString()?.trim()
+def forgeConfigApiPortFabricVersion = project.findProperty('forgeconfigapiport_fabric_version')?.toString()?.trim()
+def milkLibVersion = project.findProperty('milk_lib_version')?.toString()?.trim()
+def reachEntityAttributesVersion = project.findProperty('reach_entity_attributes_version')?.toString()?.trim()
+def portingLibVersion = project.findProperty('porting_lib_version')?.toString()?.trim()
+def registrateFabricVersion = project.findProperty('registrate_fabric_version')?.toString()?.trim()
+def generatedResourcesDir = file('src/generated/resources')
+def accessWidenerFile = file("src/main/resources/${mod_id}.accesswidener")
+
+repositories {
+    mavenLocal()
+    maven {
+        name = 'PinkCatsLocal'
+        url = uri(pinkcatsMavenRoot)
+    }
+    mavenCentral()
+    maven { url = 'https://maven.fabricmc.net/' }
+    maven { url = 'https://maven.parchmentmc.org/' }
+    maven { url = 'https://mvn.devos.one/releases/' }
+    maven { url = 'https://mvn.devos.one/snapshots/' }
+    maven { url = 'https://maven.createmod.net/' }
+    maven { url = 'https://maven.tterrag.com/' }
+    maven { url = 'https://maven.terraformersmc.com/' }
+    maven { url = 'https://maven.jamieswhiteshirt.com/libs-release/' }
+    maven { url = 'https://api.modrinth.com/maven' }
+    maven { url = 'https://jitpack.io/' }
+    maven { url = 'https://raw.githubusercontent.com/Fuzss/modresources/main/maven/' }
+
+    if (createFabricRepository) {
+        maven {
+            name = 'CreateFabricLocal'
+            url = uri(createFabricRepository)
+        }
+    }
+}
+
+dependencies {
+    minecraft "com.mojang:minecraft:${minecraft_version}"
+    mappings loom.layered {
+        officialMojangMappings()
+        parchment("org.parchmentmc.data:parchment-${minecraft_version}:${parchment_version}@zip")
+    }
+
+    modImplementation "net.fabricmc:fabric-loader:${loader_version}"
+    modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_api_version}"
+
+    modImplementation("com.pinkcats.torque:TorqueAPI-1.18.2-fabric:${torque_api_version}") {
+        changing = true
+        exclude group: 'net.fabricmc.fabric-api'
+        exclude group: 'net.fabricmc', module: 'fabric-loader'
+    }
+
+    modImplementation("${createFabricGroup}:${createFabricArtifactId}:${create_fabric_version}") {
+        changing = true
+        exclude group: 'net.fabricmc.fabric-api'
+        exclude group: 'net.fabricmc', module: 'fabric-loader'
+    }
+
+    if (flywheelFabricVersion) {
+        modLocalRuntime("com.jozufozu.flywheel:flywheel-fabric-${minecraft_version}:${flywheelFabricVersion}") {
+            transitive = false
+        }
+    }
+
+    if (portingLibVersion) {
+        modImplementation("io.github.fabricators_of_create:Porting-Lib:${portingLibVersion}") {
+            changing = true
+        }
+    }
+
+    if (registrateFabricVersion) {
+        modImplementation("com.tterrag.registrate_fabric:Registrate:${registrateFabricVersion}") {
+            transitive = false
+            exclude group: 'io.github.fabricators_of_create'
+        }
+    }
+
+    // Modrinth's Create artifact for 1.18.2 does not expose these runtime dependencies via Maven metadata.
+    if (forgeConfigApiPortFabricVersion) {
+        modRuntimeOnly("net.minecraftforge:forgeconfigapiport-fabric:${forgeConfigApiPortFabricVersion}") {
+            exclude group: 'net.fabricmc.fabric-api'
+            exclude group: 'net.fabricmc', module: 'fabric-loader'
+        }
+    }
+
+    if (milkLibVersion) {
+        modRuntimeOnly("io.github.tropheusj:milk-lib:${milkLibVersion}") {
+            exclude group: 'net.fabricmc.fabric-api'
+            exclude group: 'net.fabricmc', module: 'fabric-loader'
+        }
+    }
+
+    if (reachEntityAttributesVersion) {
+        modRuntimeOnly("com.jamieswhiteshirt:reach-entity-attributes:${reachEntityAttributesVersion}") {
+            exclude group: 'net.fabricmc.fabric-api'
+            exclude group: 'net.fabricmc', module: 'fabric-loader'
+        }
+    }
+
+    if ((project.findProperty('modmenu_runtime_enabled') ?: 'false').toBoolean()) {
+        modLocalRuntime("com.terraformersmc:modmenu:${modmenu_version}")
+    }
+}
+
+configurations.configureEach {
+    resolutionStrategy.force("net.fabricmc:fabric-loader:${loader_version}")
+}
+
+if (generatedResourcesDir.exists()) {
+    sourceSets.main.resources.srcDir generatedResourcesDir
+}
+
+loom {
+    if (accessWidenerFile.exists()) {
+        accessWidenerPath = accessWidenerFile
+    }
+
+    runs {
+        client {
+            client()
+            runDir = 'run'
+        }
+
+        server {
+            server()
+            runDir = 'run/server'
+        }
+    }
+}
+
+processResources {
+    def properties = [
+            version             : project.version.toString(),
+            mod_id              : project.findProperty('mod_id') ?: '',
+            mod_version         : project.version.toString(),
+            mod_name            : project.findProperty('mod_name') ?: '',
+            mod_description     : project.findProperty('mod_description') ?: '',
+            mod_authors         : project.findProperty('mod_authors') ?: '',
+            mod_license         : project.findProperty('mod_license') ?: '',
+            minecraft_version   : project.findProperty('minecraft_version') ?: '',
+            loader_version      : project.findProperty('loader_version') ?: '',
+            fabric_api_version  : project.findProperty('fabric_api_version') ?: ''
+    ]
+
+    inputs.properties(properties)
+
+    filesMatching('fabric.mod.json') {
+        expand(properties)
+    }
+}
+
+jar {
+    manifest.attributes([
+            "MixinConfigs": "createschematicchecker.mixins.json",
+            "Git-Hash"    : gitHash
+    ])
+}
+
+remapJar {
+    archiveFileName = "${package_name}-${mod_version}-fabric-${minecraft_version}.jar"
+}
+
+apply from: rootProject.file("gradle/csc-publishing-common.gradle")
+
+publishing {
+    publications {
+        register('mavenJava', MavenPublication) {
+            artifactId = "createschematicchecker-fabric-${minecraft_version}"
+            from components.java
+        }
+    }
+}
+
+idea {
+    module {
+        downloadSources = true
+        downloadJavadoc = true
+    }
+}
