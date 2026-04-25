@@ -8,7 +8,7 @@
   "config.BanTag": "BanTag. If any block has tag in this list will be cleared!",
   "core.BanBlock": "The Block or Item you don't want to emerge in Schematic",
   "core.BanBlock2": "Any block will clear if remove method failed!",
-  "console.McVersion": "Minecraft Version: ${mc_version} forge",
+  "console.McVersion": "Minecraft Version:",
   "console.CscVersion": "[CSC] Version: v${csc_version}",
   "console.reload1": " Reloading configuration--",
   "console.reload2": " Configuration loaded",

@@ -24,29 +24,6 @@ sourceSets {
     }
 }
 
-tasks.register('syncCSCLanguageVersion') {
-    def targetFile = file('src/main/java/com/Pink_Cats/createschematicchecker/Createschematicchecker.java')
-    def cscDisplayVersion = readCscDisplayVersion()
-    inputs.property('minecraftVersion', requireBuildProperty('minecraft_version'))
-    inputs.property('cscVersion', cscDisplayVersion)
-    outputs.file(targetFile)
-
-    doLast {
-        String configuredMinecraftVersion = requireBuildProperty("minecraft_version")
-        String currentCscDisplayVersion = readCscDisplayVersion()
-        String content = targetFile.getText('UTF-8')
-        content = content.replaceFirst(
-                /public static final String MC_VERSION = ".*?";/,
-                "public static final String MC_VERSION = \"${configuredMinecraftVersion}\";"
-        )
-        content = content.replaceFirst(
-                /public static final String CSC_VERSION = ".*?";/,
-                "public static final String CSC_VERSION = \"${currentCscDisplayVersion}\";"
-        )
-        targetFile.write(content, 'UTF-8')
-    }
-}
-
 tasks.named('processResources').configure {
     def cscBuildInfoProperties = [
             minecraft_version: requireBuildProperty('minecraft_version'),
@@ -58,12 +35,4 @@ tasks.named('processResources').configure {
     filesMatching('createschematicchecker-build.properties') {
         expand(cscBuildInfoProperties)
     }
-}
-
-tasks.named('compileJava').configure {
-    dependsOn(tasks.named('syncCSCLanguageVersion'))
-}
-
-tasks.matching { it.name == 'sourcesJar' }.configureEach {
-    dependsOn(tasks.named('syncCSCLanguageVersion'))
 }

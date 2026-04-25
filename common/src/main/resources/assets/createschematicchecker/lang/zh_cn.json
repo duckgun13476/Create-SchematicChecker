@@ -8,7 +8,7 @@
   "config.BanTag": "禁止标签，任何方块如果内部包含此列表的标签，都会被清除！",
   "core.BanBlock": "被禁止的方块或物品，如果被填入，CSC将尝试剔除方块实体内的对应物品。",
   "core.BanBlock2": "如果剔除失败，CSC会将该物品清除实体数据，方块仍然可以打印，但会失去nbt数据。",
-  "console.McVersion": "Minecraft 版本: ${mc_version} forge",
+  "console.McVersion": "Minecraft 版本:",
   "console.CscVersion": "[CSC]   版本: v${csc_version}",
   "console.reload1": " 重载配置中--",
   "console.reload2": " 配置加载完毕",

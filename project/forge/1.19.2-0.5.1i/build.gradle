@@ -238,29 +238,6 @@ dependencies {
     // The group id is ignored when searching -- in this case, it is "blank"
     // implementation fg.deobf("blank:coolmod-${mc_version}:${coolmod_version}")
 }
-tasks.register('syncCSCLanguageVersion') {
-    def targetFile = file('src/main/java/com/Pink_Cats/createschematicchecker/Createschematicchecker.java')
-    inputs.property('minecraftVersion', configuredMinecraftVersion)
-    inputs.property('cscVersion', cscDisplayVersion)
-    outputs.file(targetFile)
-
-    doLast {
-        String content = targetFile.getText('UTF-8')
-        content = content.replaceFirst(
-                /public static final String MC_VERSION = ".*?";/,
-                "public static final String MC_VERSION = \"${configuredMinecraftVersion}\";"
-        )
-        content = content.replaceFirst(
-                /public static final String CSC_VERSION = ".*?";/,
-                "public static final String CSC_VERSION = \"${cscDisplayVersion}\";"
-        )
-        targetFile.write(content, 'UTF-8')
-    }
-}
-
-tasks.named('compileJava').configure {
-    dependsOn(tasks.named('syncCSCLanguageVersion'))
-}
 
 def templatedResourceProperties = [
         minecraft_version      : project.findProperty('minecraft_version') ?: '',

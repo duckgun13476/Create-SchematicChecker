@@ -2,6 +2,8 @@ package com.Pink_Cats.createschematicchecker;
 
 import com.Pink_Cats.createschematicchecker.FancyConfig.ConfigRegister;
 import com.Pink_Cats.createschematicchecker.lang.Message;
+import com.pinkcats.torque.layer.TorqueLayer;
+import com.pinkcats.torque.layer.platform.Platform;
 
 import java.util.List;
 
@@ -44,7 +46,7 @@ public class CscLifecycle {
         Message.FM("   _____  _____  _____ ");
         Message.FM("  / ____|/ ____|/ ____|");
         Message.FM(" | |    | (___ | |     " + "   " + translateDirect("console.CscVersion"));
-        Message.FM(" | |     \\___ \\| |     " + "   " + translateDirect("console.McVersion"));
+        Message.FM(" | |     \\___ \\| |     " + "   " + platformVersionLine());
         Message.FM(" | |____ ____) | |____ " + "   " + translateDirect("console.feedback"));
         Message.FM("  \\_____|_____/ \\_____|");
         Message.FM("                       ");
@@ -62,6 +64,17 @@ public class CscLifecycle {
             CSC_RELOAD();
         } catch (Exception ex) {
             Message.FE(translateDirect("console.ConfigReloadError"));
+        }
+    }
+
+    private String platformVersionLine() {
+        try {
+            Platform platform = TorqueLayer.platform();
+            return translateDirect("console.McVersion") + " "
+                    + platform.minecraftVersion() + " "
+                    + platform.loaderName();
+        } catch (IllegalStateException ex) {
+            return translateDirect("console.McVersion");
         }
     }
 

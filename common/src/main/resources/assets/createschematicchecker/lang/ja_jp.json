@@ -8,7 +8,7 @@
   "config.BanTag": "バンタグ。このリスト内のタグを持つブロックがあればクリアされます。",
   "core.BanBlock": "回路図に表示したくないブロックまたはアイテム",
   "core.BanBlock2": "削除メソッドが失敗した場合、ブロックはクリアされます。",
-  "console.McVersion": "Minecraft バージョン: ${mc_version} フォージ",
+  "console.McVersion": "Minecraft バージョン:",
   "console.CscVersion": "[CSC] バージョン: v${csc_version}",
   "console.reload1": "構成を再ロードしています--",
   "console.reload2": "構成がロードされました",
