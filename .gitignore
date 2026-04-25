@@ -5,6 +5,9 @@
 *.lnk
 
 .gradle
+.idea
+.tmp
+
 build/
 
 # project run
