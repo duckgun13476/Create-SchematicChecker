@@ -18,7 +18,7 @@ public class Createschematicchecker implements ModInitializer {
     public static final String MODID = "createschematicchecker";
     public static final Logger LOGGER = LogUtils.getLogger();
     public static final String MC_VERSION = "1.18.2";
-    public static final String CSC_VERSION = "1.21.18";
+    public static final String CSC_VERSION = "0.21.18";
 
     private static final CheckBlueprint CHECK_BLUEPRINT = new CheckBlueprint(new BlueCore());
 

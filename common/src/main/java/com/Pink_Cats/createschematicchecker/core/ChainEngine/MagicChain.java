@@ -4,8 +4,6 @@ import com.Pink_Cats.createschematicchecker.lang.Message;
 import com.pinkcats.torque.layer.net.minecraft.nbt.CompoundTag;
 import com.pinkcats.torque.layer.net.minecraft.nbt.ListTag;
 import com.pinkcats.torque.layer.net.minecraft.nbt.Tag;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
@@ -20,9 +18,6 @@ import static com.Pink_Cats.createschematicchecker.core.attach.Math.StringToInt;
 import static com.Pink_Cats.createschematicchecker.lang.CSCLanguage.translateDirect;
 
 public class MagicChain {
-
-
-    private static final Logger log = LoggerFactory.getLogger(MagicChain.class);
 
     public static Map<String,Object> MagicChainClear(CompoundTag data, String chain, int find_count, String type, String idKeyIn){
         HashMap<String,Object> magicChain = new HashMap<>();

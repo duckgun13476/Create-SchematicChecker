@@ -1,7 +1,6 @@
 package com.Pink_Cats.createschematicchecker.lang;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.logging.Logger;
 
 public class mes {
     public static final String RESET = "\u001B[0m";
@@ -15,30 +14,30 @@ public class mes {
     public static final String BLACK = "\u001B[30m";
 
     public static final String LOGO = "[CL]";
-    private static final Logger LOGGER = LoggerFactory.getLogger("CreateSchematicChecker");
+    private static final Logger LOGGER = Logger.getLogger("CreateSchematicChecker");
 
     public static void blue(Object message) {
         String messageString = String.valueOf(message);
-        LOGGER.info(CYAN + LOGO + BLUE + "{}" + RESET, messageString);
+        LOGGER.info(CYAN + LOGO + BLUE + messageString + RESET);
     }
 
     public static void warn(Object message) {
         String messageString = String.valueOf(message);
-        LOGGER.warn(CYAN + LOGO + YELLOW + "{}" + RESET, messageString);
+        LOGGER.warning(CYAN + LOGO + YELLOW + messageString + RESET);
     }
 
     public static void error(Object message) {
         String messageString = String.valueOf(message);
-        LOGGER.error(CYAN + LOGO + RED + "{}" + RESET, messageString);
+        LOGGER.severe(CYAN + LOGO + RED + messageString + RESET);
     }
 
     public static void mess(Object message) {
         String messageString = String.valueOf(message);
-        LOGGER.info(CYAN + LOGO + GREEN + "{}" + RESET, messageString);
+        LOGGER.info(CYAN + LOGO + GREEN + messageString + RESET);
     }
 
     public static void mega(Object message) {
         String messageString = String.valueOf(message);
-        LOGGER.info(CYAN + LOGO + MAGENTA + "{}" + RESET, messageString);
+        LOGGER.info(CYAN + LOGO + MAGENTA + messageString + RESET);
     }
 }

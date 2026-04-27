@@ -1,7 +1,6 @@
 package com.Pink_Cats.createschematicchecker.lang;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.logging.Logger;
 
 import static com.Pink_Cats.createschematicchecker.FancyConfig.ConfigRegister.enable_debug;
 import static com.Pink_Cats.createschematicchecker.database.SingleLog.CSC_MES;
@@ -19,44 +18,44 @@ public class Message {
     public static final String BLACK = "\u001B[30m";
 
     public static final String LOGO = "[CSC]";
-    private static final Logger LOGGER = LoggerFactory.getLogger("CreateSchematicChecker");
+    private static final Logger LOGGER = Logger.getLogger("CreateSchematicChecker");
 
     public static void FD(Object message) {
         String messageString = String.valueOf(message);
-        LOGGER.info(CYAN + LOGO + BLUE + "{}" + RESET, messageString);
+        LOGGER.info(CYAN + LOGO + BLUE + messageString + RESET);
         CSC_MES.log("[INFO] " + messageString);
     }
 
     public static void FW(Object message) {
         String messageString = String.valueOf(message);
-        LOGGER.warn(CYAN + LOGO + YELLOW + "{}" + RESET, messageString);
+        LOGGER.warning(CYAN + LOGO + YELLOW + messageString + RESET);
         CSC_MES.log("[WARN] " + messageString);
         CSC_WARN.log("[WARN] " + messageString);
     }
 
     public static void FE(Object message) {
         String messageString = String.valueOf(message);
-        LOGGER.error(CYAN + LOGO + RED + "{}" + RESET, messageString);
+        LOGGER.severe(CYAN + LOGO + RED + messageString + RESET);
         CSC_MES.log("[ERROR] " + messageString);
         CSC_WARN.log("[ERROR] " + messageString);
     }
 
     public static void FM(Object message) {
         String messageString = String.valueOf(message);
-        LOGGER.info(CYAN + LOGO + GREEN + "{}" + RESET, messageString);
+        LOGGER.info(CYAN + LOGO + GREEN + messageString + RESET);
         CSC_MES.log("[INFO] " + messageString);
     }
 
     public static void FP(Object message) {
         String messageString = String.valueOf(message);
-        LOGGER.info(CYAN + LOGO + MAGENTA + "{}" + RESET, messageString);
+        LOGGER.info(CYAN + LOGO + MAGENTA + messageString + RESET);
         CSC_MES.log("[INFO] " + messageString);
     }
 
     public static void debug(Object message) {
         if (enable_debug) {
             String messageString = String.valueOf(message);
-            LOGGER.info(CYAN + "[Debug]" + MAGENTA + "{}" + RESET, messageString);
+            LOGGER.info(CYAN + "[Debug]" + MAGENTA + messageString + RESET);
             CSC_MES.log("[DevelopDebug] " + messageString);
         }
     }
