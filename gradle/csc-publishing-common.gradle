@@ -145,6 +145,12 @@ tasks.register('PublishInfo') {
     }
 }
 
+tasks.register('publishInfo') {
+    group = 'Publishing'
+    description = 'Alias for PublishInfo.'
+    dependsOn 'PublishInfo'
+}
+
 tasks.register('publishAll') {
     dependsOn 'publishCurseForge'
     dependsOn 'publishMods'

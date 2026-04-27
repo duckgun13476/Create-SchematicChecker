@@ -1,8 +1,6 @@
-import groovy.text.SimpleTemplateEngine
-
 plugins {
+    id 'base'
     id 'idea'
-    id 'net.neoforged.moddev.legacyforge' version '2.0.74'
     id 'net.darkhax.curseforgegradle' version '1.1.28'
     id 'dev.ithundxr.silk' version '0.11.15'
     id 'me.modmuss50.mod-publish-plugin' version '1.0.0'
@@ -20,10 +18,17 @@ File findSharedRootDir(File startDir) {
 }
 
 File sharedRootDir = findSharedRootDir(project.projectDir)
-boolean standaloneVariantBuild = rootProject.projectDir != sharedRootDir
+File fg5RunnerDir = new File(sharedRootDir, 'gradle-runners/fg5-csc-1.16.5')
+File fg5WrapperExecutable = new File(
+        fg5RunnerDir,
+        System.getProperty('os.name').toLowerCase().contains('windows') ? 'gradlew.bat' : 'gradlew'
+)
+
+if (!fg5WrapperExecutable.exists()) {
+    throw new GradleException("FG5 runner wrapper is missing at '${fg5WrapperExecutable}'")
+}
 
 apply from: new File(sharedRootDir, 'gradle/csc-property-loader.gradle')
-apply from: './gradle/java.gradle'
 
 ext.csc_publish_artifact_task_name = 'reobfJar'
 ext.csc_publish_artifact_relative_path = "build/libs/${package_name}-${mod_version}-forge-${minecraft_version}.jar"
@@ -33,225 +38,38 @@ ext.csc_publish_modrinth_loaders = ['forge']
 
 group = mod_group_id
 version = mod_version
-String archiveBaseName = mod_id
-String gitHash = "${calculateGitHash() + (hasUnstaged() ? '-modified' : '')}"
 
-base {
-    archivesName = mod_id
+String runnerProjectPath = ':forge-1.16.5-0.3.2g'
+
+def runnerCommandLineFor = { String taskName ->
+    [fg5WrapperExecutable.absolutePath, "${runnerProjectPath}:${taskName}"]
 }
 
-java {
-    toolchain.languageVersion = JavaLanguageVersion.of(17)
-}
-
-repositories {
-    mavenCentral()
-    maven { url = 'https://modmaven.dev' }
-    maven { url = 'https://maven.createmod.net' }
-    maven { url = 'https://maven.tterrag.com' }
-    maven { url = 'https://raw.githubusercontent.com/Fuzss/modresources/main/maven/' }
-    maven { url = 'https://maven.blamejared.com' }
-    maven {
-        name = 'CurseMaven'
-        url = 'https://www.cursemaven.com'
-        content {
-            includeGroup 'curse.maven'
+def registerRunnerTask = { String taskName, String groupName, String descriptionText, boolean attachStandardInput = false ->
+    tasks.register(taskName, Exec) {
+        group = groupName
+        description = descriptionText
+        workingDir = fg5RunnerDir
+        if (attachStandardInput) {
+            standardInput = System.in
         }
-    }
-    maven {
-        name = 'Modrinth'
-        url = 'https://api.modrinth.com/maven'
-        content {
-            includeGroup 'maven.modrinth'
-        }
-    }
-    maven {
-        url = 'https://jitpack.io'
-        content {
-            includeGroup 'com.github.llamalad7.mixinextras'
-        }
-    }
-    maven {
-        url = 'https://maven.saps.dev/minecraft'
-        content {
-            includeGroup 'dev.latvian.mods'
-            includeGroup 'dev.ftb.mods'
-        }
-    }
-    maven {
-        url = 'https://maven.architectury.dev/'
-        content {
-            includeGroup 'dev.architectury'
-        }
-    }
-    maven {
-        name = 'PinkCatsLocal'
-        url = uri('C:/F/Maven')
-    }
-    mavenLocal()
-}
-
-legacyForge {
-    version = "${minecraft_version}-${forge_version}"
-    validateAccessTransformers = false
-
-    if (file('src/main/resources/META-INF/accesstransformer.cfg').exists()) {
-        accessTransformers.from 'src/main/resources/META-INF/accesstransformer.cfg'
-    }
-
-    parchment {
-        minecraftVersion = minecraft_version
-        mappingsVersion = parchment_version
-    }
-
-    mods {
-        "${mod_id}" {
-            sourceSet sourceSets.main
-        }
-    }
-
-    runs {
-        configureEach {
-            systemProperty 'forge.logging.markers', ''
-            systemProperty 'forge.logging.console.level', 'info'
-            systemProperty 'mixin.debug.export', 'true'
-            systemProperty 'mixin.debug.verbose', 'true'
-            jvmArgument '-XX:+IgnoreUnrecognizedVMOptions'
-            jvmArgument '-XX:+AllowEnhancedClassRedefinition'
-        }
-
-        client {
-            client()
-            gameDirectory = project.file('run')
-        }
-
-        server {
-            server()
-            gameDirectory = project.file('run/server')
-            programArgument '--nogui'
-        }
-
-        data {
-            data()
-            gameDirectory = project.file('run')
-            systemProperty 'forge.logging.markers', 'REGISTRIES,REGISTRYDUMP'
-            systemProperty 'forge.logging.console.level', 'debug'
-            programArguments.addAll('--mod', mod_id as String, '--all',
-                    '--output', file('src/generated/resources').getAbsolutePath(),
-                    '--existing', file('src/main/resources').getAbsolutePath())
-        }
+        commandLine(*runnerCommandLineFor(taskName))
     }
 }
 
-sourceSets.main.java { srcDir new File(sharedRootDir, 'common/src/main/java') }
-sourceSets.main.resources { srcDir 'src/generated/resources' }
-sourceSets.main.resources { srcDir new File(sharedRootDir, 'common/src/main/resources') }
+registerRunnerTask('runClient', 'Development', 'Run the 1.16.5 Forge client through the FG5 runner.', true)
+registerRunnerTask('runServer', 'Development', 'Run the 1.16.5 Forge server through the FG5 runner.', true)
 
-dependencies {
-    implementation 'org.jetbrains:annotations:22.0.0'
-    modImplementation("com.pinkcats.torque:TorqueAPI-1.16.5-forge:1.0-SNAPSHOT") {
-        changing = true
-        transitive = false
-    }
-    modImplementation("curse.maven:create-328085:${create_file_id}")
-    modImplementation("curse.maven:flywheel-486392:${flywheel_file_id}")
-    annotationProcessor 'org.spongepowered:mixin:0.8.4:processor'
+tasks.register('reobfJar', Exec) {
+    group = 'Build'
+    description = 'Build the 1.16.5 Forge distributable jar through the FG5 runner.'
+    workingDir = fg5RunnerDir
+    commandLine(*runnerCommandLineFor('reobfJar'))
+    outputs.file(project.file(csc_publish_artifact_relative_path))
 }
 
-def templatedResourceProperties = [
-        minecraft_version      : project.findProperty('minecraft_version') ?: '',
-        minecraft_version_range: project.findProperty('minecraft_version_range') ?: '',
-        neo_version            : project.findProperty('neo_version') ?: '',
-        neo_version_range      : project.findProperty('neo_version_range') ?: '',
-        loader_version_range   : project.findProperty('loader_version_range') ?: '',
-        mod_id                 : project.findProperty('mod_id') ?: '',
-        mod_name               : project.findProperty('mod_name') ?: '',
-        mod_license            : project.findProperty('mod_license') ?: '',
-        mod_version            : project.findProperty('mod_version') ?: '',
-        csc_version            : project.findProperty('mod_version_base') ?: ((project.findProperty('mod_version') ?: '').toString().split('-', 2)[0]),
-        mod_authors            : project.findProperty('mod_authors') ?: '',
-        mod_description        : project.findProperty('mod_description') ?: '',
-        file                   : [jarVersion: project.version.toString()]
-]
-
-processResources {
-    inputs.properties(templatedResourceProperties)
-
-    filesMatching('createschematicchecker-build.properties') {
-        expand(templatedResourceProperties)
-    }
-
-    doLast {
-        def outputRoot = destinationDir
-        def engine = new SimpleTemplateEngine()
-
-        ['META-INF/mods.toml', 'pack.mcmeta'].each { path ->
-            def inputFile = file("src/main/resources/${path}")
-            if (inputFile.exists()) {
-                def outputFile = new File(outputRoot, path)
-                outputFile.parentFile.mkdirs()
-                def rendered = engine.createTemplate(inputFile.getText('UTF-8'))
-                        .make(templatedResourceProperties)
-                        .toString()
-                outputFile.setText(rendered, 'UTF-8')
-            }
-        }
-    }
+tasks.named('assemble').configure {
+    dependsOn 'reobfJar'
 }
 
-jar {
-    archiveFileName = "${package_name}-${mod_version}-forge-${minecraft_version}.jar"
-
-    from(new File(sharedRootDir, 'LICENSE.txt')) {
-        rename { "${it}_${archiveBaseName}" }
-    }
-
-    manifest.attributes([
-            'MixinConfigs': 'createschematicchecker.mixins.json',
-            'Git-Hash'    : gitHash
-    ])
-}
-
-reobfJar {
-    archiveFileName = "${package_name}-${mod_version}-forge-${minecraft_version}.jar"
-}
-
-if (!standaloneVariantBuild) {
-    apply from: new File(sharedRootDir, 'gradle/csc-publishing-common.gradle')
-} else {
-    tasks.register('PublishInfo') {
-        group = 'Publishing'
-        doLast {
-            println "Standalone build: publishing metadata is only available from the repository root build."
-        }
-    }
-    tasks.register('publishAll') {
-        group = 'Publishing'
-    }
-}
-
-String calculateGitHash() {
-    try {
-        def output = providers.exec {
-            commandLine('git', 'rev-parse', 'HEAD')
-        }
-        return output.standardOutput.asText.get().trim()
-    } catch (Throwable ignored) {
-        return 'unknown'
-    }
-}
-
-boolean hasUnstaged() {
-    try {
-        def output = providers.exec {
-            commandLine('git', 'status', '--porcelain')
-        }
-        String result = output.standardOutput.asText.get().replace('/M gradlew(\\.bat)?/', '').trim()
-        if (!result.isEmpty()) {
-            println("Found stageable results:\n ${result}\n")
-        }
-        return !result.isEmpty()
-    } catch (Throwable ignored) {
-        return false
-    }
-}
+apply from: new File(sharedRootDir, 'gradle/csc-publishing-common.gradle')
