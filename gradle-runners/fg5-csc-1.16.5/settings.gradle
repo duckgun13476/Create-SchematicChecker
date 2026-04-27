@@ -10,7 +10,10 @@ pluginManagement {
 
 rootProject.name = 'Create-SchematicChecker-FG5'
 
+include 'forge-1.15.2-0.3.1'
 include 'forge-1.16.5-0.3.2g'
 
+project(':forge-1.15.2-0.3.1').projectDir = file('../../project/forge/1.15.2-0.3.1')
+project(':forge-1.15.2-0.3.1').buildFileName = 'build-fg5.gradle'
 project(':forge-1.16.5-0.3.2g').projectDir = file('../../project/forge/1.16.5-0.3.2g')
 project(':forge-1.16.5-0.3.2g').buildFileName = 'build-fg5.gradle'

@@ -309,7 +309,7 @@ public class SimpleTomlEditor {
             for (int i = 0; i < FindKey+1; i++) {
                 title.append(keyParts[i]).append(".");
             }
-            if (!title.isEmpty()) {
+            if (title.length() > 0) {
                 title.setLength(title.length() - 1);
             }
             //Message.FW("Title key:  " + title);

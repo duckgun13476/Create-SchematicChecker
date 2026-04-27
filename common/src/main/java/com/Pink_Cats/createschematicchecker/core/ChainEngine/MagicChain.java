@@ -39,7 +39,8 @@ public class MagicChain {
         for (Object tag : ResultCompoundTag) {
             if (type.equals("id"))
                 {
-                    if (tag instanceof CompoundTag tag1) {
+                    if (tag instanceof CompoundTag) {
+                        CompoundTag tag1 = (CompoundTag) tag;
                         find_count = SweeperIfHasId(tag1, find_count, 2 + 3);  //3 allow deep count
                         if (find_count == -100) {
                             Message.FE(translateDirect("check.csc.cheat.filter"));
@@ -56,7 +57,8 @@ public class MagicChain {
                     for (int index = 1; index < operate_chain.length; index++) {
                         String[] knife = KnifeSplit(operate_chain[index]);
                         if (operate_chain[index].contains("clear")) {
-                            if (tag instanceof CompoundTag tag1) {
+                            if (tag instanceof CompoundTag) {
+                                CompoundTag tag1 = (CompoundTag) tag;
                                 String S_result = tag1.getCompound(knife[1]).toString();
                                 int totalCount = CountToClear(S_result,ban_block);
                                 find_count = find_count - totalCount;
@@ -65,7 +67,8 @@ public class MagicChain {
                         }
 
                         if (operate_chain[index].contains("replace")) {
-                            if (tag instanceof CompoundTag tag1) {
+                            if (tag instanceof CompoundTag) {
+                                CompoundTag tag1 = (CompoundTag) tag;
                                 tag1.put(knife[1], TagString(knife[2]));
                             }
                         }
@@ -77,14 +80,24 @@ public class MagicChain {
 
 
                             int ActualCount = 0;
-                            if (tag instanceof CompoundTag tag1) {
+                            if (tag instanceof CompoundTag) {
+                                CompoundTag tag1 = (CompoundTag) tag;
                                 Tag res = tag1.get(knife[1]);
                                 ActualCount = StringToInt(Objects.requireNonNull(res).toString());
-                            } else if (tag instanceof int[] tag1) {
+                            } else if (tag instanceof int[]) {
+                                int[] tag1 = (int[]) tag;
                                 switch (knife[1]) {
-                                    case "X" -> ActualCount = tag1[0];
-                                    case "Y" -> ActualCount = tag1[1];
-                                    case "Z" -> ActualCount = tag1[2];
+                                    case "X":
+                                        ActualCount = tag1[0];
+                                        break;
+                                    case "Y":
+                                        ActualCount = tag1[1];
+                                        break;
+                                    case "Z":
+                                        ActualCount = tag1[2];
+                                        break;
+                                    default:
+                                        break;
                                 }
                             } else {
                                 //Message.debug(Arrays.toString(tag));
@@ -94,26 +107,48 @@ public class MagicChain {
                             try {
 
                                 if (ActualCount > UpLimit) {
-                                    if (tag instanceof CompoundTag tag1)
+                                    if (tag instanceof CompoundTag) {
+                                        CompoundTag tag1 = (CompoundTag) tag;
                                         tag1.put(knife[1], TagInt(UpLimit));
+                                    }
 
-                                    if (tag instanceof int[] tag1){
+                                    if (tag instanceof int[]){
+                                        int[] tag1 = (int[]) tag;
                                         switch (knife[1]) {
-                                            case "X" ->  tag1[0] = UpLimit;
-                                            case "Y" ->  tag1[1] = UpLimit;
-                                            case "Z" ->  tag1[2] = UpLimit;
+                                            case "X":
+                                                tag1[0] = UpLimit;
+                                                break;
+                                            case "Y":
+                                                tag1[1] = UpLimit;
+                                                break;
+                                            case "Z":
+                                                tag1[2] = UpLimit;
+                                                break;
+                                            default:
+                                                break;
                                         }
                                     }
 
                                 } else if (ActualCount < DownLimit) {
-                                    if (tag instanceof CompoundTag tag1)
+                                    if (tag instanceof CompoundTag) {
+                                        CompoundTag tag1 = (CompoundTag) tag;
                                         tag1.put(knife[1], TagInt(DownLimit));
+                                    }
 
-                                    if (tag instanceof int[] tag1){
+                                    if (tag instanceof int[]){
+                                        int[] tag1 = (int[]) tag;
                                         switch (knife[1]) {
-                                            case "X" ->  tag1[0] = DownLimit;
-                                            case "Y" ->  tag1[1] = DownLimit;
-                                            case "Z" ->  tag1[2] = DownLimit;
+                                            case "X":
+                                                tag1[0] = DownLimit;
+                                                break;
+                                            case "Y":
+                                                tag1[1] = DownLimit;
+                                                break;
+                                            case "Z":
+                                                tag1[2] = DownLimit;
+                                                break;
+                                            default:
+                                                break;
                                         }
                                     }
 
@@ -184,7 +219,8 @@ public class MagicChain {
                     //}
 
 
-                    if (TagItem instanceof CompoundTag CompoundTagItem){
+                    if (TagItem instanceof CompoundTag){
+                        CompoundTag CompoundTagItem = (CompoundTag) TagItem;
                         if ( IsArrayList ) {
 
 

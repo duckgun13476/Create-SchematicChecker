@@ -496,7 +496,7 @@ public class ConfigRegister {
         tomlEditor.relocateKeyToParentSectionIfNeeded(key);
         List<String> comments = Arrays.stream(commentKeys)
                 .map(translateKey -> CommitBreak.equals(translateKey) ? CommitBreak : translateDirect(translateKey))
-                .toList();
+                .collect(java.util.stream.Collectors.toList());
         tomlEditor.syncCommentsAboveKey(key, comments);
     }
 

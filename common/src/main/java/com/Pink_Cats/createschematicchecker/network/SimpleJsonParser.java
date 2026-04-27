@@ -316,16 +316,16 @@ public class SimpleJsonParser {
     }
 
     //json
-    private static final String INITIAL_JSON_CONTENT = """
-            {
-              "id": [
-                ["minecraft:item", "path.path.$list"]
-              ],
-              "operate": [
-                ["create:dirt", "path.path.$list,para", "operate.limit$para$0$4"],
-                ["create:item", "path.path.para", "operate.clear$para"]
-              ]
-            }""";
+    private static final String INITIAL_JSON_CONTENT =
+            "{\n"
+                    + "  \"id\": [\n"
+                    + "    [\"minecraft:item\", \"path.path.$list\"]\n"
+                    + "  ],\n"
+                    + "  \"operate\": [\n"
+                    + "    [\"create:dirt\", \"path.path.$list,para\", \"operate.limit$para$0$4\"],\n"
+                    + "    [\"create:item\", \"path.path.para\", \"operate.clear$para\"]\n"
+                    + "  ]\n"
+                    + "}";
 
     /**
      * 检查文件是否存在，不存在则创建并写入初始JSON内容
