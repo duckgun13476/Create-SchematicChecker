@@ -225,7 +225,7 @@ jar {
 
 }
 
-apply from: rootProject.file("gradle/csc-publishing-common.gradle")
+apply from: rootProject.file("gradle/allwork/publishing.gradle")
 
 
 

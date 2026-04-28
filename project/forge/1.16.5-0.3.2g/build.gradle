@@ -72,4 +72,4 @@ tasks.named('assemble').configure {
     dependsOn 'reobfJar'
 }
 
-apply from: new File(sharedRootDir, 'gradle/csc-publishing-common.gradle')
+apply from: new File(sharedRootDir, 'gradle/allwork/publishing.gradle')

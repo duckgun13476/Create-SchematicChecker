@@ -1,9 +1,12 @@
 
 
 ## 1.21.18-release
-1. New layer for muli version support.
-2. Fix a bug about create filter.
-3. New checker for Create:aeronautics
+1. Reworked the project structure for multi-version support.
+2. Added support for Forge 1.14.4, 1.15.2, 1.16.5, 1.17.1, 1.18.2, 1.19.2, and 1.20.1.
+3. Added support for Fabric 1.18.2, 1.19.2, 1.20.1, and 1.21.1.
+4. Added support for NeoForge 1.21.1.
+5. Fixed an issue in the Create filter removal logic.
+6. Added an experimental checker for Create: Aeronautics
 
 
 ## 0.21.18-release

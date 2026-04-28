@@ -139,7 +139,7 @@ remapJar {
     archiveFileName = "${package_name}-${mod_version}-fabric-${minecraft_version}.jar"
 }
 
-apply from: rootProject.file("gradle/csc-publishing-common.gradle")
+apply from: rootProject.file("gradle/allwork/publishing.gradle")
 
 publishing {
     publications {

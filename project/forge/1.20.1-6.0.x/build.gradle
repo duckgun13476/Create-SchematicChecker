@@ -301,7 +301,7 @@ reobfJar {
     archiveFileName = "${package_name}-${mod_version}-forge-${minecraft_version}.jar"
 }
 
-apply from: rootProject.file("gradle/csc-publishing-common.gradle")
+apply from: rootProject.file("gradle/allwork/publishing.gradle")
 
 
 

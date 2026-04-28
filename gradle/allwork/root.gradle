@@ -1,0 +1,38 @@
+tasks.register('allworkPublishInfoAllVersions') {
+    group = 'Allwork'
+    description = 'Root allwork alias for the global publish info aggregate.'
+    dependsOn ':global:allworkPublishInfoAllVersions'
+}
+
+tasks.register('publishInfoAllVersions') {
+    group = 'Publishing'
+    dependsOn 'allworkPublishInfoAllVersions'
+}
+
+tasks.register('allworkPublishAllVersions') {
+    group = 'Allwork'
+    description = 'Root allwork alias for the global publish aggregate.'
+    dependsOn ':global:allworkPublishAllVersions'
+}
+
+tasks.register('publishAllVersions') {
+    group = 'Publishing'
+    dependsOn 'allworkPublishAllVersions'
+}
+
+tasks.register('allworkPackageAllVersions') {
+    group = 'Allwork'
+    description = 'Root allwork alias for the global package aggregate.'
+    dependsOn ':global:allworkPackageAllVersions'
+}
+
+tasks.register('allworkJarJarAllVersions') {
+    group = 'Allwork'
+    description = 'Alias for allworkPackageAllVersions.'
+    dependsOn 'allworkPackageAllVersions'
+}
+
+tasks.register('packageAllVersions') {
+    group = 'Publishing'
+    dependsOn 'allworkPackageAllVersions'
+}

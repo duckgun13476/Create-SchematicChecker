@@ -18,20 +18,7 @@ allprojects {
     }
 }
 
-tasks.register('publishInfoAllVersions') {
-    group = 'Publishing'
-    dependsOn ':global:publishInfoAllVersions'
-}
-
-tasks.register('publishAllVersions') {
-    group = 'Publishing'
-    dependsOn ':global:publishAllVersions'
-}
-
-tasks.register('packageAllVersions') {
-    group = 'Publishing'
-    dependsOn ':global:packageAllVersions'
-}
+apply from: rootProject.file('gradle/allwork/root.gradle')
 
 tasks.register('runClientAllVersions') {
     group = 'Development'

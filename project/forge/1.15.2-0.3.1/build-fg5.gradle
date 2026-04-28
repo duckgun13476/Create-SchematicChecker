@@ -284,16 +284,8 @@ jar {
     finalizedBy 'reobfJar'
 }
 
-tasks.register('PublishInfo') {
-    group = 'Publishing'
-    doLast {
-        println "FG5 runner build: publishing metadata is only available from the repository root build."
-    }
-}
-
-tasks.register('publishAll') {
-    group = 'Publishing'
-}
+ext.csc_allwork_publish_info_message = 'FG5 runner build: publishing metadata is only available from the repository root build.'
+apply from: new File(sharedRootDir, 'gradle/allwork/standalone-publishing.gradle')
 
 String calculateGitHash() {
     try {

@@ -1,0 +1,90 @@
+def publishableProjects = rootProject.subprojects.findAll { project ->
+    project.name ==~ /^(fabric|forge|neoforge)-.*/
+}
+
+gradle.projectsEvaluated {
+    Task previousCurseForgeTask = null
+    Task previousModrinthTask = null
+
+    publishableProjects.each { targetProject ->
+        Task curseForgeTask = targetProject.tasks.findByName('publishCurseForge')
+        Task modrinthTask = targetProject.tasks.findByName('publishModrinth')
+        Task publishModsTask = targetProject.tasks.findByName('publishMods')
+
+        if (curseForgeTask != null) {
+            if (previousCurseForgeTask != null) {
+                curseForgeTask.mustRunAfter(previousCurseForgeTask)
+            }
+            if (previousModrinthTask != null) {
+                curseForgeTask.mustRunAfter(previousModrinthTask)
+            }
+        }
+
+        if (modrinthTask != null) {
+            if (curseForgeTask != null) {
+                modrinthTask.mustRunAfter(curseForgeTask)
+            }
+            if (previousCurseForgeTask != null) {
+                modrinthTask.mustRunAfter(previousCurseForgeTask)
+            }
+            if (previousModrinthTask != null) {
+                modrinthTask.mustRunAfter(previousModrinthTask)
+            }
+        }
+
+        if (publishModsTask != null && modrinthTask != null) {
+            publishModsTask.mustRunAfter(modrinthTask)
+        }
+
+        if (curseForgeTask != null) {
+            previousCurseForgeTask = curseForgeTask
+        }
+        if (modrinthTask != null) {
+            previousModrinthTask = modrinthTask
+        }
+    }
+}
+
+tasks.register('allworkPublishInfoAllVersions') {
+    group = 'Allwork'
+    description = 'Print publish info for all publishable versions through allwork aliases.'
+    dependsOn publishableProjects.collect { targetProject -> "${targetProject.path}:allworkPublishInfo" }
+}
+
+tasks.register('publishInfoAllVersions') {
+    group = 'Publishing'
+    description = 'Print publish info for all publishable versions.'
+    dependsOn 'allworkPublishInfoAllVersions'
+}
+
+tasks.register('allworkPublishAllVersions') {
+    group = 'Allwork'
+    description = 'Publish all publishable versions through allwork aliases.'
+    dependsOn publishableProjects.collect { targetProject -> "${targetProject.path}:allworkPublishAll" }
+}
+
+tasks.register('publishAllVersions') {
+    group = 'Publishing'
+    description = 'Publish all publishable versions.'
+    dependsOn 'allworkPublishAllVersions'
+}
+
+tasks.register('allworkPackageAllVersions') {
+    group = 'Allwork'
+    description = 'Build final distributable jars for all publishable versions through allwork aliases.'
+    dependsOn publishableProjects.collect { targetProject ->
+        "${targetProject.path}:allworkJarJar"
+    }
+}
+
+tasks.register('allworkJarJarAllVersions') {
+    group = 'Allwork'
+    description = 'Alias for allworkPackageAllVersions.'
+    dependsOn 'allworkPackageAllVersions'
+}
+
+tasks.register('packageAllVersions') {
+    group = 'Publishing'
+    description = 'Build final distributable jars for all publishable versions.'
+    dependsOn 'allworkPackageAllVersions'
+}
