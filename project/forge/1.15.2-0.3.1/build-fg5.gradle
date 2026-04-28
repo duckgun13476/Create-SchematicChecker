@@ -8,7 +8,6 @@ buildscript {
     }
     dependencies {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
-        classpath 'gradle.plugin.com.github.johnrengelman:shadow:7.1.2'
         classpath 'org.spongepowered:mixingradle:0.7-SNAPSHOT'
     }
 }
@@ -19,7 +18,6 @@ plugins {
 }
 
 apply plugin: 'net.minecraftforge.gradle'
-apply plugin: 'com.github.johnrengelman.shadow'
 apply plugin: 'org.spongepowered.mixin'
 
 File findSharedRootDir(File startDir) {
@@ -65,10 +63,6 @@ targetCompatibility = JavaVersion.VERSION_11
 
 configurations.configureEach {
     resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
-}
-
-configurations {
-    legacyNashorn
 }
 
 mixin {
@@ -124,14 +118,6 @@ repositories {
     mavenLocal()
 }
 
-def relocateLegacyNashorn = tasks.register('relocateLegacyNashorn', com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar) {
-    archiveBaseName = 'legacy-nashorn-compat'
-    archiveClassifier = ''
-    archiveVersion = '15.4'
-    configurations = [project.configurations.legacyNashorn]
-    relocate 'org.openjdk.nashorn', 'jdk.nashorn'
-}
-
 minecraft {
     mappings channel: 'snapshot', version: '20200514-1.15.1'
 
@@ -183,8 +169,6 @@ dependencies {
 
     implementation 'org.jetbrains:annotations:22.0.0'
     implementation fg.deobf("curse.maven:create-328085:${create_file_id}")
-    legacyNashorn 'org.openjdk.nashorn:nashorn-core:15.4'
-    runtimeOnly files(tasks.named('relocateLegacyNashorn'))
 
     annotationProcessor 'org.spongepowered:mixin:0.8.4:processor'
 }
@@ -269,16 +253,11 @@ compileJava {
 }
 
 jar {
-    dependsOn relocateLegacyNashorn
     archiveFileName = "${package_name}-${mod_version}-forge-${minecraft_version}.jar"
 
     from(new File(sharedRootDir, 'LICENSE.txt')) {
         rename { "${it}_${archiveBaseName}" }
     }
-
-    from({
-        zipTree(relocateLegacyNashorn.get().archiveFile.get().asFile)
-    })
 
     manifest.attributes([
             'MixinConfigs': 'createschematicchecker.mixins.json',
