@@ -69,6 +69,7 @@ dependencies {
         exclude group: 'net.fabricmc.fabric-api'
         exclude group: 'net.fabricmc', module: 'fabric-loader'
     }
+    include("com.pinkcats.torque:TorqueAPI-1.19.2-fabric:${torque_api_version}")
 
     modImplementation("com.simibubi.create:${createFabricArtifactId}:${create_fabric_version}") {
         changing = true
@@ -92,6 +93,10 @@ if (generatedResourcesDir.exists()) {
 loom {
     if (accessWidenerFile.exists()) {
         accessWidenerPath = accessWidenerFile
+    }
+
+    mixin {
+        add sourceSets.main, "createschematicchecker.refmap.json"
     }
 
     runs {

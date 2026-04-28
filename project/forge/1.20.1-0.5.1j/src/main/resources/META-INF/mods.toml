@@ -27,7 +27,7 @@ side = "BOTH"
 [[dependencies."${mod_id}"]]
 modId = "torqueapi"
 mandatory = true
-versionRange = "[1.0-SNAPSHOT,)"
+versionRange = "${torque_api_version_range}"
 ordering = "NONE"
 side = "BOTH"
 

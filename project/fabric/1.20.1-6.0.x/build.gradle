@@ -66,6 +66,7 @@ dependencies {
     modImplementation("com.pinkcats.torque:TorqueAPI-1.20.1-fabric:${torque_api_version}") {
         changing = true
     }
+    include("com.pinkcats.torque:TorqueAPI-1.20.1-fabric:${torque_api_version}")
 
     modImplementation("com.simibubi.create:${createFabricArtifactId}:${create_fabric_version}") {
         changing = true
@@ -83,6 +84,10 @@ if (generatedResourcesDir.exists()) {
 loom {
     if (accessWidenerFile.exists()) {
         accessWidenerPath = accessWidenerFile
+    }
+
+    mixin {
+        add sourceSets.main, "createschematicchecker.refmap.json"
     }
 
     runs {

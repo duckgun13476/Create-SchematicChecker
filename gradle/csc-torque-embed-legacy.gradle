@@ -1,0 +1,55 @@
+def embeddedTorqueNotation = project.findProperty('csc_torque_embed_notation')?.toString()?.trim()
+if (!embeddedTorqueNotation) {
+    throw new GradleException("Missing csc_torque_embed_notation for project '${project.path}'")
+}
+
+def embeddedTorqueConfiguration = configurations.maybeCreate('cscTorqueEmbedded')
+def embeddedTorqueOutputDir = layout.buildDirectory.dir('generated/cscTorqueContainedDeps')
+
+embeddedTorqueConfiguration.canBeConsumed = false
+embeddedTorqueConfiguration.canBeResolved = true
+embeddedTorqueConfiguration.transitive = false
+
+dependencies {
+    cscTorqueEmbedded(embeddedTorqueNotation) {
+        changing = true
+        transitive = false
+    }
+}
+
+tasks.register('prepareEmbeddedTorqueApi') {
+    inputs.files(embeddedTorqueConfiguration)
+    outputs.dir(embeddedTorqueOutputDir)
+
+    doLast {
+        def outputRoot = embeddedTorqueOutputDir.get().asFile
+        delete(outputRoot)
+
+        def librariesDir = new File(outputRoot, 'META-INF/libraries')
+        librariesDir.mkdirs()
+
+        def embeddedJar = embeddedTorqueConfiguration.singleFile
+        def embeddedJarName = embeddedJar.name
+
+        copy {
+            from embeddedJar
+            into librariesDir
+        }
+
+        new File(librariesDir, "${embeddedJarName}.meta").setText(
+                "Manifest-Version: 1.0\r\n" +
+                        "Maven-Artifact: ${embeddedTorqueNotation}\r\n" +
+                        "Timestamp: ${embeddedJar.lastModified()}\r\n",
+                'UTF-8'
+        )
+    }
+}
+
+tasks.named('jar').configure {
+    dependsOn tasks.named('prepareEmbeddedTorqueApi')
+    from(embeddedTorqueOutputDir)
+
+    doFirst {
+        manifest.attributes('ContainedDeps': embeddedTorqueConfiguration.singleFile.name)
+    }
+}

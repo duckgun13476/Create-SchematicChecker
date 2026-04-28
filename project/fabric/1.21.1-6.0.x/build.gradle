@@ -106,6 +106,10 @@ loom {
         accessWidenerPath = accessWidenerFile
     }
 
+    mixin {
+        add sourceSets.main, "createschematicchecker.refmap.json"
+    }
+
     runs {
         client {
             client()

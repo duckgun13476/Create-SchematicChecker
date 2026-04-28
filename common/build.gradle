@@ -2,12 +2,19 @@ plugins {
     id 'java'
 }
 
+apply from: rootProject.file('gradle/csc-property-loader.gradle')
+
+def torqueApiVersion = project.findProperty('torque_api_version')
+if (!torqueApiVersion) {
+    throw new GradleException('Missing torque_api_version property')
+}
+
 java {
     withSourcesJar()
 }
 
 dependencies {
-    compileOnly("com.pinkcats.torque:TorqueAPI-layer-api:1.0-SNAPSHOT") {
+    compileOnly("com.pinkcats.torque:TorqueAPI-layer-api:${torqueApiVersion}") {
         changing = true
     }
     compileOnly 'com.google.code.gson:gson:2.10.1'

@@ -184,6 +184,9 @@ sourceSets.main.java { srcDir rootProject.file('common/src/main/java') }
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 sourceSets.main.resources { srcDir rootProject.file('common/src/main/resources') }
 
+ext.csc_torque_embed_notation = "com.pinkcats.torque:TorqueAPI-1.19.2-forge:${torque_api_version}"
+apply from: rootProject.file("gradle/csc-torque-embed-modern.gradle")
+
 repositories {
     // Put repositories for dependencies here
     // ForgeGradle automatically adds the Forge maven and Maven Central for you
@@ -195,10 +198,10 @@ repositories {
 }
 
 dependencies {
-    compileOnly("com.pinkcats.torque:TorqueAPI-layer-api:1.0-SNAPSHOT") {
+    compileOnly("com.pinkcats.torque:TorqueAPI-layer-api:${torque_api_version}") {
         changing = true
     }
-    implementation("com.pinkcats.torque:TorqueAPI-1.19.2-forge:1.0-SNAPSHOT") {
+    implementation("com.pinkcats.torque:TorqueAPI-1.19.2-forge:${torque_api_version}") {
         changing = true
         transitive = false
     }
@@ -245,6 +248,7 @@ def templatedResourceProperties = [
         neo_version            : project.findProperty('neo_version') ?: '',
         neo_version_range      : project.findProperty('neo_version_range') ?: '',
         loader_version_range   : project.findProperty('loader_version_range') ?: '',
+        torque_api_version_range: "[${torque_api_version},)",
         mod_id                 : project.findProperty('mod_id') ?: '',
         mod_name               : project.findProperty('mod_name') ?: '',
         mod_license            : project.findProperty('mod_license') ?: '',
