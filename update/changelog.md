@@ -1,3 +1,10 @@
+
+
+## 1.21.20-release-hotfix
+1. Fix fabric map mistake (crash).
+2. Add support mark for Quilt (need fabric api and choose ignore java versions).
+3. Fix script problem (1.15.2)
+
 ## 1.21.19-release-hotfix
 1. Fix layer not in the release version.
 

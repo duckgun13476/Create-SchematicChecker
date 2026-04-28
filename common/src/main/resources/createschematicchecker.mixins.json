@@ -3,7 +3,7 @@
   "minVersion": "0.8",
   "package": "com.Pink_Cats.createschematicchecker.mixin",
   "compatibilityLevel": "JAVA_17",
-  "refmap": "createschematicchecker.refmap.json",
+  "refmap": "${mixin_refmap}",
   "mixins": [
     "handleFinishedUploadMixin",
     "OpenEndedPipeMixin"

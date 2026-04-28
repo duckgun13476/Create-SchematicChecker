@@ -106,10 +106,6 @@ loom {
         accessWidenerPath = accessWidenerFile
     }
 
-    mixin {
-        add sourceSets.main, "createschematicchecker.refmap.json"
-    }
-
     runs {
         client {
             client()
@@ -134,12 +130,13 @@ processResources {
             mod_license         : project.findProperty('mod_license') ?: '',
             minecraft_version   : project.findProperty('minecraft_version') ?: '',
             loader_version      : project.findProperty('loader_version') ?: '',
-            fabric_api_version  : project.findProperty('fabric_api_version') ?: ''
+            fabric_api_version  : project.findProperty('fabric_api_version') ?: '',
+            mixin_refmap        : "${project.name}-refmap.json"
     ]
 
     inputs.properties(properties)
 
-    filesMatching('fabric.mod.json') {
+    filesMatching(['fabric.mod.json', 'createschematicchecker.mixins.json']) {
         expand(properties)
     }
 }

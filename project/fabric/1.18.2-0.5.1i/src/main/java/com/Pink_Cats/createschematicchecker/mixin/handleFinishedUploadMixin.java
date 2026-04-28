@@ -10,7 +10,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.state.BlockState;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -18,7 +17,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 import java.util.Map;
 
@@ -42,27 +40,16 @@ public abstract class handleFinishedUploadMixin {
     private void onHead(ServerPlayer player, String schematic, CallbackInfo ci) {
         TL_PLAYER.set(player);
         TL_ID.set(player.getGameProfile().getName() + "/" + schematic);
+        ServerSchematicLoader.SchematicUploadEntry entry = activeUploads.get(TL_ID.get());
+        if (entry != null) {
+            TL_WORLD.set(entry.world);
+            TL_POS.set(entry.tablePos);
+        }
         Message.diag("[Diag][UploadMixin][HEAD] player=" + player.getGameProfile().getName()
                 + ", schematic=" + schematic
-                + ", composedId=" + TL_ID.get());
-    }
-
-    @Inject(
-            method = "handleFinishedUpload",
-            at = @At(
-                    value = "INVOKE",
-                    target = "Lcom/simibubi/create/content/schematics/ServerSchematicLoader;getTable(Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;)Lcom/simibubi/create/content/schematics/table/SchematicTableBlockEntity;",
-                    shift = At.Shift.BEFORE
-            ),
-            locals = LocalCapture.CAPTURE_FAILSOFT,
-            remap = false
-    )
-    private void captureWorldPos(ServerPlayer player, String schematic, CallbackInfo ci, String playerSchematicId, ServerSchematicLoader.SchematicUploadEntry removed, Level world, BlockPos pos, BlockState blockState) {
-        TL_WORLD.set(world);
-        TL_POS.set(pos);
-        Message.diag("[Diag][UploadMixin][POS] playerSchematicId=" + playerSchematicId
-                + ", world=" + (world == null ? "null" : world.dimension().location())
-                + ", pos=" + pos);
+                + ", composedId=" + TL_ID.get()
+                + ", world=" + (entry == null || entry.world == null ? "null" : entry.world.dimension().location())
+                + ", pos=" + (entry == null ? "null" : entry.tablePos));
     }
 
     @Redirect(

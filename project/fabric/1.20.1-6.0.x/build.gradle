@@ -14,8 +14,8 @@ apply from: rootProject.file("gradle/csc-common.gradle")
 ext.csc_publish_artifact_task_name = 'remapJar'
 ext.csc_publish_artifact_relative_path = "build/libs/${package_name}-${mod_version}-fabric-${minecraft_version}.jar"
 ext.csc_publish_loader_id = 'fabric'
-ext.csc_publish_curseforge_loaders = ['Fabric']
-ext.csc_publish_modrinth_loaders = ['fabric']
+ext.csc_publish_curseforge_loaders = ['Fabric', 'Quilt']
+ext.csc_publish_modrinth_loaders = ['fabric', 'quilt']
 
 group = mod_group_id
 version = mod_version
@@ -86,10 +86,6 @@ loom {
         accessWidenerPath = accessWidenerFile
     }
 
-    mixin {
-        add sourceSets.main, "createschematicchecker.refmap.json"
-    }
-
     runs {
         client {
             client()
@@ -114,12 +110,13 @@ processResources {
             mod_license         : project.findProperty('mod_license') ?: '',
             minecraft_version   : project.findProperty('minecraft_version') ?: '',
             loader_version      : project.findProperty('loader_version') ?: '',
-            fabric_api_version  : project.findProperty('fabric_api_version') ?: ''
+            fabric_api_version  : project.findProperty('fabric_api_version') ?: '',
+            mixin_refmap        : "${project.name}-refmap.json"
     ]
 
     inputs.properties(properties)
 
-    filesMatching('fabric.mod.json') {
+    filesMatching(['fabric.mod.json', 'createschematicchecker.mixins.json']) {
         expand(properties)
     }
 }
