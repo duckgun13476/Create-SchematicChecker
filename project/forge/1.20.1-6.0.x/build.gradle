@@ -211,6 +211,7 @@ dependencies {
     modImplementation("com.tterrag.registrate:Registrate:${registrate_version}")
     compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:0.4.1"))
     modImplementation("net.createmod.ponder:Ponder-Forge-${minecraft_version}:${ponder_version}")
+    modImplementation("dev.engine-room.flywheel:flywheel-forge-${flywheel_minecraft_version}:${flywheel_version}")
     modImplementation("curse.maven:create-328085:7178761")
     //Quark
     modImplementation("curse.maven:lets-do-vinery-704465:6965751")

@@ -4,10 +4,12 @@ import com.Pink_Cats.createschematicchecker.lang.Message;
 
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.nio.charset.StandardCharsets;
 
 public class SingleLog {
     private static final String DEFAULT_LOG_PATH = "config/Log/CSC_Record.log";
@@ -33,7 +35,10 @@ public class SingleLog {
 
     private void initWriter() {
         try {
-            this.writer = new BufferedWriter(new FileWriter(this.logFile, true));
+            this.writer = new BufferedWriter(new OutputStreamWriter(
+                    new FileOutputStream(this.logFile, true),
+                    StandardCharsets.UTF_8
+            ));
         } catch (IOException e) {
             System.err.println("Failed to initialize log writer for path: " + this.logFile.getAbsolutePath());
             e.printStackTrace();

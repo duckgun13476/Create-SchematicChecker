@@ -116,6 +116,13 @@ repositories {
             includeGroup "curse.maven"
         }
     }
+    maven {
+        name = "Modrinth"
+        url = "https://api.modrinth.com/maven"
+        content {
+            includeGroup "maven.modrinth"
+        }
+    }
 }
 
 
@@ -128,15 +135,17 @@ dependencies {
         transitive = false
     }
 
-    //implementation("com.simibubi.create:create-${minecraft_version}:${create_version}:slim") { transitive = false }
+    implementation("com.simibubi.create:create-${minecraft_version}:6.0.10-281:slim") { transitive = false }
     //implementation("net.createmod.ponder:Ponder-NeoForge-${minecraft_version}:${ponder_version}")
     //compileOnly("dev.engine-room.flywheel:flywheel-neoforge-api-${minecraft_version}:${flywheel_version}")
-    //runtimeOnly("dev.engine-room.flywheel:flywheel-neoforge-${minecraft_version}:${flywheel_version}")
-    compileOnly("com.tterrag.registrate:Registrate:MC1.21-1.3.0+67")
+    runtimeOnly("dev.engine-room.flywheel:flywheel-neoforge-${minecraft_version}:${flywheel_version}")
+    implementation("com.tterrag.registrate:Registrate:${registrate_version}")
     implementation "curse.maven:copycats-968398:6650033"
 
-    implementation "curse.maven:create-328085:7408951"
-    implementation "net.createmod.ponder:ponder-neoforge:1.0.81+mc1.21.1"
+    implementation "curse.maven:sable-1312371:8007005"
+    implementation "maven.modrinth:create-aeronautics:1.2.1+mc1.21.1"
+
+    implementation "net.createmod.ponder:ponder-neoforge:1.0.82+mc1.21.1"
 
 
     compileOnly("mezz.jei:jei-${minecraft_version}-neoforge-api:${jei_version}")

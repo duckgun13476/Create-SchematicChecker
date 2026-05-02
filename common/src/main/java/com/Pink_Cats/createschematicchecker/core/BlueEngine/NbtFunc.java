@@ -685,6 +685,7 @@ public class NbtFunc {
         boolean IsNotMatch  = false;
         Map<String, Object> result = new HashMap<>();
         String beforeData = data == null ? "null" : data.toString();
+        String blockHandleLogPrefix = "[BaseBlockHandle][SEQ=" + (sequence + 1) + "] ";
 
         if (type.equals("entity")) {
 
@@ -756,6 +757,7 @@ public class NbtFunc {
             if (white_list_mod_enable){
                 if (!isIsWhiteListMod(id)) {
                     //Clear because not need!
+                    Message.debug(blockHandleLogPrefix + "Blocked by whitelist mod filter: id=" + id);
                     data = Nbt.newCompoundTag();
                 }
             }
@@ -764,6 +766,9 @@ public class NbtFunc {
 
 
             if (HasBanBlock) {
+                if (isInBanBlock(id)) {
+                    Message.debug(blockHandleLogPrefix + "Blocked by ban list: id=" + id);
+                }
                 MapData = ClearBanBlock(data,"block",sequence,PaletteBlockData);
                 data = S_tag(MapData.get("Data"));
                 IsNotMatch = S_bool(MapData.get("IsNotMatch")) || IsNotMatch;
@@ -774,6 +779,7 @@ public class NbtFunc {
             if (white_list_mod_enable){
                 if (!isIsWhiteListMod(id)) {
                     //Clear because not need!
+                    Message.debug(blockHandleLogPrefix + "Blocked by whitelist mod filter: palette id=" + id);
                     CompoundTag Properties = null;
                     if (data != null) {
                         Properties = data.getCompound("Properties");
@@ -823,6 +829,9 @@ public class NbtFunc {
 
 
             if (HasBanBlock) {
+                if (id != null && isInBanBlock(id)) {
+                    Message.debug(blockHandleLogPrefix + "Blocked by ban list: palette id=" + id);
+                }
                 MapData = ClearBanBlock(data,"palette",sequence,PaletteBlockData);
                 data = S_tag(MapData.get("Data"));
                 IsNotMatch = S_bool(MapData.get("IsNotMatch")) || IsNotMatch;

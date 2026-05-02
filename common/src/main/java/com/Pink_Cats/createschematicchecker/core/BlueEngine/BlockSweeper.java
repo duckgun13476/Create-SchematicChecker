@@ -39,9 +39,12 @@ public class BlockSweeper {
                 String id = StrTag(Objects.requireNonNull(nbt.get("id")));
                 block_information = id;
 
+                boolean isBannedId = isInBanBlock(id);
 
                 //Clear ID
-                if (isInBanBlock(id)) {
+                if (isBannedId) {
+                    Message.debug("Blocked block from Ban list: type=block, id=" + id
+                            + ", sequence=" + (sequence + 1));
                     nbt.putString("id", Clear);
                     totalCount -= 1;
                 }
@@ -176,6 +179,8 @@ public class BlockSweeper {
                 }
                 block_information = id;
                 if (isInBanBlock(id)) {
+                    Message.debug("Blocked block from Ban list: type=palette, id=" + id
+                            + ", sequence=" + (sequence + 1));
                     Data.putString("Name", Clear);
                     totalCount -= 1;
                 }
