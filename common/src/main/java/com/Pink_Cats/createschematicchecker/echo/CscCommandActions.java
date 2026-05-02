@@ -1,6 +1,5 @@
 package com.Pink_Cats.createschematicchecker.echo;
 
-import com.Pink_Cats.createschematicchecker.FancyConfig.ConfigRegister;
 import com.Pink_Cats.createschematicchecker.event.TempOffTicker;
 import com.Pink_Cats.createschematicchecker.lang.Message;
 import com.Pink_Cats.createschematicchecker.online.SimpleHeartbeatPusher;
@@ -85,6 +84,38 @@ public class CscCommandActions {
         return SINGLE_SUCCESS;
     }
 
+    public static int enableWhitelistModeNotice(CommandSender sender) {
+        setWhiteListModeNoticeCommand(sender, true);
+        return SINGLE_SUCCESS;
+    }
+
+    public static int disableWhitelistModeNotice(CommandSender sender) {
+        setWhiteListModeNoticeCommand(sender, false);
+        return SINGLE_SUCCESS;
+    }
+
+    public static int enableWhitelistModMode(CommandSender sender) {
+        setWhiteListModModeCommand(sender, true);
+        return SINGLE_SUCCESS;
+    }
+
+    public static int disableWhitelistModMode(CommandSender sender) {
+        setWhiteListModModeCommand(sender, false);
+        return SINGLE_SUCCESS;
+    }
+
+    private static void setWhiteListModeNoticeCommand(CommandSender sender, boolean enabled) {
+        setWhiteListModeNotice(enabled);
+        CSC_RELOAD();
+        send(sender, translateDirect(enabled ? "console.whitelistid.notice.on" : "console.whitelistid.notice.off"), CommandColor.GOLD);
+    }
+
+    private static void setWhiteListModModeCommand(CommandSender sender, boolean enabled) {
+        setWhiteListModEnable(enabled);
+        CSC_RELOAD();
+        send(sender, translateDirect(enabled ? "console.whitelistid.mode.on" : "console.whitelistid.mode.off"), CommandColor.GOLD);
+    }
+
     public static int enable(CommandSender sender) {
         send(sender, translateDirect("csc.off.temporary.restore"), CommandColor.GOLD);
         TempOffTicker.StopTick = 5;
@@ -102,6 +133,8 @@ public class CscCommandActions {
         send(sender, translateDirect("console.csc.welcome5"), CommandColor.GREEN);
         send(sender, translateDirect("console.csc.welcome6"), CommandColor.GREEN);
         send(sender, translateDirect("console.csc.welcome7"), CommandColor.GREEN);
+        send(sender, translateDirect("console.csc.whitelistid.help"), CommandColor.GREEN);
+        send(sender, translateDirect("console.csc.whitelistid.mode.help"), CommandColor.GREEN);
         send(sender, translateDirect("console.csc.liner"), CommandColor.GOLD);
         return SINGLE_SUCCESS;
     }

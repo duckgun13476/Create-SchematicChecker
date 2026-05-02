@@ -1,4 +1,6 @@
-
+## 1.21.21-release
+1. Add whitelist mode scan-complete notice and config/command switch.
+2. Fix the console format mistake.
 
 ## 1.21.20-release-hotfix
 1. Fix fabric map mistake (crash).
@@ -95,3 +97,4 @@
 
 ## 0.20-demo
 1. Plant core.
+

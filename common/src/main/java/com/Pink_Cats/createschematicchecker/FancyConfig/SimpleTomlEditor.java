@@ -682,6 +682,73 @@ public class SimpleTomlEditor {
         return count;
     }
 
+    public void setScalarValue(String key, Object value) {
+        String[] keyParts = key.split("\\.");
+        boolean inSection = keyParts.length <= 1;
+        String father = inSection ? "" : GetCurrentLineStringTitle(keyParts, keyParts.length - 2);
+        String children = GetCurrentLineStringTitle(keyParts, keyParts.length - 1);
+
+        try {
+            List<String> lines = new ArrayList<>();
+            try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    lines.add(line);
+                }
+            }
+
+            for (int i = 0; i < lines.size(); i++) {
+                String currentLine = lines.get(i);
+                String trimmed = currentLine.trim();
+
+                if (!inSection && trimmed.equals(father)) {
+                    inSection = true;
+                    continue;
+                }
+
+                if (!inSection) {
+                    continue;
+                }
+
+                if (keyParts.length > 1 && trimmed.startsWith("[") && trimmed.endsWith("]") && !trimmed.equals(father)) {
+                    break;
+                }
+
+                if (trimALL(trimmed).startsWith(children + "=")) {
+                    int leadingSpaces = 0;
+                    while (leadingSpaces < currentLine.length() && currentLine.charAt(leadingSpaces) == ' ') {
+                        leadingSpaces++;
+                    }
+                    lines.set(i, " ".repeat(leadingSpaces) + children + " = " + formatScalar(value));
+                    writeLines(lines);
+                    return;
+                }
+            }
+
+            ConfigValue_IO(key, value);
+        } catch (IOException e) {
+            Message.FE(e.getMessage());
+        }
+    }
+
+    private static String formatScalar(Object value) {
+        if (value instanceof String) {
+            return "\"" + value + "\"";
+        }
+        return String.valueOf(value);
+    }
+
+    private void writeLines(List<String> lines) throws IOException {
+        StringBuilder content = new StringBuilder();
+        for (String line : lines) {
+            content.append(line).append(System.lineSeparator());
+        }
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
+            writer.write(content.toString());
+        }
+    }
+
     /**
      * Remove redundant blank lines inside sections while preserving section boundaries.
      */

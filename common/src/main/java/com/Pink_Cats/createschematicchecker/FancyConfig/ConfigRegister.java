@@ -76,6 +76,11 @@ public class ConfigRegister {
             .comment(CommitBreak)
             .comment("config.WhiteListModEnable");
 
+    public static ConfigValue.ConfigBoolean WHITE_LIST_MOD_NOTICE = ConfigBuild
+            .define("core.ShowWhitelistModeNotice", true)
+            .comment(CommitBreak)
+            .comment("config.ShowWhitelistModeNotice");
+
 
     public static ConfigValue.ConfigStringArray WHITE_LIST_MOD = ConfigBuild
             .define("core.WhiteListModList", new String[]{
@@ -83,8 +88,8 @@ public class ConfigRegister {
                     "createdieselgenerators",
                     "createrailwaysnavigator",
                     "createaddition",
-                    "railways"
-                    ,"copycats",
+                    "railways",
+                    "copycats",
                     "createsifter",
                     "computercraft",
                     "mekanism",
@@ -301,6 +306,7 @@ public class ConfigRegister {
 
     public static String[] white_list_mod = WHITE_LIST_MOD.getDefaultValue();
     public static boolean white_list_mod_enable = WHITE_LIST_MOD_ENABLE.getDefaultValue();
+    public static boolean white_list_mod_notice = WHITE_LIST_MOD_NOTICE.getDefaultValue();
 
 
     public static String[][] ID_match_rule;
@@ -352,6 +358,7 @@ public class ConfigRegister {
     public static List<String> CSC_INIT(List<String> log) {
         white_list_mod = WHITE_LIST_MOD.getDefaultValue();
         white_list_mod_enable = WHITE_LIST_MOD_ENABLE.getDefaultValue();
+        white_list_mod_notice = WHITE_LIST_MOD_NOTICE.getDefaultValue();
         enable_debug = ENABLE_DEBUG.getDefaultValue();
         update_info = UPDATE_INFO.getDefaultValue();
         DebugCheatFind = DEBUG_CHEAT_FIND.getDefaultValue();
@@ -388,6 +395,7 @@ public class ConfigRegister {
         List<String> list = new ArrayList<String>();
         WHITE_LIST_MOD.reload();
         WHITE_LIST_MOD_ENABLE.reload();
+        WHITE_LIST_MOD_NOTICE.reload();
         ENABLE_DEBUG.reload();
         UPDATE_INFO.reload();
         DEBUG_CHEAT_FIND.reload();
@@ -414,6 +422,18 @@ public class ConfigRegister {
         CSC_INIT(list);
         Message.FM(translateDirect("console.reload2"));
         return list;
+    }
+
+    public static void setWhiteListModeNotice(boolean enabled) {
+        white_list_mod_notice = enabled;
+        WHITE_LIST_MOD_NOTICE.setValue(enabled);
+        tomlEditor.setScalarValue(WHITE_LIST_MOD_NOTICE.getKey(), enabled);
+    }
+
+    public static void setWhiteListModEnable(boolean enabled) {
+        white_list_mod_enable = enabled;
+        WHITE_LIST_MOD_ENABLE.setValue(enabled);
+        tomlEditor.setScalarValue(WHITE_LIST_MOD_ENABLE.getKey(), enabled);
     }
 
     private static void ensureValidConfigToml() {
@@ -455,6 +475,7 @@ public class ConfigRegister {
         syncComments("core.Enable", CommitBreak, "config.EnableOrNot");
         syncComments("core.DelayTime", CommitBreak, "config.DelayTime");
         syncComments("core.WhiteListModEnable", CommitBreak, "config.WhiteListModEnable");
+        syncComments("core.ShowWhitelistModeNotice", CommitBreak, "config.ShowWhitelistModeNotice");
         syncComments("core.WhiteListModList", CommitBreak, "config.WhiteListMod");
         syncComments("core.BanBlock", CommitBreak, "core.BanBlock", "core.BanBlock2");
         syncComments("core.BanTag", CommitBreak, "config.BanTag");
