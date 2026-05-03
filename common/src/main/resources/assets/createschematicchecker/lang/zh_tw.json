@@ -1,5 +1,5 @@
 {
-  "console.feedback": "問題/反饋: QQ：1061133894",
+  "console.feedback": "問題/反饋: QQ: 1061133894 | Discord: https://discord.gg/rQV5JPauY7",
   "console.LoadingConfig": " 加載配置中。。   加載完畢！",
   "config.lang": "選擇默認的文件語言 zh_cn / zh_tw / ja_jp / en_us ",
   "config.EnableOrNot": "是否啓用 CSC （機械動力：藍圖檢查）",
@@ -52,6 +52,7 @@
   "console.csc.welcome": "歡迎使用  [機械動力：藍圖校驗] ",
   "console.csc.welcome1": "[鏈接] 問題反饋[GitHub]",
   "console.csc.welcome2": "[鏈接] 幫助/反饋  QQ: 1061133894",
+  "console.csc.welcome.discord": "[鏈接] 幫助/反饋  Discord",
   "console.csc.welcome3": "/csc reload      重載CSC配置",
   "console.csc.welcome4": "/csc list        查看CSC的參數幫助",
   "console.csc.welcome5": "/csc list [參數]  查看CSC的參數",

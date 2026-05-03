@@ -8,6 +8,7 @@ import com.pinkcats.torque.layer.net.minecraft.commands.CommandColor;
 import com.pinkcats.torque.layer.net.minecraft.commands.CommandSender;
 
 import java.util.Arrays;
+import java.util.Locale;
 import java.util.List;
 
 import static com.Pink_Cats.createschematicchecker.FancyConfig.ConfigRegister.*;
@@ -126,8 +127,12 @@ public class CscCommandActions {
         send(sender, translateDirect("console.csc.run.command"), CommandColor.GOLD);
         sendClickable(sender, translateDirect("console.csc.welcome1"), CommandColor.LIGHT_PURPLE,
                 "https://github.com/duckgun13476/Create-SchematicChecker/issues");
-        sendClickable(sender, translateDirect("console.csc.welcome2"), CommandColor.LIGHT_PURPLE,
-                "https://qm.qq.com/q/9N0m84sQfY");
+        if (isChineseLanguage()) {
+            sendClickable(sender, translateDirect("console.csc.welcome2"), CommandColor.LIGHT_PURPLE,
+                    "https://qm.qq.com/q/9N0m84sQfY");
+        }
+        sendClickable(sender, translateDirect("console.csc.welcome.discord"), CommandColor.LIGHT_PURPLE,
+                "https://discord.gg/rQV5JPauY7");
         send(sender, translateDirect("console.csc.welcome3"), CommandColor.GREEN);
         send(sender, translateDirect("console.csc.welcome4"), CommandColor.GREEN);
         send(sender, translateDirect("console.csc.welcome5"), CommandColor.GREEN);
@@ -137,6 +142,13 @@ public class CscCommandActions {
         send(sender, translateDirect("console.csc.whitelistid.mode.help"), CommandColor.GREEN);
         send(sender, translateDirect("console.csc.liner"), CommandColor.GOLD);
         return SINGLE_SUCCESS;
+    }
+
+    private static boolean isChineseLanguage() {
+        String normalizedLanguage = DefineLanguage == null
+                ? ""
+                : DefineLanguage.trim().toLowerCase(Locale.ROOT);
+        return normalizedLanguage.startsWith("zh_");
     }
 
     public static int main(CommandSender sender) {

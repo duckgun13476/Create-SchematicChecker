@@ -97,6 +97,8 @@ public class VersionChecker {
         HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
         conn.setRequestMethod("POST");
         conn.setDoOutput(true);
+        conn.setConnectTimeout(2000);
+        conn.setReadTimeout(2000);
         conn.setRequestProperty("Content-Type", "application/json");
 
         // 可选：发送空 JSON 请求体
@@ -244,6 +246,30 @@ public class VersionChecker {
         }
     }
 
+    public static String getLatestLocalRulePath(String path) {
+        File directory = new File(path);
+        if (!directory.exists() || !directory.isDirectory()) {
+            return null;
+        }
+
+        File[] files = directory.listFiles((dir, name) -> name.matches("rule_.*\\.json"));
+        if (files == null || files.length == 0) {
+            return null;
+        }
+
+        File latest = null;
+        Date latestDate = null;
+        for (File file : files) {
+            Date itemDate = parseVersionDate(file.getName().replaceAll("rule_(.*)\\.json", "$1"));
+            if (latestDate == null || itemDate.after(latestDate)) {
+                latestDate = itemDate;
+                latest = file;
+            }
+        }
+
+        return latest == null ? null : latest.getPath();
+    }
+
     public static String UpdateMainThread(){
         String BaseOnlinePath = "config/CSC/online";
         createIfNotExists(BaseOnlinePath);
@@ -271,7 +297,7 @@ public class VersionChecker {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return null;
+        return getLatestLocalRulePath(BaseOnlinePath);
     }
 
     public static String debugFetchServerVersion() throws IOException {

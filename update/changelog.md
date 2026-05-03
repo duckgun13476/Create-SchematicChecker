@@ -1,6 +1,8 @@
 ## 1.21.21-release
 1. Add whitelist mode scan-complete notice and config/command switch.
 2. Fix the console format mistake.
+3. Fix the reload delay problem.
+4. Fix low version refmap problem.
 
 ## 1.21.20-release-hotfix
 1. Fix fabric map mistake (crash).

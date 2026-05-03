@@ -1,5 +1,5 @@
 {
-  "console.feedback": "问题/反馈: QQ：1061133894",
+  "console.feedback": "问题/反馈: QQ: 1061133894 | Discord: https://discord.gg/rQV5JPauY7",
   "console.LoadingConfig": " 加载配置中。。   加载完毕！",
   "config.lang": "选择默认的文件语言 zh_cn / zh_tw / ja_jp / en_us ",
   "config.EnableOrNot": "是否启用 CSC （机械动力：蓝图检查）",
@@ -52,6 +52,7 @@
   "console.csc.welcome": "欢迎使用  [机械动力：蓝图校验] ",
   "console.csc.welcome1": "[链接] 问题反馈[GitHub]",
   "console.csc.welcome2": "[链接] 帮助/反馈  QQ: 1061133894",
+  "console.csc.welcome.discord": "[链接] 帮助/反馈  Discord",
   "console.csc.welcome3": "/csc reload      重载CSC配置",
   "console.csc.welcome4": "/csc list        查看CSC的参数帮助",
   "console.csc.welcome5": "/csc list [参数]  查看CSC的参数",

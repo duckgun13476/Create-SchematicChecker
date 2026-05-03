@@ -12,6 +12,7 @@ import static com.Pink_Cats.createschematicchecker.FancyConfig.ConfigRegister.*;
 import static com.Pink_Cats.createschematicchecker.FancyConfig.ConfigRegister.MaxChassisRange;
 import static com.Pink_Cats.createschematicchecker.FancyConfig.FileIO.createIfNotExists;
 import static com.Pink_Cats.createschematicchecker.lang.CSCLanguage.translateDirect;
+import static com.Pink_Cats.createschematicchecker.online.VersionChecker.getLatestLocalRulePath;
 import static com.Pink_Cats.createschematicchecker.online.VersionChecker.UpdateMainThread;
 
 public class SimpleJsonParser {
@@ -352,8 +353,11 @@ public class SimpleJsonParser {
 
     public static List<String> UpdateRuleThread(List<String> log){
 
-        String jsonPath = UpdateMainThread();
         String UserRulePath = "config/CSC";
+        String BaseOnlinePath = UserRulePath + "/online";
+        String jsonPath = enable_auto_config_update
+                ? UpdateMainThread()
+                : getLatestLocalRulePath(BaseOnlinePath);
         createIfNotExists(UserRulePath);
         String UserRuleFile = "user_rule.json";
         createUserRuleFile(UserRulePath, UserRuleFile);
@@ -455,25 +459,26 @@ public class SimpleJsonParser {
             try {
                 String[][] idArray = new String[0][];
                 String[][] operateArray = new String[0][];
-                String[][][] result = parseJsonToArrays(jsonPath,log);
-                boolean valid = ConfigIsValid(result,log);
-                if (valid) {
-                    if (result != null) {
-                        idArray = result[0];
-                    }
-                    if (result != null) {
-                        operateArray = result[1];
-                    }
+                if (jsonPath != null) {
+                    String[][][] result = parseJsonToArrays(jsonPath,log);
+                    boolean valid = ConfigIsValid(result,log);
+                    if (valid) {
+                        if (result != null) {
+                            idArray = result[0];
+                        }
+                        if (result != null) {
+                            operateArray = result[1];
+                        }
 
-                    if (operateArray.length != 0) {
-                        Operate_modify_rule_online = operateArray;
-                        SurgeryExist = merge(SurgeryExist, operateArray);
+                        if (operateArray.length != 0) {
+                            Operate_modify_rule_online = operateArray;
+                            SurgeryExist = merge(SurgeryExist, operateArray);
+                        }
+                        if (idArray.length != 0) {
+                            ID_modify_rule_online = idArray;
+                            IdLogicArray = merge(IdLogicArray, idArray);
+                        }
                     }
-                    if (idArray.length != 0) {
-                        ID_modify_rule_online = idArray;
-                        IdLogicArray = merge(IdLogicArray, idArray);
-                    }
-
                 }
             } catch (Exception e) {
                 Message.FE(translateDirect( "console.config.online.read.error")+e.getMessage());

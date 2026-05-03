@@ -1,5 +1,5 @@
 {
-  "console.feedback": "問題/フィードバック: Tencent QQ：1061133894",
+  "console.feedback": "問題/フィードバック: Discord: https://discord.gg/rQV5JPauY7",
   "console.LoadingConfig": "CSC を読み込み中... 成功しました！",
   "config.lang": "???????????????     zh_cn / zh_tw / ja_jp / en_us ",
   "config.EnableOrNot": "CSC (Create:回路図チェッカー) を有効にするかどうか",
@@ -52,6 +52,7 @@
   "console.csc.welcome": "[CSC] へようこそ",
   "console.csc.welcome1": "[Click to access] フィードバックを発行する [GitHub]",
   "console.csc.welcome2": "[Click to access] ヘルプ/フィードバック QQ: 1061133894",
+  "console.csc.welcome.discord": "[Click to access] ヘルプ/フィードバック Discord",
   "console.csc.welcome3": "/csc reload CSC 構成をリロードする",
   "console.csc.welcome4": "/csc list CSC パラメータのヘルプを表示する",
   "console.csc.welcome5": "/csc list [Parameter] CSC パラメータの表示",
