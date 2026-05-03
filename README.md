@@ -1,214 +1,178 @@
-# CSC Create: Schematic Checker  
+# Create: Schematic Checker (CSC)
+
+Create: Schematic Checker is a server-side protection mod for
+[Create](https://github.com/Creators-of-Create/Create) schematics. It scans
+uploaded schematics and blocks or sanitizes known malicious NBT patterns before
+they can be printed into a world.
 
----
-
-### ~~A countermeasure against griefers who use bugged schematics (just kidding)~~  
-
-1. Welcome to CSC. CSC (formerly known as Create:SchematicChecker | Create: Schematic Validation) is a dedicated schematic-scanning mod tailored for Create and all its addons. It can block any recorded potential/malicious vulnerabilities, including but not limited to: item duplication, server lag or even crashes, obtaining creative items, and gaining control of the server. Triggering these vulnerabilities only requires uploading schematics with fixed modified parameters, which makes sabotaging the server extremely easy. As long as the server does not disable schematic cannons, anyone can randomly sabotage the server, crash it, obtain any creative items, and permanently damage any Create survival server—with extremely low costs and minimal time. This mod is designed specifically to address this issue, providing a permanent solution to all problems related to Create schematics!
-CSC allows users to customize blacklisted tags and blocks, define custom removal rules, and configure and customize the detailed results of schematic validation. Thanks to the universality of schematics, as long as the configuration file is properly designed, CSC can detect any cheating schematics from Create and all its addon mods.
-
-2. If the user agrees, CSC can even optionally connect to the internet to automatically sync rules to the local server. Whenever the CSC team discovers a new vulnerability, the configuration file will be updated automatically—enabling the automatic removal of potential vulnerabilities without the need to restart the server.
-
-
-
-<img width="1920" height="1080" alt="439597651-6bdcd06c-c454-41f0-aa1d-7f8b882064f8" src="https://github.com/user-attachments/assets/85848717-c13d-4c70-8049-6c136a387021" />
-
-
-
-## Q&A / Bug Reports / Support | QQ Group: 1061133894  
----
-
-## Overview  
-This is a Java-based addon (mod) for Create (Create: Mechanics of Engineering).  
-All of this mod’s detection features run **completely asynchronously**, so they do not consume any of the server’s main thread resources!  
-
-It supports custom rules and automatically scans all schematics in the schematic folder for bugs and anomalies, preventing any maliciously tampered NBT schematics from entering your Minecraft server.  
-
-It fixes a vast number of Create schematic-related vulnerabilities—including numerous potential blueprint bugs in the latest versions. All relevant fixes and sources of issues are listed at the end.  
-![Fixed Create Vulnerabilities](https://github.com/duckgun13476/CreateSchematicsChecker-Python?tab=readme-ov-file#%E9%92%88%E5%AF%B9%E5%B7%B2%E7%9F%A5%E9%97%AE%E9%A2%98%E7%9A%84%E4%BF%AE%E5%A4%8D)  
-![Usage Guide](https://github.com/duckgun13476/CreateSchematicsChecker-Python?tab=readme-ov-file#%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95)  
-
-
-## Features  
-- **Automatic Scanning**: Automatically checks all schematics in the schematic folder, identifies and filters out potential bugged or anomalous schematics to ensure server security.  
-- **Highly Customizable Rules**: Allows users to define custom rules for targeted NBT scanning of specific mods.  
-- **Conveyor Belt Tampering Validation**: Uses a full-validation algorithm to verify conveyor belts in versions 0.5.1 and 6.0.0, blocking bugged conveyor schematics (e.g., duplication, server lag, or crash exploits).  
-- **Gear/Cogwheel Pairing Validation**: Implements basic matching logic for gear/cogwheel pairs in versions 6.0.0+, preventing known schematic bugs and duplication exploits.  
-- **Malicious NBT Scanning**: Detects various types of maliciously tampered NBT values to ensure schematic safety.  
-- **Automatic Cloud Sync**: Automatically updates NBT check rules to block newly discovered bugged schematics.  
-- **Auto-Rule Updates**: Fully implements automatic rule updates to keep protection up-to-date.  
-
-
----
-
-## Usage:  
-#### Select the appropriate version based on your Create mod version ↓  
-
-
-## Custom Rules & Configuration  
-
-- Log files are stored in the `log` folder; all uploaded schematics are saved in the `save` folder.  
-- Rule files generally do not need modification, but if customization is required, simply edit the following fields as needed:  
-   ```toml
-   # Core Configuration
-   [check]
-   # Scanning frequency (default: 0.5 seconds)
-   check_frequency = 0.5
-   # Whether to automatically remove banned blocks
-   fast_handle = false
-   # Whether to count block data in schematics (uses minor resources but enables visualization)
-   count_block = false
-   # Whether to remove all entities from schematics (disables entity spawning in creative schematics but blocks all entity-related duplication exploits)
-   kill_entity = true
-   # Banned entities (entities listed here will be removed from schematics)
-   ban_entity = [
-   "minecraft:armor_stand"
-   ]
-   # Banned tags: Due to NBT’s recursive hiding mechanism, if a listed tag is detected, the entire schematic will be cleared (NBT structures cannot be partially fixed for tag removal)
-   ban_tags = [
-   "AttributeModifiers",
-   "Enchantments",  # Enchantment tags (blocks creative schematics but also prevents enchanted properties in schematics, as their structures are identical)
-   "using_converts_to",  # Food tags (blocks return/duplication exploits)
-   "bundle_contents"  # Bundle tags (blocks duplication exploits)
-   ]
-   # Banned blocks (blocks listed here will be removed from schematics; if removal fails, the entire schematic will be cleared)
-   ban_block = [
-   "create:creative_crate",
-   "create:creative_fluid_tank",
-   "create:creative_motor",
-   "create:creative_blaze_cake",
-   "create:handheld_worldshaper",
-   "minecraft:command_block",  # Speaks for itself—this is a command block
-   "minecraft:kelp"  # Blocks most GT machines (they cause severe lag!)
-   ]
-   ```  
-
-
----
-
-## Fixes for Known Issues  
-
-- **1. Fixed**: Exploit allowing creative items to be printed via Lecterns or Clipboards.  
-  - [X] [Video Link](https://www.bilibili.com/video/BV1sDp4ePEVp)  
-
-- **2. Fixed**: Valve data tampering causing variable cache overflow (leads to uncollectible valve entity memory and memory leaks, i.e., "infinite valve spinning" exploit).  
-  - [X] [Video Link](https://www.bilibili.com/video/BV1UdC9YjET5)  
-
-- **3. Fixed**: Clipboard duplication exploit (enchantment tag removal) | Allows duplication of creative items and printing of clipboards with creative properties.  
-  - [X] [Video Link](https://www.bilibili.com/video/BV1SXC9YEEeW)  
-
-- **4. Fixed**: Blocked conveyor belt length modifications exceeding 1000 blocks | Causes renderer overflow (client crashes) and lag from weakly loaded conveyor chunks.  
-  - [X] [Video Link](https://www.bilibili.com/video/BV1SXC9YEEeW)  
-
-- **5. Fixed**: Blocked printing of conveyor belts with -1 length | Crashes vanilla Forge servers in older versions.  
-  - [X] [Video Link](https://www.bilibili.com/video/BV1u9ytY2E8R)  
-
-- **6. Fixed**: Malicious conveyor length modifications causing massive conveyor "chunk breaking" | Leads to severe server lag, CPU damage, server crashes, and potential world corruption.  
-  - [X] [Video Link](https://www.bilibili.com/video/BV1NwybY3ERY)  
-
-- **7. Fixed**: Infinite GT (Game Tick) exploit with Kintsugi Decor’s Urns in older versions (allows infinite treasure opening) | GT exploits cause extreme server lag.  
-  - [X] [Video Link](https://www.bilibili.com/video/BV1LUS9YCEk1)  
-
-- **8. Fixed**: Maliciously modified Ejector Plate launch force creating "dragon-slaying cannons" | Instantly crashes Forge servers; ultra-fast launches cause immediate server freezes and rapid chunk generation along the launch path.  
-  - [X] [Video Link](https://www.bilibili.com/video/BV1itXDY3EwJ)  
-  - [X] [Video Link](https://www.bilibili.com/video/BV13RKneEEFG)  
-
-- **9. Fixed**: Maliciously modified Filters with excessively large NBT data | Causes extreme game tick lag when placed in Hoppers.  
-  - [X] No video available yet  
-
-- **10. Fixed**: Maliciously modified超长 chain drive wheel pairings | Causes severe server lag.  
-  - [X] [Video Link](https://www.bilibili.com/video/BV1vz9bY7EW5)  
-
-- **11. Fixed**: Exploit adding the "using_converts_to" tag to obtain arbitrary creative items.  
-  - [X] [Video Link](https://www.bilibili.com/video/BV1c19tYsEBL)  
-
-- **12. Fixed**: Tampered Mechanical Arm distances causing ultra-long-range item transport | Crashes servers in certain scenarios.  
-  - [X] [Video Link](https://www.bilibili.com/video/BV1XpXYYDEt7)  
-
-- **13. Fixed**: Tampered chain drive wheels targeting the void causing 90° chain glitches | Crashes servers in certain scenarios.  
-  - [X] [Video Link](https://www.bilibili.com/video/BV1nddcYSEWQ)  
-
-- **14. Fixed**: Oddly distorted conveyor belts causing conveyor/rod duplication.  
-  - [X] [Video Link](https://www.bilibili.com/video/BV1omdmYrE3S)  
-
-- **15. Fixed**: Maliciously modified chain drive wheels with thousands of targets causing severe server lag and chain duplication.  
-  - [X] [Video Link](https://www.bilibili.com/video/BV1Ze5Wz7EB2)  
-
-- **16. Fixed**: Maliciously modified Mechanical Arms with infinite item output exploits (e.g., adding "safenbt" lists to Arms).  
-  - [X] [Video Link](https://www.bilibili.com/video/BV1udtYzwEQN)  
-
-- **17. Fixed**: Mechanical Arm item duplication with the Camouflage Panels mod.  
-  - [X] [Video Link](https://www.bilibili.com/video/BV1dubezLEp7)  
-
-- **18. Fixed**: Exploit allowing Filters to be retrieved via Andesite Hoppers.  
-  - [X] [Video Link](https://www.bilibili.com/video/BV1UrEGzmEDU)  
-
-- **19. Fixed**: Exploit using "burn" tags to obtain creative items.  
-  - [X] [Video Link](https://www.bilibili.com/video/BV1UrEGzmEDU)  
-
-- **20. Fixed**: Any duplication or creative item exploits involving entities (Armor Stands) | Uses entity removal feature.  
-  - [X] [Video Link](https://www.bilibili.com/video/BV1wtRNYaE5m)  
-
-- **21. Fixed**: Exploit allowing creative item acquisition via Rollers in specific versions.  
-  - [X] [Video Link](https://www.bilibili.com/video/BV1b4eyzGEoj)  
-
-- **22. Fixed**: Malicious addon exploit in Enigmatica: Industrialization allowing creative tag printing.  
-  - [X] [Video Link](https://www.bilibili.com/video/BV1GKemzWEKm)  
-
-- **23. Fixed**: Create: Crafts & Additions exploit allowing infinite energy cell printing.  
-  - [X] [Video Link](https://www.bilibili.com/video/BV193vAzNEJ2)  
-
-- **24. Fixed**: Integrated Dynamics exploit allowing Chicken Coop printing (causes GT machine lag).  
-  - [X] [Video Link](https://www.bilibili.com/video/BV13nh2z5EvT)  
-
-- **25. Fixed**: Malicious NBT exploit allowing command execution.  
-  - [X] [Video Link](https://www.bilibili.com/video/BV1rZY5z1Eo6)  
-
-- **26. Fixed**: Exploit in version 6.0.+ allowing fluid tank capacity tampering.  
-  - [X] [Video Link](https://www.bilibili.com/video/BV1hSnMzCE6A/)  
-
-- **27. Fixed**: Quark Wire Mesh infinite lava exploit.  
-  - [X] [Video Link](https://www.bilibili.com/video/BV1hSnMzCE6A/)  
-
-- **28. Fixed**: Exploit allowing item teleportation to the void via modified Mechanical Synthesizers.  
-  - [X] [Video Link](https://www.bilibili.com/video/BV1hSnMzCE6A/)  
-
-- **29. Fixed**: Exploit allowing item teleportation to the void via modified Mechanical Synthesizers.  
-  - [X] [No sample video found]()  
-
-- **30. Fixed**: Maliciously modified Super Glue causing excessive adhesion checks (leads to severe server lag or crashes).  
-  - [X] [No sample video found]()  
-
-- **31. Fixed**: Maliciously modified Casing Chassis/Angled Chassis causing excessive adhesion checks (leads to severe server lag or crashes).  
-  - [X] [No sample video found]()  
-
-- **32. Detected**: Exploit allowing arbitrary creative item acquisition via modified Create: Cannons (tampered fuse data).  
-  - [X] [No sample video found]()  
-
-- **33. Detected**: Fixed a bug where printing giant blocks from the Twilight Forest mod would ignore the terrain and break bedrock.
-  - [X] [No sample video found]()
-
-## Acknowledgments  
- - Special thanks to **crackun24**  
-   - For reference Mixin code.  
- - Additional thanks to:  
-   - Qifei de Meigui (Rose of Takeoff), Kong Yu (Fearful Fish), air, crackun24, runner, CTR Server Owner, and 17 other Create public server owners—who provided test samples and post-fix support for this project.  
-
----
-
- - **Extra Special Thanks** to Bilibili UP OWNER (content creator) **一只不屑的屑蜘蛛** (A Disdainful Trash Spider)  
-   - *If this griefer hadn’t intentionally crashed the author’s public server multiple times with bugged schematics, spread bugged schematics across countless servers, blocked the author on Bilibili, and spread rumors to slander the author when the fix was posted—this project would never have existed, and Create schematic bugs would not have been resolved so quickly!*  
-
-
-## Dependencies  
-- Minecraft  
-- Create  
-
-
----
-
-### Pros:  
-- Inherits all advantages of the Python version of the project.  
-
-### Cons:  
-- Incomplete version support: Does not support versions 1.18 or lower. Use the Python version for these versions.
+CSC is designed for public and survival servers that allow schematic uploads.
+It protects against known Create schematic exploits such as item duplication,
+creative-item acquisition, server lag, crashes, malformed contraptions, and
+dangerous addon NBT.
+
+<p align="center">
+<a href="https://modrinth.com/mod/createschematicchecker"><img src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3.2.0/assets/cozy/available/modrinth_vector.svg" alt="Modrinth Page"></a>
+<a href="https://www.curseforge.com/minecraft/mc-mods/create-schematicchecker"><img src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3.2.0/assets/cozy/available/curseforge_vector.svg" alt="CurseForge Page"></a>
+<a href="https://discord.gg/rQV5JPauY7"><img src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3.2.0/assets/cozy/social/discord-singular_vector.svg" alt="Discord Server"></a>
+</p>
+
+![CSC preview](https://github.com/user-attachments/assets/85848717-c13d-4c70-8049-6c136a387021)
+
+## Support
+
+- Issues: [GitHub Issues](https://github.com/duckgun13476/Create-SchematicChecker/issues)
+- Chinese README: [README_zh.md](README_zh.md)
+
+## What It Does
+
+- Scans schematics asynchronously, without blocking the Minecraft server main thread.
+- Detects and blocks known malicious Create schematic exploits.
+- Sanitizes configurable NBT fields, tags, blocks, items, and entities.
+- Validates Create belts, chain drives, mechanical arms, filters, fluid tanks, clipboards, and other high-risk block entities.
+- Supports custom local rules through `config/CSC/user_rule.json`.
+- Can optionally sync online rule updates when enabled by the server owner.
+- Keeps logs and optional schematic backups for auditing and later investigation.
+
+## Supported Versions
+
+Choose the build that matches both your Minecraft version and Create version.
+
+| Loader | Minecraft | Create target |
+| --- | --- | --- |
+| Forge | 1.14.4 | 0.2.3 |
+| Forge | 1.15.2 | 0.3.1 |
+| Forge | 1.16.5 | 0.3.2g |
+| Forge | 1.17.1 | 0.4 |
+| Forge | 1.18.2 | 0.5.1i |
+| Forge | 1.19.2 | 0.5.1i |
+| Forge | 1.20.1 | 0.5.1j |
+| Forge | 1.20.1 | 6.0.x |
+| Fabric | 1.18.2 | 0.5.1i |
+| Fabric | 1.19.2 | 0.5.1i |
+| Fabric | 1.20.1 | 6.0.x |
+| Fabric | 1.21.1 | 6.0.x |
+| NeoForge | 1.21.1 | 6.0.x |
+
+## Dependencies
+
+- Minecraft
+- Create
+
+Some builds may require loader-specific Create dependencies such as Flywheel,
+Ponder, or Registrate, depending on the target Minecraft/Create version.
+
+## Installation
+
+1. Download the CSC jar for your loader, Minecraft version, and Create version.
+2. Put the jar into the server `mods` folder.
+3. Start the server once to generate `config/CSC/config.toml`.
+4. Review the generated configuration before opening schematic uploads to players.
+5. Use `/csc reload` after editing the config.
+
+## Configuration
+
+Main config file:
+
+```text
+config/CSC/config.toml
+```
+
+Important options:
+
+| Option | Purpose |
+| --- | --- |
+| `core.Enable` | Enables or disables CSC checks. |
+| `core.BanBlock` | Blocks or sanitizes high-risk blocks and items. |
+| `core.BanTag` | Removes or blocks dangerous NBT tags. |
+| `core.KillEntity` | Removes entities from schematics to prevent entity-based exploits. |
+| `core.WhiteListModEnable` | Allows only listed mod IDs to keep NBT. Recommended for public servers. |
+| `debug.EnableBackup` | Saves uploaded schematics for later auditing. Recommended. |
+| `online.enableAutoUpdate` | Allows CSC to fetch cloud rule updates. Disabled by default. |
+| `online.enableManualConfig` | Enables custom rules from `config/CSC/user_rule.json`. |
+
+Manual custom rule file:
+
+```text
+config/CSC/user_rule.json
+```
+
+Online cached rules:
+
+```text
+config/CSC/online/
+```
+
+## Commands
+
+| Command | Description |
+| --- | --- |
+| `/csc` | Shows basic status. |
+| `/csc help` | Shows help and feedback links. |
+| `/csc reload` | Reloads CSC configuration and rules. |
+| `/csc list` | Shows rule-list help. |
+| `/csc list IdMatchRuleAll` | Lists all ID match rules. |
+| `/csc list OperateMatchRuleAll` | Lists all NBT operation rules. |
+| `/csc DisableTemp` | Temporarily disables checks for 5 minutes. |
+| `/csc Enable` | Restores CSC after temporary disable. |
+| `/csc notice whitelistid on|off` | Toggles whitelist-mode scan notice. |
+| `/csc mode whitelistid on|off` | Toggles mod ID whitelist mode. |
+
+## Known Exploit Coverage
+
+CSC covers many reported Create schematic vulnerabilities and addon-specific
+NBT exploits. Public sample videos are linked where available.
+
+| # | Status | Issue |
+| --- | --- | --- |
+| 1 | Fixed | Creative items printed through Lecterns or Clipboards. [Video](https://www.bilibili.com/video/BV1sDp4ePEVp) |
+| 2 | Fixed | Valve data tampering causing cache overflow and memory leaks. [Video](https://www.bilibili.com/video/BV1UdC9YjET5) |
+| 3 | Fixed | Clipboard duplication and creative-property clipboards. [Video](https://www.bilibili.com/video/BV1SXC9YEEeW) |
+| 4 | Fixed | Conveyor belt length tampering beyond 1000 blocks. [Video](https://www.bilibili.com/video/BV1SXC9YEEeW) |
+| 5 | Fixed | Conveyor belts with `-1` length crashing older Forge servers. [Video](https://www.bilibili.com/video/BV1u9ytY2E8R) |
+| 6 | Fixed | Massive malicious conveyor chains causing lag, crashes, or world damage. [Video](https://www.bilibili.com/video/BV1NwybY3ERY) |
+| 7 | Fixed | Kintsugi Decor Urn infinite game-tick exploit. [Video](https://www.bilibili.com/video/BV1LUS9YCEk1) |
+| 8 | Fixed | Weighted Ejector launch-force tampering. [Video 1](https://www.bilibili.com/video/BV1itXDY3EwJ), [Video 2](https://www.bilibili.com/video/BV13RKneEEFG) |
+| 9 | Fixed | Oversized Filter NBT causing extreme tick lag. |
+| 10 | Fixed | Overlong chain-drive pairings causing server lag. [Video](https://www.bilibili.com/video/BV1vz9bY7EW5) |
+| 11 | Fixed | `using_converts_to` tag creative-item exploit. [Video](https://www.bilibili.com/video/BV1c19tYsEBL) |
+| 12 | Fixed | Mechanical Arm distance tampering. [Video](https://www.bilibili.com/video/BV1XpXYYDEt7) |
+| 13 | Fixed | Chain drives targeting invalid positions. [Video](https://www.bilibili.com/video/BV1nddcYSEWQ) |
+| 14 | Fixed | Distorted conveyor belts causing belt or shaft duplication. [Video](https://www.bilibili.com/video/BV1omdmYrE3S) |
+| 15 | Fixed | Chain drives with thousands of targets causing lag and duplication. [Video](https://www.bilibili.com/video/BV1Ze5Wz7EB2) |
+| 16 | Fixed | Mechanical Arm infinite output through tampered safe-NBT data. [Video](https://www.bilibili.com/video/BV1udtYzwEQN) |
+| 17 | Fixed | Mechanical Arm duplication with camouflage panel mods. [Video](https://www.bilibili.com/video/BV1dubezLEp7) |
+| 18 | Fixed | Filter retrieval through Andesite Hoppers. [Video](https://www.bilibili.com/video/BV1UrEGzmEDU) |
+| 19 | Fixed | Creative-item acquisition through burn tags. [Video](https://www.bilibili.com/video/BV1UrEGzmEDU) |
+| 20 | Fixed | Entity-based duplication and creative-item exploits, including Armor Stands. [Video](https://www.bilibili.com/video/BV1wtRNYaE5m) |
+| 21 | Fixed | Roller-related creative item exploit in specific versions. [Video](https://www.bilibili.com/video/BV1b4eyzGEoj) |
+| 22 | Fixed | Create: Enchantment Industry creative-tag printing. [Video](https://www.bilibili.com/video/BV1GKemzWEKm) |
+| 23 | Fixed | Create Crafts & Additions infinite energy-cell printing. [Video](https://www.bilibili.com/video/BV193vAzNEJ2) |
+| 24 | Fixed | Integrated Farming Chicken Coop GT lag exploit. [Video](https://www.bilibili.com/video/BV13nh2z5EvT) |
+| 25 | Fixed | Command-execution NBT exploit. [Video](https://www.bilibili.com/video/BV1rZY5z1Eo6) |
+| 26 | Fixed | Create 6.0+ fluid tank capacity tampering. [Video](https://www.bilibili.com/video/BV1hSnMzCE6A/) |
+| 27 | Fixed | Quark Wire Mesh infinite lava exploit. [Video](https://www.bilibili.com/video/BV1hSnMzCE6A/) |
+| 28 | Fixed | Item teleportation to the void through modified mechanical crafters/synthesizers. [Video](https://www.bilibili.com/video/BV1hSnMzCE6A/) |
+| 29 | Fixed | Additional void item-teleport exploit variants. |
+| 30 | Fixed | Super Glue adhesion-check abuse causing heavy lag or crashes. |
+| 31 | Fixed | Chassis and angled-chassis adhesion-check abuse causing heavy lag or crashes. |
+| 32 | Detected | Create: Big Cannons fuse-data tampering for creative-item acquisition. |
+| 33 | Fixed | Twilight Forest giant block printing bypassing terrain and breaking bedrock. |
+
+## Related Project
+
+The older Python implementation and historical usage notes are available here:
+
+- [CreateSchematicsChecker-Python](https://github.com/duckgun13476/CreateSchematicsChecker-Python)
+
+## Acknowledgments
+
+Special thanks to:
+
+- **crackun24** for Mixin reference code.
+- Qifei de Meigui, Kong Yu, air, crackun24, runner, CTR server owner, and other Create public server owners for test samples and post-fix support.
+- Some CMS blueprint-site partner creators. Their decision to block the author after seeing schematic bug fixes also became part of the motivation to keep this project updated.
+- Bilibili creator **一只不屑的屑蜘蛛**. The repeated public-server schematic attacks and spread of exploit samples directly motivated this project and helped accelerate fixes for Create schematic vulnerabilities.
+
+## License
+
+This project is licensed under GNU LGPL 3.0.

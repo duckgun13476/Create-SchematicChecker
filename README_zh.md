@@ -1,207 +1,175 @@
-# CSC 机械动力：蓝图检查
+# Create: Schematic Checker (CSC)
 
----
+Create: Schematic Checker 是一个面向
+[机械动力 Create](https://github.com/Creators-of-Create/Create) 蓝图的服务器防护模组。
+它会在蓝图被打印进世界之前扫描上传的蓝图，阻止或清理已经记录在案的恶意 NBT 与异常结构。
 
-### ~~玩bug蓝图的熊孩子的对策杀手（bushi~~
+CSC 主要面向允许玩家上传蓝图的公益服、生存服和整合包服务器。它可以防护常见的机械动力蓝图漏洞，包括物品复制、获取创造物品、卡服、崩服、异常结构、以及附属模组带来的危险 NBT。
 
-1. 欢迎您使用CSC，CSC（原名 Create:SchematicChecker | 机械动力：蓝图校验 ）是专为机械动力与全部机械动力附属而定制的蓝图扫描模组,它可以阻止任何已经记录在案的潜在/恶性漏洞。这些恶性漏洞包括但不限于：复制物品、卡顿服务器甚至崩溃服务器、获取创造物品、获取服务器控制权等。而触发它们仅需上传固定修改参数的蓝图，这使得破坏服务器变得轻而易举，只要服务器不禁用蓝图炮，那么任何人都可以随意的以极低的成本和极少的时间破坏服务器、崩溃服务器、获取任意创造物品，永久性的破坏任何机械动力生存服务器。此模组转为此问题而设计，永久解决机械动力蓝图的任何弊病！CSC 允许用户自定义黑名单标签、方块，允许自定义剔除规则，允许对蓝图的校验结果进行详细的配置和自定义。由于蓝图的通用性，这使得CSC，只要配置文件设计合理，就可以检测包括机械动力和机械动力的所有附属mod的任何作弊蓝图！
-2. 如果用户同意，CSC甚至可以选择联网更新自动同步规则到本地服务器，只要CSC团队发现了新的漏洞， 那么就会自动更新配置文件，来实现不需要重启服务器即可自动剔除潜在的漏洞。
+> 曾用名：`Create:SchematicChecker`、`机械动力：蓝图校验`
 
-![icon.png](CSC-neoforge-1.21.1-6.0-plus/icon.png)
+<p align="center">
+<a href="https://modrinth.com/mod/createschematicchecker"><img src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3.2.0/assets/cozy/available/modrinth_vector.svg" alt="Modrinth 页面"></a>
+<a href="https://www.curseforge.com/minecraft/mc-mods/create-schematicchecker"><img src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3.2.0/assets/cozy/available/curseforge_vector.svg" alt="CurseForge 页面"></a>
+<a href="https://discord.gg/rQV5JPauY7"><img src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3.2.0/assets/cozy/social/discord-singular_vector.svg" alt="Discord 服务器"></a>
+</p>
 
+![CSC preview](https://github.com/user-attachments/assets/85848717-c13d-4c70-8049-6c136a387021)
 
-## 答疑/问题反馈/帮助  QQ群：1061133894 
----
-## 概述
-这是一个基于JAVA的机械动力附属。
-该MOD的全部检测功能完全异步，因此不会占用任何服务器主线程性能！
+## 支持与反馈
 
-允许自定义规则。它能够自动筛查蓝图文件夹下的所有 bug 与异常蓝图，防止任何恶意篡改 NBT 的蓝图流入 Minecraft 服务器。
+- 答疑 / 问题反馈 / 帮助：QQ群 `1061133894`
+- GitHub 反馈：[Issues](https://github.com/duckgun13476/Create-SchematicChecker/issues)
+- English README: [README.md](README.md)
 
-它可以修复极其大量的机械动力蓝图相关漏洞，包括最新版本的大量潜在蓝图漏洞，所有相关的修复与问题来源都已经在最后列出
-![已经修复的机械动力漏洞](https://github.com/duckgun13476/CreateSchematicsChecker-Python?tab=readme-ov-file#%E9%92%88%E5%AF%B9%E5%B7%B2%E7%9F%A5%E9%97%AE%E9%A2%98%E7%9A%84%E4%BF%AE%E5%A4%8D)
-![如何使用](https://github.com/duckgun13476/CreateSchematicsChecker-Python?tab=readme-ov-file#%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95)
+## 功能概览
 
-## 功能
-- **自动筛查**：自动检查蓝图文件夹下的所有蓝图，识别并过滤出潜在的 bug 与异常蓝图，确保服务器安全。
-- **高度自定义规则**：允许用户自定义规则，以针对特定模组实现特殊的 NBT 扫描。
-- **传送带篡改校验**：使用全校验算法对 0.5.1 和 6.0.0 版本的传送带进行校验，阻止传送带蓝图的 bug 与复制、卡服、崩服特性。
-- **齿轮传动轮配对校验**：在 6.0.0 版本后，基于简单匹配逻辑进行齿轮传动轮的配对校验，防止已知蓝图 bug 与复制特性。
-- **多种恶意 NBT 筛查**：针对多种恶意 NBT 篡改值进行筛查，确保蓝图的安全性。
-- **自动云端同步**：自动更新 NBT 检查规则，让恶意新出的bug蓝图无处可逃。
-- **自动更新规则**：已实现自动更新规则功能，确保规则始终保持最新状态。
+- 异步扫描蓝图，不占用 Minecraft 服务器主线程。
+- 检测并阻止已知的机械动力蓝图恶意漏洞。
+- 支持清理或阻止指定 NBT 字段、标签、方块、物品和实体。
+- 校验传送带、链式传动轮、机械手、过滤器、流体储罐、剪贴板等高风险方块实体。
+- 支持通过 `config/CSC/user_rule.json` 编写本地自定义规则。
+- 可选联网同步云端规则，服务器管理员自行决定是否启用。
+- 支持日志和蓝图备份，便于审计、追溯和后续排查。
 
----
+## 支持版本
 
-## 使用方法：
-#### 根据您的机械动力版本选择合适的版本即可↓
+请根据 Minecraft 版本、加载器和 Create 版本选择对应构建。
 
-## 自定义规则和配置
-
-- 日志文件在 `log` 文件夹内，每次上传的蓝图都保存在`save`文件夹下。
-- 规则文件一般情况下不需要改变，如果需要，则您只需要按照需求填入即可：
-   ```toml
-   # 核心配置
-   [check]
-   # 检查频率 默认为0.5秒
-   check_frequency = 0.5
-   # 是否自动清理被禁止的方块
-   fast_handle = false
-   # 是否统计蓝图内方块信息，会占用一定性能，但可以可视化
-   count_block = false
-   # 是否剔除蓝图内的全部实体，这会导致创造打印蓝图不包含实体，但是可以杜绝全部实体相关的复制漏洞
-   kill_entity = true
-   # 禁止的实体，填入后将会剔除蓝图内的此实体
-   ban_entity = [
-   "minecraft:armor_stand"
-   ]
-   # 禁止的tag，由于nbt的递归隐藏机制，如果填入的tag在蓝图内检测到，就会将蓝图清空，因为nbt数据结构无法针对tag剔除进行修复
-   ban_tags = [
-   "AttributeModifiers",
-   "Enchantments",  # 附魔标签，这会阻止创造蓝图，但也会导致蓝图不能带有附魔特性，因为它们的结构相同
-   "using_converts_to",  # 食物标签，阻止返回复制特性
-   "bundle_contents"  # 存储袋标签，阻止复制特性
-   ]
-   # 禁止的方块，填入后将会剔除蓝图内的此类方块，如果剔除不完全，则会清空蓝图
-   ban_block = [
-   "create:creative_crate",
-   "create:creative_fluid_tank",
-   "create:creative_motor",
-   "create:creative_blaze_cake",
-   "create:handheld_worldshaper",
-   "minecraft:command_block",  # 不多说了，这玩意是命令方块
-   "minecraft:kelp"  # 这可以阻止绝大多数gt机，他们极其卡顿！
-   ]
-   
-   ```
-
-
-
----
-
-## 针对已知问题的修复
-
-- **1. 修复** 使用讲台、剪贴板打印出创造物品的恶性漏洞。
-  - [X] [视频链接](https://www.bilibili.com/video/BV1sDp4ePEVp)
-
-- **2. 修复** 阀门数据篡改导致的变量缓存溢出，这会导致阀门实体内存无法回收，同时导致内存泄漏。（无限阀门旋转特性）  
-  - [X] [视频链接](https://www.bilibili.com/video/BV1UdC9YjET5)
-
-- **3. 修复** 剪贴板复制特性，附魔标签剔除 | 这可以复制创造物品，打印带创造属性的剪贴板  
-  - [X] [视频链接](https://www.bilibili.com/video/BV1SXC9YEEeW)
-
-- **4. 修复** 阻止传送带修改打印上限超过一千格 | 这会导致渲染器溢出崩溃客户端，传送带的弱加载区块会卡服
-  - [X] [视频链接](https://www.bilibili.com/video/BV1SXC9YEEeW)
-- **5. 修复** 阻止打印 -1 长度传送带 | 这会在旧版本崩溃 Forge 原生服务器。  
-  - [X] [视频链接](https://www.bilibili.com/video/BV1u9ytY2E8R)
-
-- **6. 修复** 恶意利用修改传送带长度导致的巨量传送带破区块 | 这会导致服务器极其卡顿，破坏 CPU，崩溃服务器，还有概率导致存档损坏  
-  - [X] [视频链接](https://www.bilibili.com/video/BV1NwybY3ERY)
-
-- **7. 修复** 锦致装饰的翁在旧版本的无限 GT 特性，可以无限开宝藏 | 使用 GT 会导致服务器巨量卡顿  
-  - [X] [视频链接](https://www.bilibili.com/video/BV1LUS9YCEk1)
-
-- **8. 修复** 恶意修改弹射置物台弹射力量产生的屠龙炮 | 这会直接导致 Forge 端崩服，极快的弹射速度会导致服务器直接卡死，弹射路径的区块全部会极快的生成  
-  - [X] [视频链接](https://www.bilibili.com/video/BV1itXDY3EwJ)  
-  - [X] [视频链接](https://www.bilibili.com/video/BV13RKneEEFG)
-
-- **9. 修复** 恶意修改过滤器使其内部 NBT 过大 | 将其放进漏斗会导致其在判定时产生极高的游戏卡顿刻
-  - [X] 暂时还没视频
-- **10. 修复** 恶意修改超长的链式传动轮匹配 | 这会导致巨量的卡服问题  
-  - [X] [视频链接](https://www.bilibili.com/video/BV1vz9bY7EW5)
-
-- **11. 修复** 添加标签 use convert to 会返回任意创造物品的漏洞  
-  - [X] [视频链接](https://www.bilibili.com/video/BV1c19tYsEBL)
-
-- **12. 修复** 篡改动力臂距离到不合理的距离导致的超远距离传输 | 在某些情况下会因为距离问题直接导致崩服  
-  - [X] [视频链接](https://www.bilibili.com/video/BV1XpXYYDEt7)
-
-- **13. 修复** 篡改链式传动轮的匹配目标到虚空导致的 90° 锁链 | 这会在某些情况下崩服  
-  - [X] [视频链接](https://www.bilibili.com/video/BV1nddcYSEWQ)
-
-- **14. 修复** 传送带的奇怪扭曲形式导致的传送带与传动杆复制  
-  - [X] [视频链接](https://www.bilibili.com/video/BV1omdmYrE3S)
-
-- **15. 修复** 恶意修改链式传动轮的匹配对象到几千个时导致的服务器巨量卡顿和锁链复制特性  
-  - [X] [视频链接](https://www.bilibili.com/video/BV1Ze5Wz7EB2)
-
-- **16. 修复** 恶意修改机械手的返还物品导致的无限产出漏洞(比如为机械手加入safenbt列表)  
-  - [X] [视频链接](https://www.bilibili.com/video/BV1udtYzwEQN)
-
-- **17. 修复** 机械手在伪装板模组下的物品复制特性  
-  - [X] [视频链接](https://www.bilibili.com/video/BV1dubezLEp7)
-
-- **18. 修复** 在安山漏斗可以返还过滤器的漏洞
-  - [X] [视频链接](https://www.bilibili.com/video/BV1UrEGzmEDU)
-- **19. 修复** 可以使用烧毁标签来获得创造物品的漏洞  
-  - [X] [视频链接](https://www.bilibili.com/video/BV1UrEGzmEDU)
-
-- **20. 修复** 可以使用实体（盔甲架）导致的任何复制特性和获取创造物品特性 | 使用实体剔除功能  
-  - [X] [视频链接](https://www.bilibili.com/video/BV1wtRNYaE5m)
-
-- **21. 修复** 轧机在物品附加的某个发行版本创造物品恶性获取漏洞  
-  - [X] [视频链接](https://www.bilibili.com/video/BV1b4eyzGEoj)
-
-- **22. 修复** 附魔工业在某个版本会打印创造标签的恶性附属漏洞  
-  - [X] [视频链接](https://www.bilibili.com/video/BV1GKemzWEKm)
-
-- **23. 修复** 创意传动会打印无限能源电池的特性  
-  - [X] [视频链接](https://www.bilibili.com/video/BV193vAzNEJ2)
-
-- **24. 修复** 集成农业会打印鸡舍实现 GT 机卡服的特性  
-  - [X] [视频链接](https://www.bilibili.com/video/BV13nh2z5EvT)
-
-- **25. 修复** 利用nbt漏洞实现的运行指令恶性bug
-  - [X] [视频链接](https://www.bilibili.com/video/BV1rZY5z1Eo6)
-
-- **26. 修复** 6.0.+版本下可以篡改流体储罐导致容量异常的bug
-
-  - [X] [视频链接](https://www.bilibili.com/video/BV1hSnMzCE6A/)
-
-
-- **27. 修复** 夸克铁丝网的无限岩浆漏洞。
-  - [X] [视频链接](https://www.bilibili.com/video/BV1hSnMzCE6A/)
-
-
-- **28. 修复** 通过修改动力合成器实现的虚空传送物品漏洞。 
-  - [X] [视频链接](https://www.bilibili.com/video/BV1hSnMzCE6A/)
-
-
-- **29. 修复** 通过修改动力合成器实现的虚空传送物品漏洞。
-  - [X] [没找到样例视频]()
-
-    
-- **30. 修复** 通过修改强力胶导致的超大黏着检测引起的服务器巨量卡顿甚至崩溃。
-  - [X] [没找到样例视频]()
-
-- **31. 修复** 通过修改机壳地盘、斜向地盘导致的超大黏着检测引起的服务器巨量卡顿甚至崩溃。
-  - [X] [没找到样例视频]()
-  - 
-- **32. 检测** 通过修改机械动力：火炮的炮弹引信导致的获取任意创造物品的漏洞。
-  - [X] [没找到样例视频]()
-
-- **33. 修复**:打印暮色森林模组的巨型方块会无视地形破坏基岩并且直接复制巨型方块的漏洞
-  - [X] [没找到样例视频]()
-
-## 致谢
- - 特别感谢 crackun24 
-   - 参考了Mixin部分代码。
- - 特别致谢：
-   - 起飞的玫瑰、恐鱼、air、crackun24、runner、CTR服主 等总计17个机械动力公益服服主，它们为这个脚本提供了检查样本和后续辅助处理。
----
- - 特别特别致谢 B站 up主 一只不屑的屑蜘蛛 
-   - **如果不是这 sb 熊孩子故意用蓝图崩了作者开的公益服好几次、在不知道多少服传bug蓝图破坏服务器、在作者在b站发修复时给作者拉黑、还在b站造谣诋毁作者，也不会有这个项目，蓝图bug也不会这么快有不错的解决方案！**
-
+| 加载器 | Minecraft | 目标 Create 版本 |
+| --- | --- | --- |
+| Forge | 1.14.4 | 0.2.3 |
+| Forge | 1.15.2 | 0.3.1 |
+| Forge | 1.16.5 | 0.3.2g |
+| Forge | 1.17.1 | 0.4 |
+| Forge | 1.18.2 | 0.5.1i |
+| Forge | 1.19.2 | 0.5.1i |
+| Forge | 1.20.1 | 0.5.1j |
+| Forge | 1.20.1 | 6.0.x |
+| Fabric | 1.18.2 | 0.5.1i |
+| Fabric | 1.19.2 | 0.5.1i |
+| Fabric | 1.20.1 | 6.0.x |
+| Fabric | 1.21.1 | 6.0.x |
+| NeoForge | 1.21.1 | 6.0.x |
 
 ## 依赖
+
 - Minecraft
 - Create
 
----
+部分构建会随目标版本要求依赖 Flywheel、Ponder、Registrate 等 Create 生态依赖，请以对应版本的整合环境为准。
 
-### 优点：
-- 包含Python项目的全部优点。
-### 缺点：
-- 版本覆盖支持不全，针对1.18以及更低版本不支持，这些版本需要使用python版本
+## 安装
 
----
+1. 下载与你的加载器、Minecraft 版本、Create 版本匹配的 CSC jar。
+2. 将 jar 放入服务器 `mods` 文件夹。
+3. 启动一次服务器，生成 `config/CSC/config.toml`。
+4. 在开放蓝图上传前检查并调整配置。
+5. 修改配置后执行 `/csc reload` 重新加载。
+
+## 配置
+
+主配置文件：
+
+```text
+config/CSC/config.toml
+```
+
+常用配置项：
+
+| 配置项 | 作用 |
+| --- | --- |
+| `core.Enable` | 启用或关闭 CSC 检查。 |
+| `core.BanBlock` | 阻止或清理高风险方块与物品。 |
+| `core.BanTag` | 移除或阻止危险 NBT 标签。 |
+| `core.KillEntity` | 清理蓝图内实体，防止实体相关复制漏洞。 |
+| `core.WhiteListModEnable` | 仅允许白名单 mod 保留 NBT，推荐公益服开启。 |
+| `debug.EnableBackup` | 备份上传蓝图，便于后续审计，推荐开启。 |
+| `online.enableAutoUpdate` | 允许 CSC 获取云端规则更新，默认关闭。 |
+| `online.enableManualConfig` | 启用 `config/CSC/user_rule.json` 中的本地规则。 |
+
+本地自定义规则：
+
+```text
+config/CSC/user_rule.json
+```
+
+云端规则缓存：
+
+```text
+config/CSC/online/
+```
+
+## 指令
+
+| 指令 | 说明 |
+| --- | --- |
+| `/csc` | 显示基础状态。 |
+| `/csc help` | 显示帮助和反馈链接。 |
+| `/csc reload` | 重载 CSC 配置和规则。 |
+| `/csc list` | 显示规则列表帮助。 |
+| `/csc list IdMatchRuleAll` | 列出全部 ID 匹配规则。 |
+| `/csc list OperateMatchRuleAll` | 列出全部 NBT 操作规则。 |
+| `/csc DisableTemp` | 临时关闭检查 5 分钟。 |
+| `/csc Enable` | 恢复临时关闭的 CSC。 |
+| `/csc notice whitelistid on|off` | 开关 mod ID 白名单扫描提示。 |
+| `/csc mode whitelistid on|off` | 开关 mod ID 白名单模式。 |
+
+## 已覆盖的漏洞与问题
+
+CSC 覆盖了大量已经公开或已被报告的机械动力蓝图漏洞，以及附属模组带来的 NBT 风险。能公开的视频样例会保留链接。
+
+| # | 状态 | 问题 |
+| --- | --- | --- |
+| 1 | 修复 | 使用讲台、剪贴板打印创造物品。 [视频](https://www.bilibili.com/video/BV1sDp4ePEVp) |
+| 2 | 修复 | 阀门数据篡改导致变量缓存溢出和内存泄漏。 [视频](https://www.bilibili.com/video/BV1UdC9YjET5) |
+| 3 | 修复 | 剪贴板复制与创造属性剪贴板。 [视频](https://www.bilibili.com/video/BV1SXC9YEEeW) |
+| 4 | 修复 | 传送带长度被篡改到超过 1000 格。 [视频](https://www.bilibili.com/video/BV1SXC9YEEeW) |
+| 5 | 修复 | `-1` 长度传送带导致旧 Forge 服务器崩溃。 [视频](https://www.bilibili.com/video/BV1u9ytY2E8R) |
+| 6 | 修复 | 巨量恶意传送带导致卡服、崩服或存档损坏。 [视频](https://www.bilibili.com/video/BV1NwybY3ERY) |
+| 7 | 修复 | 锦致装饰翁在旧版本中的无限 GT 漏洞。 [视频](https://www.bilibili.com/video/BV1LUS9YCEk1) |
+| 8 | 修复 | 弹射置物台弹射力量被恶意篡改。 [视频 1](https://www.bilibili.com/video/BV1itXDY3EwJ)、[视频 2](https://www.bilibili.com/video/BV13RKneEEFG) |
+| 9 | 修复 | 过滤器 NBT 过大导致极高 tick 卡顿。 |
+| 10 | 修复 | 超长链式传动轮匹配导致服务器卡顿。 [视频](https://www.bilibili.com/video/BV1vz9bY7EW5) |
+| 11 | 修复 | `using_converts_to` 标签获取创造物品。 [视频](https://www.bilibili.com/video/BV1c19tYsEBL) |
+| 12 | 修复 | 机械手距离被篡改到不合理范围。 [视频](https://www.bilibili.com/video/BV1XpXYYDEt7) |
+| 13 | 修复 | 链式传动轮目标被篡改到非法位置。 [视频](https://www.bilibili.com/video/BV1nddcYSEWQ) |
+| 14 | 修复 | 异常扭曲传送带导致传送带或传动杆复制。 [视频](https://www.bilibili.com/video/BV1omdmYrE3S) |
+| 15 | 修复 | 链式传动轮含数千目标导致卡顿和复制。 [视频](https://www.bilibili.com/video/BV1Ze5Wz7EB2) |
+| 16 | 修复 | 机械手 safe-NBT 被篡改导致无限产出。 [视频](https://www.bilibili.com/video/BV1udtYzwEQN) |
+| 17 | 修复 | 机械手与伪装板类模组组合导致物品复制。 [视频](https://www.bilibili.com/video/BV1dubezLEp7) |
+| 18 | 修复 | 安山漏斗返还过滤器漏洞。 [视频](https://www.bilibili.com/video/BV1UrEGzmEDU) |
+| 19 | 修复 | 使用 burn 标签获取创造物品。 [视频](https://www.bilibili.com/video/BV1UrEGzmEDU) |
+| 20 | 修复 | 实体相关复制与创造物品获取，包括盔甲架。 [视频](https://www.bilibili.com/video/BV1wtRNYaE5m) |
+| 21 | 修复 | 特定版本轧机相关创造物品漏洞。 [视频](https://www.bilibili.com/video/BV1b4eyzGEoj) |
+| 22 | 修复 | 附魔工业创造标签打印。 [视频](https://www.bilibili.com/video/BV1GKemzWEKm) |
+| 23 | 修复 | 创意传动无限能源电池打印。 [视频](https://www.bilibili.com/video/BV193vAzNEJ2) |
+| 24 | 修复 | 集成农业鸡舍 GT 卡服漏洞。 [视频](https://www.bilibili.com/video/BV13nh2z5EvT) |
+| 25 | 修复 | 利用 NBT 执行命令的恶性漏洞。 [视频](https://www.bilibili.com/video/BV1rZY5z1Eo6) |
+| 26 | 修复 | Create 6.0+ 流体储罐容量篡改。 [视频](https://www.bilibili.com/video/BV1hSnMzCE6A/) |
+| 27 | 修复 | 夸克铁丝网无限岩浆漏洞。 [视频](https://www.bilibili.com/video/BV1hSnMzCE6A/) |
+| 28 | 修复 | 修改动力合成器实现物品虚空传送。 [视频](https://www.bilibili.com/video/BV1hSnMzCE6A/) |
+| 29 | 修复 | 其他物品虚空传送漏洞变体。 |
+| 30 | 修复 | 强力胶黏着检测被滥用导致严重卡顿或崩溃。 |
+| 31 | 修复 | 机壳底盘、斜向底盘黏着检测被滥用导致严重卡顿或崩溃。 |
+| 32 | 检测 | 机械动力：火炮炮弹引信数据篡改以获取创造物品。 |
+| 33 | 修复 | 暮色森林巨型方块打印无视地形并破坏基岩。 |
+
+## 相关项目
+
+旧版 Python 实现和历史使用说明：
+
+- [CreateSchematicsChecker-Python](https://github.com/duckgun13476/CreateSchematicsChecker-Python)
+
+## 致谢
+
+特别感谢：
+
+- **crackun24**：提供 Mixin 部分参考代码。
+- 起飞的玫瑰、恐鱼、air、crackun24、runner、CTR 服主、千鹤公益服，以及其他多位机械动力公益服服主：提供检查样本和后续处理支持。
+- CMS 蓝图站的部分合作 UP (cym,柠喵喵喵)：看到蓝图 bug 修复后选择直接拉黑作者的行为，也成为了本项目持续更新的动力之一。
+- B 站 UP 主 **一只不屑的屑蜘蛛**。多次使用问题蓝图攻击公益服、传播问题样本，移花接木污蔑作者、伪造自己为受害者却丝毫拿不出证据等行为，直接促成了本项目的诞生，并推动机械动力蓝图漏洞更快得到修复。
+
+## 许可证
+
+本项目使用 GNU LGPL 3.0 许可证。
