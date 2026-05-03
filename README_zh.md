@@ -14,13 +14,16 @@ CSC 主要面向允许玩家上传蓝图的公益服、生存服和整合包服�
 <a href="https://discord.gg/rQV5JPauY7"><img src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3.2.0/assets/cozy/social/discord-singular_vector.svg" alt="Discord 服务器"></a>
 </p>
 
+<p align="center">
+<a href="README.md">English</a> | 简体中文
+</p>
+
 ![CSC preview](https://github.com/user-attachments/assets/85848717-c13d-4c70-8049-6c136a387021)
 
 ## 支持与反馈
 
 - 答疑 / 问题反馈 / 帮助：QQ群 `1061133894`
 - GitHub 反馈：[Issues](https://github.com/duckgun13476/Create-SchematicChecker/issues)
-- English README: [README.md](README.md)
 
 ## 功能概览
 

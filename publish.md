@@ -1,7 +1,7 @@
 # Create: Schematic Checker (CSC)
 
-Create: Schematic Checker is a server-side protection mod for
-[Create](https://github.com/Creators-of-Create/Create) schematics. It scans
+Create: Schematic Checker is a server-side protection mod for Create
+schematics. It scans
 uploaded schematics and blocks or sanitizes known malicious NBT patterns before
 they can be printed into a world.
 
@@ -11,20 +11,15 @@ creative-item acquisition, server lag, crashes, malformed contraptions, and
 dangerous addon NBT.
 
 <p align="center">
-<a href="https://modrinth.com/mod/createschematicchecker"><img src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3.2.0/assets/cozy/available/modrinth_vector.svg" alt="Modrinth Page"></a>
-<a href="https://www.curseforge.com/minecraft/mc-mods/create-schematicchecker"><img src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3.2.0/assets/cozy/available/curseforge_vector.svg" alt="CurseForge Page"></a>
 <a href="https://discord.gg/rQV5JPauY7"><img src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3.2.0/assets/cozy/social/discord-singular_vector.svg" alt="Discord Server"></a>
-</p>
-
-<p align="center">
-English | <a href="README_zh.md">简体中文</a>
+<a href="https://github.com/duckgun13476/Create-SchematicChecker"><img src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3.2.0/assets/cozy/social/github-singular_vector.svg" alt="GitHub Repository"></a>
 </p>
 
 ![CSC preview](https://github.com/user-attachments/assets/85848717-c13d-4c70-8049-6c136a387021)
 
 ## Support
 
-- Issues: [GitHub Issues](https://github.com/duckgun13476/Create-SchematicChecker/issues)
+- Discord: https://discord.gg/rQV5JPauY7
 
 ## What It Does
 
@@ -123,49 +118,43 @@ config/CSC/online/
 ## Known Exploit Coverage
 
 CSC covers many reported Create schematic vulnerabilities and addon-specific
-NBT exploits. Public sample videos are linked where available.
+NBT exploits.
 
 | # | Status | Issue |
 | --- | --- | --- |
-| 1 | Fixed | Creative items printed through Lecterns or Clipboards. [Video](https://www.bilibili.com/video/BV1sDp4ePEVp) |
-| 2 | Fixed | Valve data tampering causing cache overflow and memory leaks. [Video](https://www.bilibili.com/video/BV1UdC9YjET5) |
-| 3 | Fixed | Clipboard duplication and creative-property clipboards. [Video](https://www.bilibili.com/video/BV1SXC9YEEeW) |
-| 4 | Fixed | Conveyor belt length tampering beyond 1000 blocks. [Video](https://www.bilibili.com/video/BV1SXC9YEEeW) |
-| 5 | Fixed | Conveyor belts with `-1` length crashing older Forge servers. [Video](https://www.bilibili.com/video/BV1u9ytY2E8R) |
-| 6 | Fixed | Massive malicious conveyor chains causing lag, crashes, or world damage. [Video](https://www.bilibili.com/video/BV1NwybY3ERY) |
-| 7 | Fixed | Kintsugi Decor Urn infinite game-tick exploit. [Video](https://www.bilibili.com/video/BV1LUS9YCEk1) |
-| 8 | Fixed | Weighted Ejector launch-force tampering. [Video 1](https://www.bilibili.com/video/BV1itXDY3EwJ), [Video 2](https://www.bilibili.com/video/BV13RKneEEFG) |
+| 1 | Fixed | Creative items printed through Lecterns or Clipboards. |
+| 2 | Fixed | Valve data tampering causing cache overflow and memory leaks. |
+| 3 | Fixed | Clipboard duplication and creative-property clipboards. |
+| 4 | Fixed | Conveyor belt length tampering beyond 1000 blocks. |
+| 5 | Fixed | Conveyor belts with `-1` length crashing older Forge servers. |
+| 6 | Fixed | Massive malicious conveyor chains causing lag, crashes, or world damage. |
+| 7 | Fixed | Kintsugi Decor Urn infinite game-tick exploit. |
+| 8 | Fixed | Weighted Ejector launch-force tampering. |
 | 9 | Fixed | Oversized Filter NBT causing extreme tick lag. |
-| 10 | Fixed | Overlong chain-drive pairings causing server lag. [Video](https://www.bilibili.com/video/BV1vz9bY7EW5) |
-| 11 | Fixed | `using_converts_to` tag creative-item exploit. [Video](https://www.bilibili.com/video/BV1c19tYsEBL) |
-| 12 | Fixed | Mechanical Arm distance tampering. [Video](https://www.bilibili.com/video/BV1XpXYYDEt7) |
-| 13 | Fixed | Chain drives targeting invalid positions. [Video](https://www.bilibili.com/video/BV1nddcYSEWQ) |
-| 14 | Fixed | Distorted conveyor belts causing belt or shaft duplication. [Video](https://www.bilibili.com/video/BV1omdmYrE3S) |
-| 15 | Fixed | Chain drives with thousands of targets causing lag and duplication. [Video](https://www.bilibili.com/video/BV1Ze5Wz7EB2) |
-| 16 | Fixed | Mechanical Arm infinite output through tampered safe-NBT data. [Video](https://www.bilibili.com/video/BV1udtYzwEQN) |
-| 17 | Fixed | Mechanical Arm duplication with camouflage panel mods. [Video](https://www.bilibili.com/video/BV1dubezLEp7) |
-| 18 | Fixed | Filter retrieval through Andesite Hoppers. [Video](https://www.bilibili.com/video/BV1UrEGzmEDU) |
-| 19 | Fixed | Creative-item acquisition through burn tags. [Video](https://www.bilibili.com/video/BV1UrEGzmEDU) |
-| 20 | Fixed | Entity-based duplication and creative-item exploits, including Armor Stands. [Video](https://www.bilibili.com/video/BV1wtRNYaE5m) |
-| 21 | Fixed | Roller-related creative item exploit in specific versions. [Video](https://www.bilibili.com/video/BV1b4eyzGEoj) |
-| 22 | Fixed | Create: Enchantment Industry creative-tag printing. [Video](https://www.bilibili.com/video/BV1GKemzWEKm) |
-| 23 | Fixed | Create Crafts & Additions infinite energy-cell printing. [Video](https://www.bilibili.com/video/BV193vAzNEJ2) |
-| 24 | Fixed | Integrated Farming Chicken Coop GT lag exploit. [Video](https://www.bilibili.com/video/BV13nh2z5EvT) |
-| 25 | Fixed | Command-execution NBT exploit. [Video](https://www.bilibili.com/video/BV1rZY5z1Eo6) |
-| 26 | Fixed | Create 6.0+ fluid tank capacity tampering. [Video](https://www.bilibili.com/video/BV1hSnMzCE6A/) |
-| 27 | Fixed | Quark Wire Mesh infinite lava exploit. [Video](https://www.bilibili.com/video/BV1hSnMzCE6A/) |
-| 28 | Fixed | Item teleportation to the void through modified mechanical crafters/synthesizers. [Video](https://www.bilibili.com/video/BV1hSnMzCE6A/) |
+| 10 | Fixed | Overlong chain-drive pairings causing server lag. |
+| 11 | Fixed | `using_converts_to` tag creative-item exploit. |
+| 12 | Fixed | Mechanical Arm distance tampering. |
+| 13 | Fixed | Chain drives targeting invalid positions. |
+| 14 | Fixed | Distorted conveyor belts causing belt or shaft duplication. |
+| 15 | Fixed | Chain drives with thousands of targets causing lag and duplication. |
+| 16 | Fixed | Mechanical Arm infinite output through tampered safe-NBT data. |
+| 17 | Fixed | Mechanical Arm duplication with camouflage panel mods. |
+| 18 | Fixed | Filter retrieval through Andesite Hoppers. |
+| 19 | Fixed | Creative-item acquisition through burn tags. |
+| 20 | Fixed | Entity-based duplication and creative-item exploits, including Armor Stands. |
+| 21 | Fixed | Roller-related creative item exploit in specific versions. |
+| 22 | Fixed | Create: Enchantment Industry creative-tag printing. |
+| 23 | Fixed | Create Crafts & Additions infinite energy-cell printing. |
+| 24 | Fixed | Integrated Farming Chicken Coop GT lag exploit. |
+| 25 | Fixed | Command-execution NBT exploit. |
+| 26 | Fixed | Create 6.0+ fluid tank capacity tampering. |
+| 27 | Fixed | Quark Wire Mesh infinite lava exploit. |
+| 28 | Fixed | Item teleportation to the void through modified mechanical crafters/synthesizers. |
 | 29 | Fixed | Additional void item-teleport exploit variants. |
 | 30 | Fixed | Super Glue adhesion-check abuse causing heavy lag or crashes. |
 | 31 | Fixed | Chassis and angled-chassis adhesion-check abuse causing heavy lag or crashes. |
 | 32 | Detected | Create: Big Cannons fuse-data tampering for creative-item acquisition. |
 | 33 | Fixed | Twilight Forest giant block printing bypassing terrain and breaking bedrock. |
-
-## Related Project
-
-The older Python implementation and historical usage notes are available here:
-
-- [CreateSchematicsChecker-Python](https://github.com/duckgun13476/CreateSchematicsChecker-Python)
 
 ## Acknowledgments
 
@@ -179,3 +168,4 @@ Special thanks to:
 ## License
 
 This project is licensed under GNU LGPL 3.0.
+

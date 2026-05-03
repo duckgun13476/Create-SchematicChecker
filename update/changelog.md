@@ -3,6 +3,7 @@
 2. Fix the console format mistake.
 3. Fix the reload delay problem.
 4. Fix low version refmap problem.
+5. Fix some block can't print in Create:Aeronautics. All blocks can be printed now.
 
 ## 1.21.20-release-hotfix
 1. Fix fabric map mistake (crash).
