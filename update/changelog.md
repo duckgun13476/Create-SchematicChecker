@@ -1,3 +1,8 @@
+## 1.21.22-release
+1. Add config migration after version updates.
+2. Regenerate config files after version updates and notify operators about the migration.
+3. Add missing Create: Aeronautics compatibility entries.
+
 ## 1.21.21-release
 1. Add whitelist mode scan-complete notice and config/command switch.
 2. Fix the console format mistake.

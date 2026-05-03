@@ -168,7 +168,7 @@ public final class ConfigArchiveNotice {
     private static Object withModernColor(Object component, String colorName) {
         try {
             Class<?> chatFormattingClass = Class.forName("net.minecraft.ChatFormatting");
-            Object color = Enum.valueOf((Class<Enum>) chatFormattingClass.asSubclass(Enum.class), colorName);
+            Object color = enumConstant(chatFormattingClass, colorName);
             Class<?> styleClass = Class.forName("net.minecraft.network.chat.Style");
             Object emptyStyle = styleClass.getField("EMPTY").get(null);
             Object coloredStyle = styleClass.getMethod("withColor", chatFormattingClass).invoke(emptyStyle, color);
@@ -181,7 +181,7 @@ public final class ConfigArchiveNotice {
     private static Object withLegacyColor(Object component, String colorName) {
         try {
             Class<?> textFormattingClass = Class.forName("net.minecraft.util.text.TextFormatting");
-            Object color = Enum.valueOf((Class<Enum>) textFormattingClass.asSubclass(Enum.class), colorName);
+            Object color = enumConstant(textFormattingClass, colorName);
             Class<?> styleClass = Class.forName("net.minecraft.util.text.Style");
             Object emptyStyle = styleClass.getField("EMPTY").get(null);
             Object coloredStyle = styleClass.getMethod("applyFormatting", textFormattingClass).invoke(emptyStyle, color);
@@ -189,6 +189,11 @@ public final class ConfigArchiveNotice {
         } catch (Exception ignored) {
             return component;
         }
+    }
+
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    private static Object enumConstant(Class<?> enumClass, String constantName) {
+        return Enum.valueOf((Class<? extends Enum>) enumClass.asSubclass(Enum.class), constantName);
     }
 
     private static final class NoticeLine {

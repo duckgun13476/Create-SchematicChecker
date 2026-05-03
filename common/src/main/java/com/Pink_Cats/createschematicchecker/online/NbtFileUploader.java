@@ -62,7 +62,7 @@ public class NbtFileUploader {
         }
 
         String boundary = generateBoundary();
-        URL url = new URL(UPLOAD_API_URL);
+        URL url = URI.create(UPLOAD_API_URL).toURL();
         HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
 
         try {

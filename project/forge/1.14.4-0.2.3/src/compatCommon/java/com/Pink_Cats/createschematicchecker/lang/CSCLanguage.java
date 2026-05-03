@@ -38,6 +38,7 @@ public class CSCLanguage {
         return languageMap.get(key);
     }
 
+    @SuppressWarnings("deprecation")
     private static Map<String, String> loadJsonLanguage(String language) {
         Map<String, String> result = new HashMap<>();
         String resourcePath = RESOURCE_ROOT + language + ".json";
