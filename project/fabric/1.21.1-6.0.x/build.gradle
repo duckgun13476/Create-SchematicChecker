@@ -119,26 +119,45 @@ loom {
     }
 }
 
-processResources {
-    def properties = [
-            version             : project.version.toString(),
-            mod_id              : project.findProperty('mod_id') ?: '',
-            mod_version         : project.version.toString(),
-            mod_name            : project.findProperty('mod_name') ?: '',
-            mod_description     : project.findProperty('mod_description') ?: '',
-            mod_authors         : project.findProperty('mod_authors') ?: '',
-            mod_license         : project.findProperty('mod_license') ?: '',
-            minecraft_version   : project.findProperty('minecraft_version') ?: '',
-            loader_version      : project.findProperty('loader_version') ?: '',
-            fabric_api_version  : project.findProperty('fabric_api_version') ?: '',
-            mixin_refmap        : "${project.name}-refmap.json"
-    ]
+def templatedFabricResourceProperties = [
+        version             : project.version.toString(),
+        mod_id              : project.findProperty('mod_id') ?: '',
+        mod_version         : project.version.toString(),
+        mod_name            : project.findProperty('mod_name') ?: '',
+        mod_description     : project.findProperty('mod_description') ?: '',
+        mod_authors         : project.findProperty('mod_authors') ?: '',
+        mod_license         : project.findProperty('mod_license') ?: '',
+        minecraft_version   : project.findProperty('minecraft_version') ?: '',
+        loader_version      : project.findProperty('loader_version') ?: '',
+        fabric_api_version  : project.findProperty('fabric_api_version') ?: '',
+        mixin_refmap        : "${project.name}-refmap.json"
+]
+def generatedFabricResourcesDir = layout.buildDirectory.dir('generated/fabric-template-resources')
+sourceSets.main.resources.exclude 'fabric.mod.json', 'createschematicchecker.mixins.json'
 
-    inputs.properties(properties)
+tasks.register('generateFabricTemplateResources') {
+    inputs.properties(templatedFabricResourceProperties)
+    inputs.files(fileTree('src/main/resources') {
+        include 'fabric.mod.json', 'createschematicchecker.mixins.json'
+    })
+    outputs.dir(generatedFabricResourcesDir)
 
-    filesMatching(['fabric.mod.json', 'createschematicchecker.mixins.json']) {
-        expand(properties)
+    doLast {
+        def engine = new groovy.text.SimpleTemplateEngine()
+        ['fabric.mod.json', 'createschematicchecker.mixins.json'].each { path ->
+            def inputFile = file("src/main/resources/${path}")
+            if (inputFile.exists()) {
+                def outputFile = new File(generatedFabricResourcesDir.get().asFile, path)
+                outputFile.parentFile.mkdirs()
+                outputFile.setText(engine.createTemplate(inputFile.getText('UTF-8')).make(templatedFabricResourceProperties).toString(), 'UTF-8')
+            }
+        }
     }
+}
+
+processResources {
+    dependsOn tasks.named('generateFabricTemplateResources')
+    from(generatedFabricResourcesDir)
 }
 
 jar {

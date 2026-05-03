@@ -157,7 +157,6 @@ sourceSets {
         }
         resources {
             srcDir 'src/generated/resources'
-            srcDir commonResourcesDir
         }
     }
 }
@@ -181,14 +180,41 @@ def templatedResourceProperties = [
         mod_description        : project.findProperty('mod_description') ?: '',
         file                   : [jarVersion: project.version.toString()]
 ]
+def generatedTemplatedResourcesDir = layout.buildDirectory.dir('generated/csc-template-resources')
+sourceSets.main.resources.exclude 'META-INF/mods.toml', 'pack.mcmeta'
+
+tasks.register('generateTemplatedResources') {
+    def templateSources = [
+            [path: 'META-INF/mods.toml', file: file('src/main/resources/META-INF/mods.toml')],
+            [path: 'pack.mcmeta', file: file('src/main/resources/pack.mcmeta')],
+            [path: 'createschematicchecker-build.properties', file: new File(commonResourcesDir, 'createschematicchecker-build.properties')]
+    ]
+
+    inputs.files(templateSources.collect { it.file })
+    inputs.properties(templatedResourceProperties)
+    outputs.dir(generatedTemplatedResourcesDir)
+
+    doLast {
+        def engine = new groovy.text.SimpleTemplateEngine()
+        templateSources.each { template ->
+            if (template.file.exists()) {
+                def outputFile = new File(generatedTemplatedResourcesDir.get().asFile, template.path)
+                outputFile.parentFile.mkdirs()
+                outputFile.setText(engine.createTemplate(template.file.getText('UTF-8')).make(templatedResourceProperties).toString(), 'UTF-8')
+            }
+        }
+    }
+}
 
 processResources {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-    inputs.properties(templatedResourceProperties)
-
-    filesMatching(['META-INF/mods.toml', 'pack.mcmeta', 'createschematicchecker-build.properties']) {
-        expand(templatedResourceProperties)
+    from(commonResourcesDir) {
+        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+        exclude 'createschematicchecker-build.properties'
     }
+
+    dependsOn tasks.named('generateTemplatedResources')
+    from(generatedTemplatedResourcesDir)
 }
 
 compileJava {

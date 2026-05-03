@@ -16,23 +16,41 @@ ext.readCscDisplayVersion = {
 
 def commonJavaDir = rootProject.file('common/src/main/java')
 def commonResourcesDir = rootProject.file('common/src/main/resources')
+def commonBuildInfoResource = new File(commonResourcesDir, 'createschematicchecker-build.properties')
+def generatedBuildInfoResourcesDir = layout.buildDirectory.dir('generated/csc-build-info-resources')
+def cscBuildInfoProperties = [
+        minecraft_version: requireBuildProperty('minecraft_version'),
+        csc_version      : readCscDisplayVersion()
+]
+
+def generateCscBuildInfoResources = tasks.register('generateCscBuildInfoResources') {
+    inputs.file(commonBuildInfoResource)
+    inputs.properties(cscBuildInfoProperties)
+    outputs.dir(generatedBuildInfoResourcesDir)
+
+    doLast {
+        def outputFile = new File(generatedBuildInfoResourcesDir.get().asFile, 'createschematicchecker-build.properties')
+        outputFile.parentFile.mkdirs()
+        outputFile.setText(new groovy.text.SimpleTemplateEngine()
+                .createTemplate(commonBuildInfoResource.getText('UTF-8'))
+                .make(cscBuildInfoProperties)
+                .toString(), 'UTF-8')
+    }
+}
 
 sourceSets {
     main {
         java.srcDir(commonJavaDir)
-        resources.srcDir(commonResourcesDir)
     }
 }
 
 tasks.named('processResources').configure {
-    def cscBuildInfoProperties = [
-            minecraft_version: requireBuildProperty('minecraft_version'),
-            csc_version      : readCscDisplayVersion()
-    ]
+    dependsOn(generateCscBuildInfoResources)
 
-    inputs.properties(cscBuildInfoProperties)
-
-    filesMatching('createschematicchecker-build.properties') {
-        expand(cscBuildInfoProperties)
+    from(commonResourcesDir) {
+        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+        exclude 'createschematicchecker-build.properties'
     }
+
+    from(generatedBuildInfoResourcesDir)
 }
