@@ -11,6 +11,9 @@ if (embeddedTorqueParts.length < 3) {
 def embeddedTorqueGroup = embeddedTorqueParts[0]
 def embeddedTorqueArtifact = embeddedTorqueParts[1]
 def embeddedTorqueVersion = embeddedTorqueParts[2]
+def embeddedTorqueIsObfuscated = project.hasProperty('csc_torque_embed_is_obfuscated')
+        ? project.findProperty('csc_torque_embed_is_obfuscated').toString().toBoolean()
+        : embeddedTorqueArtifact.contains('-forge')
 def embeddedTorqueConfiguration = configurations.maybeCreate('cscTorqueEmbedded')
 def embeddedTorqueOutputDir = layout.buildDirectory.dir('generated/cscTorqueJarJar')
 
@@ -54,7 +57,7 @@ tasks.register('prepareEmbeddedTorqueApi') {
                                        artifactVersion: embeddedTorqueVersion
                                ],
                                path        : "META-INF/jarjar/${embeddedJar.name}",
-                               isObfuscated: false
+                               isObfuscated: embeddedTorqueIsObfuscated
                        ]]
         ]
 

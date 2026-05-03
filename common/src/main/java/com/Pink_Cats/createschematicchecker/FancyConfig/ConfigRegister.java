@@ -72,7 +72,7 @@ public class ConfigRegister {
 
 
     public static ConfigValue.ConfigBoolean WHITE_LIST_MOD_ENABLE = ConfigBuild
-            .define("core.WhiteListModEnable", true)
+            .define("core.WhiteListModEnable", false)
             .comment(CommitBreak)
             .comment("config.WhiteListModEnable");
 
