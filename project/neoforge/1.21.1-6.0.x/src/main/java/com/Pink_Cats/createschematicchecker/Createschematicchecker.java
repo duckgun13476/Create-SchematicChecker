@@ -1,6 +1,7 @@
 package com.Pink_Cats.createschematicchecker;
 
 import com.Pink_Cats.createschematicchecker.core.BlueCore;
+import com.Pink_Cats.createschematicchecker.FancyConfig.ConfigArchiveNotice;
 import com.Pink_Cats.createschematicchecker.echo.CscCommands;
 import com.Pink_Cats.createschematicchecker.event.CheckBlueprint;
 import com.mojang.logging.LogUtils;
@@ -14,6 +15,7 @@ import net.neoforged.fml.event.config.ModConfigEvent;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
 import net.neoforged.neoforge.event.server.ServerStoppingEvent;
 import org.slf4j.Logger;
@@ -60,8 +62,25 @@ public class Createschematicchecker {
         }
 
         @SubscribeEvent
+        public void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event) {
+            ConfigArchiveNotice.tryNotifyPlayer(eventPlayer(event));
+        }
+
+        @SubscribeEvent
         public void onCommandRegister(RegisterCommandsEvent event) {
             NeoForgeCommandEvents.register(event, CscCommands::register);
+        }
+    }
+
+    private static Object eventPlayer(Object event) {
+        try {
+            return event.getClass().getMethod("getEntity").invoke(event);
+        } catch (Exception ignored) {
+            try {
+                return event.getClass().getMethod("getPlayer").invoke(event);
+            } catch (Exception ignoredAgain) {
+                return null;
+            }
         }
     }
 

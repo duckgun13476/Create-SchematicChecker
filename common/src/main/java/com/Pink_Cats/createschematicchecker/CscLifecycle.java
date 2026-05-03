@@ -1,6 +1,7 @@
 package com.Pink_Cats.createschematicchecker;
 
 import com.Pink_Cats.createschematicchecker.FancyConfig.ConfigRegister;
+import com.Pink_Cats.createschematicchecker.FancyConfig.ConfigArchiveNotice;
 import com.Pink_Cats.createschematicchecker.lang.Message;
 import com.pinkcats.torque.layer.TorqueLayer;
 import com.pinkcats.torque.layer.platform.Platform;
@@ -54,6 +55,7 @@ public class CscLifecycle {
 
     public void serverStopping() {
         CSC_Variables_Save();
+        ConfigArchiveNotice.clear();
         Message.FM(translateDirect("console.csc.StopServer"));
         CSC_MES.close();
         CSC_WARN.close();

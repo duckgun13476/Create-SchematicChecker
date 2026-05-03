@@ -1,5 +1,6 @@
 package com.Pink_Cats.createschematicchecker;
 
+import com.Pink_Cats.createschematicchecker.FancyConfig.ConfigArchiveNotice;
 import com.Pink_Cats.createschematicchecker.core.BlueCore;
 import com.Pink_Cats.createschematicchecker.echo.CscCommands;
 import com.Pink_Cats.createschematicchecker.event.CheckBlueprint;
@@ -8,6 +9,7 @@ import com.pinkcats.torque.layer.forge.command.ForgeCommandEvents;
 import com.simibubi.create.infrastructure.config.AllConfigs;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegisterCommandsEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.event.server.ServerStoppingEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -57,6 +59,22 @@ public class Createschematicchecker {
     @SubscribeEvent
     public void onReload(ModConfigEvent.Reloading event) {
         lifecycle.configReloading();
+    }
+    @SubscribeEvent
+    public void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event) {
+        ConfigArchiveNotice.tryNotifyPlayer(eventPlayer(event));
+    }
+
+    private static Object eventPlayer(Object event) {
+        try {
+            return event.getClass().getMethod("getEntity").invoke(event);
+        } catch (Exception ignored) {
+            try {
+                return event.getClass().getMethod("getPlayer").invoke(event);
+            } catch (Exception ignoredAgain) {
+                return null;
+            }
+        }
     }
 
     @SubscribeEvent

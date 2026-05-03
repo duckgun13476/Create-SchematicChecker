@@ -17,6 +17,7 @@ import java.util.Map;
 
 import static com.Pink_Cats.createschematicchecker.FancyConfig.FileIO.createIfNotExists;
 import static com.Pink_Cats.createschematicchecker.database.DataCount.*;
+import static com.Pink_Cats.createschematicchecker.lang.CSCLanguage.csc_version;
 import static com.Pink_Cats.createschematicchecker.lang.CSCLanguage.translateDirect;
 import static com.Pink_Cats.createschematicchecker.network.SimpleJsonParser.UpdateRuleThread;
 
@@ -27,8 +28,10 @@ public class ConfigRegister {
     }
     public static final String CommitBreak = "#----------------------------------------------------------------------";
     static final String ConfigPath = "config/CSC/config.toml";
+    private static final String ConfigVersionKey = "ConfigVersion";
     static {
         ensureValidConfigToml();
+        archiveOutdatedConfigToml();
     }
     private static final ConfigValue ConfigBuild = new ConfigValue();
     private static final SimpleTomlEditor tomlEditor = new SimpleTomlEditor(ConfigPath);
@@ -37,6 +40,11 @@ public class ConfigRegister {
         Object languageValue = ConfigHook.readToml(ConfigPath).get("Language");
         DefineLanguage = (languageValue != null) ? languageValue.toString() : "en_us";
     }
+
+    public static ConfigValue.ConfigString CONFIG_VERSION = ConfigBuild
+            .define(ConfigVersionKey, csc_version)
+            .comment(CommitBreak)
+            .comment("config.ConfigVersion");
 
     public static ConfigValue.ConfigString LANGUAGE = ConfigBuild
             .define("Language", "en_us")
@@ -361,6 +369,7 @@ public class ConfigRegister {
         ensureValidConfigToml();
         Message.FM(translateDirect("console.reload1"));
         List<String> list = new ArrayList<String>();
+        CONFIG_VERSION.reload();
         WHITE_LIST_MOD.reload();
         WHITE_LIST_MOD_ENABLE.reload();
         ENABLE_DEBUG.reload();
@@ -413,7 +422,52 @@ public class ConfigRegister {
         }
     }
 
+    private static void archiveOutdatedConfigToml() {
+        try {
+            Path configFile = Paths.get(ConfigPath);
+            if (!Files.exists(configFile) || Files.size(configFile) == 0) {
+                return;
+            }
+
+            Map<String, Object> oldConfig = ConfigHook.readToml(ConfigPath);
+            Object versionValue = oldConfig.get(ConfigVersionKey);
+            String configVersion = versionValue == null ? null : versionValue.toString();
+            if (csc_version.equals(configVersion)) {
+                return;
+            }
+            String oldLanguage = languageFromOldConfig(oldConfig.get("Language"));
+
+            String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy_MM_dd_HH_mm_ss"));
+            Path archiveFile = configFile.resolveSibling("config_old_" + timestamp + ".toml");
+            Files.move(configFile, archiveFile, StandardCopyOption.REPLACE_EXISTING);
+            Files.deleteIfExists(configFile);
+            Files.createFile(configFile);
+            writePreservedLanguage(configFile, oldLanguage);
+            ConfigArchiveNotice.markArchived(configVersion, csc_version, archiveFile.toAbsolutePath());
+            Message.FW("[CSC] Old config.toml archived to " + archiveFile.toAbsolutePath()
+                    + " because ConfigVersion changed from "
+                    + (configVersion == null ? "missing" : configVersion)
+                    + " to "
+                    + csc_version);
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to archive outdated config.toml: " + e.getMessage(), e);
+        }
+    }
+
+    private static String languageFromOldConfig(Object languageValue) {
+        if (languageValue == null) {
+            return "en_us";
+        }
+        String oldLanguage = languageValue.toString().trim();
+        return oldLanguage.isEmpty() ? "en_us" : oldLanguage;
+    }
+
+    private static void writePreservedLanguage(Path configFile, String language) throws IOException {
+        Files.write(configFile, Arrays.asList("Language = \"" + language + "\""));
+    }
+
     private static void syncConfigComments() {
+        syncComments(ConfigVersionKey, CommitBreak, "config.ConfigVersion");
         syncComments("Language",
                 CommitBreak,
                 "config.explain1",

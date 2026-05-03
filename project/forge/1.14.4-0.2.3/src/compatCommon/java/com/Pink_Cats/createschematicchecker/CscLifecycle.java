@@ -55,6 +55,7 @@ public class CscLifecycle {
 
     public void serverStopping() {
         CSC_Variables_Save();
+        com.Pink_Cats.createschematicchecker.FancyConfig.ConfigArchiveNotice.clear();
         Message.FM(translateDirect("console.csc.StopServer"));
         CSC_MES.close();
         CSC_WARN.close();

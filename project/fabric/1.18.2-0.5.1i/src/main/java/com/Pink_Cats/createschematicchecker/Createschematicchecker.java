@@ -1,5 +1,6 @@
 package com.Pink_Cats.createschematicchecker;
 
+import com.Pink_Cats.createschematicchecker.FancyConfig.ConfigArchiveNotice;
 import com.Pink_Cats.createschematicchecker.core.BlueCore;
 import com.Pink_Cats.createschematicchecker.echo.CscCommands;
 import com.Pink_Cats.createschematicchecker.event.CheckBlueprint;
@@ -9,6 +10,7 @@ import com.pinkcats.torque.layer.fabric.command.FabricCommandEvents;
 import com.simibubi.create.infrastructure.config.AllConfigs;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import org.slf4j.Logger;
 
@@ -35,6 +37,7 @@ public class Createschematicchecker implements ModInitializer {
         ServerLifecycleEvents.SERVER_STOPPING.register(server -> lifecycle.serverStopping());
         ServerLifecycleEvents.SERVER_STOPPED.register(server -> CheckBlueprint.clearCurrentServer());
         ServerTickEvents.END_SERVER_TICK.register(CHECK_BLUEPRINT::serverTickEvent);
+        ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> ConfigArchiveNotice.tryNotifyPlayer(handler.getPlayer()));
 
         FabricCommandEvents.register(CscCommands::register);
     }
