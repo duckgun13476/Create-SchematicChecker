@@ -43,8 +43,7 @@ public class CheckBlueprint {
                 checker,
                 (id, pass) -> applyResult(player, id, pass),
                 CheckBlueprint::broadcast,
-                CheckBlueprint::ExecuteSomeCmd,
-                notice -> sendNoticeToOperator(player, notice)
+                CheckBlueprint::ExecuteSomeCmd
         );
         new Thread(() -> processor.handle(event.SchematicPath, event.SchematicId, playerName), "CSC-SchematicScan").start();
     }
@@ -124,31 +123,6 @@ public class CheckBlueprint {
         MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
         if (server == null) return new ArrayList<>();
         return new ArrayList<>(server.getPlayerList().getPlayers());
-    }
-
-    private void sendNoticeToOperator(ServerPlayerEntity player, String notice) {
-        runOnServerMainThread(player, () -> {
-            if (!hasOperatorPermission(player)) {
-                return;
-            }
-            String[] lines = notice.split("\\r?\\n");
-            for (int i = 0; i < lines.length; i++) {
-                TextFormatting color = i == 1 ? TextFormatting.GREEN : TextFormatting.GOLD;
-                player.sendMessage(new StringTextComponent(lines[i]).setStyle(new Style().setColor(color)));
-            }
-        });
-    }
-
-    private static boolean hasOperatorPermission(ServerPlayerEntity player) {
-        try {
-            return (Boolean) player.getClass().getMethod("hasPermissions", int.class).invoke(player, 4);
-        } catch (Exception ignored) {
-            try {
-                return (Boolean) player.getClass().getMethod("canUseCommand", int.class, String.class).invoke(player, 4, "csc");
-            } catch (Exception ignoredAgain) {
-                return false;
-            }
-        }
     }
 
     public static void broadcast(String playerBlueprintId, String playerName) {

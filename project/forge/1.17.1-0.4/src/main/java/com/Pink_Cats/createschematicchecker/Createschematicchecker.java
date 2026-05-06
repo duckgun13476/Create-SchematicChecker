@@ -1,6 +1,7 @@
 package com.Pink_Cats.createschematicchecker;
 
 import com.Pink_Cats.createschematicchecker.FancyConfig.ConfigArchiveNotice;
+import com.Pink_Cats.createschematicchecker.FancyConfig.WhitelistModeNotice;
 import com.Pink_Cats.createschematicchecker.core.BlueCore;
 import com.Pink_Cats.createschematicchecker.echo.CscCommands;
 import com.Pink_Cats.createschematicchecker.event.CheckBlueprint;
@@ -57,7 +58,9 @@ public class Createschematicchecker {
     }
     @SubscribeEvent
     public void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event) {
-        ConfigArchiveNotice.tryNotifyPlayer(eventPlayer(event));
+        Object player = eventPlayer(event);
+        ConfigArchiveNotice.tryNotifyPlayer(player);
+        WhitelistModeNotice.tryNotifyPlayer(player);
     }
 
     private static Object eventPlayer(Object event) {

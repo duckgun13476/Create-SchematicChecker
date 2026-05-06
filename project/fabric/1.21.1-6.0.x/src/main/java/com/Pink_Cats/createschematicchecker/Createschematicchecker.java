@@ -1,6 +1,7 @@
 package com.Pink_Cats.createschematicchecker;
 
 import com.Pink_Cats.createschematicchecker.FancyConfig.ConfigArchiveNotice;
+import com.Pink_Cats.createschematicchecker.FancyConfig.WhitelistModeNotice;
 import com.Pink_Cats.createschematicchecker.core.BlueCore;
 import com.Pink_Cats.createschematicchecker.echo.CscCommands;
 import com.Pink_Cats.createschematicchecker.event.CheckBlueprint;
@@ -37,7 +38,10 @@ public class Createschematicchecker implements ModInitializer {
         ServerLifecycleEvents.SERVER_STOPPING.register(server -> lifecycle.serverStopping());
         ServerLifecycleEvents.SERVER_STOPPED.register(server -> CheckBlueprint.clearCurrentServer());
         ServerTickEvents.END_SERVER_TICK.register(CHECK_BLUEPRINT::serverTickEvent);
-        ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> ConfigArchiveNotice.tryNotifyPlayer(handler.getPlayer()));
+        ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
+            ConfigArchiveNotice.tryNotifyPlayer(handler.getPlayer());
+            WhitelistModeNotice.tryNotifyPlayer(handler.getPlayer());
+        });
 
         FabricCommandEvents.register(CscCommands::register);
     }

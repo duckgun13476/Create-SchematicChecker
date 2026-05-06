@@ -32,15 +32,10 @@ public class BlueprintUploadProcessor {
         void run(String blueprintId, String playerName);
     }
 
-    public interface NoticeSender {
-        void send(String notice);
-    }
-
     private final BlueCore checker;
     private final ResultApplier resultApplier;
     private final CheatBroadcaster cheatBroadcaster;
     private final CommandRunner commandRunner;
-    private final NoticeSender noticeSender;
 
     public BlueprintUploadProcessor(
             BlueCore checker,
@@ -48,22 +43,10 @@ public class BlueprintUploadProcessor {
             CheatBroadcaster cheatBroadcaster,
             CommandRunner commandRunner
     ) {
-        this(checker, resultApplier, cheatBroadcaster, commandRunner, notice -> {
-        });
-    }
-
-    public BlueprintUploadProcessor(
-            BlueCore checker,
-            ResultApplier resultApplier,
-            CheatBroadcaster cheatBroadcaster,
-            CommandRunner commandRunner,
-            NoticeSender noticeSender
-    ) {
         this.checker = checker;
         this.resultApplier = resultApplier;
         this.cheatBroadcaster = cheatBroadcaster;
         this.commandRunner = commandRunner;
-        this.noticeSender = noticeSender;
     }
 
     public void handle(String id, String schematicName, String playerName) {
@@ -91,7 +74,6 @@ public class BlueprintUploadProcessor {
                 Message.FE(line);
             }
             Message.FP(translateDirect("console.total.time") + executionTime + " ms");
-            logWhitelistModeNotice();
 
             if (checkResult == null) {
                 resultApplier.apply(id, false);
@@ -168,18 +150,6 @@ public class BlueprintUploadProcessor {
         }
 
         resultApplier.apply(id, false);
-    }
-
-    private void logWhitelistModeNotice() {
-        if (!white_list_mod_notice) {
-            return;
-        }
-
-        String notice = translateDirect(white_list_mod_enable
-                ? "console.whitelistid.notice.scan.on"
-                : "console.whitelistid.notice.scan.off");
-        Message.FM(notice);
-        noticeSender.send(notice);
     }
 
     public static CompoundTag pathToCompoundTag(String schematicPath) throws IOException {

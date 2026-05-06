@@ -1,6 +1,7 @@
 package com.Pink_Cats.createschematicchecker.echo;
 
 import com.Pink_Cats.createschematicchecker.event.TempOffTicker;
+import com.Pink_Cats.createschematicchecker.FancyConfig.WhitelistModeNotice;
 import com.Pink_Cats.createschematicchecker.lang.Message;
 import com.Pink_Cats.createschematicchecker.online.SimpleHeartbeatPusher;
 import com.Pink_Cats.createschematicchecker.online.VersionChecker;
@@ -108,12 +109,14 @@ public class CscCommandActions {
     private static void setWhiteListModeNoticeCommand(CommandSender sender, boolean enabled) {
         setWhiteListModeNotice(enabled);
         CSC_RELOAD();
+        WhitelistModeNotice.updateForCurrentStartup(white_list_mod_notice, white_list_mod_enable);
         send(sender, translateDirect(enabled ? "console.whitelistid.notice.on" : "console.whitelistid.notice.off"), CommandColor.GOLD);
     }
 
     private static void setWhiteListModModeCommand(CommandSender sender, boolean enabled) {
         setWhiteListModEnable(enabled);
         CSC_RELOAD();
+        WhitelistModeNotice.updateForCurrentStartup(white_list_mod_notice, white_list_mod_enable);
         send(sender, translateDirect(enabled ? "console.whitelistid.mode.on" : "console.whitelistid.mode.off"), CommandColor.GOLD);
     }
 

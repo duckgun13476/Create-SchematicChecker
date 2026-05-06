@@ -42,8 +42,7 @@ public class CheckBlueprint {
                 checker,
                 (id, pass) -> applyResult(player, id, pass),
                 CheckBlueprint::broadcast,
-                CheckBlueprint::ExecuteSomeCmd,
-                notice -> sendNoticeToOperator(player, notice)
+                CheckBlueprint::ExecuteSomeCmd
         );
         new Thread(() -> processor.handle(event.SchematicPath, event.SchematicId, playerName), "CSC-SchematicScan").start();
     }
@@ -121,22 +120,6 @@ public class CheckBlueprint {
         MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
         if (server == null) return new ArrayList<>();
         return new ArrayList<>(server.getPlayerList().getPlayers());
-    }
-
-    private void sendNoticeToOperator(ServerPlayer player, String notice) {
-        runOnServerMainThread(player, () -> {
-            if (!player.hasPermissions(4)) {
-                return;
-            }
-            String[] lines = notice.split("\\r?\\n");
-            for (int i = 0; i < lines.length; i++) {
-                ChatFormatting color = i == 1 ? ChatFormatting.GREEN : ChatFormatting.GOLD;
-                player.sendMessage(
-                        new TextComponent(lines[i]).setStyle(Style.EMPTY.withColor(color)),
-                        Util.NIL_UUID
-                );
-            }
-        });
     }
 
     public static void broadcast(String playerBlueprintId, String playerName) {
