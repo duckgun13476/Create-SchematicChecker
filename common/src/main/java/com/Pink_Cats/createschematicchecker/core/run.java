@@ -48,6 +48,7 @@ public class run {
         long executionTime = endTime - startTime;
         Message.FP("Total use time: " + executionTime + " ms");
 
+        System.exit(0);
 
     }
 
@@ -64,10 +65,17 @@ public class run {
                         .invoke(null, "CreateSchematicCheckerStandalone");
                 Class<?> platformInterface = Class.forName("com.pinkcats.torque.layer.platform.Platform");
                 Class<?> platformClass = Class.forName("com.pinkcats.torque.layer.neoforge.NeoForgePlatform");
-                Object platform = platformClass
-                        .getDeclaredConstructor(loggerClass, String.class, String.class,
-                                Class.forName("net.neoforged.bus.api.IEventBus"))
-                        .newInstance(logger, "1.21.1", "standalone", null);
+                Object platform;
+                try {
+                    platform = platformClass
+                            .getDeclaredConstructor(loggerClass, String.class, String.class,
+                                    Class.forName("net.neoforged.bus.api.IEventBus"))
+                            .newInstance(logger, "1.21.1", "standalone", null);
+                } catch (NoSuchMethodException ignoredConstructor) {
+                    platform = platformClass
+                            .getDeclaredConstructor(loggerClass, String.class, String.class)
+                            .newInstance(logger, "1.21.1", "standalone");
+                }
                 Class.forName("com.pinkcats.torque.layer.TorqueLayer")
                         .getMethod("init", platformInterface)
                         .invoke(null, platform);

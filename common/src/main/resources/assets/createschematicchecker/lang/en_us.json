@@ -98,6 +98,7 @@
   "console.warn.conveyor.mismatch": "Invalid chain conveyor connection found.",
   "console.warn.conveyor.fix.match": "Matched invalid chain conveyor connection.",
   "console.warn.conveyor.fix.remove": "Removed invalid chain conveyor connection.",
+  "console.warn.entity.missing_id": "Entity id is missing. The invalid entity has been removed.",
   "console.cheat.crafter.mismatch": "Create Crafter entity data does not match!",
   "console.cheat.crafter.attach": "Create Crafter considered the same entity are not connected to each other!",
   "console.cheat.FluidTank.mismatch": "Fluid Tank Controller quantity does not match! [Number of Controllers | Number of Tanks Found]",

@@ -98,6 +98,7 @@
   "console.warn.conveyor.mismatch": "無効なチェーンコンベヤ接続を検出しました。",
   "console.warn.conveyor.fix.match": "無効なチェーンコンベヤ接続に一致しました。",
   "console.warn.conveyor.fix.remove": "無効なチェーンコンベヤ接続を削除しました。",
+  "console.warn.entity.missing_id": "エンティティ ID が存在しないため、無効なエンティティを削除しました。",
   "console.cheat.crafter.mismatch": "Create クラフター エンティティ データが一致しません。",
   "console.cheat.crafter.attach": "Create 同じエンティティとみなされるクラフターは互いに接続されていません!",
   "console.cheat.FluidTank.mismatch": "液体タンク コントローラーの数量が一致しません。 [Number of Controllers | Number of Tanks Found]",

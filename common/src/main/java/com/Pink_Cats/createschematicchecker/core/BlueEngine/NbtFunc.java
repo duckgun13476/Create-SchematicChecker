@@ -625,11 +625,9 @@ public class NbtFunc {
 
             //CopyCats
 
-
-            // 鎻愬彇 entity 淇℃伅
             ListTag entities = nbt_data.getList("entities", 10); // 10 琛ㄧず CompoundTag 绫诲瀷
-            boolean IsEntityKilled = false;
             for (int i = 0; i < entities.size(); i++) {
+                boolean IsEntityKilled = false;
                 CompoundTag entity = entities.getCompound(i);
                 entityResult = BaseBlockHandle(entity, "entity", palette, i,CheatLog);
                 Object entityRes = entityResult.get("Data");
@@ -646,13 +644,26 @@ public class NbtFunc {
                 if (!IsEntityKilled) {
                     if (kill_entity){
 
-                        String entityId = NoQuotes(entity.getCompound("nbt").get("id").toString());
+                        CompoundTag entityNbt = entity.getCompound("nbt");
+                        Tag entityIdTag = entityNbt.get("id");
+                        if (entityIdTag == null) {
+                            Message.FW(translateDirect("console.warn.entity.missing_id")
+                                    + " index=" + i
+                                    + ", blockPos=" + entity.get("blockPos")
+                                    + ", pos=" + entity.get("pos"));
+                            entities.remove(i);
+                            i -= 1;
+                            continue;
+                        }
+
+                        String entityId = NoQuotes(entityIdTag.toString());
                         if (IsWhitelistEntity(entityId)){
                             if (!entityId.equals("create:super_glue")){
                                 Message.FE(translateDirect("csc.kill.whitelist.ignore") + entityId);
                             }
                         }else {
-                            entities.remove(entity);
+                            entities.remove(i);
+                            i -= 1;
                         }
 
 

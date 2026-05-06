@@ -98,6 +98,7 @@
   "console.warn.conveyor.mismatch": "发现无效的链式传动轮连接。",
   "console.warn.conveyor.fix.match": "匹配到无效的链式传动轮连接。",
   "console.warn.conveyor.fix.remove": "已移除无效的链式传动轮连接。",
+  "console.warn.entity.missing_id": "实体 id 不存在，已移除该无效实体。",
   "console.cheat.crafter.mismatch": "动力合成器的实体数据不匹配！",
   "console.cheat.crafter.attach": "被视为同一实体的动力合成器没有相互连接！",
   "console.cheat.FluidTank.mismatch": "流体储罐控制器数量不匹配！[控制器数量|找到的容器数量]",
