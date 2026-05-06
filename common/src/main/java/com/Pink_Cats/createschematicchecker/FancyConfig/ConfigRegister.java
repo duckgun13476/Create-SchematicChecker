@@ -30,6 +30,30 @@ public class ConfigRegister {
     public static final String CommitBreak = "#----------------------------------------------------------------------";
     static final String ConfigPath = "config/CSC/config.toml";
     private static final String ConfigVersionKey = "ConfigVersion";
+    private static final List<String> MIGRATABLE_CONFIG_KEYS = Arrays.asList(
+            "Language",
+            "UUID",
+            "core.Enable",
+            "core.DelayTime",
+            "core.WhiteListModEnable",
+            "core.ShowWhitelistModeNotice",
+            "core.KillEntity",
+            "debug.DebugTotalBlock",
+            "debug.DebugCheatFind",
+            "debug.EnableBackup",
+            "debug.problem",
+            "function.checkBelt",
+            "function.TryRemoveBeltNotKill",
+            "function.TryRemoveFluidTankNotKill",
+            "function.maxBeltCheatLimit",
+            "function.maxConveyorCheatDistanceLimit",
+            "function.maxConveyorCheatLimit",
+            "function.maxConveyorAllowDegree",
+            "online.enableAutoUpdate",
+            "online.enableManualConfig",
+            "online.UpdateInfo",
+            "online.report"
+    );
     static {
         ensureValidConfigToml();
         archiveOutdatedConfigToml();
@@ -484,14 +508,12 @@ public class ConfigRegister {
             if (csc_version.equals(configVersion)) {
                 return;
             }
-            String oldLanguage = languageFromOldConfig(oldConfig.get("Language"));
-
             String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy_MM_dd_HH_mm_ss"));
             Path archiveFile = configFile.resolveSibling("config_old_" + timestamp + ".toml");
             Files.move(configFile, archiveFile, StandardCopyOption.REPLACE_EXISTING);
             Files.deleteIfExists(configFile);
             Files.createFile(configFile);
-            writePreservedLanguage(configFile, oldLanguage);
+            writeMigratedConfigValues(configFile, oldConfig);
             ConfigArchiveNotice.markArchived(configVersion, csc_version, archiveFile.toAbsolutePath());
             Message.FW("[CSC] Old config.toml archived to " + archiveFile.toAbsolutePath()
                     + " because ConfigVersion changed from "
@@ -511,8 +533,24 @@ public class ConfigRegister {
         return oldLanguage.isEmpty() ? "en_us" : oldLanguage;
     }
 
-    private static void writePreservedLanguage(Path configFile, String language) throws IOException {
-        Files.write(configFile, Arrays.asList("Language = \"" + language + "\""));
+    private static void writeMigratedConfigValues(Path configFile, Map<String, Object> oldConfig) throws IOException {
+        SimpleTomlEditor newConfigEditor = new SimpleTomlEditor(configFile.toString());
+        newConfigEditor.ConfigValue_IO("Language", languageFromOldConfig(oldConfig.get("Language")));
+        for (String key : MIGRATABLE_CONFIG_KEYS) {
+            if ("Language".equals(key)) {
+                continue;
+            }
+            Object oldValue = oldConfig.get(key);
+            if (isMigratableScalar(oldValue)) {
+                newConfigEditor.ConfigValue_IO(key, oldValue);
+            }
+        }
+    }
+
+    private static boolean isMigratableScalar(Object value) {
+        return value instanceof String
+                || value instanceof Boolean
+                || value instanceof Integer;
     }
 
     private static void syncConfigComments() {
