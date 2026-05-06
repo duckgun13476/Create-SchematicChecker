@@ -402,7 +402,7 @@ public class NbtFunc {
 
             //conveyor mismatch  -5  6  -3
             List<String> mismatch_conveyor_controller = new ArrayList<>(List.of());
-            List<String> mismatch_conveyor_destination = new ArrayList<>(List.of());
+            Map<String, Set<String>> mismatch_conveyor_connections = new HashMap<>();
             for (int i = 0; i < Location.size(); i++) {
                 for (int[] item : Destination.get(i)) {
                     //45 angle check
@@ -434,23 +434,28 @@ public class NbtFunc {
                     }
 
 
-                    item[0] = item[0] + Location.get(i)[0];
-                    item[1] = item[1] + Location.get(i)[1];
-                    item[2] = item[2] + Location.get(i)[2];
+                    int[] absoluteDestination = Arrays.copyOf(item, item.length);
+                    absoluteDestination[0] = absoluteDestination[0] + Location.get(i)[0];
+                    absoluteDestination[1] = absoluteDestination[1] + Location.get(i)[1];
+                    absoluteDestination[2] = absoluteDestination[2] + Location.get(i)[2];
 
                     boolean pos_match = false;
                     for (int[]Pos : Location){
-                        if ((Arrays.equals(item, Pos))) {
+                        if ((Arrays.equals(absoluteDestination, Pos))) {
                             pos_match = true;
                             break;
                         }
                     }
                     if (!pos_match) {
-                        mismatch_conveyor_controller.add(Arrays.toString(Location.get(i)));
-                        item[0] = item[0] - Location.get(i)[0];
-                        item[1] = item[1] - Location.get(i)[1];
-                        item[2] = item[2] - Location.get(i)[2];
-                        mismatch_conveyor_destination.add(Arrays.toString(item));
+                        String controllerPos = Arrays.toString(Location.get(i));
+                        String destinationPos = Arrays.toString(absoluteDestination);
+                        mismatch_conveyor_controller.add(controllerPos);
+                        mismatch_conveyor_connections
+                                .computeIfAbsent(controllerPos, key -> new HashSet<>())
+                                .add(destinationPos);
+                        Message.FW(translateDirect("console.warn.conveyor.mismatch")
+                                + " controller=" + controllerPos
+                                + ", destination=" + destinationPos);
                     }
 
                 }
@@ -469,14 +474,35 @@ public class NbtFunc {
                     String id = BlockGetId(block, palette);
                     //belt matcher
                     if (id.equals("create:chain_conveyor")) {
-                        String Pos = Arrays.toString(StringPickPos(String.valueOf(block.get("pos"))));
-                        for (String s : mismatch_conveyor_controller) {
-                            if (s.equals(Pos)) {
-
-                                ListTag Connections = (ListTag) block.getCompound("nbt").get("Connections");
-                                for (int index2 = 0; index2 < mismatch_conveyor_destination.size(); index2++) {
-                                    Connections.remove(index2);
-                                    index2 -= 1;
+                        int[] selfPos = StringPickPos(String.valueOf(block.get("pos")));
+                        String Pos = Arrays.toString(selfPos);
+                        Set<String> invalidDestinations = mismatch_conveyor_connections.get(Pos);
+                        if (invalidDestinations != null && !invalidDestinations.isEmpty()) {
+                            ListTag Connections = (ListTag) block.getCompound("nbt").get("Connections");
+                            if (Connections != null) {
+                                List<Integer> indexesToRemove = new ArrayList<>();
+                                int connectionIndex = 0;
+                                for (Tag connection : Connections) {
+                                    String pick_pos = connection.toString();
+                                    pick_pos = pick_pos.replaceAll("[I;]", "");
+                                    int[] destinationPos = StringPickPos(pick_pos);
+                                    destinationPos[0] = destinationPos[0] + selfPos[0];
+                                    destinationPos[1] = destinationPos[1] + selfPos[1];
+                                    destinationPos[2] = destinationPos[2] + selfPos[2];
+                                    if (invalidDestinations.contains(Arrays.toString(destinationPos))) {
+                                        indexesToRemove.add(connectionIndex);
+                                        Message.FW(translateDirect("console.warn.conveyor.fix.match")
+                                                + " controller=" + Pos
+                                                + ", connectionIndex=" + connectionIndex
+                                                + ", destination=" + Arrays.toString(destinationPos));
+                                    }
+                                    connectionIndex++;
+                                }
+                                for (int index2 = indexesToRemove.size() - 1; index2 >= 0; index2--) {
+                                    Message.FW(translateDirect("console.warn.conveyor.fix.remove")
+                                            + " controller=" + Pos
+                                            + ", connectionIndex=" + indexesToRemove.get(index2));
+                                    Connections.remove(indexesToRemove.get(index2));
                                 }
                             }
                         }
