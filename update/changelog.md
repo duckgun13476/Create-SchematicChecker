@@ -1,3 +1,6 @@
+## 1.21.24-release
+1. Fix config overwrite mistake when launch game. (#10)
+
 ## 1.21.23-release
 1. Fix unknown entity crash when schematic entities have no id.
 2. Remove invalid entities without id and output a warning.
