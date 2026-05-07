@@ -502,6 +502,7 @@ public class ConfigRegister {
                 return;
             }
 
+            new SimpleTomlEditor(ConfigPath).relocateTopLevelKeyIfNeeded(ConfigVersionKey);
             Map<String, Object> oldConfig = ConfigHook.readToml(ConfigPath);
             Object versionValue = oldConfig.get(ConfigVersionKey);
             String configVersion = versionValue == null ? null : versionValue.toString();
@@ -535,6 +536,7 @@ public class ConfigRegister {
 
     private static void writeMigratedConfigValues(Path configFile, Map<String, Object> oldConfig) throws IOException {
         SimpleTomlEditor newConfigEditor = new SimpleTomlEditor(configFile.toString());
+        newConfigEditor.ConfigValue_IO(ConfigVersionKey, csc_version);
         newConfigEditor.ConfigValue_IO("Language", languageFromOldConfig(oldConfig.get("Language")));
         for (String key : MIGRATABLE_CONFIG_KEYS) {
             if ("Language".equals(key)) {

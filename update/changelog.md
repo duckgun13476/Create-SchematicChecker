@@ -1,3 +1,8 @@
+## 1.21.23-release
+1. Fix unknown entity crash when schematic entities have no id.
+2. Remove invalid entities without id and output a warning.
+3. Add missing entity id warning translations.
+
 ## 1.21.22-release
 1. Add config migration after version updates.
 2. Regenerate config files after version updates and notify operators about the migration.

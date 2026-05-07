@@ -429,6 +429,7 @@ public class ConfigRegister {
                 return;
             }
 
+            new SimpleTomlEditor(ConfigPath).relocateTopLevelKeyIfNeeded(ConfigVersionKey);
             Map<String, Object> oldConfig = ConfigHook.readToml(ConfigPath);
             Object versionValue = oldConfig.get(ConfigVersionKey);
             String configVersion = versionValue == null ? null : versionValue.toString();
@@ -463,7 +464,9 @@ public class ConfigRegister {
     }
 
     private static void writePreservedLanguage(Path configFile, String language) throws IOException {
-        Files.write(configFile, Arrays.asList("Language = \"" + language + "\""));
+        Files.write(configFile, Arrays.asList(
+                ConfigVersionKey + " = \"" + csc_version + "\"",
+                "Language = \"" + language + "\""));
     }
 
     private static void syncConfigComments() {

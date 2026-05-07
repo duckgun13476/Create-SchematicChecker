@@ -52,6 +52,10 @@ public class SimpleTomlEditor {
     // 修改键值
     public Object ConfigValue_IO(String key, Object value) {
         try {
+            if (!key.contains(".")) {
+                relocateTopLevelKeyIfNeeded(key);
+            }
+
             StringBuilder content = new StringBuilder();
 
             // 拆分为主表和子表
@@ -670,6 +674,87 @@ public class SimpleTomlEditor {
         } catch (IOException e) {
             Message.FE(e.getMessage());
         }
+    }
+
+    /**
+     * Ensure a root key is not accidentally kept inside the last TOML table.
+     */
+    public void relocateTopLevelKeyIfNeeded(String key) {
+        if (key == null || key.trim().isEmpty() || key.contains(".")) {
+            return;
+        }
+
+        try {
+            List<String> lines = new ArrayList<>();
+            try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    lines.add(line);
+                }
+            }
+
+            int misplacedKeyIndex = -1;
+            boolean inTable = false;
+            for (int i = 0; i < lines.size(); i++) {
+                String trimmed = lines.get(i).trim();
+                if (isTableHeader(trimmed)) {
+                    inTable = true;
+                    continue;
+                }
+                if (isScalarKeyLine(trimmed, key)) {
+                    if (!inTable) {
+                        return;
+                    }
+                    misplacedKeyIndex = i;
+                    break;
+                }
+            }
+
+            if (misplacedKeyIndex < 0) {
+                return;
+            }
+
+            int blockStart = misplacedKeyIndex;
+            for (int i = misplacedKeyIndex - 1; i >= 0; i--) {
+                String trimmed = lines.get(i).trim();
+                if (trimmed.startsWith("#")) {
+                    blockStart = i;
+                    continue;
+                }
+                break;
+            }
+
+            int blockEnd = misplacedKeyIndex;
+            List<String> block = new ArrayList<>(lines.subList(blockStart, blockEnd + 1));
+            lines.subList(blockStart, blockEnd + 1).clear();
+
+            int insertIndex = 0;
+            while (insertIndex < lines.size() && !isTableHeader(lines.get(insertIndex).trim())) {
+                insertIndex++;
+            }
+
+            if (insertIndex > 0 && !lines.get(insertIndex - 1).trim().isEmpty()) {
+                lines.add(insertIndex, "");
+                insertIndex++;
+            }
+            lines.addAll(insertIndex, block);
+            insertIndex += block.size();
+            if (insertIndex < lines.size() && !lines.get(insertIndex).trim().isEmpty()) {
+                lines.add(insertIndex, "");
+            }
+
+            writeLines(lines);
+        } catch (IOException e) {
+            Message.FE(e.getMessage());
+        }
+    }
+
+    private static boolean isTableHeader(String trimmed) {
+        return trimmed.startsWith("[") && trimmed.endsWith("]");
+    }
+
+    private static boolean isScalarKeyLine(String trimmed, String key) {
+        return trimALL(trimmed).startsWith(key + "=");
     }
 
     private static int countChar(String input, char ch) {
