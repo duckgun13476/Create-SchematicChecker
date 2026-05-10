@@ -24,11 +24,32 @@ String gitHash = "${calculateGitHash() + (hasUnstaged() ? "-modified" : "")}"
 
 def pinkcatsMavenRoot = file(project.findProperty('pinkcats_maven_root') ?: 'C:/F/Maven')
 def createFabricRepository = project.findProperty('create_fabric_repo')?.toString()?.trim()
+def createFabricGroup = project.findProperty('create_fabric_group')?.toString()?.trim() ?: "com.simibubi.create"
 def createFabricArtifactId = project.findProperty('create_fabric_artifact_id')?.toString()?.trim() ?: "create-fabric"
+def portingLibVersion = project.findProperty('porting_lib_version')?.toString()?.trim()
+def registrateFabricVersion = project.findProperty('registrate_fabric_version')?.toString()?.trim()
+def flywheelFabricVersion = project.findProperty('flywheel_fabric_version')?.toString()?.trim()
+def ponderFabricVersion = project.findProperty('ponder_fabric_version')?.toString()?.trim()
+def forgeConfigApiPortFabricVersion = project.findProperty('forgeconfigapiport_fabric_version')?.toString()?.trim()
+def nightConfigVersion = project.findProperty('night_config_version')?.toString()?.trim()
+def reachEntityAttributesVersion = project.findProperty('reach_entity_attributes_version')?.toString()?.trim()
+def milkLibVersion = project.findProperty('milk_lib_version')?.toString()?.trim()
 def generatedResourcesDir = file('src/generated/resources')
 def accessWidenerFile = file("src/main/resources/${mod_id}.accesswidener")
 
 repositories {
+    exclusiveContent {
+        forRepository {
+            maven {
+                name = 'Modrinth'
+                url = 'https://api.modrinth.com/maven'
+            }
+        }
+        filter {
+            includeGroup 'maven.modrinth'
+        }
+    }
+
     mavenLocal()
     maven {
         name = 'PinkCatsLocal'
@@ -68,8 +89,81 @@ dependencies {
     }
     include("com.pinkcats.torque:TorqueAPI-1.20.1-fabric:${torque_api_version}")
 
-    modImplementation("com.simibubi.create:${createFabricArtifactId}:${create_fabric_version}") {
+    modImplementation("${createFabricGroup}:${createFabricArtifactId}:${create_fabric_version}") {
         changing = true
+        exclude group: 'net.fabricmc.fabric-api'
+        exclude group: 'net.fabricmc', module: 'fabric-loader'
+    }
+
+    if (portingLibVersion) {
+        [
+                'accessors',
+                'base',
+                'brewing',
+                'client_events',
+                'entity',
+                'extensions',
+                'model_generators',
+                'models',
+                'networking',
+                'obj_loader',
+                'tags',
+                'tool_actions',
+                'transfer'
+        ].each { portingLibModule ->
+            modImplementation("io.github.fabricators_of_create.Porting-Lib:${portingLibModule}:${portingLibVersion}") {
+                exclude group: 'net.fabricmc.fabric-api'
+                exclude group: 'net.fabricmc', module: 'fabric-loader'
+            }
+        }
+    }
+
+    if (registrateFabricVersion) {
+        modImplementation("com.tterrag.registrate_fabric:Registrate:${registrateFabricVersion}") {
+            exclude group: 'io.github.fabricators_of_create.Porting-Lib'
+            exclude group: 'net.fabricmc.fabric-api'
+            exclude group: 'net.fabricmc', module: 'fabric-loader'
+        }
+    }
+
+    if (flywheelFabricVersion) {
+        modImplementation("dev.engine-room.flywheel:flywheel-fabric-${minecraft_version}:${flywheelFabricVersion}") {
+            exclude group: 'net.fabricmc.fabric-api'
+            exclude group: 'net.fabricmc', module: 'fabric-loader'
+        }
+    }
+
+    if (ponderFabricVersion) {
+        modImplementation("net.createmod.ponder:Ponder-Fabric-${minecraft_version}:${ponderFabricVersion}") {
+            exclude group: 'net.fabricmc.fabric-api'
+            exclude group: 'net.fabricmc', module: 'fabric-loader'
+        }
+    }
+
+    if (forgeConfigApiPortFabricVersion) {
+        modImplementation("fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${forgeConfigApiPortFabricVersion}") {
+            exclude group: 'net.fabricmc.fabric-api'
+            exclude group: 'net.fabricmc', module: 'fabric-loader'
+        }
+    }
+
+    if (nightConfigVersion) {
+        implementation("com.electronwill.night-config:core:${nightConfigVersion}")
+        implementation("com.electronwill.night-config:toml:${nightConfigVersion}")
+    }
+
+    if (reachEntityAttributesVersion) {
+        modImplementation("com.jamieswhiteshirt:reach-entity-attributes:${reachEntityAttributesVersion}") {
+            exclude group: 'net.fabricmc.fabric-api'
+            exclude group: 'net.fabricmc', module: 'fabric-loader'
+        }
+    }
+
+    if (milkLibVersion) {
+        modImplementation("io.github.tropheusj:milk-lib:${milkLibVersion}") {
+            exclude group: 'net.fabricmc.fabric-api'
+            exclude group: 'net.fabricmc', module: 'fabric-loader'
+        }
     }
 
     if ((project.findProperty('modmenu_runtime_enabled') ?: 'false').toBoolean()) {
