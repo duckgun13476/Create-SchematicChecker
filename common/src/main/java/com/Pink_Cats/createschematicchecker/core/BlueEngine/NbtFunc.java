@@ -141,7 +141,7 @@ public class NbtFunc {
 
                     //belt matcher
                     if (id.equals("create:belt")) {
-                        String Controller = String.valueOf(block.getCompound("nbt").getCompound("Controller"));
+                        String Controller = BeltControllerKey(block);
                         int Length = StringToInt(String.valueOf(block.getCompound("nbt").get("Length")));
                         int Index = StringToInt(String.valueOf(block.getCompound("nbt").get("Index")));
                         boolean isSame = false;
@@ -359,7 +359,9 @@ public class NbtFunc {
             List<String> MismatchController = new ArrayList<>(List.of());
             if (check_belt) {
                 for (Object[] item : beltList) {
-                    if (item[1] != item[3]) {
+                    int expectedLength = (int) item[1];
+                    int actualCount = (int) item[3];
+                    if (expectedLength != actualCount) {
                         BeltMismatch = true;
                         BeltCountMismatch++;
                         MismatchController.add(item[0].toString());
@@ -380,7 +382,7 @@ public class NbtFunc {
                         String id = BlockGetId(block, palette);
                         //belt matcher
                         if (id.equals("create:belt")) {
-                            String Controller = String.valueOf(block.getCompound("nbt").getCompound("Controller"));
+                            String Controller = BeltControllerKey(block);
                             if (MismatchController.contains(Controller)) {
                                 blocks.remove(i);
                                 i -= 1;
@@ -916,6 +918,17 @@ public class NbtFunc {
         return Arrays.stream(whiteList)
                 .map(modID -> modID + ":")
                 .toArray(String[]::new);
+    }
+
+    private static String BeltControllerKey(CompoundTag block) {
+        CompoundTag nbt = block.getCompound("nbt");
+        CompoundTag controllerCompound = nbt.getCompound("Controller");
+        if (controllerCompound != null && !controllerCompound.isEmpty()) {
+            return controllerCompound.toString();
+        }
+
+        Tag controllerTag = nbt.get("Controller");
+        return controllerTag == null ? "{}" : controllerTag.toString();
     }
 
 }

@@ -1,3 +1,6 @@
+## 1.21.25-release
+1. Fix data structure can't be read in new version.(>1.20.1)
+
 ## 1.21.24-release
 1. Fix config overwrite mistake when launch game. (#10)
 

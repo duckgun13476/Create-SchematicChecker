@@ -54,7 +54,7 @@ public class MagicChain {
                         if (operate_chain[index].contains("clear")) {
                             if (tag instanceof CompoundTag) {
                                 CompoundTag tag1 = (CompoundTag) tag;
-                                String S_result = tag1.getCompound(knife[1]).toString();
+                                String S_result = tagToString(tag1, knife[1]);
                                 int totalCount = CountToClear(S_result,ban_block);
                                 find_count = find_count - totalCount;
                                 tag1.remove(knife[1]);
@@ -227,7 +227,7 @@ public class MagicChain {
 
                             //Message.FM("before_list"+CompoundTagItem);
 
-                            ListTag ordered_stack_list = CompoundTagItem.getList(Chain[i], 10);
+                            ListTag ordered_stack_list = getListOrEmpty(CompoundTagItem, Chain[i]);
 
 
 
@@ -251,10 +251,7 @@ public class MagicChain {
                     else  {
                             //Message.FM("pick start"+CompoundTagItem);
                             //Message.FM(Chain[i]);
-                            TagItem = CompoundTagItem.getCompound(Chain[i]);
-                            if (TagItem.toString().equals("{}")){
-                                TagItem = CompoundTagItem.getIntArray(Chain[i]);
-                            }
+                            TagItem = getChildForPath(CompoundTagItem, Chain[i]);
 
                             //Message.FM("pick result"+ TagItem);                             //Debug is here
                         }
@@ -268,6 +265,45 @@ public class MagicChain {
 
 
         return  ResultList;
+    }
+
+    private static Object getChildForPath(CompoundTag tag, String key) {
+        CompoundTag compound = tag.getCompound(key);
+        if (compound != null && !compound.isEmpty()) {
+            return compound;
+        }
+
+        Tag raw = tag.get(key);
+        if (raw instanceof CompoundTag) {
+            return raw;
+        }
+        if (raw instanceof ListTag) {
+            return raw;
+        }
+
+        int[] intArray = tag.getIntArray(key);
+        if (intArray.length > 0 || isIntArrayTag(raw)) {
+            return intArray;
+        }
+
+        return compound;
+    }
+
+    private static ListTag getListOrEmpty(CompoundTag tag, String key) {
+        Tag raw = tag.get(key);
+        if (raw instanceof ListTag) {
+            return (ListTag) raw;
+        }
+        return tag.getList(key, 10);
+    }
+
+    private static String tagToString(CompoundTag tag, String key) {
+        Tag raw = tag.get(key);
+        return raw == null ? "{}" : raw.toString();
+    }
+
+    private static boolean isIntArrayTag(Tag tag) {
+        return tag != null && tag.toString().startsWith("[I;");
     }
 
 }
