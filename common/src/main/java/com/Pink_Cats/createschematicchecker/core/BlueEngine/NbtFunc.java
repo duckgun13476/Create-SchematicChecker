@@ -40,6 +40,10 @@ public class NbtFunc {
         boolean CannotCheck = false;
         //PinkCats Inject
         try {
+            int illegalEnchantmentCount = collectIllegalEnchantments(nbt_data, CheatLog);
+            if (illegalEnchantmentCount > 0) {
+                Cheat = true;
+            }
 
             // 鎻愬彇 palette 淇℃伅
 
@@ -125,16 +129,25 @@ public class NbtFunc {
                                 + ", amount:infinityd=" + hasInfinityAmount
                                 + ", minecraft:container=" + hasContainer);
 
-                        if (hasAttributeModifiers || hasAttributeName ||
+                        boolean clipboardSanitized = sanitizeClipboard(block);
+                        boolean hasDangerousClipboardTag = hasAttributeModifiers || hasAttributeName ||
                                 hasUsingConvertsTo ||
                                 hasBundleContents ||
                                 hasModifiers ||
                                 hasInfinityAmount ||
-                                hasContainer) {
+                                hasContainer;
+                        if (hasDangerousClipboardTag) {
                             Cheat = true;
                             CheatLog.add(translateDirect("console.cheat.clipboard"));
-                            CheatLog.add("-銆?" + nbt);
+                            CheatLog.add("- before: " + nbt);
+                            if (clipboardSanitized) {
+                                CheatLog.add("- after: " + block);
+                            }
 
+                        } else if (clipboardSanitized) {
+                            Message.diag("[Diag][NbtFunc][CLIPBOARD_SANITIZED] index=" + i
+                                    + ", before=" + nbt
+                                    + ", after=" + block);
                         }
                     }
 
@@ -717,6 +730,252 @@ public class NbtFunc {
     }
 
     Map<String, Integer> blockCounts = new HashMap<>();
+
+    private static final int MAX_ENCHANTMENT_LEVEL = 40;
+    private static final Set<String> CLIPBOARD_NBT_KEYS = new HashSet<>(Arrays.asList("id", "components"));
+    private static final Set<String> CLIPBOARD_COMPONENT_KEYS = new HashSet<>(Arrays.asList(
+            "minecraft:custom_name",
+            "create:clipboard_content"
+    ));
+    private static final Set<String> CLIPBOARD_CONTENT_KEYS = new HashSet<>(Arrays.asList(
+            "previously_opened_page",
+            "pages",
+            "type",
+            "read_only"
+    ));
+    private static final Set<String> CLIPBOARD_ENTRY_KEYS = new HashSet<>(Arrays.asList(
+            "icon",
+            "checked",
+            "item_amount",
+            "text"
+    ));
+    private static final Set<String> CLIPBOARD_ITEM_KEYS = new HashSet<>(Arrays.asList("id", "count", "Count"));
+    private static final Set<String> CLIPBOARD_TEXT_KEYS = new HashSet<>(Arrays.asList(
+            "text",
+            "translate",
+            "color",
+            "extra",
+            "hoverEvent",
+            "italic",
+            "bold",
+            "underlined",
+            "strikethrough",
+            "obfuscated",
+            "insertion",
+            "fallback",
+            "with"
+    ));
+    private static final Set<String> CLIPBOARD_HOVER_KEYS = new HashSet<>(Arrays.asList("action", "contents"));
+
+    private static int collectIllegalEnchantments(Tag tag, List<String> CheatLog) {
+        List<String> illegalEnchantments = new ArrayList<>();
+        collectIllegalEnchantments(tag, "", false, illegalEnchantments);
+        if (!illegalEnchantments.isEmpty()) {
+            CheatLog.add("Illegal enchantment level detected. Max allowed level is "
+                    + MAX_ENCHANTMENT_LEVEL + ".");
+            CheatLog.addAll(illegalEnchantments);
+        }
+        return illegalEnchantments.size();
+    }
+
+    private static void collectIllegalEnchantments(
+            Tag tag,
+            String path,
+            boolean insideEnchantmentTag,
+            List<String> illegalEnchantments
+    ) {
+        if (tag == null) {
+            return;
+        }
+
+        if (tag instanceof CompoundTag) {
+            CompoundTag compoundTag = (CompoundTag) tag;
+            for (String key : compoundTag.getAllKeys()) {
+                Tag child = compoundTag.get(key);
+                String childPath = path.isEmpty() ? key : path + "." + key;
+                boolean childInsideEnchantmentTag = insideEnchantmentTag || isEnchantmentTagKey(key);
+                collectIllegalEnchantments(child, childPath, childInsideEnchantmentTag, illegalEnchantments);
+            }
+            return;
+        }
+
+        if (tag instanceof ListTag) {
+            ListTag listTag = (ListTag) tag;
+            int index = 0;
+            for (Tag child : listTag) {
+                collectIllegalEnchantments(child, path + "[" + index + "]", insideEnchantmentTag, illegalEnchantments);
+                index++;
+            }
+            return;
+        }
+
+        if (insideEnchantmentTag) {
+            Integer level = tagAsInteger(tag);
+            if (level != null && level > MAX_ENCHANTMENT_LEVEL) {
+                illegalEnchantments.add("- " + path + "=" + level);
+            }
+        }
+    }
+
+    private static boolean isEnchantmentTagKey(String key) {
+        String lowerKey = key.toLowerCase(Locale.ROOT);
+        return lowerKey.equals("enchantments")
+                || lowerKey.equals("storedenchantments")
+                || lowerKey.equals("minecraft:enchantments")
+                || lowerKey.equals("minecraft:stored_enchantments");
+    }
+
+    private static Integer tagAsInteger(Tag tag) {
+        String rawValue = NoQuotes(tag.toString()).trim();
+        if (!rawValue.matches("-?\\d+[bBsSlL]?")) {
+            return null;
+        }
+
+        String normalizedValue = rawValue.replaceAll("[bBsSlL]$", "");
+        try {
+            return Integer.parseInt(normalizedValue);
+        } catch (NumberFormatException ignored) {
+            return null;
+        }
+    }
+
+    private static boolean sanitizeClipboard(CompoundTag block) {
+        boolean changed = false;
+        CompoundTag nbt = block.getCompound("nbt");
+        if (nbt == null || nbt.isEmpty()) {
+            return false;
+        }
+
+        changed = removeKeysExcept(nbt, CLIPBOARD_NBT_KEYS) || changed;
+
+        Tag componentsTag = nbt.get("components");
+        if (componentsTag == null) {
+            return changed;
+        }
+
+        if (!(componentsTag instanceof CompoundTag)) {
+            nbt.remove("components");
+            return true;
+        }
+
+        CompoundTag components = (CompoundTag) componentsTag;
+        changed = removeKeysExcept(components, CLIPBOARD_COMPONENT_KEYS) || changed;
+        changed = sanitizeClipboardContent(components) || changed;
+        if (components.isEmpty()) {
+            nbt.remove("components");
+            changed = true;
+        }
+
+        return changed;
+    }
+
+    private static boolean sanitizeClipboardContent(CompoundTag components) {
+        boolean changed = false;
+        Tag contentTag = components.get("create:clipboard_content");
+        if (contentTag == null) {
+            return false;
+        }
+
+        if (!(contentTag instanceof CompoundTag)) {
+            components.remove("create:clipboard_content");
+            return true;
+        }
+
+        CompoundTag content = (CompoundTag) contentTag;
+        changed = removeKeysExcept(content, CLIPBOARD_CONTENT_KEYS) || changed;
+
+        Tag pagesTag = content.get("pages");
+        if (pagesTag instanceof ListTag) {
+            for (Tag pageTag : (ListTag) pagesTag) {
+                if (pageTag instanceof ListTag) {
+                    for (Tag entryTag : (ListTag) pageTag) {
+                        if (entryTag instanceof CompoundTag) {
+                            changed = sanitizeClipboardEntry((CompoundTag) entryTag) || changed;
+                        }
+                    }
+                }
+            }
+        } else if (pagesTag != null) {
+            content.remove("pages");
+            changed = true;
+        }
+
+        return changed;
+    }
+
+    private static boolean sanitizeClipboardEntry(CompoundTag entry) {
+        boolean changed = removeKeysExcept(entry, CLIPBOARD_ENTRY_KEYS);
+
+        Tag iconTag = entry.get("icon");
+        if (iconTag instanceof CompoundTag) {
+            changed = sanitizeClipboardItem((CompoundTag) iconTag) || changed;
+        } else if (iconTag != null) {
+            entry.remove("icon");
+            changed = true;
+        }
+
+        Tag textTag = entry.get("text");
+        if (textTag instanceof CompoundTag) {
+            changed = sanitizeClipboardText((CompoundTag) textTag) || changed;
+        }
+
+        return changed;
+    }
+
+    private static boolean sanitizeClipboardItem(CompoundTag item) {
+        return removeKeysExcept(item, CLIPBOARD_ITEM_KEYS);
+    }
+
+    private static boolean sanitizeClipboardText(CompoundTag text) {
+        boolean changed = removeKeysExcept(text, CLIPBOARD_TEXT_KEYS);
+
+        Tag extraTag = text.get("extra");
+        if (extraTag instanceof ListTag) {
+            for (Tag child : (ListTag) extraTag) {
+                if (child instanceof CompoundTag) {
+                    changed = sanitizeClipboardText((CompoundTag) child) || changed;
+                }
+            }
+        } else if (extraTag != null) {
+            text.remove("extra");
+            changed = true;
+        }
+
+        Tag hoverTag = text.get("hoverEvent");
+        if (hoverTag instanceof CompoundTag) {
+            changed = sanitizeClipboardHover((CompoundTag) hoverTag) || changed;
+        } else if (hoverTag != null) {
+            text.remove("hoverEvent");
+            changed = true;
+        }
+
+        return changed;
+    }
+
+    private static boolean sanitizeClipboardHover(CompoundTag hoverEvent) {
+        boolean changed = removeKeysExcept(hoverEvent, CLIPBOARD_HOVER_KEYS);
+
+        Tag contentsTag = hoverEvent.get("contents");
+        if (contentsTag instanceof CompoundTag) {
+            changed = sanitizeClipboardItem((CompoundTag) contentsTag) || changed;
+        } else if (contentsTag != null && !(contentsTag instanceof ListTag)) {
+            hoverEvent.remove("contents");
+            changed = true;
+        }
+
+        return changed;
+    }
+
+    private static boolean removeKeysExcept(CompoundTag tag, Set<String> allowedKeys) {
+        boolean changed = false;
+        for (String key : new ArrayList<>(tag.getAllKeys())) {
+            if (!allowedKeys.contains(key)) {
+                tag.remove(key);
+                changed = true;
+            }
+        }
+        return changed;
+    }
 
     public Map<String,Object> BaseBlockHandle(CompoundTag data,String type,ListTag PaletteBlockData,int sequence,List<String> CheatLog) {
         boolean Cheat = false;
