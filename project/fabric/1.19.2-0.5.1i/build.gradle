@@ -22,16 +22,17 @@ version = mod_version
 
 String gitHash = "${calculateGitHash() + (hasUnstaged() ? "-modified" : "")}"
 
-def pinkcatsMavenRoot = file(project.findProperty('pinkcats_maven_root') ?: 'C:/F/Maven')
 def createFabricRepository = project.findProperty('create_fabric_repo')?.toString()?.trim()
 def createFabricArtifactId = project.findProperty('create_fabric_artifact_id')?.toString()?.trim() ?: "create-fabric-1.19.2"
 def generatedResourcesDir = file('src/generated/resources')
 def accessWidenerFile = file("src/main/resources/${mod_id}.accesswidener")
 repositories {
-    mavenLocal()
     maven {
-        name = 'PinkCatsLocal'
-        url = uri(pinkcatsMavenRoot)
+        name = 'PinkCatsMaven'
+        url = uri(project.findProperty('pinkcats_maven_url') ?: 'https://logistics.aisaveworld.tech/d/share/maven/torque')
+        content {
+            includeGroup 'com.pinkcats.torque'
+        }
     }
     mavenCentral()
     maven { url = 'https://maven.fabricmc.net/' }

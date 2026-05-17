@@ -22,39 +22,18 @@ version = mod_version
 
 String gitHash = "${calculateGitHash() + (hasUnstaged() ? "-modified" : "")}"
 
-File findNewestJar(File dir, String includePattern) {
-    if (dir == null || !dir.exists()) {
-        return null
-    }
-
-    def candidates = fileTree(dir: dir, include: [includePattern]).files
-            .findAll { file ->
-                file.name.endsWith('.jar') &&
-                        !file.name.endsWith('-sources.jar') &&
-                        !file.name.endsWith('-javadoc.jar')
-            }
-            .sort { a, b -> a.name <=> b.name }
-
-    return candidates ? candidates.last() : null
-}
-
-def pinkcatsMavenRoot = file(project.findProperty('pinkcats_maven_root') ?: 'C:/F/Maven')
 def createFabricRepository = project.findProperty('create_fabric_repo')?.toString()?.trim()
 def createFabricArtifactId = project.findProperty('create_fabric_artifact_id')?.toString()?.trim() ?: "create-fabric-${minecraft_version}"
 def generatedResourcesDir = file('src/generated/resources')
 def accessWidenerFile = file("src/main/resources/${mod_id}.accesswidener")
-def torqueLayerApiJar = findNewestJar(new File(pinkcatsMavenRoot, "com/PinkCats/torque/TorqueAPI-layer-api/${torque_api_version}"), 'TorqueAPI-layer-api-*.jar')
-def torqueFabricJar = findNewestJar(new File(pinkcatsMavenRoot, "com/PinkCats/torque/TorqueAPI-1.21.1-fabric/${torque_api_version}"), 'TorqueAPI-1.21.1-fabric-*.jar')
-
-if (torqueLayerApiJar == null || torqueFabricJar == null) {
-    throw new GradleException("Missing local TorqueAPI Fabric artifacts in ${pinkcatsMavenRoot}. Publish TorqueAPI-layer-api and TorqueAPI-1.21.1-fabric ${torque_api_version} before building the Fabric project.")
-}
 
 repositories {
-    mavenLocal()
     maven {
-        name = 'PinkCatsLocal'
-        url = uri(pinkcatsMavenRoot)
+        name = 'PinkCatsMaven'
+        url = uri(project.findProperty('pinkcats_maven_url') ?: 'https://logistics.aisaveworld.tech/d/share/maven/torque')
+        content {
+            includeGroup 'com.pinkcats.torque'
+        }
     }
     mavenCentral()
     maven { url = 'https://maven.fabricmc.net/' }
@@ -84,9 +63,16 @@ dependencies {
     modImplementation "net.fabricmc:fabric-loader:${loader_version}"
     modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_api_version}"
 
-    compileOnly files(torqueLayerApiJar)
-    runtimeOnly files(torqueLayerApiJar)
-    modImplementation files(torqueFabricJar)
+    compileOnly("com.pinkcats.torque:TorqueAPI-layer-api:${torque_api_version}") {
+        changing = true
+    }
+    runtimeOnly("com.pinkcats.torque:TorqueAPI-layer-api:${torque_api_version}") {
+        changing = true
+    }
+    modImplementation("com.pinkcats.torque:TorqueAPI-1.21.1-fabric:${torque_api_version}") {
+        changing = true
+        transitive = false
+    }
 
     modImplementation("com.simibubi.create:${createFabricArtifactId}:${create_fabric_version}") {
         changing = true

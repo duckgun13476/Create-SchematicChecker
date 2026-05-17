@@ -105,7 +105,13 @@ repositories {
             includeGroup "dev.architectury"
         }
     }
-    mavenLocal()
+    maven {
+        name = 'PinkCatsMaven'
+        url = uri(project.findProperty('pinkcats_maven_url') ?: 'https://logistics.aisaveworld.tech/d/share/maven/torque')
+        content {
+            includeGroup 'com.pinkcats.torque'
+        }
+    }
     flatDir {
         dirs 'libs'
     }

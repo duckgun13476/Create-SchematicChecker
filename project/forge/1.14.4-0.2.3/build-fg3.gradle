@@ -91,10 +91,14 @@ repositories {
         url = 'https://www.cursemaven.com'
     }
     maven {
-        name = 'PinkCatsLocal'
-        url = uri('C:/F/Maven')
+        name = 'PinkCatsMaven'
+        url = uri(project.findProperty('pinkcats_maven_url') ?: 'https://logistics.aisaveworld.tech/d/share/maven/torque')
+        if (org.gradle.util.GradleVersion.current() >= org.gradle.util.GradleVersion.version('5.1')) {
+            content {
+                includeGroup 'com.pinkcats.torque'
+            }
+        }
     }
-    mavenLocal()
 }
 
 minecraft {

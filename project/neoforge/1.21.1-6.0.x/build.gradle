@@ -33,7 +33,13 @@ String configuredModVersion = project.findProperty("mod_version").toString()
 String cscDisplayVersion = configuredModVersion.split("-", 2)[0]
 
 repositories {
-    mavenLocal()
+    maven {
+        name = 'PinkCatsMaven'
+        url = uri(project.findProperty('pinkcats_maven_url') ?: 'https://logistics.aisaveworld.tech/d/share/maven/torque')
+        content {
+            includeGroup 'com.pinkcats.torque'
+        }
+    }
 }
 
 base {
@@ -96,7 +102,13 @@ ext.csc_torque_embed_notation = "com.pinkcats.torque:TorqueAPI-1.21.1-neoforge:$
 apply from: rootProject.file("gradle/csc-torque-embed-modern.gradle")
 
 repositories {
-    mavenLocal()
+    maven {
+        name = 'PinkCatsMaven'
+        url = uri(project.findProperty('pinkcats_maven_url') ?: 'https://logistics.aisaveworld.tech/d/share/maven/torque')
+        content {
+            includeGroup 'com.pinkcats.torque'
+        }
+    }
     maven { url = "https://maven.createmod.net" } // Create, Ponder, Flywheel
     maven { url = "https://mvn.devos.one/snapshots" } // Registrate
     maven { url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/" } // ForgeConfigAPIPort
