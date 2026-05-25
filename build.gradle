@@ -14,6 +14,13 @@ allprojects {
             }
         }
         mavenCentral()
+        maven {
+            name = "ModMavenFlywheel"
+            url = uri("https://modmaven.dev/")
+            content {
+                includeGroup "com.jozufozu.flywheel"
+            }
+        }
     }
 
     configurations.configureEach {

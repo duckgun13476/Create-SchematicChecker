@@ -251,11 +251,16 @@ public class NbtFunc {
 
                                 if (!Item.toString().equals("{}")) {
                                     Tag count = Item.get("Count");
+                                    String countKey = "Count";
                                     if (count == null) {
                                         count = Item.get("count");
+                                        countKey = "count";
+                                    }
+                                    if (count == null) {
+                                        countKey = "Count";
                                     }
 
-                                    int consumedItem_count = StringToInt(
+                                    int consumedItem_count = count == null ? 0 : StringToInt(
                                             count.toString().replaceAll("[b;]", ""));
 
 
@@ -263,19 +268,19 @@ public class NbtFunc {
                                             .getCompound("Item").get("id").toString());
 
 
-                                    if (!inside_material.equals(consumedItem_id) || consumedItem_count > 1 || consumedItem_count < 0) {
-                                        if (!consumedItem_id.equals("minecraft:air")) {
+                                    boolean consumedItemIsAir = consumedItem_id.equals("minecraft:air");
+                                    int expectedCount = consumedItemIsAir ? 0 : 1;
+                                    if ((!consumedItemIsAir && !inside_material.equals(consumedItem_id)) || consumedItem_count != expectedCount) {
+                                        CompoundTag replace = block.getCompound("nbt")
+                                                .getCompound("Item");
+                                        replace.put("id", TagString("minecraft:air"));
+                                        replace.put(countKey, TagByte((byte) 0));
 
-                                            CompoundTag replace = block.getCompound("nbt")
-                                                    .getCompound("Item");
-                                            replace.put("id", TagString("minecraft:air"));
+                                        CompoundTag replace2 = block.getCompound("nbt").getCompound("Material");
+                                        replace2.put("Name", TagString("minecraft:air"));
 
-                                            CompoundTag replace2 = block.getCompound("nbt").getCompound("Material");
-                                            replace2.put("Name", TagString("minecraft:air"));
-
-                                            CheatLog.add(translateDirect("console.cheat.copycats") + "[" + consumedItem_count + "|1][" + consumedItem_id + "|" + inside_material + "]");
-                                            Cheat = true;
-                                        }
+                                        CheatLog.add(translateDirect("console.cheat.copycats") + "[" + consumedItem_count + "|" + expectedCount + "][" + consumedItem_id + "|" + inside_material + "]");
+                                        Cheat = true;
                                     }
 
 
@@ -289,43 +294,41 @@ public class NbtFunc {
                                     String inside_material = NoQuotes(Objects.requireNonNull(plastic.getCompound("material").get("Name")).toString());
 
 
-                                    if (!fake_id.contains(inside_material)) {
-                                        fake_id.add(inside_material);
-                                    } else {
-                                        continue;
-                                    }
+                                    fake_id.add(inside_material);
                                     CompoundTag consumedItem_inside = plastic.getCompound("consumedItem");
                                     if (!consumedItem_inside.isEmpty()) {
                                         String consumedItem_id = NoQuotes(consumedItem_inside.get("id").toString());
                                         Tag inside_count = consumedItem_inside.get("Count");
-                                        if (inside_count == null)
+                                        String countKey = "Count";
+                                        if (inside_count == null) {
                                             inside_count = consumedItem_inside.get("count");
+                                            countKey = "count";
+                                        }
+                                        if (inside_count == null) {
+                                            countKey = "Count";
+                                        }
 
 
-                                        int consumedItem_count = StringToInt(
+                                        int consumedItem_count = inside_count == null ? 0 : StringToInt(
                                                 inside_count
                                                         .toString()
                                                         .replaceAll("[b;]", ""));
 
-                                        if (!fake_id.contains(consumedItem_id) || consumedItem_count > 1 || consumedItem_count < 0) {
+                                        boolean consumedItemIsAir = consumedItem_id.equals("minecraft:air");
+                                        int expectedCount = consumedItemIsAir ? 0 : 1;
+                                        if ((!consumedItemIsAir && !fake_id.contains(consumedItem_id)) || consumedItem_count != expectedCount) {
 
-                                            if (!consumedItem_id.equals("minecraft:air")) {
-                                                CompoundTag replace = plastic.getCompound("consumedItem");
-                                                replace.put("id", TagString("minecraft:air"));
-                                                CompoundTag replace2 = plastic.getCompound("material");
-                                                replace2.put("Name", TagString("minecraft:air"));
+                                            CompoundTag replace = plastic.getCompound("consumedItem");
+                                            replace.put("id", TagString("minecraft:air"));
+                                            replace.put(countKey, TagByte((byte) 0));
+                                            CompoundTag replace2 = plastic.getCompound("material");
+                                            replace2.put("Name", TagString("minecraft:air"));
 
-                                                CheatLog.add(translateDirect("console.cheat.copycats") + "[" + consumedItem_count + "|1][" + consumedItem_id + "|" + inside_material + "]");
-                                                Cheat = true;
-                                            }
+                                            CheatLog.add(translateDirect("console.cheat.copycats") + "[" + consumedItem_count + "|" + expectedCount + "][" + consumedItem_id + "|" + inside_material + "]");
+                                            Cheat = true;
 
                                         }
                                     }
-                                }
-                                fake_id.removeIf("minecraft:air"::equals);
-                                if (hasDuplicate(fake_id)) {
-                                    CheatLog.add(translateDirect("console.cheat.copycats.count"));
-                                    Cheat = true;
                                 }
                             }
                         }
@@ -1168,7 +1171,6 @@ public class NbtFunc {
     }
 
     public static boolean isValidTagValue(String tagValue) {
-        // 浣跨敤姝ｅ垯琛ㄨ揪寮忔鏌ワ紝娉ㄦ剰寮曞彿鐨勮浆鎹?
         return tagValue.matches("[0-9\"']*");
     }
 
