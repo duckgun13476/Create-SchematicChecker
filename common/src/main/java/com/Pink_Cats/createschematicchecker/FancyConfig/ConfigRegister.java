@@ -35,7 +35,6 @@ public class ConfigRegister {
             "UUID",
             "core.Enable",
             "core.DelayTime",
-            "core.WhiteListModEnable",
             "core.ShowWhitelistModeNotice",
             "core.KillEntity",
             "debug.DebugTotalBlock",
@@ -105,7 +104,7 @@ public class ConfigRegister {
 
 
     public static ConfigValue.ConfigBoolean WHITE_LIST_MOD_ENABLE = ConfigBuild
-            .define("core.WhiteListModEnable", false)
+            .define("core.WhiteListModEnable", true)
             .comment(CommitBreak)
             .comment("config.WhiteListModEnable");
 
