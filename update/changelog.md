@@ -1,3 +1,9 @@
+## 1.21.26-release
+1. Add detection for tripwire string duper schematics.
+2. Sanitize tripwire and tripwire hook powered states after schematic checks.
+3. Refactor independent NBT check modules into separate checker classes.
+4. Stop packaging and publishing the unmaintained Forge 1.14.4 build.
+
 ## 1.21.25-release
 1. Fix data structure can't be read in the new version.(>1.20.1)
 2. Full fix for all version clipboards.

@@ -13,7 +13,6 @@ rootProject.name = 'Create-SchematicChecker'
 
 include 'common'
 include 'global'
-include 'forge-1.14.4-0.2.3'
 include 'forge-1.15.2-0.3.1'
 include 'forge-1.16.5-0.3.2g'
 include 'forge-1.17.1-0.4'
@@ -29,7 +28,6 @@ include 'neoforge-1.21.1-6.0.x'
 
 project(':common').projectDir = file('common')
 project(':global').projectDir = file('global')
-project(':forge-1.14.4-0.2.3').projectDir = file('project/forge/1.14.4-0.2.3')
 project(':forge-1.15.2-0.3.1').projectDir = file('project/forge/1.15.2-0.3.1')
 project(':forge-1.16.5-0.3.2g').projectDir = file('project/forge/1.16.5-0.3.2g')
 project(':forge-1.17.1-0.4').projectDir = file('project/forge/1.17.1-0.4')
