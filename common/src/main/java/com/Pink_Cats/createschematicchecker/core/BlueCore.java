@@ -22,6 +22,7 @@ import static com.Pink_Cats.createschematicchecker.core.BlueEngine.StrFunc.getCu
 import static com.Pink_Cats.createschematicchecker.lang.CSCLanguage.translateDirect;
 import static com.Pink_Cats.createschematicchecker.network.OnlineTasks.postDataAsync;
 import static com.Pink_Cats.createschematicchecker.network.OnlineTasks.reportProblem;
+import static com.Pink_Cats.createschematicchecker.event.BlueprintPaths.parseUploadedBlueprint;
 
 public class BlueCore {
 
@@ -30,14 +31,15 @@ public class BlueCore {
     {
         //蓝图路径
         String DefaultPath = "./schematics/uploaded/";
-        //String DefaultPath = System.getProperty("user.dir");
         String path = DefaultPath + blueprintId;
         Message.FD(translateDirect("console.thread.new")+path);
         Message.diag("[Diag][BlueCore][START] blueprintId=" + blueprintId + ", fullPath=" + path);
         try {
+            com.Pink_Cats.createschematicchecker.event.BlueprintPaths.UploadedBlueprint uploadedBlueprint = parseUploadedBlueprint(blueprintId);
+            path = uploadedBlueprint.path().toString();
             CompoundTag nbt_data = Path_to_CompoundTag(path);
-            String User = blueprintId.split("/")[0];
-            String Blueprint = blueprintId.split("/")[1];
+            String User = uploadedBlueprint.user();
+            String Blueprint = uploadedBlueprint.fileName();
             Message.diag("[Diag][BlueCore][SPLIT] user=" + User
                     + ", blueprintSegment=" + Blueprint
                     + ", slashCount=" + blueprintId.chars().filter(ch -> ch == '/').count());

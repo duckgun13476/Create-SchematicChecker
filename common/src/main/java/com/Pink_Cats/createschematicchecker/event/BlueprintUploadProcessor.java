@@ -15,7 +15,6 @@ import java.util.Map;
 import static com.Pink_Cats.createschematicchecker.FancyConfig.ConfigRegister.*;
 import static com.Pink_Cats.createschematicchecker.core.BlueEngine.NbtInterFace.S_bool;
 import static com.Pink_Cats.createschematicchecker.core.BlueEngine.StrFunc.getCurrentDateTime;
-import static com.Pink_Cats.createschematicchecker.event.BlueprintPaths.removeFirstPathComponent;
 import static com.Pink_Cats.createschematicchecker.event.TempOffTicker.CheckSchematic;
 import static com.Pink_Cats.createschematicchecker.lang.CSCLanguage.translateDirect;
 
@@ -51,12 +50,13 @@ public class BlueprintUploadProcessor {
 
     public void handle(String id, String schematicName, String playerName) {
         try {
+            BlueprintPaths.UploadedBlueprint uploadedBlueprint = BlueprintPaths.parseUploadedBlueprint(id);
             Message.diag("[Diag][CheckBlueprint][START] player=" + playerName
                     + ", eventPath=" + id
                     + ", schematicName=" + schematicName);
 
             if (!CheckSchematic) {
-                passWithoutChecking(id);
+                passWithoutChecking(id, uploadedBlueprint);
                 return;
             }
 
@@ -68,7 +68,7 @@ public class BlueprintUploadProcessor {
                     + ", resultKeys=" + (checkResult == null ? "null" : checkResult.keySet()));
 
             long executionTime = System.currentTimeMillis() - startTime;
-            String displayName = removeFirstPathComponent(id);
+            String displayName = uploadedBlueprint.fileName();
 
             for (String line : cheatLog) {
                 Message.FE(line);
@@ -105,15 +105,15 @@ public class BlueprintUploadProcessor {
         }
     }
 
-    private void passWithoutChecking(String id) throws IOException {
+    private void passWithoutChecking(String id, BlueprintPaths.UploadedBlueprint uploadedBlueprint) throws IOException {
         Message.FE(translateDirect("console.stop.csc.temp.output"));
 
         String defaultPath = "./schematics/uploaded/";
-        String path = defaultPath + id;
+        String path = uploadedBlueprint.path().toString();
 
         CompoundTag nbtData = pathToCompoundTag(path);
-        String user = id.split("/")[0];
-        String blueprint = id.split("/")[1];
+        String user = uploadedBlueprint.user();
+        String blueprint = uploadedBlueprint.fileName();
         Message.diag("[Diag][CheckBlueprint][BYPASS] fullPath=" + path
                 + ", user=" + user
                 + ", blueprintSegment=" + blueprint
