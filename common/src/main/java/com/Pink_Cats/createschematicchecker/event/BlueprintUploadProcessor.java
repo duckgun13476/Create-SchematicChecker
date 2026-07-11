@@ -101,6 +101,7 @@ public class BlueprintUploadProcessor {
         } catch (Exception e) {
             Message.diag("[Diag][CheckBlueprint][EXCEPTION] " + e);
             if (enable_debug) e.printStackTrace();
+            resultApplier.apply(id, false);
         }
     }
 

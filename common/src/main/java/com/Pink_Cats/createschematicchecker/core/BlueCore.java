@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -95,13 +96,21 @@ public class BlueCore {
 
             Message.FW(translateDirect("core.decode.ZipError")+"[" + e.getMessage() + "]");
             Message.diag("[Diag][BlueCore][ZIP_EXCEPTION] blueprintId=" + blueprintId + ", fullPath=" + path + ", error=" + e);
-            return null;
+            return cannotCheckResult();
         } catch (Exception e) {
             e.printStackTrace();
             Message.diag("[Diag][BlueCore][EXCEPTION] blueprintId=" + blueprintId + ", fullPath=" + path + ", error=" + e);
             Message.FW("Wrong in BlueCore" + DefaultPath);
+            return cannotCheckResult();
         }
-        return Map.of();
+    }
+
+    private Map<String, Object> cannotCheckResult() {
+        Map<String, Object> result = new HashMap<>();
+        result.put("CannotCheck", true);
+        result.put("Problem", true);
+        result.put("Cheat", false);
+        return result;
     }
 
 
