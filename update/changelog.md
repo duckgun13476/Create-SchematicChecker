@@ -1,3 +1,8 @@
+## 1.21.27-release
+1. Fix Quark fluidlogged grate lava duplication on Create 6 / NeoForge 1.21.1.
+2. Fail closed when a schematic cannot be read or checked, and validate uploaded schematic paths before accessing files.
+3. Close schematic NBT input and output streams reliably.
+
 ## 1.21.26-release
 1. Add detection for tripwire string duper schematics.
 2. Sanitize tripwire and tripwire hook powered states after schematic checks.
