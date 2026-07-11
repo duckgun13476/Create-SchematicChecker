@@ -170,7 +170,15 @@ dependencies {
     }
 
     implementation 'org.jetbrains:annotations:22.0.0'
-    implementation fg.deobf("curse.maven:create-328085:${create_file_id}")
+    // Curse Maven no longer exposes Create 0.3.1.  Keep a local fallback for
+    // reproducible legacy packaging, while retaining the normal coordinate
+    // for environments which already resolve it.
+    File cachedCreate = file('libs/create-mc1.15.2_v0.3.1.jar')
+    if (cachedCreate.isFile()) {
+        implementation fg.deobf(files(cachedCreate))
+    } else {
+        implementation fg.deobf("curse.maven:create-328085:${create_file_id}")
+    }
 
     annotationProcessor 'org.spongepowered:mixin:0.8.4:processor'
 }
