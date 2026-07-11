@@ -217,7 +217,13 @@ dependencies {
 
     //Create
     modImplementation("curse.maven:create-328085:5797603")
-    modImplementation("com.tterrag.registrate:Registrate:${registrate_version}")
+    File cachedRegistrate = file("libs/Registrate-${registrate_version}.jar")
+    if (cachedRegistrate.isFile()) {
+        // Create 5797603 embeds this exact jar; keep it as an offline fallback for the retired Maven endpoint.
+        compileOnly(files(cachedRegistrate))
+    } else {
+        modImplementation("com.tterrag.registrate:Registrate:${registrate_version}")
+    }
     compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:0.4.1"))
 
     // Pattern Schematics has no 1.18.2 Forge release on CurseForge.

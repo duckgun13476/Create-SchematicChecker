@@ -34,5 +34,6 @@ tasks.register('allworkJarJarAllVersions') {
 
 tasks.register('packageAllVersions') {
     group = 'Publishing'
+    description = 'Build final jars for all maintained versions. Use packageAllVersions.bat for online-to-cache fallback.'
     dependsOn 'allworkPackageAllVersions'
 }
