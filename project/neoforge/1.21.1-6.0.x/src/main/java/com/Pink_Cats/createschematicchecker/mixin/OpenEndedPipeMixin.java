@@ -30,9 +30,6 @@ import static net.minecraft.world.level.block.state.properties.BlockStatePropert
 @Mixin(value = OpenEndedPipe.class,remap = false)
 public class OpenEndedPipeMixin {
 
-    @Unique
-    private static final BooleanProperty createSchematicChecker$LAVALOGGED = BooleanProperty.create("lavalogged");
-
     @Shadow
     private Level world;
 
@@ -60,9 +57,17 @@ public class OpenEndedPipeMixin {
         BlockState state = world.getBlockState(outputPos);
         FluidState fluidState = state.getFluidState();
         boolean waterlog = state.hasProperty(WATERLOGGED);
-        boolean lavalog = state.hasProperty(createSchematicChecker$LAVALOGGED);
+        BooleanProperty lavalogProperty = state.getProperties().stream()
+                .filter(property -> property instanceof BooleanProperty && property.getName().equals("lavalogged"))
+                .map(BooleanProperty.class::cast)
+                .findFirst()
+                .orElse(null);
+        boolean lavalog = lavalogProperty != null && state.getValue(lavalogProperty);
 
-        FluidStack drainBlock = VanillaFluidTargets.drainBlock(world, outputPos, state, simulate);
+        // Create 6 recognizes Quark's fluidlogged grate as a generic drain target.
+        // That path returns the lava before this mixin can clear LAVALOGGED, duplicating it.
+        // Let the dedicated branch below consume fluidlogged lava instead.
+        FluidStack drainBlock = lavalog ? FluidStack.EMPTY : VanillaFluidTargets.drainBlock(world, outputPos, state, simulate);
         if (!drainBlock.isEmpty()) {
             if (!simulate && state.hasProperty(BlockStateProperties.LEVEL_HONEY)
                     && AllFluids.HONEY.is(drainBlock.getFluid()))
@@ -105,7 +110,7 @@ public class OpenEndedPipeMixin {
                 state = world.getBlockState(outputPos);
             }
             if (lavalog) {
-                world.setBlock(outputPos, state.setValue(createSchematicChecker$LAVALOGGED, false), 3);
+                world.setBlock(outputPos, state.setValue(lavalogProperty, false), 3);
                 world.scheduleTick(outputPos, Fluids.LAVA, 1);
             }
             cir.setReturnValue(stack);

@@ -159,6 +159,9 @@ dependencies {
 
     implementation "net.createmod.ponder:ponder-neoforge:1.0.82+mc1.21.1"
 
+    implementation "curse.maven:quark-243121:7980026"
+    implementation "curse.maven:zeta-968868:7980010"
+
 
     compileOnly("mezz.jei:jei-${minecraft_version}-neoforge-api:${jei_version}")
     // at runtime, use the full JEI jar for NeoForge

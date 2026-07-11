@@ -226,8 +226,8 @@ dependencies {
 
     modImplementation("curse.maven:create-pattern-schematics-1072349:6104291")
 
-    //modImplementation("curse.maven:quark-243121:6427817")
-    //modImplementation("curse.maven:zeta-968868:6432578")
+    modImplementation("curse.maven:quark-243121:6427817")
+    modImplementation("curse.maven:zeta-968868:6432578")
     //implementation 'com.google.code.gson:gson:2.8.9' // 更新版本
     //modImplementation(jarJar( group: 'com.moandjiezana.toml', name: 'toml4j', version: '0.7.2'))
 
