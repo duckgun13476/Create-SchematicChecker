@@ -1,3 +1,9 @@
+import groovy.json.JsonSlurper
+
+import java.net.HttpURLConnection
+import java.net.URI
+import java.net.URLEncoder
+
 ext.readPublishingProperties = {
     def propertiesFile = rootProject.file('api.properties')
     if (!propertiesFile.exists()) {
@@ -106,6 +112,100 @@ ext.readPublishArtifactFile = {
     return artifactTask.archiveFile.get().asFile
 }
 
+// Remote idempotency checks.  Publishing tasks declare no Gradle outputs, so
+// Gradle itself cannot tell whether a release has already been uploaded.
+ext.cscReadBooleanProperty = { String name, boolean defaultValue = false ->
+    def value = project.findProperty(name)
+    if (value == null) return defaultValue
+    value.toString().trim().toLowerCase(Locale.ROOT) in ['1', 'true', 'yes', 'y', 'on']
+}
+ext.cscPublishForce = { cscReadBooleanProperty('csc_publish_force', false) }
+ext.cscUrlEncode = { String value -> URLEncoder.encode(value, 'UTF-8') }
+ext.cscHttpGetJson = { String url, Map<String, String> headers = [:], boolean notFoundAsNull = false ->
+    HttpURLConnection connection = (HttpURLConnection) URI.create(url).toURL().openConnection()
+    connection.requestMethod = 'GET'
+    connection.connectTimeout = 20000
+    connection.readTimeout = 20000
+    connection.setRequestProperty('Accept', 'application/json')
+    connection.setRequestProperty('User-Agent', 'Create-SchematicChecker-publish-check')
+    headers.each { key, value -> if (value != null && !value.trim().isEmpty()) connection.setRequestProperty(key, value) }
+    int code = connection.responseCode
+    InputStream stream = code >= 400 ? connection.errorStream : connection.inputStream
+    String body = stream == null ? '' : stream.getText('UTF-8')
+    if (code == 404 && notFoundAsNull) return null
+    if (code < 200 || code >= 300) throw new GradleException("Publishing remote check failed for ${project.path}: GET ${url} returned HTTP ${code}")
+    body.trim().isEmpty() ? null : new JsonSlurper().parseText(body)
+}
+ext.cscCurseForgeHeaders = {
+    def properties = readPublishingProperties()
+    String key = properties?.getProperty('CF_CORE_API_KEY') ?: properties?.getProperty('CF_API_KEY') ?: properties?.getProperty('CURSEFORGE_API_KEY') ?: properties?.getProperty('CF_TOKEN')
+    if (key == null || key.trim().isEmpty()) return [:]
+    key.trim().startsWith('cfc_pat_') ? ['Authorization': "Key ${key.trim()}"] : ['x-api-key': key.trim()]
+}
+ext.cscPublishRemoteStatus = [:]
+ext.cscPublishLedgerFile = { rootProject.file('update/publish-ledger.json') }
+ext.cscCurseForgeLedgerMatch = {
+    File ledgerFile = cscPublishLedgerFile()
+    if (!ledgerFile.isFile()) return false
+    try {
+        def ledger = new JsonSlurper().parseText(ledgerFile.getText('UTF-8').replaceFirst('^\\uFEFF', ''))
+        return (ledger.entries ?: ledger ?: []).any { entry ->
+            entry instanceof Map && entry.platform == 'curseforge' && entry.status == 'success'
+                    && entry.minecraftVersion == minecraft_version.toString()
+                    && entry.loader == readPublishLoaderId() && entry.versionId == readPublishVersionId()
+                    && entry.artifactFileName == readPublishArtifactFile().name
+        }
+    } catch (Throwable ignored) { return false }
+}
+ext.cscRecordCurseForgePublish = {
+    File ledgerFile = cscPublishLedgerFile()
+    List entries = []
+    if (ledgerFile.isFile()) {
+        try { def parsed = new JsonSlurper().parseText(ledgerFile.getText('UTF-8').replaceFirst('^\\uFEFF', '')); entries.addAll((parsed.entries ?: parsed ?: []) as Collection) } catch (Throwable ignored) { }
+    }
+    Map entry = [platform: 'curseforge', status: 'success', minecraftVersion: minecraft_version.toString(), loader: readPublishLoaderId(), versionId: readPublishVersionId(), artifactFileName: readPublishArtifactFile().name, confirmedAt: new Date().format("yyyy-MM-dd'T'HH:mm:ssXXX")]
+    entries.removeAll { existing -> existing instanceof Map && existing.platform == entry.platform && existing.minecraftVersion == entry.minecraftVersion && existing.loader == entry.loader && existing.versionId == entry.versionId }
+    entries.add(entry)
+    ledgerFile.setText(groovy.json.JsonOutput.prettyPrint(groovy.json.JsonOutput.toJson([schemaVersion: 1, entries: entries])) + System.lineSeparator(), 'UTF-8')
+}
+ext.cscCheckCurseForgePublished = {
+    if (cscPublishForce()) return false
+    if (cscCurseForgeLedgerMatch()) { cscPublishRemoteStatus.curseforgeExists = true; return true }
+    if (cscCurseForgeHeaders().isEmpty()) return false
+    Map<String, Integer> loaderIds = ['forge': 1, 'fabric': 4, 'quilt': 5, 'neoforge': 6]
+    List<Integer> loaders = readPublishCurseForgeLoaders().collect { loaderIds[it.toString().toLowerCase(Locale.ROOT)] }.findAll { it != null }.unique()
+    String expectedName = readPublishDisplayName()
+    String expectedFile = readPublishArtifactFile().name
+    try {
+        boolean found = loaders.any { loader ->
+            def response = cscHttpGetJson("https://api.curseforge.com/v1/mods/${cscUrlEncode(curseforge_id.toString())}/files?gameVersion=${cscUrlEncode(minecraft_version.toString())}&modLoaderType=${loader}&pageSize=50", cscCurseForgeHeaders())
+            (response?.data ?: []).any { file ->
+                (file.displayName?.toString() == expectedName || file.fileName?.toString() == expectedFile) && (file.gameVersions ?: []).collect { it.toString() }.contains(minecraft_version.toString())
+            }
+        }
+        cscPublishRemoteStatus.curseforgeExists = found
+        return found
+    } catch (Throwable error) {
+        logger.warn("CurseForge publish check unavailable for ${project.path}; upload will be attempted: ${error.message}")
+        cscPublishRemoteStatus.curseforgeExists = false
+        return false
+    }
+}
+ext.cscCheckModrinthPublished = {
+    if (cscPublishForce()) return false
+    String versionId = readPublishVersionId()
+    try {
+        def version = cscHttpGetJson("https://api.modrinth.com/v2/project/${cscUrlEncode(modrinth_id.toString())}/version/${cscUrlEncode(versionId)}", [:], true)
+        boolean found = version instanceof Map && version.version_number?.toString() == versionId && (version.game_versions ?: []).collect { it.toString() }.contains(minecraft_version.toString()) && !Collections.disjoint((version.loaders ?: []).collect { it.toString() }, readPublishModrinthLoaders())
+        cscPublishRemoteStatus.modrinthExists = found
+        return found
+    } catch (Throwable error) {
+        logger.warn("Modrinth publish check unavailable for ${project.path}; upload will be attempted: ${error.message}")
+        cscPublishRemoteStatus.modrinthExists = false
+        return false
+    }
+}
+
 def curseForgeTaskClass = [
         this.class.classLoader,
         Thread.currentThread().contextClassLoader,
@@ -157,6 +257,15 @@ tasks.register('publishAll') {
     group = 'Publishing'
 }
 
+tasks.register('checkPublishRemoteStatus') {
+    group = 'Publishing'
+    description = 'Checks CurseForge and Modrinth for this target before uploading.'
+    doLast {
+        println "CurseForge target ${cscCheckCurseForgePublished() ? 'exists; will skip' : 'is absent; will upload'}: ${project.path}"
+        println "Modrinth target ${cscCheckModrinthPublished() ? 'exists; will skip' : 'is absent; will upload'}: ${project.path}"
+    }
+}
+
 tasks.register('allworkPublishInfo') {
     group = 'Allwork'
     description = 'Allwork alias for PublishInfo.'
@@ -199,6 +308,12 @@ tasks.register('publishCurseForge', curseForgeTaskClass) {
 
     mainFile.releaseType = publish_version
     disableVersionDetection()
+    onlyIf {
+        boolean exists = cscPublishRemoteStatus.containsKey('curseforgeExists') ? cscPublishRemoteStatus.curseforgeExists : cscCheckCurseForgePublished()
+        if (exists) println "Skipping CurseForge upload for ${project.path}: matching remote target already exists. Use -Pcsc_publish_force=true to override."
+        !exists
+    }
+    doLast { cscRecordCurseForgePublish() }
 }
 
 publishMods {
@@ -233,6 +348,11 @@ publishMods {
 
 tasks.matching { it.name in ['publishMods', 'publishModrinth'] }.configureEach {
     dependsOn readPublishArtifactTaskName()
+    onlyIf {
+        boolean exists = cscPublishRemoteStatus.containsKey('modrinthExists') ? cscPublishRemoteStatus.modrinthExists : cscCheckModrinthPublished()
+        if (exists) println "Skipping Modrinth upload for ${project.path}: matching remote target already exists. Use -Pcsc_publish_force=true to override."
+        !exists
+    }
 }
 
 tasks.register('runPython', Exec) {
