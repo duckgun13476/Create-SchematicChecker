@@ -119,8 +119,9 @@ public class BlueCore {
     //tool func
     public CompoundTag Path_to_CompoundTag(String SchematicPath) throws IOException {
         File BluePrint = new File(SchematicPath);
-        FileInputStream file_stream = new FileInputStream(BluePrint);
-        return Nbt.readCompressed(file_stream);
+        try (FileInputStream fileStream = new FileInputStream(BluePrint)) {
+            return Nbt.readCompressed(fileStream);
+        }
     }
 
 
@@ -131,9 +132,9 @@ public class BlueCore {
                 + ", file=" + file
                 + ", absoluteTarget=" + outputFile.getAbsolutePath()
                 + ", parentExists=" + (outputFile.getParentFile() != null && outputFile.getParentFile().exists()));
-        FileOutputStream fileOutputStream = new FileOutputStream(outputFile);
-        Nbt.writeCompressed(compoundTag, fileOutputStream);
-        fileOutputStream.close();
+        try (FileOutputStream fileOutputStream = new FileOutputStream(outputFile)) {
+            Nbt.writeCompressed(compoundTag, fileOutputStream);
+        }
     }
 
 
