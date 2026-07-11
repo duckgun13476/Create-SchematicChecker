@@ -1,3 +1,4 @@
+import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
 
 import java.net.HttpURLConnection
@@ -166,7 +167,8 @@ ext.cscRecordCurseForgePublish = {
     Map entry = [platform: 'curseforge', status: 'success', minecraftVersion: minecraft_version.toString(), loader: readPublishLoaderId(), versionId: readPublishVersionId(), artifactFileName: readPublishArtifactFile().name, confirmedAt: new Date().format("yyyy-MM-dd'T'HH:mm:ssXXX")]
     entries.removeAll { existing -> existing instanceof Map && existing.platform == entry.platform && existing.minecraftVersion == entry.minecraftVersion && existing.loader == entry.loader && existing.versionId == entry.versionId }
     entries.add(entry)
-    ledgerFile.setText(groovy.json.JsonOutput.prettyPrint(groovy.json.JsonOutput.toJson([schemaVersion: 1, entries: entries])) + System.lineSeparator(), 'UTF-8')
+    ledgerFile.parentFile.mkdirs()
+    ledgerFile.setText(JsonOutput.prettyPrint(JsonOutput.toJson([schemaVersion: 1, entries: entries])) + System.lineSeparator(), 'UTF-8')
 }
 ext.cscCheckCurseForgePublished = {
     if (cscPublishForce()) return false
@@ -206,23 +208,82 @@ ext.cscCheckModrinthPublished = {
     }
 }
 
-def curseForgeTaskClass = [
-        this.class.classLoader,
-        Thread.currentThread().contextClassLoader,
-        project.buildscript.classLoader
-].findResult { loader ->
-    if (loader == null) {
-        return null
+// curseforgegradle fetches its version table before every upload.  Its legacy
+// TLS client now fails that request on this project, so submit the documented
+// legacy multipart payload ourselves with the version IDs resolved once.
+ext.cscReadCurseForgeGameVersionIds = {
+    Map<String, Long> minecraftIds = [
+            '1.15.2': 7722L, '1.16.5': 8203L, '1.17.1': 8516L,
+            '1.18.2': 9008L, '1.19.2': 9366L, '1.20.1': 9990L,
+            '1.21.1': 11779L
+    ]
+    Map<String, Long> loaderIds = [forge: 7498L, fabric: 7499L, quilt: 9153L, neoforge: 10150L]
+    Long minecraftId = minecraftIds[minecraft_version.toString()]
+    if (minecraftId == null) throw new GradleException("No CurseForge legacy version ID is configured for Minecraft ${minecraft_version} in ${project.path}")
+    List<Long> ids = [minecraftId, 9638L, 9639L]
+    readPublishCurseForgeLoaders().each { loaderName ->
+        Long loaderId = loaderIds[loaderName.toString().toLowerCase(Locale.ROOT)]
+        if (loaderId == null) throw new GradleException("No CurseForge legacy loader ID is configured for '${loaderName}' in ${project.path}")
+        ids.add(loaderId)
     }
-    try {
-        return Class.forName('net.darkhax.curseforgegradle.TaskPublishCurseForge', true, loader)
-    } catch (Throwable ignored) {
-        return null
-    }
+    ids.unique()
 }
-
-if (curseForgeTaskClass == null) {
-    throw new GradleException("Unable to resolve TaskPublishCurseForge for project '${project.path}'")
+ext.cscReadCurseForgeUploadMetadata = {
+    Map<String, String> relationTypes = [:]
+    readPublishRequiredDependencies().each { relationTypes[it] = 'requiredDependency' }
+    readPublishOptionalDependencies().each { relationTypes.putIfAbsent(it, 'optionalDependency') }
+    List<Map<String, String>> relations = relationTypes.collect { slug, relationType -> [slug: slug, type: relationType] }
+    Map metadata = [
+            changelog    : readPrimaryChangelog(),
+            changelogType: 'markdown',
+            displayName  : readPublishDisplayName(),
+            releaseType  : publish_version.toString(),
+            gameVersions : cscReadCurseForgeGameVersionIds()
+    ]
+    if (!relations.isEmpty()) metadata.relations = [projects: relations]
+    metadata
+}
+ext.cscWriteMultipartTextPart = { OutputStream output, String boundary, String name, String value ->
+    output.write(("--${boundary}\r\nContent-Disposition: form-data; name=\"${name}\"\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n${value}\r\n").getBytes('UTF-8'))
+}
+ext.cscWriteMultipartFilePart = { OutputStream output, String boundary, File file ->
+    output.write(("--${boundary}\r\nContent-Disposition: form-data; name=\"file\"; filename=\"${file.name}\"\r\nContent-Type: application/java-archive\r\n\r\n").getBytes('UTF-8'))
+    file.withInputStream { input -> input.transferTo(output) }
+    output.write('\r\n'.getBytes('UTF-8'))
+}
+ext.cscUploadCurseForgeFile = {
+    def properties = readPublishingProperties()
+    String token = properties?.getProperty('CF_TOKEN')?.trim()
+    if (token == null || token.isEmpty()) throw new GradleException("CF_TOKEN is required to publish ${project.path} to CurseForge")
+    File artifact = readPublishArtifactFile()
+    if (!artifact.isFile() || artifact.length() == 0L) throw new GradleException("CurseForge artifact is missing or empty: ${artifact}")
+    String endpoint = project.findProperty('csc_publish_curseforge_upload_endpoint')?.toString()?.trim() ?: 'https://minecraft.curseforge.com'
+    String url = "${endpoint.replaceFirst('/+$', '')}/api/projects/${cscUrlEncode(curseforge_id.toString())}/upload-file"
+    String boundary = "----CreateSchematicChecker${UUID.randomUUID().toString().replace('-', '')}"
+    HttpURLConnection connection = (HttpURLConnection) URI.create(url).toURL().openConnection()
+    connection.requestMethod = 'POST'
+    connection.doOutput = true
+    connection.connectTimeout = 30000
+    connection.readTimeout = 120000
+    connection.setFixedLengthStreamingMode(-1)
+    connection.setRequestProperty('Accept', 'application/json')
+    connection.setRequestProperty('User-Agent', 'Create-SchematicChecker-publisher')
+    connection.setRequestProperty('X-Api-Token', token)
+    connection.setRequestProperty('Content-Type', "multipart/form-data; boundary=${boundary}")
+    try {
+        connection.outputStream.withCloseable { output ->
+            cscWriteMultipartTextPart(output, boundary, 'metadata', JsonOutput.toJson(cscReadCurseForgeUploadMetadata()))
+            cscWriteMultipartFilePart(output, boundary, artifact)
+            output.write(("--${boundary}--\r\n").getBytes('UTF-8'))
+        }
+        int code = connection.responseCode
+        InputStream stream = code >= 400 ? connection.errorStream : connection.inputStream
+        String body = stream == null ? '' : stream.getText('UTF-8')
+        if (code < 200 || code >= 300) throw new GradleException("CurseForge upload failed for ${project.path}: HTTP ${code}${body.trim().isEmpty() ? '' : " - ${body.take(1000)}"}")
+        body.trim().isEmpty() ? [:] : new JsonSlurper().parseText(body)
+    } finally {
+        connection.disconnect()
+    }
 }
 
 tasks.register('PublishInfo') {
@@ -237,8 +298,8 @@ tasks.register('PublishInfo') {
             def cfToken = properties.getProperty("CF_TOKEN")
             def modrinthToken = properties.getProperty("MODRINTH_TOKEN")
 
-            println "CF_TOKEN: $cfToken"
-            println "MODRINTH_TOKEN: $modrinthToken"
+            println "CF_TOKEN: ${cfToken ? 'present' : 'missing'}"
+            println "MODRINTH_TOKEN: ${modrinthToken ? 'present' : 'missing'}"
         } else {
             println "api.properties not exist"
         }
@@ -284,36 +345,20 @@ tasks.register('allworkJarJar') {
     dependsOn readPublishArtifactTaskName()
 }
 
-tasks.register('publishCurseForge', curseForgeTaskClass) {
+tasks.register('publishCurseForge') {
     dependsOn readPublishArtifactTaskName()
-
-    def properties = readPublishingProperties()
-    apiToken = properties?.getProperty("CF_TOKEN")
-
-    def mainFile = upload(curseforge_id, readPublishArtifactFile())
-    mainFile.changelog = readPrimaryChangelog()
-    mainFile.addEnvironment("Client", "Server")
-    mainFile.addGameVersion("${minecraft_version}")
-    readPublishCurseForgeLoaders().each { loaderName ->
-        mainFile.addModLoader(loaderName)
-    }
-    readPublishRequiredDependencies().each { dependencyId ->
-        mainFile.addRequirement(dependencyId)
-    }
-
-    mainFile.displayName = readPublishDisplayName()
-    readPublishOptionalDependencies().each { dependencyId ->
-        mainFile.addOptional(dependencyId)
-    }
-
-    mainFile.releaseType = publish_version
-    disableVersionDetection()
+    group = 'Publishing'
+    description = 'Uploads through CurseForge legacy multipart API without curseforgegradle version discovery.'
     onlyIf {
         boolean exists = cscPublishRemoteStatus.containsKey('curseforgeExists') ? cscPublishRemoteStatus.curseforgeExists : cscCheckCurseForgePublished()
         if (exists) println "Skipping CurseForge upload for ${project.path}: matching remote target already exists. Use -Pcsc_publish_force=true to override."
         !exists
     }
-    doLast { cscRecordCurseForgePublish() }
+    doLast {
+        def response = cscUploadCurseForgeFile()
+        cscRecordCurseForgePublish()
+        println "Uploaded CurseForge target for ${project.path}${response instanceof Map && response.id != null ? ": file ${response.id}" : ''}"
+    }
 }
 
 publishMods {
