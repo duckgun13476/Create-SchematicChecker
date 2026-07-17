@@ -44,6 +44,7 @@ public class ConfigRegister {
             "function.checkBelt",
             "function.TryRemoveBeltNotKill",
             "function.TryRemoveFluidTankNotKill",
+            "function.fixQuarkLavaFluidloggedDuplication",
             "function.maxBeltCheatLimit",
             "function.maxConveyorCheatDistanceLimit",
             "function.maxConveyorCheatLimit",
@@ -246,6 +247,11 @@ public class ConfigRegister {
             .comment("config.TryRemoveFluidTankNotKill")
             .comment("config.TryRemoveFluidTankNotKill2");
 
+    public static ConfigValue.ConfigBoolean FIX_QUARK_LAVA_FLUIDLOGGED_DUPLICATION = ConfigBuild
+            .define("function.fixQuarkLavaFluidloggedDuplication", true)
+            .comment(CommitBreak)
+            .comment("config.fixQuarkLavaFluidloggedDuplication");
+
     public static ConfigValue.ConfigInt MAX_BELT_CHEAT_LIMIT = ConfigBuild
             .define("function.maxBeltCheatLimit", 10)
             .comment(CommitBreak)
@@ -323,6 +329,7 @@ public class ConfigRegister {
     public static boolean check_belt = CHECK_BELT_MISMATCH.getDefaultValue();
     public static boolean remove_belt_instead_kill = TRY_REMOVE_PROBLEM_BELT_NOT_KILL.getDefaultValue();
     public static boolean remove_fluid_tank_instead_kill = TRY_REMOVE_PROBLEM_FLUID_TANK_NOT_KILL.getDefaultValue();
+    public static boolean fix_quark_lava_fluidlogged_duplication = FIX_QUARK_LAVA_FLUIDLOGGED_DUPLICATION.getDefaultValue();
     public static String[] ban_entity = BAN_ENTITY.getDefaultValue();
     public static String[] whitelist_entity = WHITELIST_ENTITY.getDefaultValue();
     public static boolean enable_backup = ENABLE_SCHEMATIC_BACKUP.getDefaultValue();
@@ -411,6 +418,7 @@ public class ConfigRegister {
         check_belt = CHECK_BELT_MISMATCH.getDefaultValue();
         remove_belt_instead_kill = TRY_REMOVE_PROBLEM_BELT_NOT_KILL.getDefaultValue();
         remove_fluid_tank_instead_kill = TRY_REMOVE_PROBLEM_FLUID_TANK_NOT_KILL.getDefaultValue();
+        fix_quark_lava_fluidlogged_duplication = FIX_QUARK_LAVA_FLUIDLOGGED_DUPLICATION.getDefaultValue();
         whitelist_entity = WHITELIST_ENTITY.getDefaultValue();
         ban_entity = BAN_ENTITY.getDefaultValue();
         enable_backup = ENABLE_SCHEMATIC_BACKUP.getDefaultValue();
@@ -448,6 +456,7 @@ public class ConfigRegister {
         CHECK_BELT_MISMATCH.reload();
         TRY_REMOVE_PROBLEM_BELT_NOT_KILL.reload();
         TRY_REMOVE_PROBLEM_FLUID_TANK_NOT_KILL.reload();
+        FIX_QUARK_LAVA_FLUIDLOGGED_DUPLICATION.reload();
         WHITELIST_ENTITY.reload();
         BAN_ENTITY.reload();
         ENABLE_SCHEMATIC_BACKUP.reload();
@@ -585,6 +594,7 @@ public class ConfigRegister {
         syncComments("function.checkBelt", CommitBreak, "config.checkBelt", "config.checkBelt2");
         syncComments("function.TryRemoveBeltNotKill", CommitBreak, "config.TryRemoveBeltNotKill", "config.TryRemoveBeltNotKill2");
         syncComments("function.TryRemoveFluidTankNotKill", CommitBreak, "config.TryRemoveFluidTankNotKill", "config.TryRemoveFluidTankNotKill2");
+        syncComments("function.fixQuarkLavaFluidloggedDuplication", CommitBreak, "config.fixQuarkLavaFluidloggedDuplication");
         syncComments("function.maxBeltCheatLimit", CommitBreak, "config.maxBeltCheatLimit", "config.maxBeltCheatLimit2");
         syncComments("function.maxConveyorCheatDistanceLimit", CommitBreak, "config.maxConveyorCheatDistanceLimit", "config.maxConveyorCheatDistanceLimit2");
         syncComments("function.maxConveyorCheatLimit", CommitBreak, "config.maxConveyorCheatLimit", "config.maxConveyorCheatLimit2");

@@ -25,6 +25,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import static com.Pink_Cats.createschematicchecker.FancyConfig.ConfigRegister.fix_quark_lava_fluidlogged_duplication;
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.WATERLOGGED;
 
 @Mixin(value = OpenEndedPipe.class,remap = false)
@@ -62,7 +63,9 @@ public class OpenEndedPipeMixin {
                 .map(BooleanProperty.class::cast)
                 .findFirst()
                 .orElse(null);
-        boolean lavalog = lavalogProperty != null && state.getValue(lavalogProperty);
+        boolean lavalog = fix_quark_lava_fluidlogged_duplication
+                && lavalogProperty != null
+                && state.getValue(lavalogProperty);
 
         // Create 6 recognizes Quark's fluidlogged grate as a generic drain target.
         // That path returns the lava before this mixin can clear LAVALOGGED, duplicating it.

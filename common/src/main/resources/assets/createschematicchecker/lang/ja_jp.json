@@ -46,6 +46,7 @@
   "config.TryRemoveBeltNotKill2": "この機能はまだベータ版です。設計図は正常に印刷できますが、不完全なベルトは印刷されません。",
   "config.TryRemoveFluidTankNotKill": "液体タンク コントローラーとタンク数の不一致が検出された場合は、ブループリント全体をブロックするのではなく、不一致の液体タンクを削除します。",
   "config.TryRemoveFluidTankNotKill2": "無効にすると、液体タンクの不一致により元の動作が維持され、チートとしてマークされ、アップロードがブロックされます。",
+  "config.fixQuarkLavaFluidloggedDuplication": "Create のパイプが Quark の溶岩入りブロックから溶岩を複製する問題を修正します。有効のままを推奨します。",
   "console.csc.list": "IdMatchRuleAll すべての ID 除外ルールをリストします。",
   "console.csc.list2": "OperateMatchRuleAll すべての NBT 操作ルールをリストします",
   "console.csc.list3": "IdMatchRule ローカルの手動構成および自動更新からの ID 除外ルールのリスト",

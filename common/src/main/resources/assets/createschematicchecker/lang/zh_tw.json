@@ -46,6 +46,7 @@
   "config.TryRemoveBeltNotKill2": "此功能還在Beta版本，這可以在傳送帶不完整時，正常打印藍圖，只是不完整的傳送帶不會打印",
   "config.TryRemoveFluidTankNotKill": "當流體儲罐控制器數量不匹配時，是否剔除儲罐並允許繼續上傳。",
   "config.TryRemoveFluidTankNotKill2": "關閉後將恢復原邏輯：記錄 mismatch 並判定作弊，阻止上傳。",
+  "config.fixQuarkLavaFluidloggedDuplication": "修復機械動力管道從 Quark 岩漿流體覆蓋方塊抽取岩漿時的複製漏洞。建議保持開啟。",
   "console.csc.list": "IdMatchRuleAll        列出全部的 ID  剔除規則",
   "console.csc.list2": "OperateMatchRuleAll   列出全部的 nbt 操作規則",
   "console.csc.list3": "IdMatchRule           列出 本地手動配置 和 自動更新 的 ID 剔除規則",
