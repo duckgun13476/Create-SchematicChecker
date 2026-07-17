@@ -14,6 +14,7 @@
   "console.reload1": " 重载配置中--",
   "console.reload2": " 配置加载完毕",
   "console.ConfigReloadError": " 配置重载发生错误！",
+  "console.ConfigInjectCreateError": "读取机械动力配置失败，CSC 将使用备用限制值。",
   "console.config.archive.title": "[CSC] 检测到配置版本变化，旧 config.toml 已归档。",
   "console.config.archive.version": "旧版本: ${old_version} -> 新版本: ${new_version}",
   "console.config.archive.generated": "已生成新的 config.toml。",

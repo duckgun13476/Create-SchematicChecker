@@ -14,6 +14,7 @@
   "console.reload1": "構成を再ロードしています--",
   "console.reload2": "構成がロードされました",
   "console.ConfigReloadError": "設定のリロードに失敗しました！",
+  "console.ConfigInjectCreateError": "Create の設定を読み取れなかったため、CSC はフォールバックの制限値を使用します。",
   "console.config.archive.title": "[CSC] config.toml のバージョン変更を検出したため、旧設定をアーカイブしました。",
   "console.config.archive.version": "旧バージョン: ${old_version} -> 新バージョン: ${new_version}",
   "console.config.archive.generated": "新しい config.toml を生成しました。",
