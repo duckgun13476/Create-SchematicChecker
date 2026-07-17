@@ -29,6 +29,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.lang.reflect.Method;
 
+import static com.Pink_Cats.createschematicchecker.FancyConfig.ConfigRegister.fix_quark_lava_fluidlogged_duplication;
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.WATERLOGGED;
 
 @Mixin(value = OpenEndedPipe.class, remap = false)
@@ -66,7 +67,7 @@ public class OpenEndedPipeMixin {
         BlockState state = world.getBlockState(outputPos);
         FluidState fluidState = state.getFluidState();
         boolean waterlog = state.hasProperty(WATERLOGGED);
-        boolean lavalog = state.hasProperty(createSchematicChecker$LAVALOGGED);
+        boolean lavalog = fix_quark_lava_fluidlogged_duplication && state.hasProperty(createSchematicChecker$LAVALOGGED);
 
         FluidStack drainBlock = VanillaFluidTargets.drainBlock(world, outputPos, state, ctx);
         if (!drainBlock.isEmpty()) {
