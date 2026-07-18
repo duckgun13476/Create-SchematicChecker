@@ -6,7 +6,8 @@
   "refmap": "${mixin_refmap}",
   "mixins": [
     "handleFinishedUploadMixin",
-    "OpenEndedPipeMixin"
+    "OpenEndedPipeMixin",
+    "RadialWrenchMenuSubmitPacketMixin"
   ],
   "client": [
   ],
