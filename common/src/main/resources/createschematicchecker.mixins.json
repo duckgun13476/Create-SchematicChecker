@@ -7,7 +7,8 @@
   "mixins": [
     "handleFinishedUploadMixin",
     "OpenEndedPipeMixin",
-    "RadialWrenchMenuSubmitPacketMixin"
+    "RadialWrenchMenuSubmitPacketMixin",
+    "ChainConveyorRidingPacketMixin"
   ],
   "client": [
   ],
