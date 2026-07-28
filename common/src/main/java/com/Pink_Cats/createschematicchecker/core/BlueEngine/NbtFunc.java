@@ -272,6 +272,13 @@ public class NbtFunc {
 
 
                                     boolean consumedItemIsAir = consumedItem_id.equals("minecraft:air");
+                                    // Copycats uses copycat_base plus an empty stack as its unfilled-material sentinel.
+                                    // Some valid exports serialize that empty stack as air x1; canonicalize it before
+                                    // applying the normal no-free-material rule.
+                                    if (consumedItemIsAir && inside_material.equals("create:copycat_base") && consumedItem_count == 1) {
+                                        Item.put(countKey, TagByte((byte) 0));
+                                        consumedItem_count = 0;
+                                    }
                                     int expectedCount = consumedItemIsAir ? 0 : 1;
                                     if ((!consumedItemIsAir && !inside_material.equals(consumedItem_id)) || consumedItem_count != expectedCount) {
                                         CompoundTag replace = block.getCompound("nbt")
@@ -318,6 +325,12 @@ public class NbtFunc {
                                                         .replaceAll("[b;]", ""));
 
                                         boolean consumedItemIsAir = consumedItem_id.equals("minecraft:air");
+                                        // See the single-material branch above. This is deliberately restricted to
+                                        // Copycats' default copycat_base placeholder, not arbitrary air materials.
+                                        if (consumedItemIsAir && inside_material.equals("create:copycat_base") && consumedItem_count == 1) {
+                                            consumedItem_inside.put(countKey, TagByte((byte) 0));
+                                            consumedItem_count = 0;
+                                        }
                                         int expectedCount = consumedItemIsAir ? 0 : 1;
                                         if ((!consumedItemIsAir && !fake_id.contains(consumedItem_id)) || consumedItem_count != expectedCount) {
 
