@@ -123,11 +123,31 @@ public class NbtFunc {
 
                     //clipboard
                     if (id.equals("createbigcannons:fuzed_block")) {
-                        String InsideID = Objects.requireNonNull(block.getCompound("nbt").getCompound("Fuze").get("id")).toString();
-                        if (!InsideID.contains("createbigcannons:")) {
-                            Cheat = true;
-                            CheatLog.add(translateDirect("console.cheat.createbigcannons") + "[" + InsideID + "]");
-
+                        CompoundTag fuzedBlockNbt = block.getCompound("nbt");
+                        Tag legacyFuzeId = fuzedBlockNbt.getCompound("Fuze").get("id");
+                        if (legacyFuzeId != null) {
+                            String insideId = legacyFuzeId.toString();
+                            if (!insideId.contains("createbigcannons:")) {
+                                Cheat = true;
+                                CheatLog.add(translateDirect("console.cheat.createbigcannons") + "[" + insideId + "]");
+                            }
+                        } else {
+                            ListTag fuzes = fuzedBlockNbt.getCompound("components")
+                                    .getList("createbigcannons:fuze", 10);
+                            if (fuzes.size() == 0) {
+                                throw new IllegalArgumentException("Fuzed block has neither legacy Fuze nor createbigcannons:fuze component");
+                            }
+                            for (Tag fuzeEntry : fuzes) {
+                                Tag fuzeId = ((CompoundTag) fuzeEntry).getCompound("item").get("id");
+                                if (fuzeId == null) {
+                                    throw new IllegalArgumentException("Fuzed block component has no item id");
+                                }
+                                String insideId = fuzeId.toString();
+                                if (!insideId.contains("createbigcannons:")) {
+                                    Cheat = true;
+                                    CheatLog.add(translateDirect("console.cheat.createbigcannons") + "[" + insideId + "]");
+                                }
+                            }
                         }
                     }
 
