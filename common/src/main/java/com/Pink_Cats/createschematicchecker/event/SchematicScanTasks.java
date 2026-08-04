@@ -1,4 +1,4 @@
-package com.Pink_Cats.createschematicchecker.network;
+package com.Pink_Cats.createschematicchecker.event;
 
 import com.Pink_Cats.createschematicchecker.lang.Message;
 
@@ -8,24 +8,26 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static com.Pink_Cats.createschematicchecker.FancyConfig.ConfigRegister.enable_auto_config_update;
-import static com.Pink_Cats.createschematicchecker.online.NbtFileUploader.AutoUpdateThread;
-import static com.Pink_Cats.createschematicchecker.online.SimpleHeartbeatPusher.HeartBeatTask;
-import static com.Pink_Cats.createschematicchecker.online.VersionChecker.UpdateMainThread;
-
-public class OnlineTasks {
-
+/**
+ * Owns schematic scans for the lifetime of a server.  In particular, scans must
+ * not outlive the server which accepted the upload.
+ */
+public final class SchematicScanTasks {
     private static final Object LOCK = new Object();
-    private static final int MAX_QUEUE_SIZE = 16;
+    private static final int MAX_QUEUE_SIZE = 8;
     private static volatile boolean acceptingTasks;
     private static volatile ThreadPoolExecutor executor;
+
+    private SchematicScanTasks() {
+    }
 
     public static void startServer() {
         synchronized (LOCK) {
             acceptingTasks = true;
             if (executor == null || executor.isShutdown() || executor.isTerminated()) {
                 executor = newExecutor();
-                // No scan thread may be responsible for first creating this worker.
+                // Creating this daemon during startup prevents an upload scan from
+                // becoming the thread that has to create a worker later.
                 executor.prestartCoreThread();
             }
         }
@@ -41,31 +43,14 @@ public class OnlineTasks {
         }
     }
 
-    public static void readDataAsync() {
-        submit(() -> {
-            UpdateMainThread();
-            HeartBeatTask();
-        });
-    }
-
-    public static void reportProblem(String filepath) {
-        submit(() -> AutoUpdateThread(filepath));
-    }
-
-    public static void postDataAsync(String filepath) {
-        if (enable_auto_config_update) {
-            submit(() -> AutoUpdateThread(filepath));
-        }
-    }
-
-    private static void submit(Runnable task) {
+    public static boolean submit(Runnable scan, Runnable rejectedWhileRunning) {
         if (!acceptingTasks) {
-            return;
+            return false;
         }
 
         ThreadPoolExecutor current = executor;
         if (current == null) {
-            return;
+            return false;
         }
 
         try {
@@ -74,18 +59,21 @@ public class OnlineTasks {
                     return;
                 }
                 try {
-                    task.run();
+                    scan.run();
                 } catch (Throwable throwable) {
                     if (throwable instanceof ThreadDeath) {
                         throw (ThreadDeath) throwable;
                     }
-                    Message.FW("Online task failed: " + throwable.getMessage());
+                    Message.FE("Schematic scan task failed: " + throwable.getMessage());
                 }
             });
+            return true;
         } catch (java.util.concurrent.RejectedExecutionException ignored) {
             if (acceptingTasks) {
-                Message.FW("Online task queue is full; skipped a non-critical task.");
+                rejectedWhileRunning.run();
+                Message.FW("Schematic scan queue is full; rejected the upload safely.");
             }
+            return false;
         }
     }
 
@@ -96,7 +84,7 @@ public class OnlineTasks {
                 0L,
                 TimeUnit.MILLISECONDS,
                 new ArrayBlockingQueue<>(MAX_QUEUE_SIZE),
-                daemonFactory("CSC-Online"),
+                daemonFactory("CSC-SchematicScan"),
                 new ThreadPoolExecutor.AbortPolicy()
         );
     }

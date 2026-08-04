@@ -2,6 +2,8 @@ package com.Pink_Cats.createschematicchecker;
 
 import com.Pink_Cats.createschematicchecker.FancyConfig.ConfigRegister;
 import com.Pink_Cats.createschematicchecker.lang.Message;
+import com.Pink_Cats.createschematicchecker.event.SchematicScanTasks;
+import com.Pink_Cats.createschematicchecker.network.OnlineTasks;
 import com.pinkcats.torque.layer.TorqueLayer;
 import com.pinkcats.torque.layer.platform.Platform;
 
@@ -41,6 +43,8 @@ public class CscLifecycle {
     }
 
     public void serverStarting() {
+        SchematicScanTasks.startServer();
+        OnlineTasks.startServer();
         injectCreateConfig();
         CSC_MES.reopen();
         CSC_WARN.reopen();
@@ -54,6 +58,8 @@ public class CscLifecycle {
     }
 
     public void serverStopping() {
+        SchematicScanTasks.stopServer();
+        OnlineTasks.stopServer();
         CSC_Variables_Save();
         com.Pink_Cats.createschematicchecker.FancyConfig.ConfigArchiveNotice.clear();
         Message.FM(translateDirect("console.csc.StopServer"));

@@ -4,6 +4,8 @@ import com.Pink_Cats.createschematicchecker.FancyConfig.ConfigRegister;
 import com.Pink_Cats.createschematicchecker.FancyConfig.ConfigArchiveNotice;
 import com.Pink_Cats.createschematicchecker.FancyConfig.WhitelistModeNotice;
 import com.Pink_Cats.createschematicchecker.lang.Message;
+import com.Pink_Cats.createschematicchecker.event.SchematicScanTasks;
+import com.Pink_Cats.createschematicchecker.network.OnlineTasks;
 import com.pinkcats.torque.layer.TorqueLayer;
 import com.pinkcats.torque.layer.platform.Platform;
 
@@ -42,6 +44,8 @@ public class CscLifecycle {
     }
 
     public void serverStarting() {
+        SchematicScanTasks.startServer();
+        OnlineTasks.startServer();
         injectCreateConfig();
         CSC_MES.reopen();
         CSC_WARN.reopen();
@@ -56,6 +60,10 @@ public class CscLifecycle {
     }
 
     public void serverStopping() {
+        // Stop accepting work before any shutdown I/O. Upload scans otherwise can
+        // still submit a problem report after the server has begun stopping.
+        SchematicScanTasks.stopServer();
+        OnlineTasks.stopServer();
         CSC_Variables_Save();
         ConfigArchiveNotice.clear();
         WhitelistModeNotice.clear();

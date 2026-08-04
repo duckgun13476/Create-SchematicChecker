@@ -49,7 +49,10 @@ public class CheckBlueprint {
                 CheckBlueprint::broadcast,
                 CheckBlueprint::ExecuteSomeCmd
         );
-        new Thread(() -> processor.handle(event.SchematicPath, event.SchematicId, playerName), "CSC-SchematicScan").start();
+        SchematicScanTasks.submit(
+                () -> processor.handle(event.SchematicPath, event.SchematicId, playerName),
+                () -> applyResult(player, event.SchematicId, false)
+        );
     }
 
     public void serverTickEvent(MinecraftServer server) {
