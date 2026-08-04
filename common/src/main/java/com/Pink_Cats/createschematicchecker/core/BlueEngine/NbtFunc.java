@@ -53,10 +53,16 @@ public class NbtFunc {
             ListTag palette = nbt_data.getList("palette", 10); // 10 琛ㄧず CompoundTag 绫诲瀷
             for (int i = 0; i < palette.size(); i++) {
                 CompoundTag paletteItem = palette.getCompound(i);
-                if (paletteItem.get("Name") == null || paletteItem.getString("Name").isEmpty()) {
+                if (paletteItem.get("Name") == null) {
+                    // Vanilla StructureTemplate reads a palette entry without Name as air.
+                    // Canonicalize it so the scanner observes the same state as Create.
+                    paletteItem.putString("Name", "minecraft:air");
+                    palette.set(i, paletteItem);
+                    Message.diag("[Diag][NbtFunc][PALETTE] normalized unnamed entry to minecraft:air at index=" + i);
+                } else if (paletteItem.getString("Name").isEmpty()) {
                     CannotCheck = true;
-                    CheatLog.add("Malformed palette entry at index " + i + ": missing Name");
-                    Message.FW("Malformed schematic palette entry at index " + i + ": missing Name");
+                    CheatLog.add("Malformed palette entry at index " + i + ": empty Name");
+                    Message.FW("Malformed schematic palette entry at index " + i + ": empty Name");
                     break;
                 }
                 paletteItemResult = BaseBlockHandle(paletteItem, "palette", palette, i,CheatLog);
