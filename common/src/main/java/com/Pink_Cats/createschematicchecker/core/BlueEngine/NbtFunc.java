@@ -53,6 +53,12 @@ public class NbtFunc {
             ListTag palette = nbt_data.getList("palette", 10); // 10 琛ㄧず CompoundTag 绫诲瀷
             for (int i = 0; i < palette.size(); i++) {
                 CompoundTag paletteItem = palette.getCompound(i);
+                if (paletteItem.get("Name") == null || paletteItem.getString("Name").isEmpty()) {
+                    CannotCheck = true;
+                    CheatLog.add("Malformed palette entry at index " + i + ": missing Name");
+                    Message.FW("Malformed schematic palette entry at index " + i + ": missing Name");
+                    break;
+                }
                 paletteItemResult = BaseBlockHandle(paletteItem, "palette", palette, i,CheatLog);
                 paletteItem = S_tag(paletteItemResult.get("Data"));
                 Cheat = S_bool(paletteItemResult.get("Cheat")) || Cheat;
@@ -61,6 +67,14 @@ public class NbtFunc {
                 if (paletteItem != null) {
                     palette.set(i, paletteItem);
                 }
+            }
+
+            if (CannotCheck) {
+                result.put("CannotCheck", true);
+                result.put("Problem", false);
+                result.put("nbt_data", nbt_data);
+                result.put("Cheat", false);
+                return result;
             }
 
             // 鎻愬彇 blocks 淇℃伅
