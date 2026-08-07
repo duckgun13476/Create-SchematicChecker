@@ -440,6 +440,7 @@ public class ConfigRegister {
         report_schematic =  REPORT_SCHEMATIC.getDefaultValue();
         report_endpoint = REPORT_ENDPOINT.getDefaultValue();
         report_token = REPORT_TOKEN.getDefaultValue();
+        refreshReportTransportFromToml();
         max_conveyor_degree = MAX_CONVEYOR_DEGREE.getDefaultValue();
         syncConfigComments();
         UpdateRuleThread(log);
@@ -484,6 +485,33 @@ public class ConfigRegister {
         CSC_INIT(list);
         Message.FM(translateDirect("console.reload2"));
         return list;
+    }
+
+    /**
+     * The legacy editor can retain a value read before a version migration.
+     * Read the three report transport settings from the table-aware parser at
+     * lifecycle boundaries so a migrated config and a live reload agree.
+     */
+    private static void refreshReportTransportFromToml() {
+        Map<String, Object> values = ConfigHook.readToml(ConfigPath);
+
+        Object reportValue = values.get("online.report");
+        if (reportValue instanceof Boolean) {
+            report_schematic = (Boolean) reportValue;
+            REPORT_SCHEMATIC.setValue(report_schematic);
+        }
+
+        Object endpointValue = values.get("online.reportEndpoint");
+        if (endpointValue instanceof String && !((String) endpointValue).trim().isEmpty()) {
+            report_endpoint = ((String) endpointValue).trim();
+            REPORT_ENDPOINT.setValue(report_endpoint);
+        }
+
+        Object tokenValue = values.get("online.reportToken");
+        if (tokenValue instanceof String && !((String) tokenValue).trim().isEmpty()) {
+            report_token = ((String) tokenValue).trim();
+            REPORT_TOKEN.setValue(report_token);
+        }
     }
 
     public static void setWhiteListModeNotice(boolean enabled) {
