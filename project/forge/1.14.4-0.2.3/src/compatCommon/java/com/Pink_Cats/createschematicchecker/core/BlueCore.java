@@ -20,7 +20,6 @@ import static com.Pink_Cats.createschematicchecker.core.BlueEngine.NbtInterFace.
 import static com.Pink_Cats.createschematicchecker.core.BlueEngine.NbtInterFace.S_tag;
 import static com.Pink_Cats.createschematicchecker.core.BlueEngine.StrFunc.getCurrentDateTime;
 import static com.Pink_Cats.createschematicchecker.lang.CSCLanguage.translateDirect;
-import static com.Pink_Cats.createschematicchecker.network.OnlineTasks.postDataAsync;
 import static com.Pink_Cats.createschematicchecker.network.OnlineTasks.reportProblem;
 
 public class BlueCore {
@@ -54,26 +53,9 @@ public class BlueCore {
                     + ", isProblem=" + IsProblem);
 
             if (CannotCheck && report_schematic) {
-                Message.diag("[Diag][BlueCore][REPORT] outputDir=config/CSC/problem/" + User + "/"
-                        + ", outputFile=CheckFail_" + getCurrentDateTime() + Blueprint);
-                CompoundTag_to_Path(nbt_data, "config/CSC/problem/" + User + "/", "CheckFail_" + getCurrentDateTime() + Blueprint);
-                reportProblem("config/CSC/problem/" + User + "/" + "CheckFail_" + getCurrentDateTime() + Blueprint);
-            }
-
-            if (enable_backup) {
-                if (IsProblem) {
-                    if (IsCheat) {
-                        Message.diag("[Diag][BlueCore][REPORT] outputDir=config/CSC/problem/" + User + "/"
-                                + ", outputFile=Cheat_" + getCurrentDateTime() + Blueprint);
-                        CompoundTag_to_Path(nbt_data, "config/CSC/problem/" + User + "/", "Cheat_" + getCurrentDateTime() + Blueprint);
-                        postDataAsync("config/CSC/problem/" + User + "/" + "Cheat_" + getCurrentDateTime() + Blueprint);
-                    } else {
-                        Message.diag("[Diag][BlueCore][REPORT] outputDir=config/CSC/problem/" + User + "/"
-                                + ", outputFile=Problem_" + getCurrentDateTime() + Blueprint);
-                        CompoundTag_to_Path(nbt_data, "config/CSC/problem/" + User + "/", "Problem_" + getCurrentDateTime() + Blueprint);
-                        postDataAsync("config/CSC/problem/" + User + "/" + "Problem_" + getCurrentDateTime() + Blueprint);
-                    }
-                }
+                reportSample(nbt_data, User, Blueprint, "CheckFail");
+            } else if (IsProblem && report_schematic) {
+                reportSample(nbt_data, User, Blueprint, IsCheat ? "Cheat" : "Problem");
             }
 
             Message.diag("[Diag][BlueCore][WRITEBACK] outputDir=" + DefaultPath + User + "/"
@@ -91,6 +73,14 @@ public class BlueCore {
             Message.FW("Wrong in BlueCore" + DefaultPath);
         }
         return new HashMap<String, Object>();
+    }
+
+    private void reportSample(CompoundTag nbtData, String user, String blueprint, String classification) throws IOException {
+        String outputDirectory = "config/CSC/problem/" + user + "/";
+        String outputFile = classification + "_" + getCurrentDateTime() + blueprint;
+        Message.diag("[Diag][BlueCore][REPORT] outputDir=" + outputDirectory + ", outputFile=" + outputFile);
+        CompoundTag_to_Path(nbtData, outputDirectory, outputFile);
+        reportProblem(outputDirectory + outputFile);
     }
 
     public CompoundTag Path_to_CompoundTag(String SchematicPath) throws IOException {

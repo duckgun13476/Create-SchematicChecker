@@ -1,155 +1,187 @@
 package com.Pink_Cats.createschematicchecker.online;
 
-import java.io.*;
-import java.net.*;
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URI;
+import java.net.URL;
+import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
-import java.security.KeyManagementException;
-import java.security.NoSuchAlgorithmException;
-import java.security.cert.X509Certificate;
+import java.security.MessageDigest;
 import java.util.UUID;
-import javax.net.ssl.*;
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
+import javax.net.ssl.HttpsURLConnection;
 
+import static com.Pink_Cats.createschematicchecker.FancyConfig.ConfigRegister.report_endpoint;
+import static com.Pink_Cats.createschematicchecker.FancyConfig.ConfigRegister.report_token;
+import static com.Pink_Cats.createschematicchecker.FancyConfig.ConfigRegister.user_uuid;
+
+/** Uploads only scanner-classified samples to the authenticated CSC v2 ingress. */
 public class NbtFileUploader {
 
-    /**
-     * 初始化信任所有证书的SSL上下文
-     */
-    private static void initUnsafeSSL() throws NoSuchAlgorithmException, KeyManagementException {
-        // 创建信任所有证书的TrustManager
-        TrustManager[] trustAllCerts = new TrustManager[]{
-                new X509TrustManager() {
-                    public X509Certificate[] getAcceptedIssuers() {
-                        return null;
-                    }
-                    public void checkClientTrusted(X509Certificate[] certs, String authType) {}
-                    public void checkServerTrusted(X509Certificate[] certs, String authType) {}
-                }
-        };
-
-        // 安装信任所有证书的SSL上下文
-        SSLContext sslContext = SSLContext.getInstance("TLS");
-        sslContext.init(null, trustAllCerts, new java.security.SecureRandom());
-
-        // 设置默认SSLSocketFactory
-        HttpsURLConnection.setDefaultSSLSocketFactory(sslContext.getSocketFactory());
-
-        // 设置不验证主机名
-        HttpsURLConnection.setDefaultHostnameVerifier(new HostnameVerifier() {
-            public boolean verify(String hostname, SSLSession session) {
-                return true;
-            }
-        });
-    }
+    private static final long MAX_FILE_BYTES = 5L * 1024L * 1024L;
+    private static final int TIMEOUT_MS = 10_000;
 
     private static String generateBoundary() {
         return "Boundary-" + UUID.randomUUID().toString().replace("-", "");
     }
 
     public static String uploadNbtFile(String localFilePath) throws Exception {
-        // 初始化不安全的SSL配置
-        initUnsafeSSL();
+        File nbtFile = validateNbtFile(localFilePath);
+        URI endpoint = validateEndpoint();
+        String serverId = requireConfigValue("online.UUID", user_uuid);
+        String reportToken = requireConfigValue("online.reportToken", report_token);
+        String contentHash = sha256(nbtFile);
+        String timestamp = String.valueOf(System.currentTimeMillis() / 1000L);
+        String nonce = UUID.randomUUID().toString();
+        String signature = hmacSha256(reportToken, serverId + "\n" + timestamp + "\n" + nonce + "\n" + contentHash);
 
-        // 校验本地文件
-        File nbtFile = new File(localFilePath);
-        if (!nbtFile.exists()) {
-            throw new IOException("本地文件不存在：" + localFilePath);
+        URLConnection openedConnection = endpoint.toURL().openConnection();
+        if (!(openedConnection instanceof HttpsURLConnection)) {
+            throw new IOException("CSC report endpoint must use HTTPS");
         }
-        if (!nbtFile.getName().endsWith(".nbt")) {
-            throw new IOException("文件格式错误：仅支持.nbt文件");
-        }
-        if (!nbtFile.isFile()) {
-            throw new IOException("路径不是文件：" + localFilePath);
-        }
-
+        HttpsURLConnection connection = (HttpsURLConnection) openedConnection;
         String boundary = generateBoundary();
-        URL url = URI.create(UPLOAD_API_URL).toURL();
-        HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
 
         try {
-            // 配置连接
             connection.setDoOutput(true);
             connection.setDoInput(true);
             connection.setRequestMethod("POST");
             connection.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
-            connection.setRequestProperty("User-Agent", "Java-Nbt-Uploader/1.0");
+            connection.setRequestProperty("User-Agent", "Create-SchematicChecker/2");
+            connection.setRequestProperty("X-CSC-Server-Id", serverId);
+            connection.setRequestProperty("X-CSC-Timestamp", timestamp);
+            connection.setRequestProperty("X-CSC-Nonce", nonce);
+            connection.setRequestProperty("X-CSC-Signature", signature);
+            // Sent only to allow a fresh installation to register its local credential.
+            connection.setRequestProperty("X-CSC-Enrollment-Secret", reportToken);
             connection.setConnectTimeout(TIMEOUT_MS);
             connection.setReadTimeout(TIMEOUT_MS);
+            connection.setChunkedStreamingMode(4096);
 
-            // 构建请求体
             try (DataOutputStream outputStream = new DataOutputStream(connection.getOutputStream())) {
-                // 写入文件部分
-                String startBoundary = "--" + boundary + "\r\n";
-                outputStream.write(startBoundary.getBytes(StandardCharsets.UTF_8));
-
-                String contentDisposition = "Content-Disposition: form-data; name=\"file\"; filename=\"" + nbtFile.getName() + "\"\r\n";
-                outputStream.write(contentDisposition.getBytes(StandardCharsets.UTF_8));
-
-                String contentType = "Content-Type: application/octet-stream\r\n\r\n";
-                outputStream.write(contentType.getBytes(StandardCharsets.UTF_8));
-
-                // 写入文件内容
-                try (FileInputStream fileInputStream = new FileInputStream(nbtFile)) {
-                    byte[] buffer = new byte[4096];
-                    int bytesRead;
-                    while ((bytesRead = fileInputStream.read(buffer)) != -1) {
-                        outputStream.write(buffer, 0, bytesRead);
-                    }
-                }
-
-                // 写入结束边界
-                String endBoundary = "\r\n--" + boundary + "--\r\n";
-                outputStream.write(endBoundary.getBytes(StandardCharsets.UTF_8));
-                outputStream.flush();
+                writeMultipartFile(outputStream, boundary, nbtFile);
             }
 
-            // 检查响应状态
             int statusCode = connection.getResponseCode();
-            if (statusCode != 200) {
-                // 读取错误响应
-                try (BufferedReader reader = new BufferedReader(
-                        new InputStreamReader(connection.getErrorStream(), StandardCharsets.UTF_8))) {
-                    StringBuilder errorResponse = new StringBuilder();
-                    String line;
-                    while ((line = reader.readLine()) != null) {
-                        errorResponse.append(line);
-                    }
-                    throw new IOException(String.format("上传失败，状态码：%d，响应：%s",
-                            statusCode, errorResponse.toString()));
-                }
+            if (statusCode != HttpsURLConnection.HTTP_OK) {
+                throw new IOException("CSC report upload failed, status=" + statusCode + ", response="
+                        + readResponse(connection.getErrorStream()));
             }
-
-            // 读取成功响应
-            try (BufferedReader reader = new BufferedReader(
-                    new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8))) {
-                StringBuilder response = new StringBuilder();
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    response.append(line);
-                }
-                return response.toString();
-            }
+            return readResponse(connection.getInputStream());
         } finally {
             connection.disconnect();
         }
     }
 
-
-    private static final String UPLOAD_API_URL = "https://mc.aisaveworld.tech:8144/uploadfile/";
-    //private static final String LOCAL_NBT_FILE_PATH = "uploaded/battery.nbt";
-
-    private static final int TIMEOUT_MS = 3000;
-
-
-
-    public static void AutoUpdateThread(String filepath){
-        try {
-            uploadNbtFile(filepath);
-        } catch (Exception e) {
+    private static File validateNbtFile(String localFilePath) throws IOException {
+        File nbtFile = new File(localFilePath);
+        if (!nbtFile.isFile()) {
+            throw new IOException("CSC report file does not exist: " + localFilePath);
         }
+        if (!nbtFile.getName().endsWith(".nbt")) {
+            throw new IOException("CSC report accepts only .nbt files");
+        }
+        if (nbtFile.length() > MAX_FILE_BYTES) {
+            throw new IOException("CSC report file exceeds " + MAX_FILE_BYTES + " bytes");
+        }
+        return nbtFile;
     }
 
+    private static URI validateEndpoint() throws IOException {
+        String configuredEndpoint = requireConfigValue("online.reportEndpoint", report_endpoint);
+        URI endpoint;
+        try {
+            endpoint = URI.create(configuredEndpoint);
+        } catch (IllegalArgumentException error) {
+            throw new IOException("Invalid CSC report endpoint", error);
+        }
+        if (!"https".equalsIgnoreCase(endpoint.getScheme()) || endpoint.getHost() == null) {
+            throw new IOException("CSC report endpoint must be an absolute HTTPS URL");
+        }
+        return endpoint;
+    }
 
-    public static void main(String[] args) {
-        //AutoUpdateThread(filepath);
+    private static String requireConfigValue(String key, String value) throws IOException {
+        if (value == null || value.trim().isEmpty()) {
+            throw new IOException("Missing required CSC configuration: " + key);
+        }
+        return value.trim();
+    }
+
+    private static String sha256(File file) throws Exception {
+        MessageDigest digest = MessageDigest.getInstance("SHA-256");
+        long size = 0;
+        byte[] buffer = new byte[8192];
+        try (InputStream input = new FileInputStream(file)) {
+            int bytesRead;
+            while ((bytesRead = input.read(buffer)) != -1) {
+                size += bytesRead;
+                if (size > MAX_FILE_BYTES) {
+                    throw new IOException("CSC report file exceeds " + MAX_FILE_BYTES + " bytes");
+                }
+                digest.update(buffer, 0, bytesRead);
+            }
+        }
+        return toHex(digest.digest());
+    }
+
+    private static String hmacSha256(String secret, String value) throws Exception {
+        Mac mac = Mac.getInstance("HmacSHA256");
+        mac.init(new SecretKeySpec(secret.getBytes(StandardCharsets.UTF_8), "HmacSHA256"));
+        return toHex(mac.doFinal(value.getBytes(StandardCharsets.UTF_8)));
+    }
+
+    private static String toHex(byte[] bytes) {
+        StringBuilder value = new StringBuilder(bytes.length * 2);
+        for (byte current : bytes) {
+            value.append(Character.forDigit((current >>> 4) & 0xF, 16));
+            value.append(Character.forDigit(current & 0xF, 16));
+        }
+        return value.toString();
+    }
+
+    private static void writeMultipartFile(DataOutputStream output, String boundary, File nbtFile) throws IOException {
+        output.write(("--" + boundary + "\r\n").getBytes(StandardCharsets.UTF_8));
+        // Never disclose a player-provided blueprint filename to the report service.
+        output.write("Content-Disposition: form-data; name=\"file\"; filename=\"sample.nbt\"\r\n"
+                .getBytes(StandardCharsets.UTF_8));
+        output.write("Content-Type: application/octet-stream\r\n\r\n".getBytes(StandardCharsets.UTF_8));
+        try (InputStream input = new FileInputStream(nbtFile)) {
+            byte[] buffer = new byte[8192];
+            int bytesRead;
+            while ((bytesRead = input.read(buffer)) != -1) {
+                output.write(buffer, 0, bytesRead);
+            }
+        }
+        output.write(("\r\n--" + boundary + "--\r\n").getBytes(StandardCharsets.UTF_8));
+        output.flush();
+    }
+
+    private static String readResponse(InputStream stream) throws IOException {
+        if (stream == null) {
+            return "";
+        }
+        StringBuilder response = new StringBuilder();
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(stream, StandardCharsets.UTF_8))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                response.append(line);
+            }
+        }
+        return response.toString();
+    }
+
+    public static void AutoUpdateThread(String filepath) {
+        try {
+            uploadNbtFile(filepath);
+        } catch (Exception ignored) {
+            // Reporting is best effort and must never affect scan or shutdown progress.
+        }
     }
 }

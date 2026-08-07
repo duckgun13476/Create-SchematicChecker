@@ -29,6 +29,15 @@ public class ConfigRegister {
     public static final String CommitBreak = "#----------------------------------------------------------------------";
     static final String ConfigPath = "config/CSC/config.toml";
     private static final String ConfigVersionKey = "ConfigVersion";
+    private static final List<String> MIGRATABLE_CONFIG_KEYS = Arrays.asList(
+            "Language", "UUID", "core.Enable", "core.DelayTime", "core.WhiteListModEnable",
+            "debug.DebugTotalBlock", "debug.DebugCheatFind", "debug.EnableBackup", "debug.problem",
+            "function.checkBelt", "function.TryRemoveBeltNotKill", "function.TryRemoveFluidTankNotKill",
+            "function.maxBeltCheatLimit", "function.maxConveyorCheatDistanceLimit",
+            "function.maxConveyorCheatLimit", "function.maxConveyorAllowDegree",
+            "online.enableAutoUpdate", "online.enableManualConfig", "online.UpdateInfo", "online.report",
+            "online.reportEndpoint", "online.reportToken"
+    );
     static {
         ensureValidConfigToml();
         archiveOutdatedConfigToml();
@@ -256,6 +265,15 @@ public class ConfigRegister {
             .comment(CommitBreak)
             .comment("config.debug.report");
 
+    public static ConfigValue.ConfigString REPORT_ENDPOINT = ConfigBuild
+            .define("online.reportEndpoint", "https://api.torqueflux.com/v2/uploadfile/")
+            .comment(CommitBreak)
+            .comment("config.online.reportEndpoint");
+
+    public static ConfigValue.ConfigString REPORT_TOKEN = ConfigBuild
+            .define("online.reportToken", newReportToken())
+            .comment("config.online.reportToken");
+
     public static ConfigValue.ConfigBoolean ENABLE_DEBUG = ConfigBuild
             .define("debug.problem", false)
             .comment(CommitBreak)
@@ -287,6 +305,8 @@ public class ConfigRegister {
     public static boolean update_info = UPDATE_INFO.getDefaultValue();
     public static boolean enable_debug = ENABLE_DEBUG.getDefaultValue();
     public static boolean report_schematic = REPORT_SCHEMATIC.getDefaultValue();
+    public static String report_endpoint = REPORT_ENDPOINT.getDefaultValue();
+    public static String report_token = REPORT_TOKEN.getDefaultValue();
     public static int max_conveyor_degree = MAX_CONVEYOR_DEGREE.getDefaultValue();
 
     public static boolean CheckRunCommand = false;
@@ -359,6 +379,8 @@ public class ConfigRegister {
         enable_auto_config_update = ENABLE_AUTO_UPDATE.getDefaultValue();
         enable_manual_config = ENABLE_MANUAL_CONFIG.getDefaultValue();
         report_schematic = REPORT_SCHEMATIC.getDefaultValue();
+        report_endpoint = REPORT_ENDPOINT.getDefaultValue();
+        report_token = REPORT_TOKEN.getDefaultValue();
         max_conveyor_degree = MAX_CONVEYOR_DEGREE.getDefaultValue();
         syncConfigComments();
         UpdateRuleThread(log);
@@ -394,6 +416,8 @@ public class ConfigRegister {
         ENABLE_AUTO_UPDATE.reload();
         ENABLE_MANUAL_CONFIG.reload();
         REPORT_SCHEMATIC.reload();
+        REPORT_ENDPOINT.reload();
+        REPORT_TOKEN.reload();
         MAX_CONVEYOR_DEGREE.reload();
         CSC_INIT(list);
         Message.FM(translateDirect("console.reload2"));
@@ -436,14 +460,12 @@ public class ConfigRegister {
             if (csc_version.equals(configVersion)) {
                 return;
             }
-            String oldLanguage = languageFromOldConfig(oldConfig.get("Language"));
-
             String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy_MM_dd_HH_mm_ss"));
             Path archiveFile = configFile.resolveSibling("config_old_" + timestamp + ".toml");
             Files.move(configFile, archiveFile, StandardCopyOption.REPLACE_EXISTING);
             Files.deleteIfExists(configFile);
             Files.createFile(configFile);
-            writePreservedLanguage(configFile, oldLanguage);
+            writeMigratedConfigValues(configFile, oldConfig);
             ConfigArchiveNotice.markArchived(configVersion, csc_version, archiveFile.toAbsolutePath());
             Message.FW("[CSC] Old config.toml archived to " + archiveFile.toAbsolutePath()
                     + " because ConfigVersion changed from "
@@ -463,10 +485,23 @@ public class ConfigRegister {
         return oldLanguage.isEmpty() ? "en_us" : oldLanguage;
     }
 
-    private static void writePreservedLanguage(Path configFile, String language) throws IOException {
-        Files.write(configFile, Arrays.asList(
-                ConfigVersionKey + " = \"" + csc_version + "\"",
-                "Language = \"" + language + "\""));
+    private static void writeMigratedConfigValues(Path configFile, Map<String, Object> oldConfig) throws IOException {
+        SimpleTomlEditor newConfigEditor = new SimpleTomlEditor(configFile.toString());
+        newConfigEditor.ConfigValue_IO(ConfigVersionKey, csc_version);
+        newConfigEditor.ConfigValue_IO("Language", languageFromOldConfig(oldConfig.get("Language")));
+        for (String key : MIGRATABLE_CONFIG_KEYS) {
+            if ("Language".equals(key)) {
+                continue;
+            }
+            Object oldValue = oldConfig.get(key);
+            if (isMigratableScalar(oldValue)) {
+                newConfigEditor.ConfigValue_IO(key, oldValue);
+            }
+        }
+    }
+
+    private static boolean isMigratableScalar(Object value) {
+        return value instanceof String || value instanceof Boolean || value instanceof Integer;
     }
 
     private static void syncConfigComments() {
@@ -520,8 +555,14 @@ public class ConfigRegister {
                 "config.online.enableManualConfig8");
         syncComments("online.UpdateInfo", CommitBreak, "config.online.UpdateInfo");
         syncComments("online.report", CommitBreak, "config.debug.report");
+        syncComments("online.reportEndpoint", CommitBreak, "config.online.reportEndpoint");
+        syncComments("online.reportToken", "config.online.reportToken");
         syncComments("debug.problem", CommitBreak, "config.debug.problem");
         tomlEditor.compactBlankLinesInSections();
+    }
+
+    private static String newReportToken() {
+        return java.util.UUID.randomUUID().toString() + java.util.UUID.randomUUID().toString();
     }
 
     private static void syncComments(String key, String... commentKeys) {

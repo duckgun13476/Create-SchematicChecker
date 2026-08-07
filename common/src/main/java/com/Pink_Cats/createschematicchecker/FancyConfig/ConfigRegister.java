@@ -52,7 +52,9 @@ public class ConfigRegister {
             "online.enableAutoUpdate",
             "online.enableManualConfig",
             "online.UpdateInfo",
-            "online.report"
+            "online.report",
+            "online.reportEndpoint",
+            "online.reportToken"
     );
     static {
         ensureValidConfigToml();
@@ -309,6 +311,15 @@ public class ConfigRegister {
             .comment(CommitBreak)
             .comment("config.debug.report");
 
+    public static ConfigValue.ConfigString REPORT_ENDPOINT = ConfigBuild
+            .define("online.reportEndpoint", "https://api.torqueflux.com/v2/uploadfile/")
+            .comment(CommitBreak)
+            .comment("config.online.reportEndpoint");
+
+    public static ConfigValue.ConfigString REPORT_TOKEN = ConfigBuild
+            .define("online.reportToken", newReportToken())
+            .comment("config.online.reportToken");
+
     public static ConfigValue.ConfigBoolean ENABLE_DEBUG= ConfigBuild
             .define("debug.problem", false)
             .comment(CommitBreak)
@@ -342,6 +353,8 @@ public class ConfigRegister {
     public static boolean update_info = UPDATE_INFO.getDefaultValue();
     public static boolean enable_debug = ENABLE_DEBUG.getDefaultValue();
     public static boolean report_schematic = REPORT_SCHEMATIC.getDefaultValue();
+    public static String report_endpoint = REPORT_ENDPOINT.getDefaultValue();
+    public static String report_token = REPORT_TOKEN.getDefaultValue();
     public static int max_conveyor_degree = MAX_CONVEYOR_DEGREE.getDefaultValue();
 
     public static boolean CheckRunCommand = false;
@@ -425,6 +438,8 @@ public class ConfigRegister {
         enable_auto_config_update = ENABLE_AUTO_UPDATE.getDefaultValue();
         enable_manual_config = ENABLE_MANUAL_CONFIG.getDefaultValue();
         report_schematic =  REPORT_SCHEMATIC.getDefaultValue();
+        report_endpoint = REPORT_ENDPOINT.getDefaultValue();
+        report_token = REPORT_TOKEN.getDefaultValue();
         max_conveyor_degree = MAX_CONVEYOR_DEGREE.getDefaultValue();
         syncConfigComments();
         UpdateRuleThread(log);
@@ -463,6 +478,8 @@ public class ConfigRegister {
         ENABLE_AUTO_UPDATE.reload();
         ENABLE_MANUAL_CONFIG.reload();
         REPORT_SCHEMATIC.reload();
+        REPORT_ENDPOINT.reload();
+        REPORT_TOKEN.reload();
         MAX_CONVEYOR_DEGREE.reload();
         CSC_INIT(list);
         Message.FM(translateDirect("console.reload2"));
@@ -616,8 +633,14 @@ public class ConfigRegister {
                 "config.online.enableManualConfig8");
         syncComments("online.UpdateInfo", CommitBreak, "config.online.UpdateInfo");
         syncComments("online.report", CommitBreak, "config.debug.report");
+        syncComments("online.reportEndpoint", CommitBreak, "config.online.reportEndpoint");
+        syncComments("online.reportToken", "config.online.reportToken");
         syncComments("debug.problem", CommitBreak, "config.debug.problem");
         tomlEditor.compactBlankLinesInSections();
+    }
+
+    private static String newReportToken() {
+        return java.util.UUID.randomUUID().toString() + java.util.UUID.randomUUID().toString();
     }
 
     private static void syncComments(String key, String... commentKeys) {
