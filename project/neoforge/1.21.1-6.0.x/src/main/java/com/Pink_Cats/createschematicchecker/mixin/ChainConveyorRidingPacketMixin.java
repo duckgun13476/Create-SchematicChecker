@@ -3,6 +3,7 @@ package com.Pink_Cats.createschematicchecker.mixin;
 import com.simibubi.create.content.kinetics.chainConveyor.ChainConveyorBlockEntity;
 import com.simibubi.create.content.kinetics.chainConveyor.ServerChainConveyorHandler;
 import com.simibubi.create.content.kinetics.chainConveyor.ServerboundChainConveyorRidingPacket;
+import com.Pink_Cats.createschematicchecker.event.ChainRidingState;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.phys.Vec3;
@@ -28,7 +29,7 @@ import static com.Pink_Cats.createschematicchecker.FancyConfig.ConfigRegister.va
 public abstract class ChainConveyorRidingPacketMixin {
 
     @Unique
-    private static final Map<UUID, RideState> CSC_RIDE_STATES = new ConcurrentHashMap<>();
+    private static final Map<UUID, ChainRidingState> CSC_RIDE_STATES = new ConcurrentHashMap<>();
 
     @Shadow
     private boolean stop;
@@ -51,19 +52,19 @@ public abstract class ChainConveyorRidingPacketMixin {
             return;
         }
 
-        RideState previous = CSC_RIDE_STATES.put(playerId, new RideState(position, tick));
+        ChainRidingState previous = CSC_RIDE_STATES.put(playerId, new ChainRidingState(position, tick));
         if (previous == null) {
             return;
         }
 
-        long elapsedTicks = tick - previous.tick;
+        long elapsedTicks = tick - previous.tick();
         if (elapsedTicks <= 0 || elapsedTicks > 40) {
             return;
         }
 
         // Create advances a rider by abs(speed / 360) blocks each server tick.
         double maximumDistance = 0.6D + Math.abs(conveyor.getSpeed()) / 360.0D * elapsedTicks * 1.25D;
-        if (position.distanceToSqr(previous.position) > maximumDistance * maximumDistance) {
+        if (position.distanceToSqr(previous.position()) > maximumDistance * maximumDistance) {
             csc$rejectHeartbeat(sender, playerId, ci);
         }
     }
@@ -106,9 +107,5 @@ public abstract class ChainConveyorRidingPacketMixin {
         double progress = point.subtract(start).dot(segment) / lengthSquared;
         progress = Math.max(0, Math.min(1, progress));
         return point.distanceToSqr(start.add(segment.scale(progress)));
-    }
-
-    @Unique
-    private record RideState(Vec3 position, long tick) {
     }
 }
