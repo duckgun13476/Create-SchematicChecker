@@ -1,3 +1,14 @@
+## 2.27.37-release
+1. Rework abnormal-schematic reporting around the authenticated v2 API, with retry retention after upload failures.
+2. Add a runtime-configurable, cross-version switch for the Quark fluidlogged-lava duplication repair. (#11)
+3. Restore Sable/Create Aeronautics cross-sublevel fluid pumping on NeoForge 1.21.1. (#12)
+4. Fix Create radial-wrench, chain-conveyor rider, and filter-item packet exploits.
+5. Prevent CSC scan/report tasks from being submitted while the server is stopping; fix the NeoForge chain-rider startup crash.
+6. Harden malformed schematic palette handling and preserve valid air/Copycats data.
+7. Add modern Create Big Cannons fuze-component compatibility, including valid empty components.
+8. Refresh migrated runtime configuration, complete translations, and make Create packet guards configurable.
+9. Improve legacy dependency caching and idempotent/streaming release uploads.
+
 ## 1.21.27-release
 1. Fix Quark fluidlogged grate lava duplication on Create 6 / NeoForge 1.21.1.
 2. Fail closed when a schematic cannot be read or checked, and validate uploaded schematic paths before accessing files.
