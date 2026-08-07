@@ -92,6 +92,15 @@ Important options:
 | `debug.EnableBackup` | Saves uploaded schematics for later auditing. Recommended. |
 | `online.enableAutoUpdate` | Allows CSC to fetch cloud rule updates. Disabled by default. |
 | `online.enableManualConfig` | Enables custom rules from `config/CSC/user_rule.json`. |
+| `online.report` | Uploads samples classified as `CannotCheck`, `Problem`, or `Cheat` to improve CSC detection rules. Enabled by default; set to `false` to opt out. Normal schematics are not uploaded. |
+
+### Abnormal schematic sample reports
+
+CSC sends only schematics that its local scanner classifies as `CannotCheck`,
+`Problem`, or `Cheat` when `online.report=true` (the default). These samples are
+used to improve CSC detection rules. Set `online.report=false` and run `/csc
+reload` to stop automatic sample reporting; normal schematics are never
+reported.
 
 Manual custom rule file:
 

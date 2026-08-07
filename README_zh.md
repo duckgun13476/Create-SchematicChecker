@@ -90,6 +90,14 @@ config/CSC/config.toml
 | `debug.EnableBackup` | 备份上传蓝图，便于后续审计，推荐开启。 |
 | `online.enableAutoUpdate` | 允许 CSC 获取云端规则更新，默认关闭。 |
 | `online.enableManualConfig` | 启用 `config/CSC/user_rule.json` 中的本地规则。 |
+| `online.report` | 上报被判定为 `CannotCheck`、`Problem` 或 `Cheat` 的蓝图样本，用于改进 CSC 检测规则。默认开启；设为 `false` 可关闭。正常蓝图不会上传。 |
+
+### 异常蓝图样本上报
+
+当 `online.report=true`（默认值）时，CSC 只会将本地扫描器判定为
+`CannotCheck`、`Problem` 或 `Cheat` 的蓝图作为样本上报，用于改进 CSC
+检测规则。将 `online.report=false` 后执行 `/csc reload`，即可停止自动上报；
+正常蓝图不会被上报。
 
 本地自定义规则：
 
