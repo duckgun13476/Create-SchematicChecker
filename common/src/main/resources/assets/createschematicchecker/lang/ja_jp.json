@@ -48,6 +48,8 @@
   "config.TryRemoveFluidTankNotKill": "液体タンク コントローラーとタンク数の不一致が検出された場合は、ブループリント全体をブロックするのではなく、不一致の液体タンクを削除します。",
   "config.TryRemoveFluidTankNotKill2": "無効にすると、液体タンクの不一致により元の動作が維持され、チートとしてマークされ、アップロードがブロックされます。",
   "config.fixQuarkLavaFluidloggedDuplication": "Create のパイプが Quark の溶岩入りブロックから溶岩を複製する問題を修正します。有効のままを推奨します。",
+  "config.validateChainConveyorRidingPacket": "Create のチェーンコンベア乗車パケットを検証し、移動時間や位置の偽装を防ぎます。既定で有効です。無効にすると Create 本来の動作に戻ります。",
+  "config.validateFilterScreenPacket": "Create のフィルターアイテムパケットを検証し、プレイヤーのインベントリに実在する同一 NBT のアイテムだけをフィルター例として保存できます。既定で有効です。無効にすると Create 本来の動作に戻ります。",
   "console.csc.list": "IdMatchRuleAll すべての ID 除外ルールをリストします。",
   "console.csc.list2": "OperateMatchRuleAll すべての NBT 操作ルールをリストします",
   "console.csc.list3": "IdMatchRule ローカルの手動構成および自動更新からの ID 除外ルールのリスト",

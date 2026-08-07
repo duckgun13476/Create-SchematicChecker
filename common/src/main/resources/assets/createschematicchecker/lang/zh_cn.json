@@ -48,6 +48,8 @@
   "config.TryRemoveFluidTankNotKill": "当流体储罐控制器数量不匹配时，是否剔除储罐并允许继续上传。",
   "config.TryRemoveFluidTankNotKill2": "关闭后将恢复原逻辑：记录 mismatch 并判定作弊，阻止上传。",
   "config.fixQuarkLavaFluidloggedDuplication": "修复机械动力管道从 Quark 岩浆流体覆盖方块抽取岩浆时的复制漏洞。建议保持开启。",
+  "config.validateChainConveyorRidingPacket": "校验玩家在机械动力锁链传送带上的移动发包，防止伪造移动时间或位置。默认开启；关闭后恢复机械动力原始行为。",
+  "config.validateFilterScreenPacket": "校验机械动力过滤器物品发包，只允许写入玩家背包中真实存在的同 NBT 物品。默认开启；关闭后恢复机械动力原始行为。",
   "console.csc.list": "IdMatchRuleAll        列出全部的 ID  剔除规则",
   "console.csc.list2": "OperateMatchRuleAll   列出全部的 nbt 操作规则",
   "console.csc.list3": "IdMatchRule           列出 本地手动配置 和 自动更新 的 ID 剔除规则",

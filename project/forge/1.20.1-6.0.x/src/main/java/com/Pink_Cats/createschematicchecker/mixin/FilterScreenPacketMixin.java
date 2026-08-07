@@ -14,6 +14,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import static com.Pink_Cats.createschematicchecker.FancyConfig.ConfigRegister.validate_filter_screen_packet;
+
 /**
  * Create's filter packet previously accepted a complete ItemStack NBT payload from
  * the client.  A filter is only a ghost slot, but its persisted NBT can later be
@@ -28,6 +30,9 @@ public abstract class FilterScreenPacketMixin {
 
     @Inject(method = "lambda$handle$0", at = @At("HEAD"), cancellable = true)
     private void csc$validateFilterItem(NetworkEvent.Context context, CallbackInfo ci) {
+        if (!validate_filter_screen_packet) {
+            return;
+        }
         if (option != FilterScreenPacket.Option.UPDATE_FILTER_ITEM) {
             return;
         }

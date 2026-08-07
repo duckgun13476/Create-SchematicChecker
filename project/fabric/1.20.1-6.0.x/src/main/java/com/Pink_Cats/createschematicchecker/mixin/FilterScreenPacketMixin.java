@@ -14,6 +14,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import static com.Pink_Cats.createschematicchecker.FancyConfig.ConfigRegister.validate_filter_screen_packet;
+
 /** See the Forge 1.20.1 Create 6.0 counterpart for the security rationale. */
 @Mixin(value = FilterScreenPacket.class, remap = false)
 public abstract class FilterScreenPacketMixin {
@@ -23,6 +25,9 @@ public abstract class FilterScreenPacketMixin {
 
     @Inject(method = "lambda$handle$0", at = @At("HEAD"), cancellable = true)
     private void csc$validateFilterItem(SimplePacketBase.Context context, CallbackInfo ci) {
+        if (!validate_filter_screen_packet) {
+            return;
+        }
         if (option != FilterScreenPacket.Option.UPDATE_FILTER_ITEM) {
             return;
         }

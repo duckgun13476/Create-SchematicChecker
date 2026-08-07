@@ -45,6 +45,8 @@ public class ConfigRegister {
             "function.TryRemoveBeltNotKill",
             "function.TryRemoveFluidTankNotKill",
             "function.fixQuarkLavaFluidloggedDuplication",
+            "function.validateChainConveyorRidingPacket",
+            "function.validateFilterScreenPacket",
             "function.maxBeltCheatLimit",
             "function.maxConveyorCheatDistanceLimit",
             "function.maxConveyorCheatLimit",
@@ -254,6 +256,16 @@ public class ConfigRegister {
             .comment(CommitBreak)
             .comment("config.fixQuarkLavaFluidloggedDuplication");
 
+    public static ConfigValue.ConfigBoolean VALIDATE_CHAIN_CONVEYOR_RIDING_PACKET = ConfigBuild
+            .define("function.validateChainConveyorRidingPacket", true)
+            .comment(CommitBreak)
+            .comment("config.validateChainConveyorRidingPacket");
+
+    public static ConfigValue.ConfigBoolean VALIDATE_FILTER_SCREEN_PACKET = ConfigBuild
+            .define("function.validateFilterScreenPacket", true)
+            .comment(CommitBreak)
+            .comment("config.validateFilterScreenPacket");
+
     public static ConfigValue.ConfigInt MAX_BELT_CHEAT_LIMIT = ConfigBuild
             .define("function.maxBeltCheatLimit", 10)
             .comment(CommitBreak)
@@ -341,6 +353,8 @@ public class ConfigRegister {
     public static boolean remove_belt_instead_kill = TRY_REMOVE_PROBLEM_BELT_NOT_KILL.getDefaultValue();
     public static boolean remove_fluid_tank_instead_kill = TRY_REMOVE_PROBLEM_FLUID_TANK_NOT_KILL.getDefaultValue();
     public static boolean fix_quark_lava_fluidlogged_duplication = FIX_QUARK_LAVA_FLUIDLOGGED_DUPLICATION.getDefaultValue();
+    public static boolean validate_chain_conveyor_riding_packet = VALIDATE_CHAIN_CONVEYOR_RIDING_PACKET.getDefaultValue();
+    public static boolean validate_filter_screen_packet = VALIDATE_FILTER_SCREEN_PACKET.getDefaultValue();
     public static String[] ban_entity = BAN_ENTITY.getDefaultValue();
     public static String[] whitelist_entity = WHITELIST_ENTITY.getDefaultValue();
     public static boolean enable_backup = ENABLE_SCHEMATIC_BACKUP.getDefaultValue();
@@ -432,6 +446,8 @@ public class ConfigRegister {
         remove_belt_instead_kill = TRY_REMOVE_PROBLEM_BELT_NOT_KILL.getDefaultValue();
         remove_fluid_tank_instead_kill = TRY_REMOVE_PROBLEM_FLUID_TANK_NOT_KILL.getDefaultValue();
         fix_quark_lava_fluidlogged_duplication = FIX_QUARK_LAVA_FLUIDLOGGED_DUPLICATION.getDefaultValue();
+        validate_chain_conveyor_riding_packet = VALIDATE_CHAIN_CONVEYOR_RIDING_PACKET.getDefaultValue();
+        validate_filter_screen_packet = VALIDATE_FILTER_SCREEN_PACKET.getDefaultValue();
         whitelist_entity = WHITELIST_ENTITY.getDefaultValue();
         ban_entity = BAN_ENTITY.getDefaultValue();
         enable_backup = ENABLE_SCHEMATIC_BACKUP.getDefaultValue();
@@ -473,6 +489,8 @@ public class ConfigRegister {
         TRY_REMOVE_PROBLEM_BELT_NOT_KILL.reload();
         TRY_REMOVE_PROBLEM_FLUID_TANK_NOT_KILL.reload();
         FIX_QUARK_LAVA_FLUIDLOGGED_DUPLICATION.reload();
+        VALIDATE_CHAIN_CONVEYOR_RIDING_PACKET.reload();
+        VALIDATE_FILTER_SCREEN_PACKET.reload();
         WHITELIST_ENTITY.reload();
         BAN_ENTITY.reload();
         ENABLE_SCHEMATIC_BACKUP.reload();

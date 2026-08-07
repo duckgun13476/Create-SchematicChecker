@@ -48,6 +48,8 @@
   "config.TryRemoveFluidTankNotKill": "When a fluid tank controller/tank count mismatch is detected, remove mismatched fluid tanks instead of blocking the entire blueprint.",
   "config.TryRemoveFluidTankNotKill2": "If disabled, fluid tank mismatch keeps the original behavior: mark as cheat and block upload.",
   "config.fixQuarkLavaFluidloggedDuplication": "Fix Create pipe duplication of lava from Quark lava-logged blocks. Recommended to keep enabled.",
+  "config.validateChainConveyorRidingPacket": "Validate player chain-conveyor riding packets to prevent forged movement time or position. Enabled by default; disabling restores Create's original behavior.",
+  "config.validateFilterScreenPacket": "Validate Create filter item packets so only an identical item truly present in the player's inventory may be stored as a filter sample. Enabled by default; disabling restores Create's original behavior.",
   "console.csc.list": "IdMatchRuleAll        List all ID exclusion rules",
   "console.csc.list2": "OperateMatchRuleAll   List all NBT operation rules",
   "console.csc.list3": "IdMatchRule           List ID exclusion rules from local manual configuration and automatic updates",

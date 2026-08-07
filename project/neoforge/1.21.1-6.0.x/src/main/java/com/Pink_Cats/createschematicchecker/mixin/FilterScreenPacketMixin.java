@@ -13,6 +13,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import static com.Pink_Cats.createschematicchecker.FancyConfig.ConfigRegister.validate_filter_screen_packet;
+
 /**
  * Server-side authority for Create 6 filter ghost slots.  Do not allow a client to
  * persist a filter entry whose item components were never present in its inventory.
@@ -25,6 +27,9 @@ public abstract class FilterScreenPacketMixin {
 
     @Inject(method = "handle", at = @At("HEAD"), cancellable = true)
     private void csc$validateFilterItem(ServerPlayer player, CallbackInfo ci) {
+        if (!validate_filter_screen_packet) {
+            return;
+        }
         if (option != FilterScreenPacket.Option.UPDATE_FILTER_ITEM) {
             return;
         }

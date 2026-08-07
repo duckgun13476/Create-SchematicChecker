@@ -17,6 +17,8 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
+import static com.Pink_Cats.createschematicchecker.FancyConfig.ConfigRegister.validate_chain_conveyor_riding_packet;
+
 @Mixin(value = ServerboundChainConveyorRidingPacket.class, remap = false)
 public abstract class ChainConveyorRidingPacketMixin {
 
@@ -25,6 +27,7 @@ public abstract class ChainConveyorRidingPacketMixin {
 
     @Inject(method = "applySettings", at = @At("HEAD"), cancellable = true)
     private void csc$validateChainRidingHeartbeat(ServerPlayer sender, ChainConveyorBlockEntity conveyor, CallbackInfo ci) {
+        if (!validate_chain_conveyor_riding_packet) return;
         UUID playerId = sender.getUUID();
         if (stop) {
             CSC_RIDE_STATES.remove(playerId);
