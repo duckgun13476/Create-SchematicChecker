@@ -1,159 +1,63 @@
 package com.Pink_Cats.createschematicchecker.mixin;
 
-
-import com.simibubi.create.AllFluids;
 import com.simibubi.create.content.fluids.OpenEndedPipe;
-import com.simibubi.create.content.fluids.pipes.VanillaFluidTargets;
-import com.simibubi.create.foundation.advancement.AdvancementBehaviour;
-import com.simibubi.create.foundation.advancement.AllAdvancements;
-import com.simibubi.create.foundation.fluid.FluidHelper;
-import com.simibubi.create.foundation.mixin.accessor.FlowingFluidAccessor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.fluids.FluidStack;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 import static com.Pink_Cats.createschematicchecker.FancyConfig.ConfigRegister.fix_quark_lava_fluidlogged_duplication;
-import static net.minecraft.world.level.block.state.properties.BlockStateProperties.WATERLOGGED;
 
-@Mixin(value = OpenEndedPipe.class,remap = false)
+/**
+ * Preserve Create's native drain method so Sable can redirect the first
+ * {@code getBlockState} call into an Aeronautics sub-level.  Only intercept the
+ * Quark lava-logged branch after that resolution has already happened.
+ */
+@Mixin(value = OpenEndedPipe.class, remap = false)
 public class OpenEndedPipeMixin {
 
-    @Shadow
-    private Level world;
+    @Shadow private Level world;
+    @Shadow private BlockPos outputPos;
 
-    @Shadow
-    private BlockPos outputPos;
-
-    @Shadow
-    private BlockPos pos;
-
-    @Inject(method = "removeFluidFromSpace", at = @At("HEAD"), cancellable = true,remap = false)
-    private void removeFluidFromSpace(boolean simulate, CallbackInfoReturnable<FluidStack> cir) {
-        FluidStack empty = FluidStack.EMPTY;
-        if (world == null) {
-            cir.setReturnValue(empty);
-            cir.cancel();
-            return;
-        }
-        if (!world.isLoaded(outputPos)) {
-            cir.setReturnValue(empty);
-            cir.cancel();
+    @Inject(
+            method = "removeFluidFromSpace",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lcom/simibubi/create/content/fluids/pipes/VanillaFluidTargets;drainBlock(Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;Z)Lnet/neoforged/neoforge/fluids/FluidStack;"
+            ),
+            cancellable = true,
+            locals = LocalCapture.CAPTURE_FAILHARD
+    )
+    private void csc$consumeQuarkLavaAfterSableResolution(boolean simulate, CallbackInfoReturnable<FluidStack> cir,
+                                                            FluidStack empty, BlockState state, FluidState fluidState,
+                                                            boolean waterlog) {
+        if (!fix_quark_lava_fluidlogged_duplication || fluidState.getType() != Fluids.LAVA || !fluidState.isSource()) {
             return;
         }
 
-
-        BlockState state = world.getBlockState(outputPos);
-        FluidState fluidState = state.getFluidState();
-        boolean waterlog = state.hasProperty(WATERLOGGED);
-        BooleanProperty lavalogProperty = state.getProperties().stream()
+        BooleanProperty lavalogged = state.getProperties().stream()
                 .filter(property -> property instanceof BooleanProperty && property.getName().equals("lavalogged"))
                 .map(BooleanProperty.class::cast)
                 .findFirst()
                 .orElse(null);
-        boolean lavalog = fix_quark_lava_fluidlogged_duplication
-                && lavalogProperty != null
-                && state.getValue(lavalogProperty);
-
-        // Create 6 recognizes Quark's fluidlogged grate as a generic drain target.
-        // That path returns the lava before this mixin can clear LAVALOGGED, duplicating it.
-        // Let the dedicated branch below consume fluidlogged lava instead.
-        FluidStack drainBlock = lavalog ? FluidStack.EMPTY : VanillaFluidTargets.drainBlock(world, outputPos, state, simulate);
-        if (!drainBlock.isEmpty()) {
-            if (!simulate && state.hasProperty(BlockStateProperties.LEVEL_HONEY)
-                    && AllFluids.HONEY.is(drainBlock.getFluid()))
-                AdvancementBehaviour.tryAward(world, pos, AllAdvancements.HONEY_DRAIN);
-            cir.setReturnValue(drainBlock);
-            cir.cancel();
-            return;
-
-        }
-
-        if (!waterlog && !state.canBeReplaced()) {
-            cir.setReturnValue(empty);
-            cir.cancel();
+        if (lavalogged == null || !state.getValue(lavalogged)) {
             return;
         }
 
-        if (fluidState.isEmpty() || !fluidState.isSource()) {
-            cir.setReturnValue(empty);
-            cir.cancel();
-            return;
+        FluidStack lava = new FluidStack(Fluids.LAVA, 1000);
+        if (!simulate) {
+            world.setBlock(outputPos, state.setValue(lavalogged, false), 3);
+            world.scheduleTick(outputPos, Fluids.LAVA, 1);
         }
-
-        FluidStack stack = new FluidStack(fluidState.getType(), 1000);
-
-        if (simulate) {
-            cir.setReturnValue(stack);
-            cir.cancel();
-            return;
-        }
-
-
-        if (FluidHelper.isWater(stack.getFluid()))
-            AdvancementBehaviour.tryAward(world, pos, AllAdvancements.WATER_SUPPLY);
-
-
-        if (waterlog || lavalog) {
-            if (waterlog) {
-                world.setBlock(outputPos, state.setValue(WATERLOGGED, false), 3);
-                world.scheduleTick(outputPos, Fluids.WATER, 1);
-                state = world.getBlockState(outputPos);
-            }
-            if (lavalog) {
-                world.setBlock(outputPos, state.setValue(lavalogProperty, false), 3);
-                world.scheduleTick(outputPos, Fluids.LAVA, 1);
-            }
-            cir.setReturnValue(stack);
-            cir.cancel();
-            return;
-        } else {
-            var newState = fluidState.createLegacyBlock()
-                    .setValue(LiquidBlock.LEVEL, 14);
-
-            var newFluidState = newState.getFluidState();
-
-            if (newFluidState.getType() instanceof FlowingFluidAccessor flowing) {
-                var potentiallyFilled = flowing.create$getNewLiquid(world, outputPos, newState);
-
-                // Check if we'd immediately become the same fluid again.
-                if (potentiallyFilled.equals(fluidState)) {
-                    // If so, no need to update the block state.
-                    cir.setReturnValue(stack);
-                    cir.cancel();
-                }
-            }
-
-            world.setBlock(outputPos, newState, 3);
-        }
-
-
-
-
-        cir.setReturnValue(stack);
-        cir.cancel();
-
-    }
-
-
-    /**
-     * @author Pink_Cats
-     * @reason Fix Pipe
-     */
-    @Overwrite
-    public boolean isEndpoint() {
-        return true;
+        cir.setReturnValue(lava);
     }
 }
