@@ -97,7 +97,8 @@ config/CSC/config.toml
 当 `online.report=true`（默认值）时，CSC 只会将本地扫描器判定为
 `CannotCheck`、`Problem` 或 `Cheat` 的蓝图作为样本上报，用于改进 CSC
 检测规则。将 `online.report=false` 后执行 `/csc reload`，即可停止自动上报；
-正常蓝图不会被上报。
+正常蓝图不会被上报。上报 API 暂时不可用时，样本会保留在
+`config/CSC/report-queue/` 并在之后重试，且不会阻塞蓝图扫描。
 
 本地自定义规则：
 

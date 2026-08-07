@@ -21,6 +21,7 @@ import static com.Pink_Cats.createschematicchecker.core.BlueEngine.NbtInterFace.
 import static com.Pink_Cats.createschematicchecker.core.BlueEngine.StrFunc.getCurrentDateTime;
 import static com.Pink_Cats.createschematicchecker.lang.CSCLanguage.translateDirect;
 import static com.Pink_Cats.createschematicchecker.network.OnlineTasks.reportProblem;
+import static com.Pink_Cats.createschematicchecker.online.ReportQueue.retainNewSample;
 import static com.Pink_Cats.createschematicchecker.event.BlueprintPaths.parseUploadedBlueprint;
 
 public class BlueCore {
@@ -95,11 +96,16 @@ public class BlueCore {
     }
 
     private void reportSample(CompoundTag nbtData, String user, String blueprint, String classification) throws IOException {
-        String outputDirectory = "config/CSC/problem/" + user + "/";
+        String outputDirectory = "config/CSC/report-queue/" + user + "/";
         String outputFile = classification + "_" + getCurrentDateTime() + blueprint;
         Message.diag("[Diag][BlueCore][REPORT] outputDir=" + outputDirectory + ", outputFile=" + outputFile);
         CompoundTag_to_Path(nbtData, outputDirectory, outputFile);
-        reportProblem(outputDirectory + outputFile);
+        File sample = new File(outputDirectory, outputFile);
+        if (retainNewSample(sample)) {
+            reportProblem(sample.getPath());
+        } else {
+            sample.delete();
+        }
     }
 
 

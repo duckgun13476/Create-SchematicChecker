@@ -7,9 +7,13 @@ import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static com.Pink_Cats.createschematicchecker.FancyConfig.ConfigRegister.enable_auto_config_update;
+import static com.Pink_Cats.createschematicchecker.FancyConfig.ConfigRegister.report_schematic;
 import static com.Pink_Cats.createschematicchecker.online.NbtFileUploader.AutoUpdateThread;
+import static com.Pink_Cats.createschematicchecker.online.ReportQueue.flushPendingReports;
+import static com.Pink_Cats.createschematicchecker.online.ReportQueue.hasPendingReports;
 import static com.Pink_Cats.createschematicchecker.online.SimpleHeartbeatPusher.HeartBeatTask;
 import static com.Pink_Cats.createschematicchecker.online.VersionChecker.UpdateMainThread;
 
@@ -19,6 +23,7 @@ public class OnlineTasks {
     private static final int MAX_QUEUE_SIZE = 16;
     private static volatile boolean acceptingTasks;
     private static volatile ThreadPoolExecutor executor;
+    private static final AtomicBoolean reportFlushScheduled = new AtomicBoolean(false);
 
     public static void startServer() {
         synchronized (LOCK) {
@@ -29,6 +34,7 @@ public class OnlineTasks {
                 executor.prestartCoreThread();
             }
         }
+        requestPendingReportFlush();
     }
 
     public static void stopServer() {
@@ -49,7 +55,7 @@ public class OnlineTasks {
     }
 
     public static void reportProblem(String filepath) {
-        submit(() -> AutoUpdateThread(filepath));
+        requestPendingReportFlush();
     }
 
     public static void postDataAsync(String filepath) {
@@ -58,14 +64,33 @@ public class OnlineTasks {
         }
     }
 
-    private static void submit(Runnable task) {
-        if (!acceptingTasks) {
+    private static void requestPendingReportFlush() {
+        if (!report_schematic || !reportFlushScheduled.compareAndSet(false, true)) {
             return;
+        }
+        if (!submit(() -> {
+            try {
+                boolean completed = flushPendingReports();
+                if (completed && hasPendingReports()) {
+                    reportFlushScheduled.set(false);
+                    requestPendingReportFlush();
+                }
+            } finally {
+                reportFlushScheduled.set(false);
+            }
+        })) {
+            reportFlushScheduled.set(false);
+        }
+    }
+
+    private static boolean submit(Runnable task) {
+        if (!acceptingTasks) {
+            return false;
         }
 
         ThreadPoolExecutor current = executor;
         if (current == null) {
-            return;
+            return false;
         }
 
         try {
@@ -82,10 +107,12 @@ public class OnlineTasks {
                     Message.FW("Online task failed: " + throwable.getMessage());
                 }
             });
+            return true;
         } catch (java.util.concurrent.RejectedExecutionException ignored) {
             if (acceptingTasks) {
                 Message.FW("Online task queue is full; skipped a non-critical task.");
             }
+            return false;
         }
     }
 

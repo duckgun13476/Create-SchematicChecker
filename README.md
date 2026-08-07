@@ -100,7 +100,9 @@ CSC sends only schematics that its local scanner classifies as `CannotCheck`,
 `Problem`, or `Cheat` when `online.report=true` (the default). These samples are
 used to improve CSC detection rules. Set `online.report=false` and run `/csc
 reload` to stop automatic sample reporting; normal schematics are never
-reported.
+reported. If the report API is temporarily unavailable, samples are retained in
+`config/CSC/report-queue/` and retried later; this never blocks blueprint
+scanning.
 
 Manual custom rule file:
 
