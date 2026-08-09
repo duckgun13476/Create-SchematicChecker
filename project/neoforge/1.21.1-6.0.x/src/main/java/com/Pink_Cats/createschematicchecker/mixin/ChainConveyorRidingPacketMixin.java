@@ -7,6 +7,7 @@ import com.Pink_Cats.createschematicchecker.event.ChainRidingState;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.phys.Vec3;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -32,6 +33,7 @@ public abstract class ChainConveyorRidingPacketMixin {
     private static final Map<UUID, ChainRidingState> CSC_RIDE_STATES = new ConcurrentHashMap<>();
 
     @Shadow
+    @Final
     private boolean stop;
 
     @Inject(method = "applySettings(Lnet/minecraft/server/level/ServerPlayer;Lcom/simibubi/create/content/kinetics/chainConveyor/ChainConveyorBlockEntity;)V", at = @At("HEAD"), cancellable = true)
