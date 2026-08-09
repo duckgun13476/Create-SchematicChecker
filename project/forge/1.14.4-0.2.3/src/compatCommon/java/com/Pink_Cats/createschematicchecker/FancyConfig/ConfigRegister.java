@@ -138,6 +138,9 @@ public class ConfigRegister {
                     "Item.of('tacz:ammo_box', '{Creative:1b}')",
                     "Item.of('tacz:ammo_box', '{AllTypeCreative:1b}')",
                     "minecraft:command_block",
+                    "minecraft:chain_command_block",
+                    "minecraft:repeating_command_block",
+                    "minecraft:structure_block",
                     "quark:grate",
                     "minecraft:kelp" })
 
