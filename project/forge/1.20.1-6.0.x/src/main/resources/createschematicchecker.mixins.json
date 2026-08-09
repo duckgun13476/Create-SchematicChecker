@@ -8,10 +8,10 @@
     "handleFinishedUploadMixin",
     "OpenEndedPipeMixin",
     "RadialWrenchMenuSubmitPacketMixin",
-    "ChainConveyorRidingPacketMixin"
+    "ChainConveyorRidingPacketMixin",
+    "FilterScreenPacketMixin"
   ],
-  "client": [
-  ],
+  "client": [],
   "injectors": {
     "defaultRequire": 1
   },

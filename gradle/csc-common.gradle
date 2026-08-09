@@ -50,6 +50,12 @@ tasks.named('processResources').configure {
     from(commonResourcesDir) {
         duplicatesStrategy = DuplicatesStrategy.EXCLUDE
         exclude 'createschematicchecker-build.properties'
+        // Modern packet guards are registered only by targets that ship their
+        // matching mixin classes. Let a target-owned mixin config replace this
+        // shared default instead of packaging a class name it cannot load.
+        if (new File(project.projectDir, 'src/main/resources/createschematicchecker.mixins.json').exists()) {
+            exclude 'createschematicchecker.mixins.json'
+        }
     }
 
     from(generatedBuildInfoResourcesDir)
