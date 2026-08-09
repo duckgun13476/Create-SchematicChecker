@@ -1,3 +1,9 @@
+## 2.27.42-release
+1. Fix Create 6.0.8 packet-guard Mixin descriptors across Forge, Fabric, and NeoForge; eliminate the NeoForge chain-rider shadow metadata warning.
+2. Upload schematics that were modified by mod whitelist filtering, so compatible blocks can be reviewed and explicitly allowed in future rules.
+3. Add chain command blocks, repeating command blocks, and structure blocks to the default schematic banblock list.
+4. Prevent legacy Create targets from loading the Create 6-only filter packet Mixin and crashing at startup.
+
 ## 2.27.37-release
 1. Rework abnormal-schematic reporting around the authenticated v2 API, with retry retention after upload failures.
 2. Add a runtime-configurable, cross-version switch for the Quark fluidlogged-lava duplication repair. (#11)
