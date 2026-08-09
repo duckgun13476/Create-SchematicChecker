@@ -26,7 +26,7 @@ public abstract class ChainConveyorRidingPacketMixin {
     @Unique private static final Map<UUID, ChainRidingState> CSC_RIDE_STATES = new ConcurrentHashMap<>();
     @Shadow private boolean stop;
 
-    @Inject(method = "applySettings", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "applySettings(Lnet/minecraft/server/level/ServerPlayer;Lcom/simibubi/create/content/kinetics/chainConveyor/ChainConveyorBlockEntity;)V", at = @At("HEAD"), cancellable = true)
     private void csc$validateChainRidingHeartbeat(ServerPlayer sender, ChainConveyorBlockEntity conveyor, CallbackInfo ci) {
         if (!validate_chain_conveyor_riding_packet) return;
         UUID playerId = sender.getUUID();
