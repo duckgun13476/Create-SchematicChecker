@@ -170,6 +170,9 @@ dependencies {
     }
 
     implementation 'org.jetbrains:annotations:22.0.0'
+    // ForgeGradle 5's 1.15.2 compile classpath omits Minecraft's bundled Gson.
+    // Keep it compile-only: the game supplies Gson 2.8.0 at runtime.
+    compileOnly 'com.google.code.gson:gson:2.8.0'
     // Curse Maven no longer exposes Create 0.3.1.  Keep a local fallback for
     // reproducible legacy packaging, while retaining the normal coordinate
     // for environments which already resolve it.
