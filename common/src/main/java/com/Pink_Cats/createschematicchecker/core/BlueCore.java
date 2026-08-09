@@ -55,14 +55,18 @@ public class BlueCore {
             boolean CannotCheck = S_bool(result.get("CannotCheck"));
             boolean IsCheat = S_bool(result.get("Cheat"));
             boolean IsProblem = S_bool(result.get("Problem"));
+            boolean WhiteListModFiltered = S_bool(result.get("WhiteListModFiltered"));
             Message.diag("[Diag][BlueCore][NBTCHECK] cannotCheck=" + CannotCheck
                     + ", isCheat=" + IsCheat
-                    + ", isProblem=" + IsProblem);
+                    + ", isProblem=" + IsProblem
+                    + ", whiteListModFiltered=" + WhiteListModFiltered);
 
             if (CannotCheck && report_schematic) {
                 reportSample(nbt_data, User, Blueprint, "CheckFail");
             } else if (IsProblem && report_schematic) {
                 reportSample(nbt_data, User, Blueprint, IsCheat ? "Cheat" : "Problem");
+            } else if (WhiteListModFiltered && report_schematic) {
+                reportSample(nbt_data, User, Blueprint, "WhitelistFiltered");
             }
 
             //SchematicOutput(S_tag(result.get("nbt_data")));

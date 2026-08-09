@@ -183,7 +183,7 @@
   "config.ShowWhitelistModeNotice": "是否在启动后输出模组 id 白名单模式安全提示",
   "config.DebugCheatFind": "当CSC发现作弊蓝图时，是否广播作弊者和作弊蓝图",
   "console.cheat.sign": "包含执行指令的告示牌！",
-  "config.debug.report": "是否上传被判定为无法检查、异常或作弊的蓝图样本。默认开启；样本只用于改进 CSC 检测规则。",
+  "config.debug.report": "是否上传被判定为无法检查、异常、作弊或被模组白名单剔除的蓝图样本。默认开启；样本只用于改进 CSC 检测规则。",
   "config.online.reportEndpoint": "CSC v2 蓝图上报地址。除非自行部署兼容服务，否则请保留默认 HTTPS 地址。",
   "config.online.reportToken": "本服务器的 CSC 上报凭据，会自动生成一次。请勿泄露；删除后会将本服务器重新登记。",
   "core.decode.ZipError": "蓝图发生了解析错误，蓝图可能已经损坏~",

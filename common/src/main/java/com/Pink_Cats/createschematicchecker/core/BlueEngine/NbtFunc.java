@@ -41,6 +41,7 @@ public class NbtFunc {
         boolean Problem = false;
         boolean IsNotMatch = false;
         boolean CannotCheck = false;
+        boolean WhiteListModFiltered = false;
         //PinkCats Inject
         try {
             int illegalEnchantmentCount = IllegalEnchantmentScanner.collect(nbt_data, CheatLog);
@@ -68,6 +69,7 @@ public class NbtFunc {
                 paletteItemResult = BaseBlockHandle(paletteItem, "palette", palette, i,CheatLog);
                 paletteItem = S_tag(paletteItemResult.get("Data"));
                 Cheat = S_bool(paletteItemResult.get("Cheat")) || Cheat;
+                WhiteListModFiltered = S_bool(paletteItemResult.get("WhiteListModFiltered")) || WhiteListModFiltered;
 
                 IsNotMatch = S_bool(paletteItemResult.get("IsNotMatch")) || IsNotMatch;
                 if (paletteItem != null) {
@@ -80,6 +82,7 @@ public class NbtFunc {
                 result.put("Problem", false);
                 result.put("nbt_data", nbt_data);
                 result.put("Cheat", false);
+                result.put("WhiteListModFiltered", WhiteListModFiltered);
                 return result;
             }
 
@@ -405,6 +408,7 @@ public class NbtFunc {
 
                         block = S_tag(blockResult.get("Data"));
                         Cheat = S_bool(blockResult.get("Cheat")) || Cheat;
+                        WhiteListModFiltered = S_bool(blockResult.get("WhiteListModFiltered")) || WhiteListModFiltered;
                         IsNotMatch = S_bool(blockResult.get("IsNotMatch")) || IsNotMatch;
                         Message.diag("[Diag][NbtFunc][BASE_BLOCK_RESULT] index=" + i
                                 + ", id=" + id
@@ -800,9 +804,11 @@ public class NbtFunc {
         result.put("Problem",Problem);
         result.put("nbt_data", nbt_data);
         result.put("Cheat",Cheat);
+        result.put("WhiteListModFiltered", WhiteListModFiltered);
         Message.diag("[Diag][NbtFunc][FINAL] cheat=" + Cheat
                 + ", problem=" + Problem
                 + ", cannotCheck=" + CannotCheck
+                + ", whiteListModFiltered=" + WhiteListModFiltered
                 + ", isNotMatch=" + IsNotMatch);
         return result;
     }
@@ -813,6 +819,7 @@ public class NbtFunc {
         boolean Cheat = false;
         boolean HasBanBlock = false;
         boolean IsNotMatch  = false;
+        boolean WhiteListModFiltered = false;
         Map<String, Object> result = new HashMap<>();
         String beforeData = data == null ? "null" : data.toString();
         String blockHandleLogPrefix = "[BaseBlockHandle][SEQ=" + (sequence + 1) + "] ";
@@ -889,6 +896,7 @@ public class NbtFunc {
                     //Clear because not need!
                     Message.debug(blockHandleLogPrefix + "Blocked by whitelist mod filter: id=" + id);
                     data = Nbt.newCompoundTag();
+                    WhiteListModFiltered = true;
                 }
             }
 
@@ -910,6 +918,7 @@ public class NbtFunc {
                 if (!isIsWhiteListMod(id)) {
                     //Clear because not need!
                     Message.debug(blockHandleLogPrefix + "Blocked by whitelist mod filter: palette id=" + id);
+                    String beforeWhiteListFilter = data == null ? "null" : data.toString();
                     CompoundTag Properties = null;
                     if (data != null) {
                         Properties = data.getCompound("Properties");
@@ -937,6 +946,7 @@ public class NbtFunc {
 
 
                     }
+                    WhiteListModFiltered = !Objects.equals(beforeWhiteListFilter, data == null ? "null" : data.toString());
 
                 }
             }
@@ -978,10 +988,12 @@ public class NbtFunc {
         result.put("Cheat", Cheat);
         result.put("Data", data);
         result.put("IsNotMatch", IsNotMatch);
+        result.put("WhiteListModFiltered", WhiteListModFiltered);
         Message.diag("[Diag][NbtFunc][BASE_HANDLE] type=" + type
                 + ", sequence=" + sequence
                 + ", cheat=" + Cheat
                 + ", isNotMatch=" + IsNotMatch
+                + ", whiteListModFiltered=" + WhiteListModFiltered
                 + ", changed=" + !Objects.equals(beforeData, data == null ? "null" : data.toString()));
         return result;
 
