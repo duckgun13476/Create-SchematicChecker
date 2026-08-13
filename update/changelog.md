@@ -1,3 +1,8 @@
+## 2.27.43-release
+1. Recover missing or malformed schematic statistic values instead of failing CSC startup.
+2. Make the Create 6 radial-wrench packet guard runtime-configurable and disabled by default.
+3. Report malformed Create super-glue entities with missing or invalid endpoints as CannotCheck instead of throwing a generic NBT error.
+
 ## 2.27.42-release
 1. Fix Create 6.0.8 packet-guard Mixin descriptors across Forge, Fabric, and NeoForge; eliminate the NeoForge chain-rider shadow metadata warning.
 2. Upload schematics that were modified by mod whitelist filtering, so compatible blocks can be reviewed and explicitly allowed in future rules.
