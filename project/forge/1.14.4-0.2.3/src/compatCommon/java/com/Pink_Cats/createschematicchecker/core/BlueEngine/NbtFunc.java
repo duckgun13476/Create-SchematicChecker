@@ -509,6 +509,14 @@ public class NbtFunc {
             boolean IsEntityKilled = false;
             for (int i = 0; i < entities.size(); i++) {
                 CompoundTag entity = entities.getCompound(i);
+                if (!hasValidSuperGlueEndpoints(entity)) {
+                    String reason = "Malformed Create super glue entity at index " + i
+                            + ": missing or invalid From/To endpoint";
+                    CheatLog.add(reason);
+                    Message.FW(reason);
+                    CannotCheck = true;
+                    break;
+                }
                 entityResult = BaseBlockHandle(entity, "entity", palette, i, CheatLog);
                 Object entityRes = entityResult.get("Data");
                 if (entityRes.toString().equals("{}")) {
@@ -568,6 +576,28 @@ public class NbtFunc {
                 + ", cannotCheck=" + CannotCheck
                 + ", isNotMatch=" + IsNotMatch);
         return result;
+    }
+
+    private static boolean hasValidSuperGlueEndpoints(CompoundTag entity) {
+        CompoundTag entityNbt = entity.getCompound("nbt");
+        Tag idTag = entityNbt.get("id");
+        if (idTag == null || !"create:super_glue".equals(NoQuotes(idTag.toString()))) {
+            return true;
+        }
+
+        Tag from = entityNbt.get("From");
+        Tag to = entityNbt.get("To");
+        if (from == null || to == null) {
+            return false;
+        }
+
+        try {
+            StringPickHalfPos(from.toString().replaceAll("d", ""));
+            StringPickHalfPos(to.toString().replaceAll("d", ""));
+            return true;
+        } catch (RuntimeException ignored) {
+            return false;
+        }
     }
 
     Map<String, Integer> blockCounts = new HashMap<>();
