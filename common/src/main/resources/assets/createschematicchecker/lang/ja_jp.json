@@ -50,6 +50,7 @@
   "config.fixQuarkLavaFluidloggedDuplication": "Create のパイプが Quark の溶岩入りブロックから溶岩を複製する問題を修正します。有効のままを推奨します。",
   "config.validateChainConveyorRidingPacket": "Create のチェーンコンベア乗車パケットを検証し、移動時間や位置の偽装を防ぎます。既定で有効です。無効にすると Create 本来の動作に戻ります。",
   "config.validateFilterScreenPacket": "Create のフィルターアイテムパケットを検証し、プレイヤーのインベントリに実在する同一 NBT のアイテムだけをフィルター例として保存できます。既定で有効です。無効にすると Create 本来の動作に戻ります。",
+  "config.blockRadialWrenchMenuPacket": "クライアントがブロックの回転や状態変更を送信できる Create のラジアルレンチメニューパケットを遮断します。既定では無効です。必要な場合だけ有効にしてください。",
   "console.csc.list": "IdMatchRuleAll すべての ID 除外ルールをリストします。",
   "console.csc.list2": "OperateMatchRuleAll すべての NBT 操作ルールをリストします",
   "console.csc.list3": "IdMatchRule ローカルの手動構成および自動更新からの ID 除外ルールのリスト",

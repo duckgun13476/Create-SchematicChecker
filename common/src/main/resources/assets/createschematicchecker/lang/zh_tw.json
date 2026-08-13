@@ -50,6 +50,7 @@
   "config.fixQuarkLavaFluidloggedDuplication": "修復機械動力管道從 Quark 岩漿流體覆蓋方塊抽取岩漿時的複製漏洞。建議保持開啟。",
   "config.validateChainConveyorRidingPacket": "校驗玩家在機械動力鎖鏈傳送帶上的移動封包，防止偽造移動時間或位置。預設開啟；關閉後恢復機械動力原始行為。",
   "config.validateFilterScreenPacket": "校驗機械動力過濾器物品封包，只允許寫入玩家背包中真實存在的相同 NBT 物品。預設開啟；關閉後恢復機械動力原始行為。",
+  "config.blockRadialWrenchMenuPacket": "阻止機械動力徑向扳手選單封包提交方塊旋轉或狀態變更。預設關閉；僅在需要此防護時開啟。",
   "console.csc.list": "IdMatchRuleAll        列出全部的 ID  剔除規則",
   "console.csc.list2": "OperateMatchRuleAll   列出全部的 nbt 操作規則",
   "console.csc.list3": "IdMatchRule           列出 本地手動配置 和 自動更新 的 ID 剔除規則",
