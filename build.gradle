@@ -29,6 +29,7 @@ allprojects {
 }
 
 apply from: rootProject.file('gradle/allwork/root.gradle')
+apply from: rootProject.file('gradle/csc-discord-publishing.gradle')
 
 tasks.register('runClientAllVersions') {
     group = 'Development'
