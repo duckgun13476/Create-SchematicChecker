@@ -259,30 +259,45 @@ ext.cscUploadCurseForgeFile = {
     if (!artifact.isFile() || artifact.length() == 0L) throw new GradleException("CurseForge artifact is missing or empty: ${artifact}")
     String endpoint = project.findProperty('csc_publish_curseforge_upload_endpoint')?.toString()?.trim() ?: 'https://minecraft.curseforge.com'
     String url = "${endpoint.replaceFirst('/+$', '')}/api/projects/${cscUrlEncode(curseforge_id.toString())}/upload-file"
-    String boundary = "----CreateSchematicChecker${UUID.randomUUID().toString().replace('-', '')}"
-    HttpURLConnection connection = (HttpURLConnection) URI.create(url).toURL().openConnection()
-    connection.requestMethod = 'POST'
-    connection.doOutput = true
-    connection.connectTimeout = 30000
-    connection.readTimeout = 120000
-    connection.setRequestProperty('Accept', 'application/json')
-    connection.setRequestProperty('User-Agent', 'Create-SchematicChecker-publisher')
-    connection.setRequestProperty('X-Api-Token', token)
-    connection.setRequestProperty('Content-Type', "multipart/form-data; boundary=${boundary}")
-    try {
-        connection.outputStream.withCloseable { output ->
-            cscWriteMultipartTextPart(output, boundary, 'metadata', JsonOutput.toJson(cscReadCurseForgeUploadMetadata()))
-            cscWriteMultipartFilePart(output, boundary, artifact)
-            output.write(("--${boundary}--\r\n").getBytes('UTF-8'))
+    int maxHandshakeAttempts = Math.max(1, (project.findProperty('csc_publish_curseforge_handshake_attempts')?.toString()?.toInteger() ?: 3))
+    for (int attempt = 1; attempt <= maxHandshakeAttempts; attempt++) {
+        String boundary = "----CreateSchematicChecker${UUID.randomUUID().toString().replace('-', '')}"
+        HttpURLConnection connection = (HttpURLConnection) URI.create(url).toURL().openConnection()
+        connection.requestMethod = 'POST'
+        connection.doOutput = true
+        connection.connectTimeout = 30000
+        connection.readTimeout = 120000
+        connection.setRequestProperty('Accept', 'application/json')
+        connection.setRequestProperty('User-Agent', 'Create-SchematicChecker-publisher')
+        connection.setRequestProperty('X-Api-Token', token)
+        connection.setRequestProperty('Content-Type', "multipart/form-data; boundary=${boundary}")
+        try {
+            connection.outputStream.withCloseable { output ->
+                cscWriteMultipartTextPart(output, boundary, 'metadata', JsonOutput.toJson(cscReadCurseForgeUploadMetadata()))
+                cscWriteMultipartFilePart(output, boundary, artifact)
+                output.write(("--${boundary}--\r\n").getBytes('UTF-8'))
+            }
+            int code = connection.responseCode
+            InputStream stream = code >= 400 ? connection.errorStream : connection.inputStream
+            String body = stream == null ? '' : stream.getText('UTF-8')
+            if (code < 200 || code >= 300) throw new GradleException("CurseForge upload failed for ${project.path}: HTTP ${code}${body.trim().isEmpty() ? '' : " - ${body.take(1000)}"}")
+            return body.trim().isEmpty() ? [:] : new JsonSlurper().parseText(body)
+        } catch (Throwable error) {
+            boolean handshakeFailure = false
+            for (Throwable cause = error; cause != null; cause = cause.cause) {
+                if (cause instanceof javax.net.ssl.SSLHandshakeException) {
+                    handshakeFailure = true
+                    break
+                }
+            }
+            if (!handshakeFailure || attempt >= maxHandshakeAttempts) throw error
+            logger.warn("CurseForge TLS handshake failed for ${project.path}; retrying upload (${attempt}/${maxHandshakeAttempts}): ${error.message}")
+            Thread.sleep(1500L * attempt)
+        } finally {
+            connection.disconnect()
         }
-        int code = connection.responseCode
-        InputStream stream = code >= 400 ? connection.errorStream : connection.inputStream
-        String body = stream == null ? '' : stream.getText('UTF-8')
-        if (code < 200 || code >= 300) throw new GradleException("CurseForge upload failed for ${project.path}: HTTP ${code}${body.trim().isEmpty() ? '' : " - ${body.take(1000)}"}")
-        body.trim().isEmpty() ? [:] : new JsonSlurper().parseText(body)
-    } finally {
-        connection.disconnect()
     }
+    throw new GradleException("CurseForge upload exhausted TLS handshake retries for ${project.path}")
 }
 
 tasks.register('PublishInfo') {
