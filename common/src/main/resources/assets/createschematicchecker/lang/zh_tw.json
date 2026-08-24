@@ -47,7 +47,7 @@
   "config.TryRemoveBeltNotKill2": "此功能還在Beta版本，這可以在傳送帶不完整時，正常打印藍圖，只是不完整的傳送帶不會打印",
   "config.TryRemoveFluidTankNotKill": "當流體儲罐控制器數量不匹配時，是否剔除儲罐並允許繼續上傳。",
   "config.TryRemoveFluidTankNotKill2": "關閉後將恢復原邏輯：記錄 mismatch 並判定作弊，阻止上傳。",
-  "config.fixQuarkLavaFluidloggedDuplication": "修復機械動力管道從 Quark 岩漿流體覆蓋方塊抽取岩漿時的複製漏洞。建議保持開啟。",
+  "config.fixQuarkLavaFluidloggedDuplication": "修復機械動力管道從 Quark 岩漿流體覆蓋方塊抽取岩漿時的複製漏洞。預設關閉；開啟後套用修復。",
   "config.validateChainConveyorRidingPacket": "校驗玩家在機械動力鎖鏈傳送帶上的移動封包，防止偽造移動時間或位置。預設開啟；關閉後恢復機械動力原始行為。",
   "config.validateFilterScreenPacket": "校驗機械動力過濾器物品封包，只允許寫入玩家背包中真實存在的相同 NBT 物品。預設開啟；關閉後恢復機械動力原始行為。",
   "config.blockRadialWrenchMenuPacket": "阻止機械動力徑向扳手選單封包提交方塊旋轉或狀態變更。預設關閉；僅在需要此防護時開啟。",

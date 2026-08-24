@@ -256,7 +256,7 @@ public class ConfigRegister {
             .comment("config.TryRemoveFluidTankNotKill2");
 
     public static ConfigValue.ConfigBoolean FIX_QUARK_LAVA_FLUIDLOGGED_DUPLICATION = ConfigBuild
-            .define("function.fixQuarkLavaFluidloggedDuplication", true)
+            .define("function.fixQuarkLavaFluidloggedDuplication", false)
             .comment(CommitBreak)
             .comment("config.fixQuarkLavaFluidloggedDuplication");
 
