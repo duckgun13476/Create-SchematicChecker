@@ -319,6 +319,7 @@ public class NbtFunc {
 
 
                                     boolean consumedItemIsAir = consumedItem_id.equals("minecraft:air");
+                                    boolean unconsumedCustomMaterial = consumedItemIsAir && !inside_material.equals("create:copycat_base");
                                     // Copycats uses copycat_base plus an empty stack as its unfilled-material sentinel.
                                     // Some valid exports serialize that empty stack as air x1; canonicalize it before
                                     // applying the normal no-free-material rule.
@@ -327,7 +328,7 @@ public class NbtFunc {
                                         consumedItem_count = 0;
                                     }
                                     int expectedCount = consumedItemIsAir ? 0 : 1;
-                                    if ((!consumedItemIsAir && !inside_material.equals(consumedItem_id)) || consumedItem_count != expectedCount) {
+                                    if (unconsumedCustomMaterial || (!consumedItemIsAir && !inside_material.equals(consumedItem_id)) || consumedItem_count != expectedCount) {
                                         CompoundTag replace = block.getCompound("nbt")
                                                 .getCompound("Item");
                                         replace.put("id", TagString("minecraft:air"));
@@ -336,7 +337,10 @@ public class NbtFunc {
                                         CompoundTag replace2 = block.getCompound("nbt").getCompound("Material");
                                         replace2.put("Name", TagString("minecraft:air"));
 
-                                        CheatLog.add(translateDirect("console.cheat.copycats") + "[" + consumedItem_count + "|" + expectedCount + "][" + consumedItem_id + "|" + inside_material + "]");
+                                        String copycatsMessage = consumedItemIsAir && !inside_material.equals("create:copycat_base")
+                                                ? "console.cheat.copycats.free_material"
+                                                : "console.cheat.copycats";
+                                        CheatLog.add(translateDirect(copycatsMessage) + "[" + consumedItem_count + "|" + expectedCount + "][" + consumedItem_id + "|" + inside_material + "]");
                                         Cheat = true;
                                     }
 
@@ -372,6 +376,7 @@ public class NbtFunc {
                                                         .replaceAll("[b;]", ""));
 
                                         boolean consumedItemIsAir = consumedItem_id.equals("minecraft:air");
+                                        boolean unconsumedCustomMaterial = consumedItemIsAir && !inside_material.equals("create:copycat_base");
                                         // See the single-material branch above. This is deliberately restricted to
                                         // Copycats' default copycat_base placeholder, not arbitrary air materials.
                                         if (consumedItemIsAir && inside_material.equals("create:copycat_base") && consumedItem_count == 1) {
@@ -379,7 +384,7 @@ public class NbtFunc {
                                             consumedItem_count = 0;
                                         }
                                         int expectedCount = consumedItemIsAir ? 0 : 1;
-                                        if ((!consumedItemIsAir && !fake_id.contains(consumedItem_id)) || consumedItem_count != expectedCount) {
+                                        if (unconsumedCustomMaterial || (!consumedItemIsAir && !fake_id.contains(consumedItem_id)) || consumedItem_count != expectedCount) {
 
                                             CompoundTag replace = plastic.getCompound("consumedItem");
                                             replace.put("id", TagString("minecraft:air"));
@@ -387,7 +392,10 @@ public class NbtFunc {
                                             CompoundTag replace2 = plastic.getCompound("material");
                                             replace2.put("Name", TagString("minecraft:air"));
 
-                                            CheatLog.add(translateDirect("console.cheat.copycats") + "[" + consumedItem_count + "|" + expectedCount + "][" + consumedItem_id + "|" + inside_material + "]");
+                                            String copycatsMessage = consumedItemIsAir && !inside_material.equals("create:copycat_base")
+                                                    ? "console.cheat.copycats.free_material"
+                                                    : "console.cheat.copycats";
+                                            CheatLog.add(translateDirect(copycatsMessage) + "[" + consumedItem_count + "|" + expectedCount + "][" + consumedItem_id + "|" + inside_material + "]");
                                             Cheat = true;
 
                                         }

@@ -94,6 +94,7 @@
   "console.total.time": "bibi~ scan success time consume：",
   "console.cheat.find": "Find cheat/problem schematic！",
   "console.cheat.copycats": "Copycat item quantity is abnormal or items do not match layers! [Actual Quantity | Expected Quantity] [Included Items | Disguised Layers] =>",
+  "console.cheat.copycats.free_material": "This schematic may contain Copycats blocks that display arbitrary appearances without consuming items; printing has been blocked! [Actual Quantity | Expected Quantity] [Recorded Item | Disguised Layer] =>",
   "console.cheat.copycats.count": "Copycat item quantity does not match!",
   "console.cheat.belt.count": "Number of mismatched conveyor belts exceeds cheat threshold! [Threshold | Actual Quantity]",
   "console.cheat.belt.mismatch": "Conveyor belt quantity does not match!",

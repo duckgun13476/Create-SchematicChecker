@@ -94,6 +94,7 @@
   "console.total.time": "滴滴~ 扫描完毕 用时：",
   "console.cheat.find": "发现异常蓝图！",
   "console.cheat.copycats": "伪装板的物品数量异常或物品与图层不匹配！[实际数量|应该的数量][包含的物品|伪装图层]=》",
+  "console.cheat.copycats.free_material": "当前蓝图疑似包含不消耗物品即可显示任意外观的伪装方块，已阻止打印！[实际数量|应有数量][记录物品|伪装图层]=》",
   "console.cheat.copycats.count": "伪装板的物品数量不匹配！",
   "console.cheat.belt.count": "传送带不匹配的传送带超过作弊阈值！[阈值|实际数量]",
   "console.cheat.belt.mismatch": "传送带数量不匹配！",
