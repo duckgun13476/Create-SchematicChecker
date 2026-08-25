@@ -1,3 +1,9 @@
+## 2.27.45-release
+1. Disable the Quark fluidlogged-lava duplication repair by default; server operators may still enable it in CSC configuration.
+2. Repair Copycats schematic layers with an air consumed-item by restoring the displayed material requirement, allowing safe printing without free materials.
+
+
+
 ## 2.27.43-release
 1. Recover missing or malformed schematic statistic values instead of failing CSC startup.
 2. Make the Create 6 radial-wrench packet guard runtime-configurable and disabled by default.
