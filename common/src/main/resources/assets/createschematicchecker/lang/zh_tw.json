@@ -94,7 +94,6 @@
   "console.total.time": "滴滴~ 掃描完畢 用時：",
   "console.cheat.find": "發現異常藍圖！",
   "console.cheat.copycats": "僞裝板的物品數量異常或物品與圖層不匹配！[實際數量|應該的數量][包含的物品|僞裝圖層]=》",
-  "console.cheat.copycats.free_material": "目前藍圖疑似包含不消耗物品即可顯示任意外觀的僞裝方塊，已阻止列印！[實際數量|應有數量][記錄物品|僞裝圖層]=》",
   "console.cheat.copycats.count": "僞裝板的物品數量不匹配！",
   "console.cheat.belt.count": "傳送帶不匹配的傳送帶超過作弊閾值！[閾值|實際數量]",
   "console.cheat.belt.mismatch": "傳送帶數量不匹配！",

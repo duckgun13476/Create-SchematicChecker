@@ -94,7 +94,6 @@
   "console.total.time": "bibi~ スキャン成功にかかる消費時間：",
   "console.cheat.find": "チート/問題の回路図を見つけよう！",
   "console.cheat.copycats": "コピーキャット アイテムの数量が異常であるか、アイテムがレイヤーと一致しません。 [Actual Quantity | Expected Quantity] [Included Items | Disguised Layers] =>",
-  "console.cheat.copycats.free_material": "この設計図には、アイテムを消費せず任意の外観を表示するコピーキャットブロックが含まれている可能性があります。印刷は停止されました。 [Actual Quantity | Expected Quantity] [Recorded Item | Disguised Layer] =>",
   "console.cheat.copycats.count": "コピー商品の数量が一致しません。",
   "console.cheat.belt.count": "不一致のコンベア ベルトの数がチートのしきい値を超えています! [Threshold | Actual Quantity]",
   "console.cheat.belt.mismatch": "コンベアベルトの数量が合わない！",
