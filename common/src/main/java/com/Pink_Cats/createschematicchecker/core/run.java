@@ -63,22 +63,43 @@ public class run {
                 Object logger = loggerFactoryClass
                         .getMethod("getLogger", String.class)
                         .invoke(null, "CreateSchematicCheckerStandalone");
+                Class<?> torqueLayer = Class.forName("com.pinkcats.torque.layer.TorqueLayer");
                 Class<?> platformInterface = Class.forName("com.pinkcats.torque.layer.platform.Platform");
-                Class<?> platformClass = Class.forName("com.pinkcats.torque.layer.neoforge.NeoForgePlatform");
-                Object platform;
-                try {
-                    platform = platformClass
-                            .getDeclaredConstructor(loggerClass, String.class, String.class,
-                                    Class.forName("net.neoforged.bus.api.IEventBus"))
-                            .newInstance(logger, "1.21.1", "standalone", null);
-                } catch (NoSuchMethodException ignoredConstructor) {
-                    platform = platformClass
-                            .getDeclaredConstructor(loggerClass, String.class, String.class)
-                            .newInstance(logger, "1.21.1", "standalone");
+                String[] platformClassNames = {
+                        "com.pinkcats.torque.layer.forge.ForgePlatform",
+                        "com.pinkcats.torque.layer.neoforge.NeoForgePlatform",
+                        "com.pinkcats.torque.layer.fabric.FabricPlatform"
+                };
+                Throwable platformFailures = null;
+                for (String platformClassName : platformClassNames) {
+                    try {
+                        Class<?> platformClass = Class.forName(platformClassName);
+                        Object platform = null;
+                        // Loader platforms with an event bus must be constructed through their
+                        // four-argument form for standalone scans. The three-argument Forge
+                        // constructor fetches FMLJavaModLoadingContext and cannot run here.
+                        for (java.lang.reflect.Constructor<?> constructor : platformClass.getDeclaredConstructors()) {
+                            if (constructor.getParameterCount() == 4) {
+                                platform = constructor.newInstance(logger, "standalone", "standalone", null);
+                                break;
+                            }
+                        }
+                        if (platform == null) {
+                            platform = platformClass
+                                    .getDeclaredConstructor(loggerClass, String.class, String.class)
+                                    .newInstance(logger, "standalone", "standalone");
+                        }
+                        torqueLayer.getMethod("init", platformInterface).invoke(null, platform);
+                        return;
+                    } catch (Throwable candidateFailure) {
+                        if (platformFailures == null) {
+                            platformFailures = candidateFailure;
+                        } else {
+                            platformFailures.addSuppressed(candidateFailure);
+                        }
+                    }
                 }
-                Class.forName("com.pinkcats.torque.layer.TorqueLayer")
-                        .getMethod("init", platformInterface)
-                        .invoke(null, platform);
+                throw new IllegalStateException("No compatible TorqueLayer platform was available", platformFailures);
             } catch (Throwable ignoredAgain) {
                 System.err.println("Standalone TorqueLayer init failed: " + ignoredAgain);
                 // In a normal mod loader run, TorqueAPI initializes its layer before CSC uses it.
