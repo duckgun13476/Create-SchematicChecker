@@ -745,7 +745,16 @@ public class NbtFunc {
             for (int i = 0; i < entities.size(); i++) {
                 boolean IsEntityKilled = false;
                 CompoundTag entity = entities.getCompound(i);
-                if (!hasValidSuperGlueEndpoints(entity)) {
+                SuperGlueEndpointState superGlueEndpoints = inspectSuperGlueEndpoints(entity);
+                if (superGlueEndpoints == SuperGlueEndpointState.BOTH_MISSING) {
+                    // A glue entity with no bounding-box data cannot glue anything once printed.
+                    // Remove only this unambiguous orphan form; partial or malformed data remains
+                    // unverifiable below.
+                    entities.remove(i);
+                    i -= 1;
+                    continue;
+                }
+                if (superGlueEndpoints == SuperGlueEndpointState.INVALID) {
                     String reason = "Malformed Create super glue entity at index " + i
                             + ": missing or invalid From/To endpoint";
                     CheatLog.add(reason);
@@ -842,28 +851,37 @@ public class NbtFunc {
 
     /**
      * Create persists every real super-glue entity as a bounding box with both endpoints.
-     * A missing or unparsable endpoint has no safe meaning, so report it as unverifiable
-     * instead of allowing a generic null-pointer failure to decide the whole scan.
+     * A completely endpoint-free glue entity is an inert orphan and can be removed; partial
+     * or unparsable endpoint data remains unverifiable instead of reaching a null dereference.
      */
-    private static boolean hasValidSuperGlueEndpoints(CompoundTag entity) {
+    private enum SuperGlueEndpointState {
+        VALID,
+        BOTH_MISSING,
+        INVALID
+    }
+
+    private static SuperGlueEndpointState inspectSuperGlueEndpoints(CompoundTag entity) {
         CompoundTag entityNbt = entity.getCompound("nbt");
         Tag idTag = entityNbt.get("id");
         if (idTag == null || !"create:super_glue".equals(NoQuotes(idTag.toString()))) {
-            return true;
+            return SuperGlueEndpointState.VALID;
         }
 
         Tag from = entityNbt.get("From");
         Tag to = entityNbt.get("To");
+        if (from == null && to == null) {
+            return SuperGlueEndpointState.BOTH_MISSING;
+        }
         if (from == null || to == null) {
-            return false;
+            return SuperGlueEndpointState.INVALID;
         }
 
         try {
             StringPickHalfPos(from.toString().replaceAll("d", ""));
             StringPickHalfPos(to.toString().replaceAll("d", ""));
-            return true;
+            return SuperGlueEndpointState.VALID;
         } catch (RuntimeException ignored) {
-            return false;
+            return SuperGlueEndpointState.INVALID;
         }
     }
 
