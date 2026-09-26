@@ -175,6 +175,7 @@
   "console.stop.csc.temp.output": "根据用户规则，当前蓝图不会检测，请注意检测蓝图",
   "csc.off.temporary.restore": "CSC 已恢复启动",
   "console.csc.cannotCheck": "CSC 不能检测这个蓝图，为了您和其他所有服务器安全，请输入 /csc help ，提交此蓝图的反馈！",
+  "console.csc.corruptTruncated": "蓝图损坏：压缩数据尾部丢失。已拒绝此蓝图，请重新导出后再试。",
   "console.whitelistid.notice.on": "模组 id 白名单模式提示已开启。",
   "console.whitelistid.notice.off": "模组 id 白名单模式提示已关闭。",
   "console.whitelistid.mode.on": "模组 id 白名单模式已开启。",

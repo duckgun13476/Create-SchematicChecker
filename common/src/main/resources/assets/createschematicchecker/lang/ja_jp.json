@@ -166,6 +166,7 @@
   "console.stop.csc.temp.output": "ユーザー設定の CSC は現在無効になっています。回路図をよく確認してください。",
   "csc.off.temporary.restore": "CSC が復元されました!",
   "console.csc.cannotCheck": "CSC はこのブループリントをチェックできません。フィードバックするには /csc help と入力してください。フィードバック方法はその中にあります。",
+  "console.csc.corruptTruncated": "設計図が破損しています：圧縮データの末尾が欠落しています。この設計図は拒否されました。再度エクスポートしてください。",
   "console.whitelistid.notice.on": "MOD id ホワイトリストモード通知が有効になりました。",
   "console.whitelistid.notice.off": "MOD id ホワイトリストモード通知が無効になりました。",
   "console.whitelistid.mode.on": "MOD id ホワイトリストモードが有効になりました。",

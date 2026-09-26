@@ -175,6 +175,7 @@
   "console.stop.csc.temp.output": "根據用戶規則，當前藍圖不會檢測，請注意檢測藍圖",
   "csc.off.temporary.restore": "CSC 已恢復啓動",
   "console.csc.cannotCheck": "CSC 不能檢測這個藍圖，爲了您和其他所有服務器安全，請輸入 /csc help ，提交此藍圖的反饋！",
+  "console.csc.corruptTruncated": "藍圖損壞：壓縮資料尾部遺失。已拒絕此藍圖，請重新匯出後再試。",
   "console.whitelistid.notice.on": "模組 id 白名單模式提示已開啓。",
   "console.whitelistid.notice.off": "模組 id 白名單模式提示已關閉。",
   "console.whitelistid.mode.on": "模組 id 白名單模式已開啓。",

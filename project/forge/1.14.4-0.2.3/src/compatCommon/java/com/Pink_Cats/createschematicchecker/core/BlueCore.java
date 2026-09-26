@@ -24,6 +24,8 @@ import static com.Pink_Cats.createschematicchecker.network.OnlineTasks.reportPro
 
 public class BlueCore {
 
+    public static final String TRUNCATED_GZIP_NBT = "truncated_gzip_nbt";
+
     NbtFunc MainCheck = new NbtFunc();
 
     public Map<String, Object> SchematicBlueCore(String blueprintId, List<String> CheatLog) {

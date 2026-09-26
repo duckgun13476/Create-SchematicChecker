@@ -166,6 +166,7 @@
   "console.stop.csc.temp.output": "For user config CSC is now disable Please check schematic manly",
   "csc.off.temporary.restore": "CSC restored!",
   "console.csc.cannotCheck": "CSC can't check this blueprint Please input /csc help to feed back, feedback way is in it!",
+  "console.csc.corruptTruncated": "Corrupt schematic: the compressed data is missing its tail. This schematic was rejected; please export it again.",
   "console.whitelistid.notice.on": "Mod id whitelist mode notice is enabled.",
   "console.whitelistid.notice.off": "Mod id whitelist mode notice is disabled.",
   "console.whitelistid.mode.on": "Mod id whitelist mode is enabled.",

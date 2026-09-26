@@ -8,6 +8,7 @@ import com.pinkcats.torque.layer.net.minecraft.nbt.Nbt;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.EOFException;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -26,6 +27,8 @@ import static com.Pink_Cats.createschematicchecker.event.BlueprintPaths.parseUpl
 
 public class BlueCore {
 
+    public static final String TRUNCATED_GZIP_NBT = "truncated_gzip_nbt";
+
     NbtFunc MainCheck = new NbtFunc();
     public Map<String,Object> SchematicBlueCore(String blueprintId, List<String> CheatLog)
     {
@@ -37,7 +40,15 @@ public class BlueCore {
         try {
             com.Pink_Cats.createschematicchecker.event.BlueprintPaths.UploadedBlueprint uploadedBlueprint = parseUploadedBlueprint(blueprintId);
             path = uploadedBlueprint.path().toString();
-            CompoundTag nbt_data = Path_to_CompoundTag(path);
+            CompoundTag nbt_data;
+            try {
+                nbt_data = Path_to_CompoundTag(path);
+            } catch (Exception e) {
+                if (isTruncatedGzipNbt(e)) {
+                    return cannotCheckResult(TRUNCATED_GZIP_NBT);
+                }
+                throw e;
+            }
             String User = uploadedBlueprint.user();
             String Blueprint = uploadedBlueprint.fileName();
             Message.diag("[Diag][BlueCore][SPLIT] user=" + User
@@ -92,11 +103,28 @@ public class BlueCore {
     }
 
     private Map<String, Object> cannotCheckResult() {
+        return cannotCheckResult(null);
+    }
+
+    private Map<String, Object> cannotCheckResult(String failureReason) {
         Map<String, Object> result = new HashMap<>();
         result.put("CannotCheck", true);
         result.put("Problem", true);
         result.put("Cheat", false);
+        if (failureReason != null) {
+            result.put("FailureReason", failureReason);
+        }
         return result;
+    }
+
+    private static boolean isTruncatedGzipNbt(Throwable error) {
+        for (Throwable cause = error; cause != null; cause = cause.getCause()) {
+            if (cause instanceof EOFException
+                    && "Unexpected end of ZLIB input stream".equals(cause.getMessage())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private void reportSample(CompoundTag nbtData, String user, String blueprint, String classification) throws IOException {

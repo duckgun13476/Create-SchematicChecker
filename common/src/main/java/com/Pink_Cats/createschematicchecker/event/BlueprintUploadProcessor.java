@@ -89,7 +89,11 @@ public class BlueprintUploadProcessor {
             int removedMalformedBeltCount = S_int(checkResult.get("RemovedMalformedBeltCount"));
 
             if (cannotCheck) {
-                Message.FE(translateDirect("console.csc.cannotCheck"));
+                if (BlueCore.TRUNCATED_GZIP_NBT.equals(checkResult.get("FailureReason"))) {
+                    Message.FE(translateDirect("console.csc.corruptTruncated"));
+                } else {
+                    Message.FE(translateDirect("console.csc.cannotCheck"));
+                }
                 resultApplier.apply(id, false, 0);
                 return;
             }
