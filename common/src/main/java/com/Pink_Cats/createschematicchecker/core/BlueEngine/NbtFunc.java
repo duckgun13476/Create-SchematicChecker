@@ -1037,16 +1037,15 @@ public class NbtFunc {
 
             if (id.equals("create:track")){
                 CompoundTag Properties = data.getCompound("Properties");
-                String track_shape = NoQuotes(data.getCompound("Properties")
-                        .get("shape").toString());
-
-                if (track_shape.equals("none") || track_shape.equals("NONE")) {
-                    Properties.put("shape",TagString("xo"));
-                    Message.FE(translateDirect("csc.trams.track_problem"));
-
+                if (!Properties.contains("shape")) {
+                    Properties.put("shape", TagString("zo"));
+                } else {
+                    String track_shape = NoQuotes(Properties.get("shape").toString());
+                    if (track_shape.equals("none") || track_shape.equals("NONE")) {
+                        Properties.put("shape", TagString("xo"));
+                        Message.FE(translateDirect("csc.trams.track_problem"));
+                    }
                 }
-
-
             }
 
 
