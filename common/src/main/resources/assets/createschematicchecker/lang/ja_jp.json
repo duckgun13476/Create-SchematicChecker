@@ -9,6 +9,7 @@
   "config.BanTag": "バンタグ。このリスト内のタグを持つブロックがあればクリアされます。",
   "core.BanBlock": "回路図に表示したくないブロックまたはアイテム",
   "core.BanBlock2": "削除メソッドが失敗した場合、ブロックはクリアされます。",
+  "config.ResourceIdWildcard": "ブロック/エンティティ ID のリストでは、コロンの後のパスに * を使用できます。名前空間は完全一致です。例: create:*_valve_handle は create:brass_valve_handle に一致し、* はコロンを越えません。",
   "console.McVersion": "Minecraft バージョン:",
   "console.CscVersion": "[CSC] バージョン: v${csc_version}",
   "console.reload1": "構成を再ロードしています--",

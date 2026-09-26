@@ -50,40 +50,19 @@ public class StrFunc {
     }
 
     public static boolean IsBanEntity(String data){
-        for (String item : ban_entity){
-            if (data.equals(item)){
-                return true;
-            }
-        }
-        return false;
+        return BanListMatcher.matchesId(data, ban_entity);
     }
 
     public static boolean IsWhitelistEntity(String data){
-        for (String item : whitelist_entity){
-            if (data.equals(item)){
-                return true;
-            }
-        }
-        return false;
+        return BanListMatcher.matchesId(data, whitelist_entity);
     }
 
     public static boolean HasBanBlock(String data){
-
-        for (String item : ban_block){
-            if (data.contains(item)){
-                return true;
-            }
-        }
-        return false;
+        return BanListMatcher.containsMatch(data, ban_block);
     }
 
     public static boolean isInBanBlock( String target) {
-        for (String item : ban_block){
-            if (target.equals(item)){
-                return true;
-            }
-        }
-        return false;
+        return BanListMatcher.matchesId(target, ban_block);
     }
 
 

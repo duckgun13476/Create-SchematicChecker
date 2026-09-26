@@ -146,7 +146,8 @@ public class ConfigRegister {
 
             .comment(CommitBreak)
             .comment("core.BanBlock")
-            .comment("core.BanBlock2");
+            .comment("core.BanBlock2")
+            .comment("config.ResourceIdWildcard");
 
     public static ConfigValue.ConfigStringArray BAN_TAG = ConfigBuild
             .define("core.BanTag", new String[]{
@@ -169,7 +170,8 @@ public class ConfigRegister {
                     "create:crafting_blueprint"})
             .comment(CommitBreak)
             .comment("config.BanEntity")
-            .comment("config.BanEntity2");
+            .comment("config.BanEntity2")
+            .comment("config.ResourceIdWildcard");
 
     public static ConfigValue.ConfigStringArray WHITELIST_ENTITY = ConfigBuild
             .define("core.whitelistEntity", new String[]{
@@ -177,7 +179,8 @@ public class ConfigRegister {
             .comment(CommitBreak)
             .comment("config.whitelistEntity")
             .comment("config.whitelistEntity2")
-            .comment("config.whitelistEntity3");
+            .comment("config.whitelistEntity3")
+            .comment("config.ResourceIdWildcard");
 
     public static ConfigValue.ConfigBoolean DEBUG_TOTAL_BLOCK = ConfigBuild
             .define("debug.DebugTotalBlock", true)
@@ -550,11 +553,11 @@ public class ConfigRegister {
         syncComments("core.DelayTime", CommitBreak, "config.DelayTime");
         syncComments("core.WhiteListModEnable", CommitBreak, "config.WhiteListModEnable");
         syncComments("core.WhiteListModList", CommitBreak, "config.WhiteListMod");
-        syncComments("core.BanBlock", CommitBreak, "core.BanBlock", "core.BanBlock2");
+        syncComments("core.BanBlock", CommitBreak, "core.BanBlock", "core.BanBlock2", "config.ResourceIdWildcard");
         syncComments("core.BanTag", CommitBreak, "config.BanTag");
         syncComments("core.KillEntity", CommitBreak, "config.KillEntity", "config.KillEntity2", "config.KillEntity3");
-        syncComments("core.BanEntity", CommitBreak, "config.BanEntity", "config.BanEntity2");
-        syncComments("core.whitelistEntity", CommitBreak, "config.whitelistEntity", "config.whitelistEntity2", "config.whitelistEntity3");
+        syncComments("core.BanEntity", CommitBreak, "config.BanEntity", "config.BanEntity2", "config.ResourceIdWildcard");
+        syncComments("core.whitelistEntity", CommitBreak, "config.whitelistEntity", "config.whitelistEntity2", "config.whitelistEntity3", "config.ResourceIdWildcard");
         syncComments("debug.DebugTotalBlock", CommitBreak, "config.DebugTotalBlock");
         syncComments("debug.DebugCheatFind", CommitBreak, "config.DebugCheatFind");
         syncComments("debug.EnableBackup", CommitBreak, "config.EnableBackup", "config.EnableBackup2", "config.EnableBackup3");

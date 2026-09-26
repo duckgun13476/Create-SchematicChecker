@@ -230,12 +230,7 @@ public class BlockSweeper {
     }
 
     public static int CountToClear(String data, String[] ban_block) {
-        int totalCount = 0;
-        for (String element : ban_block) {
-            int count = countOccurrences(data, element);
-            totalCount += count;
-        }
-        return totalCount;
+        return BanListMatcher.countMatches(data, ban_block);
     }
 
     public static int countOccurrences(String str, String subStr) {
