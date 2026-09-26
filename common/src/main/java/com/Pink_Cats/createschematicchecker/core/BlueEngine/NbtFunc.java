@@ -212,7 +212,10 @@ public class NbtFunc {
 
 
                     //belt matcher
-                    if (id.equals("create:belt")) {
+                    // A valid schematic export may omit every belt block-entity tag.
+                    // Only belts with serialized data can participate in the
+                    // controller/length consistency check; partial data remains strict.
+                    if (id.equals("create:belt") && !block.getCompound("nbt").isEmpty()) {
                         String Controller = BeltControllerKey(block);
                         int Length = StringToInt(String.valueOf(block.getCompound("nbt").get("Length")));
                         int Index = StringToInt(String.valueOf(block.getCompound("nbt").get("Index")));
