@@ -42,6 +42,7 @@ public class NbtFunc {
         boolean IsNotMatch = false;
         boolean CannotCheck = false;
         boolean WhiteListModFiltered = false;
+        int RemovedMalformedBeltCount = 0;
         //PinkCats Inject
         try {
             int illegalEnchantmentCount = IllegalEnchantmentScanner.collect(nbt_data, CheatLog);
@@ -90,6 +91,7 @@ public class NbtFunc {
             ListTag blocks = nbt_data.getList("blocks", 10); // 10 琛ㄧず CompoundTag 绫诲瀷
 
             List<Object[]> beltList = new ArrayList<>();
+            int idOnlyBeltCount = 0;
 
             List<int[]> Location = new ArrayList<>();
             List<List<int[]>> Destination = new ArrayList<>();
@@ -115,6 +117,7 @@ public class NbtFunc {
                 try {
                     CompoundTag block = blocks.getCompound(i);
                     String id = BlockGetId(block, palette);
+                    boolean idOnlyBelt = false;
                     blockCounts.put(id, blockCounts.getOrDefault(id, 0) + 1);
                     Message.diag("[Diag][NbtFunc][BLOCK] index=" + i
                             + ", id=" + id
@@ -216,19 +219,25 @@ public class NbtFunc {
                     // Only belts with serialized data can participate in the
                     // controller/length consistency check; partial data remains strict.
                     if (id.equals("create:belt") && !block.getCompound("nbt").isEmpty()) {
-                        String Controller = BeltControllerKey(block);
-                        int Length = StringToInt(String.valueOf(block.getCompound("nbt").get("Length")));
-                        int Index = StringToInt(String.valueOf(block.getCompound("nbt").get("Index")));
-                        boolean isSame = false;
-                        for (Object[] item : beltList) {
-                            if (Controller.equals(item[0])) {
-                                isSame = true;
-                                item[3] = (int) item[3] + 1;
+                        CompoundTag beltNbt = block.getCompound("nbt");
+                        if (beltNbt.size() == 1 && "create:belt".equals(beltNbt.getString("id"))) {
+                            idOnlyBeltCount++;
+                            idOnlyBelt = true;
+                        } else {
+                            String Controller = BeltControllerKey(block);
+                            int Length = StringToInt(String.valueOf(beltNbt.get("Length")));
+                            int Index = StringToInt(String.valueOf(beltNbt.get("Index")));
+                            boolean isSame = false;
+                            for (Object[] item : beltList) {
+                                if (Controller.equals(item[0])) {
+                                    isSame = true;
+                                    item[3] = (int) item[3] + 1;
+                                }
                             }
-                        }
-                        if (!isSame) {
-                            Object[] newItem = {Controller, Length, Index, 1};
-                            beltList.add(newItem);
+                            if (!isSame) {
+                                Object[] newItem = {Controller, Length, Index, 1};
+                                beltList.add(newItem);
+                            }
                         }
                     }
 
@@ -432,7 +441,7 @@ public class NbtFunc {
                     }
 
 
-                    if (block.size() > 2) {
+                    if (block.size() > 2 && !idOnlyBelt) {
                         String beforeBlock = block.toString();
 
                         blockResult = BaseBlockHandle(block, "block", palette, i, CheatLog);
@@ -476,6 +485,26 @@ public class NbtFunc {
             if (tripwireScanResult.sanitizedPaletteCount > 0) {
                 Message.diag("[Diag][NbtFunc][TRIPWIRE_SANITIZE] cleanedPalette="
                         + tripwireScanResult.sanitizedPaletteCount);
+            }
+
+            if (idOnlyBeltCount > 0) {
+                if (remove_belt_instead_kill) {
+                    // Without Controller/Length/Index, an affected chain cannot be
+                    // identified reliably. Remove every belt, not just the id-only
+                    // segments, so no broken remainder reaches the schematicannon.
+                    for (int i = blocks.size() - 1; i >= 0; i--) {
+                        if ("create:belt".equals(BlockGetId(blocks.getCompound(i), palette))) {
+                            blocks.remove(i);
+                            RemovedMalformedBeltCount++;
+                        }
+                    }
+                    beltList.clear();
+                    Problem = true;
+                    Message.FW(String.format(translateDirect("console.csc.belt.idOnlyRemoved"), RemovedMalformedBeltCount));
+                } else {
+                    Cheat = true;
+                    CheatLog.add(translateDirect("console.csc.belt.idOnlyRejected"));
+                }
             }
 
 
@@ -853,6 +882,7 @@ public class NbtFunc {
         result.put("nbt_data", nbt_data);
         result.put("Cheat",Cheat);
         result.put("WhiteListModFiltered", WhiteListModFiltered);
+        result.put("RemovedMalformedBeltCount", RemovedMalformedBeltCount);
         Message.diag("[Diag][NbtFunc][FINAL] cheat=" + Cheat
                 + ", problem=" + Problem
                 + ", cannotCheck=" + CannotCheck

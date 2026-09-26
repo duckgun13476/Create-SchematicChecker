@@ -41,7 +41,8 @@ public class CheckBlueprint {
         String playerName = player.getGameProfile().getName();
         BlueprintUploadProcessor processor = new BlueprintUploadProcessor(
                 checker,
-                (id, pass) -> applyResult(player, id, pass),
+                (id, pass, removedMalformedBeltCount) ->
+                        applyResult(player, id, pass, removedMalformedBeltCount),
                 CheckBlueprint::broadcast,
                 CheckBlueprint::ExecuteSomeCmd
         );
@@ -68,10 +69,16 @@ public class CheckBlueprint {
     }
 
     private void applyResult(ServerPlayerEntity player, String id, boolean pass) {
-        runOnServerMainThread(player, () -> applyResultOnServerThread(player, id, pass));
+        applyResult(player, id, pass, 0);
     }
 
-    private void applyResultOnServerThread(ServerPlayerEntity player, String id, boolean pass) {
+    private void applyResult(ServerPlayerEntity player, String id, boolean pass, int removedMalformedBeltCount) {
+        runOnServerMainThread(player,
+                () -> applyResultOnServerThread(player, id, pass, removedMalformedBeltCount));
+    }
+
+    private void applyResultOnServerThread(ServerPlayerEntity player, String id, boolean pass,
+                                           int removedMalformedBeltCount) {
         ModList list = ModList.get();
         boolean hasPattern = list != null && list.isLoaded("create_pattern_schematics");
         PendingSchematicStore.PendingMeta meta = PendingSchematicStore.takeMeta(id);
@@ -109,6 +116,9 @@ public class CheckBlueprint {
             if (pending != null && !pending.isEmpty()) {
                 Message.diag("[Diag][CheckBlueprint][APPLY] restoring slot1 for id=" + id + ", stack=" + pending);
                 table.inventory.setStackInSlot(1, pending);
+                if (removedMalformedBeltCount > 0) {
+                    notifyRemovedBelts(player, removedMalformedBeltCount);
+                }
             }
             return;
         }
@@ -126,6 +136,11 @@ public class CheckBlueprint {
         MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
         if (server == null) return new ArrayList<>();
         return new ArrayList<>(server.getPlayerList().getPlayers());
+    }
+
+    private static void notifyRemovedBelts(ServerPlayerEntity player, int count) {
+        String message = String.format(translateDirect("csc.belt.idOnlyPlayer"), count);
+        player.sendMessage(new StringTextComponent(message));
     }
 
     public static void broadcast(String playerBlueprintId, String playerName) {
