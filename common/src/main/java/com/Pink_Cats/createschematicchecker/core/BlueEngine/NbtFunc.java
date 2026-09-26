@@ -102,6 +102,15 @@ public class NbtFunc {
             int ControllerCount = 0;
             int FindTankCount = 0;
 
+            // An empty compound has no position or palette state and cannot
+            // represent a Minecraft block (including air). It is an orphaned
+            // schematic list entry, so discard it before normal validation.
+            for (int i = blocks.size() - 1; i >= 0; i--) {
+                if (blocks.getCompound(i).isEmpty()) {
+                    blocks.remove(i);
+                }
+            }
+
             for (int i = 0; i < blocks.size(); i++) {
                 try {
                     CompoundTag block = blocks.getCompound(i);
