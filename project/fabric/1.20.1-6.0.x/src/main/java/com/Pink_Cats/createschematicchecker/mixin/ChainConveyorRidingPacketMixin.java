@@ -26,7 +26,9 @@ public abstract class ChainConveyorRidingPacketMixin {
     @Unique private static final Map<UUID, ChainRidingState> CSC_RIDE_STATES = new ConcurrentHashMap<>();
     @Shadow private boolean stop;
 
-    @Inject(method = "applySettings(Lnet/minecraft/server/level/ServerPlayer;Lcom/simibubi/create/content/kinetics/chainConveyor/ChainConveyorBlockEntity;)V", at = @At("HEAD"), cancellable = true)
+    // Create Fabric is compiled against intermediary mappings at runtime.  Keep the
+    // target descriptor in that namespace; the handler itself is remapped by Loom.
+    @Inject(method = "applySettings(Lnet/minecraft/class_3222;Lcom/simibubi/create/content/kinetics/chainConveyor/ChainConveyorBlockEntity;)V", at = @At("HEAD"), cancellable = true)
     private void csc$validateChainRidingHeartbeat(ServerPlayer sender, ChainConveyorBlockEntity conveyor, CallbackInfo ci) {
         if (!validate_chain_conveyor_riding_packet) return;
         UUID playerId = sender.getUUID();
