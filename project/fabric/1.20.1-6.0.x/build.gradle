@@ -33,6 +33,7 @@ def forgeConfigApiPortFabricVersion = project.findProperty('forgeconfigapiport_f
 def nightConfigVersion = project.findProperty('night_config_version')?.toString()?.trim()
 def reachEntityAttributesVersion = project.findProperty('reach_entity_attributes_version')?.toString()?.trim()
 def milkLibVersion = project.findProperty('milk_lib_version')?.toString()?.trim()
+def torqueFabric1201Version = project.findProperty('torque_api_fabric_1201_version')?.toString()?.trim() ?: torque_api_version
 def generatedResourcesDir = file('src/generated/resources')
 def accessWidenerFile = file("src/main/resources/${mod_id}.accesswidener")
 
@@ -85,10 +86,10 @@ dependencies {
     modImplementation "net.fabricmc:fabric-loader:${loader_version}"
     modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_api_version}"
 
-    modImplementation("com.pinkcats.torque:TorqueAPI-1.20.1-fabric:${torque_api_version}") {
+    modImplementation("com.pinkcats.torque:TorqueAPI-1.20.1-fabric:${torqueFabric1201Version}") {
         changing = true
     }
-    include("com.pinkcats.torque:TorqueAPI-1.20.1-fabric:${torque_api_version}")
+    include("com.pinkcats.torque:TorqueAPI-1.20.1-fabric:${torqueFabric1201Version}")
 
     modImplementation("${createFabricGroup}:${createFabricArtifactId}:${create_fabric_version}") {
         changing = true
