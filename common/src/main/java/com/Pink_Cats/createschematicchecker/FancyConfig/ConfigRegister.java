@@ -376,6 +376,9 @@ public class ConfigRegister {
     public static int maxBeltCheatLimit =  MAX_BELT_CHEAT_LIMIT.getDefaultValue();
     public static int maxConveyorCheatLimit =   MAX_CONVEYOR_CHEAT_LIMIT.getDefaultValue();
     public static int maxConveyorCheatDistanceLimit = MAX_CONVEYOR_CHEAT_DISTANCE_LIMIT.getDefaultValue();
+    // Injected from Create when the loader/version exposes this server setting.
+    // A negative value means that this Create version has no chain-conveyor limit.
+    public static int create_chain_conveyor_length = -1;
     public static boolean DebugCheatFind = DEBUG_CHEAT_FIND.getDefaultValue();
     public static boolean update_info = UPDATE_INFO.getDefaultValue();
     public static boolean enable_debug = ENABLE_DEBUG.getDefaultValue();
@@ -413,6 +416,12 @@ public class ConfigRegister {
     public static int  ProblemCount;
     public static int CheatCount;
     public static String CreateVersion = "0.5";
+
+    public static int effectiveChainConveyorDistanceLimit() {
+        return create_chain_conveyor_length >= 0
+                ? create_chain_conveyor_length
+                : maxConveyorCheatDistanceLimit;
+    }
 
 
 

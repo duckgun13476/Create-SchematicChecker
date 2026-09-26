@@ -91,8 +91,8 @@ public class Createschematicchecker {
         }
 
         @Override
-        public boolean hasChainConveyorLength() {
-            return false;
+        public int maxChainConveyorLength() {
+            return -1;
         }
     }
 }

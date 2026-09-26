@@ -95,13 +95,15 @@ public class Createschematicchecker {
         }
 
         @Override
-        public boolean hasChainConveyorLength() {
+        public int maxChainConveyorLength() {
             try {
                 var field = AllConfigs.SERVER.kinetics.getClass().getDeclaredField("maxChainConveyorLength");
                 field.setAccessible(true);
-                return field.get(AllConfigs.SERVER.kinetics) != null;
+                Object configuredValue = field.get(AllConfigs.SERVER.kinetics);
+                Object configuredLength = configuredValue.getClass().getMethod("get").invoke(configuredValue);
+                return configuredLength instanceof Number ? ((Number) configuredLength).intValue() : -1;
             } catch (Exception e) {
-                return false;
+                return -1;
             }
         }
     }

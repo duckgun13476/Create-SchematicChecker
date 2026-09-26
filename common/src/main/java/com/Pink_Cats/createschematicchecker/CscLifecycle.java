@@ -27,7 +27,11 @@ public class CscLifecycle {
 
         String maxChassisRange();
 
-        boolean hasChainConveyorLength();
+        /**
+         * @return Create's configured chain-conveyor length, or -1 when that
+         * configuration does not exist on this Create version.
+         */
+        int maxChainConveyorLength();
     }
 
     private final CreateConfigSource createConfig;
@@ -98,7 +102,8 @@ public class CscLifecycle {
             MaxIndex = String.valueOf(StringToInt(ConfigRegister.MaxBelt) - 1);
             MaxEject = createConfig.maxEjectorDistance();
             MaxChassisRange = createConfig.maxChassisRange();
-            CreateVersion = createConfig.hasChainConveyorLength() ? "6.0" : "0.5";
+            ConfigRegister.create_chain_conveyor_length = createConfig.maxChainConveyorLength();
+            CreateVersion = ConfigRegister.create_chain_conveyor_length >= 0 ? "6.0" : "0.5";
         } catch (Exception ex) {
             Message.FE(translateDirect("console.ConfigInjectCreateError"));
         }

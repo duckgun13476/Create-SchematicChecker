@@ -583,11 +583,12 @@ public class NbtFunc {
                                     Math.abs(item[2])
                             ),Math.abs(item[1])
                     );
+                    int chainConveyorLimit = effectiveChainConveyorDistanceLimit();
 
-                    if (Length > maxConveyorCheatDistanceLimit ) {
+                    if (Length > chainConveyorLimit ) {
 
                         Cheat = true;
-                        CheatLog.add(translateDirect("console.cheat.conveyor.distance")+"["+Length+"|"+maxConveyorCheatDistanceLimit+"]");
+                        CheatLog.add(translateDirect("console.cheat.conveyor.distance")+"["+Length+"|"+chainConveyorLimit+"]");
                     }
 
 
