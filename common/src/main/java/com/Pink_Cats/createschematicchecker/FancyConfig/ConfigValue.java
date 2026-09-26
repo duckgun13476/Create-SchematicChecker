@@ -236,7 +236,9 @@ public class ConfigValue {
     }
 
     public static String[] processArrayPos(String strValue) {
-        strValue = strValue.replaceAll("[\\[\\]\" {}XYZ:]", "");
+        // NBT IntArray#toString uses the standard [I;x,y,z] prefix.
+        // Strip the type marker while retaining strict numeric components.
+        strValue = strValue.replaceAll("[\\[\\]\" {}XYZ:I;]", "");
         strValue = trimALL(strValue);
         return strValue.split(",");
     }
