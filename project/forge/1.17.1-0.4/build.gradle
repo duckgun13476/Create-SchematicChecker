@@ -151,6 +151,11 @@ apply from: new File(sharedRootDir, 'gradle/csc-torque-embed-modern.gradle')
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 
+    // Minecraft 1.17.1 exposes these types through its runtime libraries, but
+    // ForgeGradle does not put them on this target's Java compile classpath.
+    compileOnly 'com.mojang:authlib:2.3.31'
+    compileOnly 'com.mojang:brigadier:1.0.18'
+
     compileOnly("com.pinkcats.torque:TorqueAPI-layer-api:${torque_api_version}") {
         changing = true
     }
