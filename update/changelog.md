@@ -1,3 +1,13 @@
+## 2.27.47-release
+1. Fix Fabric 1.20.1 startup and world-entry crashes.
+2. Repair malformed schematic entries, glue, and belts while accepting valid data.
+3. Fix missing track shapes and use Create's chain-conveyor limit.
+4. Support `*` in block and entity ID lists.
+5. Identify truncated schematics as damaged files.
+6. Fix Fabric jar refmaps and cross-version dependency resolution.
+
+
+
 ## 2.27.45-release
 1. Disable the Quark fluidlogged-lava duplication repair by default; server operators may still enable it in CSC configuration.
 2. Repair Copycats schematic layers with an air consumed-item by restoring the displayed material requirement, allowing safe printing without free materials.
