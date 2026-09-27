@@ -119,7 +119,7 @@ public class Createschematicchecker {
         }
 
         @Override
-w        public int maxChainConveyorLength() {
+        public int maxChainConveyorLength() {
             try {
                 Field field = AllConfigs.server().kinetics.getClass().getDeclaredField("maxChainConveyorLength");
                 field.setAccessible(true);
