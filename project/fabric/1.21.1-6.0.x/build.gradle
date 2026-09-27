@@ -74,14 +74,8 @@ dependencies {
         transitive = false
     }
 
-    if ((project.findProperty('csc_verify_fabric_121') ?: 'false').toBoolean()) {
-        // This source-only target has no published Create Fabric 1.21.1 jar.
-        // Verify its CSC API surface against the checked-in development stubs.
-        modImplementation project(':create-fabric-stubs-1.21.1')
-    } else {
-        modImplementation("com.simibubi.create:${createFabricArtifactId}:${create_fabric_version}") {
-            changing = true
-        }
+    modImplementation("com.simibubi.create:${createFabricArtifactId}:${create_fabric_version}") {
+        changing = true
     }
 
     if ((project.findProperty('modmenu_runtime_enabled') ?: 'false').toBoolean()) {

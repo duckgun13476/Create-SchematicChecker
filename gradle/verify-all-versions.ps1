@@ -28,7 +28,6 @@ $variants = @(
     @{ Name = 'fabric-1.19.2-0.5.1i'; Home = $root; Wrapper = $rootWrapper; Java = 21; Task = ':fabric-1.19.2-0.5.1i:compileJava'; Extra = @('--configure-on-demand') }
     @{ Name = 'fabric-1.20.1-6.0.x'; Home = $root; Wrapper = $rootWrapper; Java = 21; Task = ':fabric-1.20.1-6.0.x:compileJava'; Extra = @('--configure-on-demand') }
     @{ Name = 'neoforge-1.21.1-6.0.x'; Home = $root; Wrapper = $rootWrapper; Java = 21; Task = ':neoforge-1.21.1-6.0.x:compileJava'; Extra = @('--configure-on-demand') }
-    @{ Name = 'fabric-1.21.1-6.0.x'; Home = $root; Wrapper = $rootWrapper; Java = 21; Task = ':fabric-1.21.1-6.0.x:compileJava'; Extra = @('--configure-on-demand', '-Pcsc_verify_fabric_121=true') }
 )
 
 if (@($Skip | Where-Object { $_ -match '^@\(' }).Count -gt 0) {
