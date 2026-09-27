@@ -204,6 +204,23 @@ public class VersionChecker {
         }
     }
 
+    public static String getLatestLocalRulePath(String path) {
+        File directory = new File(path);
+        if (!directory.isDirectory()) return null;
+        File[] files = directory.listFiles((dir, name) -> name.matches("rule_.*\\.json"));
+        if (files == null || files.length == 0) return null;
+        File latest = null;
+        Date latestDate = null;
+        for (File file : files) {
+            Date candidate = parseVersionDate(file.getName().replaceAll("rule_(.*)\\.json", "$1"));
+            if (latestDate == null || candidate.after(latestDate)) {
+                latestDate = candidate;
+                latest = file;
+            }
+        }
+        return latest == null ? null : latest.getPath();
+    }
+
     public static String UpdateMainThread() {
         String BaseOnlinePath = "config/CSC/online";
         createIfNotExists(BaseOnlinePath);

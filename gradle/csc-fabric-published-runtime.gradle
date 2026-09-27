@@ -1,0 +1,141 @@
+import groovy.json.JsonSlurper
+
+def cscPublishArtifactTask = tasks.named(readPublishArtifactTaskName())
+def cscPublishArtifactFile = cscPublishArtifactTask.flatMap { it.archiveFile }
+def cscIncludesTorqueApi = configurations.findByName('include')?.allDependencies?.any { dependency ->
+    dependency.group == 'com.pinkcats.torque' && dependency.name?.startsWith('TorqueAPI-')
+} ?: false
+
+tasks.register('verifyFabricPublishJarContents') {
+    group = 'verification'
+    description = 'Verifies the final Fabric jar contains its entrypoint, mixin classes/refmap, and embedded TorqueAPI.'
+    dependsOn(cscPublishArtifactTask)
+
+    inputs.file(cscPublishArtifactFile)
+    doLast {
+        File artifact = cscPublishArtifactFile.get().asFile
+        if (!artifact.isFile() || artifact.length() == 0L) {
+            throw new GradleException("Fabric publish artifact is missing or empty: ${artifact.absolutePath}")
+        }
+
+        new java.util.zip.ZipFile(artifact).withCloseable { zip ->
+            Set<String> entries = zip.entries().collect { it.name } as Set
+            List<String> missing = []
+            if (!entries.contains('fabric.mod.json')) missing.add('fabric.mod.json')
+
+            if (entries.contains('fabric.mod.json')) {
+                def metadata = new JsonSlurper().parse(zip.getInputStream(zip.getEntry('fabric.mod.json')))
+                if (metadata.id != 'createschematicchecker') missing.add('fabric.mod.json id=createschematicchecker')
+
+                (metadata.entrypoints?.main ?: []).each { String entrypoint ->
+                    String entrypointClass = entrypoint.replace('.', '/') + '.class'
+                    if (!entries.contains(entrypointClass)) missing.add(entrypointClass)
+                }
+
+                (metadata.mixins ?: []).each { String mixinConfig ->
+                    if (!entries.contains(mixinConfig)) {
+                        missing.add(mixinConfig)
+                        return
+                    }
+                    def mixins = new JsonSlurper().parse(zip.getInputStream(zip.getEntry(mixinConfig)))
+                    String mixinPackage = mixins.package?.toString()?.replace('.', '/')
+                    if (mixinPackage == null || mixinPackage.isBlank()) {
+                        missing.add("${mixinConfig} package")
+                    } else {
+                        ['mixins', 'client', 'server'].each { String side ->
+                            (mixins[side] ?: []).each { String mixinName ->
+                                String mixinClass = "${mixinPackage}/${mixinName.replace('.', '/')}.class"
+                                if (!entries.contains(mixinClass)) missing.add(mixinClass)
+                            }
+                        }
+                    }
+                    String refmap = mixins.refmap?.toString()
+                    if (refmap != null && !refmap.isBlank() && !entries.contains(refmap)) missing.add(refmap)
+                }
+            }
+
+            Set<String> torqueJars = entries.findAll { it.startsWith('META-INF/jars/TorqueAPI-') && it.endsWith('.jar') }
+            if (cscIncludesTorqueApi && torqueJars.size() != 1) {
+                missing.add('exactly one META-INF/jars/TorqueAPI-*.jar')
+            }
+
+            if (!missing.isEmpty()) {
+                throw new GradleException("Fabric publish artifact validation failed for ${artifact.name}: ${missing.join(', ')}")
+            }
+        }
+
+        println "Verified final Fabric artifact: ${artifact.absolutePath}"
+    }
+}
+
+def cscPlayerLaunchBat = providers.gradleProperty('csc_player_launch_bat')
+        .orElse(providers.environmentVariable('CSC_PLAYER_LAUNCH_BAT'))
+def cscPlayerMinecraftDir = providers.gradleProperty('csc_player_minecraft_dir')
+        .orElse(providers.environmentVariable('CSC_PLAYER_MINECRAFT_DIR'))
+def cscPlayerPrismRoot = providers.gradleProperty('csc_player_prism_root')
+        .orElse(providers.environmentVariable('CSC_PLAYER_PRISM_ROOT'))
+def cscPlayerPrismExecutable = providers.gradleProperty('csc_player_prism_executable')
+        .orElse(providers.environmentVariable('CSC_PLAYER_PRISM_EXECUTABLE'))
+def cscPlayerPrismInstance = providers.gradleProperty('csc_player_prism_instance')
+        .orElse(providers.environmentVariable('CSC_PLAYER_PRISM_INSTANCE'))
+def cscPlayerPrismUseAccount = providers.gradleProperty('csc_player_prism_use_account')
+        .orElse(providers.environmentVariable('CSC_PLAYER_PRISM_USE_ACCOUNT')).orElse('false')
+def cscPlayerCacheRoot = providers.gradleProperty('csc_player_cache_root')
+        .orElse(providers.provider { new File(System.getenv('LOCALAPPDATA'), 'CreateSchematicChecker/PrismRuntime').absolutePath })
+// This covers only writable test layers; assets/libraries/versions remain
+// junctioned to the selected player instance and are never duplicated.
+def cscPlayerCacheMaxGiB = providers.gradleProperty('csc_player_cache_max_gib').orElse('12')
+def cscPlayerNoLaunch = providers.gradleProperty('csc_player_no_launch').orElse('false')
+
+tasks.named('runClient').configure {
+    group = 'verification'
+    description = 'Builds the final Fabric jar and launches an isolated cache instance through the detected normal player launcher (Prism by default; PCL when explicitly configured).'
+    actions.clear()
+    setDependsOn([cscPublishArtifactTask, tasks.named('verifyFabricPublishJarContents')])
+
+    doLast {
+        String launchBat = cscPlayerLaunchBat.orNull
+        String minecraftDir = cscPlayerMinecraftDir.orNull
+        List<String> command = [
+                'powershell.exe', '-NoLogo', '-NoProfile', '-ExecutionPolicy', 'Bypass'
+        ]
+        if ((launchBat == null) != (minecraftDir == null)) {
+            throw new GradleException('PCL override requires both csc_player_launch_bat and csc_player_minecraft_dir.')
+        }
+        if (launchBat != null && !launchBat.isBlank()) {
+            command.addAll([
+                    '-File', new File(rootProject.projectDir, 'gradle/csc-player-client.ps1').absolutePath,
+                    '-LatestLaunchBat', launchBat,
+                    '-MinecraftDir', minecraftDir,
+                    '-RuntimeRoot', cscPlayerCacheRoot.get(),
+                    '-ArtifactPath', cscPublishArtifactFile.get().asFile.absolutePath,
+                    '-CacheMaxGiB', cscPlayerCacheMaxGiB.get()
+            ])
+        } else {
+            File fabricApiJar = configurations.modImplementation.resolvedConfiguration.resolvedArtifacts.find { artifact ->
+                artifact.moduleVersion.id.group == 'net.fabricmc.fabric-api' && artifact.name == 'fabric-api'
+            }?.file
+            if (fabricApiJar == null || !fabricApiJar.isFile()) {
+                throw new GradleException('runClient could not resolve the Fabric API jar needed to bootstrap an isolated Prism Fabric test instance.')
+            }
+            command.addAll([
+                    '-File', new File(rootProject.projectDir, 'gradle/csc-prism-client.ps1').absolutePath,
+                    '-MinecraftVersion', project.minecraft_version.toString(),
+                    '-ArtifactPath', cscPublishArtifactFile.get().asFile.absolutePath,
+                    '-RuntimeRoot', cscPlayerCacheRoot.get(),
+                    '-CacheMaxGiB', cscPlayerCacheMaxGiB.get(),
+                    '-FabricApiJar', fabricApiJar.absolutePath
+            ])
+            if (cscPlayerPrismRoot.isPresent()) command.addAll(['-PrismRoot', cscPlayerPrismRoot.get()])
+            if (cscPlayerPrismExecutable.isPresent()) command.addAll(['-PrismExecutable', cscPlayerPrismExecutable.get()])
+            if (cscPlayerPrismInstance.isPresent()) command.addAll(['-BaseInstance', cscPlayerPrismInstance.get()])
+            if (cscPlayerPrismUseAccount.get().toBoolean()) command.add('-UsePlayerAccount')
+        }
+        if (cscPlayerNoLaunch.get().toBoolean()) command.add('-NoLaunch')
+        project.exec { commandLine command }
+    }
+}
+
+tasks.matching { it.name in ['allworkJarJar', 'publishCurseForge', 'publishMods', 'publishModrinth'] }.configureEach {
+    dependsOn(tasks.named('verifyFabricPublishJarContents'))
+}

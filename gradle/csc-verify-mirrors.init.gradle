@@ -1,0 +1,111 @@
+// Local read-only Nexus proxies for the verification runner. The public
+// upstream repositories remain configured by each version's own build.
+def mirrors = [
+        ['CSC_VERIFY_FORGE', 'forge'],
+        ['CSC_VERIFY_NEOFORGE', 'neoforge-releases'],
+        ['CSC_VERIFY_FABRIC', 'fabric'],
+        ['CSC_VERIFY_CREATEMOD', 'createmod'],
+        ['CSC_VERIFY_MODRINTH', 'modrinth'],
+        ['CSC_VERIFY_TORQUE', 'torque-api'],
+        ['CSC_VERIFY_MOJANG_LIBRARIES', 'mojang-libraries'],
+        ['CSC_VERIFY_CENTRAL', 'maven-central'],
+]
+def proxyByHost = [
+        'maven.minecraftforge.net': 'forge',
+        'libraries.minecraft.net': 'mojang-libraries',
+        'maven.fabricmc.net': 'fabric',
+        'maven.neoforged.net': 'neoforge-releases',
+        'maven.createmod.net': 'createmod',
+        'api.modrinth.com': 'modrinth',
+        'logistics.aisaveworld.tech': 'torque-api',
+        'repo.maven.apache.org': 'maven-central',
+        'repo1.maven.org': 'maven-central',
+]
+def supportsContentFilter = !gradle.gradleVersion.startsWith('4.')
+
+def redirectKnownUpstream = { repository ->
+    try {
+        def proxy = proxyByHost[repository.url?.host]
+        if (repository.url?.host == 'maven.neoforged.net'
+                && !repository.url?.path?.startsWith('/releases')) {
+            proxy = null
+        }
+        if (proxy != null) {
+            repository.url = java.net.URI.create("http://192.168.147.111:8081/repository/${proxy}/")
+            if (proxy == 'neoforge-releases' && supportsContentFilter) {
+                repository.content {
+                    includeGroupByRegex 'net\\.neoforged(\\..*)?'
+                    includeGroup 'cpw.mods'
+                }
+            }
+            try {
+                repository.allowInsecureProtocol = true
+            } catch (MissingPropertyException ignored) {
+            }
+        }
+    } catch (MissingPropertyException ignored) {
+        // Flat-file and other non-Maven repositories have no URL to redirect.
+    }
+}
+
+gradle.beforeProject { project ->
+    if (project.name == 'forge-1.14.4-0.2.3') {
+        // FG3 declares 3.+, which otherwise asks every repository (including
+        // the unreachable direct Forge endpoint) for changing metadata.
+        project.buildscript.configurations.all { configuration ->
+            configuration.resolutionStrategy.eachDependency { details ->
+                if (details.requested.group == 'net.minecraftforge.gradle'
+                        && details.requested.name == 'ForgeGradle'
+                        && details.requested.version == '3.+') {
+                    details.useVersion '3.0.197'
+                }
+            }
+        }
+    }
+    [project.buildscript.repositories, project.repositories].each { repositories ->
+        repositories.each { repository -> redirectKnownUpstream(repository) }
+        repositories.whenObjectAdded { repository -> redirectKnownUpstream(repository) }
+        def localRepository = project.findProperty('csc_verification_maven_repo')
+        if (localRepository != null && repositories.findByName('CSC_VERIFY_LOCAL') == null) {
+            repositories.maven {
+                name = 'CSC_VERIFY_LOCAL'
+                url = new File(localRepository.toString()).toURI()
+            }
+        }
+        if (supportsContentFilter
+                && repositories.findByName('CSC_VERIFY_MOJANG_META') == null) {
+            repositories.maven {
+                name = 'CSC_VERIFY_MOJANG_META'
+                url = 'https://maven.neoforged.net/mojang-meta/'
+                content { includeModule 'net.neoforged', 'minecraft-dependencies' }
+            }
+        }
+        if (supportsContentFilter
+                && repositories.findByName('CSC_VERIFY_PARCHMENT') == null) {
+            repositories.maven {
+                name = 'CSC_VERIFY_PARCHMENT'
+                url = 'https://maven.parchmentmc.org/'
+                content { includeGroup 'org.parchmentmc.data' }
+            }
+        }
+        mirrors.each { entry ->
+            if (repositories.findByName(entry[0]) == null) {
+                repositories.maven {
+                    name = entry[0]
+                    url = java.net.URI.create("http://192.168.147.111:8081/repository/${entry[1]}/")
+                    if (entry[1] == 'neoforge-releases' && supportsContentFilter) {
+                        content {
+                            includeGroupByRegex 'net\\.neoforged(\\..*)?'
+                            includeGroup 'cpw.mods'
+                        }
+                    }
+                    // Gradle 4.9 allows HTTP; modern Gradle requires this opt-in.
+                    try {
+                        allowInsecureProtocol = true
+                    } catch (MissingPropertyException ignored) {
+                    }
+                }
+            }
+        }
+    }
+}

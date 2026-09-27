@@ -154,7 +154,8 @@ dependencies {
     implementation("com.tterrag.registrate:Registrate:${registrate_version}")
     implementation "curse.maven:copycats-968398:6650033"
 
-    implementation "curse.maven:sable-1312371:8007005"
+    // Optional Aeronautics compatibility fixture; not required by CSC sources.
+    // implementation "curse.maven:sable-1312371:8007005"
     implementation "maven.modrinth:create-aeronautics:1.2.1+mc1.21.1"
 
     implementation "net.createmod.ponder:ponder-neoforge:1.0.82+mc1.21.1"

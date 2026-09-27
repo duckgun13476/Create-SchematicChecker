@@ -4,8 +4,25 @@ plugins {
     id 'fabric-loom' version '1.10.5' apply false
 }
 
+def cscFabricMavenMirrorUrl = providers.gradleProperty('csc_fabric_maven_mirror_url')
+        .orElse(providers.environmentVariable('CSC_FABRIC_MAVEN_MIRROR_URL'))
+        .orNull
+
 allprojects {
     repositories {
+        if (cscFabricMavenMirrorUrl != null && !cscFabricMavenMirrorUrl.isBlank()) {
+            maven {
+                name = 'CSC Fabric Maven Mirror'
+                url = uri(cscFabricMavenMirrorUrl)
+                allowInsecureProtocol = cscFabricMavenMirrorUrl.startsWith('http://')
+                content {
+                    // The local Fabric proxy is a fallback for the old Sponge Mixin
+                    // artifact only. Routing entire groups here hides newer artifacts
+                    // that the proxy has not mirrored yet.
+                    includeModule 'net.fabricmc', 'sponge-mixin'
+                }
+            }
+        }
         maven {
             name = "PinkCatsMaven"
             url = uri("https://logistics.aisaveworld.tech/d/share/maven/torque")

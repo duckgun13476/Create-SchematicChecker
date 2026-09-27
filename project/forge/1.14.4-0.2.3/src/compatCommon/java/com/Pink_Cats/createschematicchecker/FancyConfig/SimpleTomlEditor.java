@@ -693,6 +693,44 @@ public class SimpleTomlEditor {
         return count;
     }
 
+    public void setScalarValue(String key, Object value) {
+        String[] keyParts = key.split("\\.");
+        String section = keyParts.length <= 1 ? "" : GetCurrentLineStringTitle(keyParts, keyParts.length - 2);
+        String entry = GetCurrentLineStringTitle(keyParts, keyParts.length - 1);
+        boolean inSection = keyParts.length <= 1;
+        try {
+            List<String> lines = new ArrayList<String>();
+            try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+                String line;
+                while ((line = reader.readLine()) != null) lines.add(line);
+            }
+            for (int i = 0; i < lines.size(); i++) {
+                String trimmed = lines.get(i).trim();
+                if (!inSection && trimmed.equals(section)) {
+                    inSection = true;
+                    continue;
+                }
+                if (!inSection) continue;
+                if (keyParts.length > 1 && trimmed.startsWith("[") && trimmed.endsWith("]") && !trimmed.equals(section)) break;
+                if (trimALL(trimmed).startsWith(entry + "=")) {
+                    int leadingSpaces = 0;
+                    while (leadingSpaces < lines.get(i).length() && lines.get(i).charAt(leadingSpaces) == ' ') leadingSpaces++;
+                    StringBuilder replacement = new StringBuilder();
+                    for (int j = 0; j < leadingSpaces; j++) replacement.append(' ');
+                    replacement.append(entry).append(" = ").append(value);
+                    lines.set(i, replacement.toString());
+                    try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
+                        for (String line : lines) writer.write(line + System.lineSeparator());
+                    }
+                    return;
+                }
+            }
+            ConfigValue_IO(key, value);
+        } catch (IOException e) {
+            Message.FE(e.getMessage());
+        }
+    }
+
     public void compactBlankLinesInSections() {
         try {
             List<String> lines = new ArrayList<>();

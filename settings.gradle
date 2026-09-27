@@ -40,3 +40,10 @@ project(':fabric-1.19.2-0.5.1i').projectDir = file('project/fabric/1.19.2-0.5.1i
 project(':create-fabric-stubs-1.21.1').projectDir = file('project/stubs/create-fabric/1.21.1')
 project(':fabric-1.20.1-6.0.x').projectDir = file('project/fabric/1.20.1-6.0.x')
 project(':neoforge-1.21.1-6.0.x').projectDir = file('project/neoforge/1.21.1-6.0.x')
+
+// Experimental Fabric 1.21.1 is source-maintained but not part of the release matrix.
+// Opt in for compilation without silently adding it to package/publish tasks.
+if (providers.gradleProperty('csc_verify_fabric_121').orElse('false').get().toBoolean()) {
+    include 'fabric-1.21.1-6.0.x'
+    project(':fabric-1.21.1-6.0.x').projectDir = file('project/fabric/1.21.1-6.0.x')
+}

@@ -74,8 +74,14 @@ dependencies {
         transitive = false
     }
 
-    modImplementation("com.simibubi.create:${createFabricArtifactId}:${create_fabric_version}") {
-        changing = true
+    if ((project.findProperty('csc_verify_fabric_121') ?: 'false').toBoolean()) {
+        // This source-only target has no published Create Fabric 1.21.1 jar.
+        // Verify its CSC API surface against the checked-in development stubs.
+        modImplementation project(':create-fabric-stubs-1.21.1')
+    } else {
+        modImplementation("com.simibubi.create:${createFabricArtifactId}:${create_fabric_version}") {
+            changing = true
+        }
     }
 
     if ((project.findProperty('modmenu_runtime_enabled') ?: 'false').toBoolean()) {
@@ -93,7 +99,7 @@ loom {
     }
 
     runs {
-        client {
+        devClient {
             client()
             runDir = 'run'
         }
@@ -126,17 +132,18 @@ tasks.register('generateFabricTemplateResources') {
     inputs.files(fileTree('src/main/resources') {
         include 'fabric.mod.json', 'createschematicchecker.mixins.json'
     })
+    inputs.file(rootProject.file('common/src/main/resources/createschematicchecker.mixins.json'))
     outputs.dir(generatedFabricResourcesDir)
 
     doLast {
         def engine = new groovy.text.SimpleTemplateEngine()
         ['fabric.mod.json', 'createschematicchecker.mixins.json'].each { path ->
-            def inputFile = file("src/main/resources/${path}")
-            if (inputFile.exists()) {
-                def outputFile = new File(generatedFabricResourcesDir.get().asFile, path)
-                outputFile.parentFile.mkdirs()
-                outputFile.setText(engine.createTemplate(inputFile.getText('UTF-8')).make(templatedFabricResourceProperties).toString(), 'UTF-8')
-            }
+            def localTemplate = file("src/main/resources/${path}")
+            def inputFile = localTemplate.exists() ? localTemplate : rootProject.file("common/src/main/resources/${path}")
+            if (!inputFile.exists()) throw new GradleException("Missing Fabric resource template: ${path}")
+            def outputFile = new File(generatedFabricResourcesDir.get().asFile, path)
+            outputFile.parentFile.mkdirs()
+            outputFile.setText(engine.createTemplate(inputFile.getText('UTF-8')).make(templatedFabricResourceProperties).toString(), 'UTF-8')
         }
     }
 }
@@ -158,6 +165,7 @@ remapJar {
 }
 
 apply from: rootProject.file("gradle/allwork/publishing.gradle")
+apply from: rootProject.file("gradle/csc-fabric-published-runtime.gradle")
 
 publishing {
     publications {

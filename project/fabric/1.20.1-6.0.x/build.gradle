@@ -183,7 +183,7 @@ loom {
     }
 
     runs {
-        client {
+        devClient {
             client()
             runDir = 'run'
         }
@@ -248,6 +248,7 @@ remapJar {
 }
 
 apply from: rootProject.file("gradle/allwork/publishing.gradle")
+apply from: rootProject.file("gradle/csc-fabric-published-runtime.gradle")
 
 publishing {
     publications {
