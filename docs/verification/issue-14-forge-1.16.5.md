@@ -24,7 +24,7 @@ Real client launch with `-Dfml.earlyprogresswindow=false` reached Forge mod disc
 
 The patched fixture was the published jar with the independently compiled locator/service added and the unchanged nested API moved to the new fixed path. It was **not** a complete source-built release artifact. No test binaries are included in this change.
 
-The bootstrap source and test harness compiled using Java 16 and the official installed Forge libraries. `TorqueApiLocatorTest: all checks passed`. Coverage includes embedded-only behavior, misleading filenames/comments, renamed external jars, multi-mod jars, older external versions, extraction byte equality, cache reuse, damaged-cache rejection and missing-entry rejection. The harness is also wired to Gradle `check` as `testTorqueApiLocator`.
+The bootstrap source and test harness compiled using Java 16 and the official installed Forge libraries. `TorqueApiLocatorTest: all checks passed`. Coverage includes embedded-only behavior, misleading filenames/comments, renamed external jars, multi-mod jars, older external versions, extraction byte equality, cache reuse, damaged-cache recovery and preservation and missing-entry rejection. The harness is also wired to Gradle `check` as `testTorqueApiLocator`.
 
 ## Not yet verified
 
@@ -34,3 +34,11 @@ The bootstrap source and test harness compiled using Java 16 and the official in
 - Other Minecraft/Forge variants are unchanged and were not retested.
 
 Before release, run `:forge-1.16.5-0.3.2g:build` from the FG5 runner, then repeat both embedded-only and external-API client cases with the actual built jar on a graphical client, including world entry and CSC functionality.
+
+## Cache recovery follow-up
+
+The locator now serializes same-JVM callers and uses a per-content-hash file lock across processes. It validates a synced temporary jar before isolating a damaged regular cache file under a unique `.corrupt-*` name, then publishes with a same-directory atomic move. Quarantined bytes and other versions are preserved. Symbolic-link cache directories/targets and non-regular targets are rejected rather than followed or replaced. Atomic-move or I/O failures stop with a diagnostic; there is no partial-copy fallback. This does not claim crash-durability guarantees across all filesystems.
+
+The expanded Java 16 harness passed recovery plus repeated reuse, eight concurrent threads, two child JVMs sharing a damaged cache, retained quarantine bytes, unrelated temporary-file preservation, invalid embedded identity before replacement, non-regular targets, and symbolic-link refusal. These tests are isolated fixtures, not user files.
+
+A real Forge client discovery run with the updated patched fixture and an intentionally damaged isolated cache also passed: TorqueAPI 1.2.2 discovered, zero missing requirements, original damaged bytes retained under `.corrupt-*`, rebuilt bytes matching the embedded API. Complete source build/reobfuscation and GUI/world acceptance remain unverified as described above.
