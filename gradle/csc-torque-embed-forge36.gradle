@@ -1,0 +1,19 @@
+// Forge 36 has no ContainedDeps support. TorqueApiLocator discovers this fixed entry.
+def embeddedTorqueConfiguration = configurations.maybeCreate('cscTorqueEmbedded')
+embeddedTorqueConfiguration.canBeConsumed = false
+embeddedTorqueConfiguration.canBeResolved = true
+embeddedTorqueConfiguration.transitive = false
+
+dependencies {
+    cscTorqueEmbedded(project.csc_torque_embed_notation) {
+        changing = true
+        transitive = false
+    }
+}
+
+tasks.named('jar').configure {
+    from(embeddedTorqueConfiguration) {
+        into 'META-INF/libraries'
+        rename { 'csc-torqueapi.jar' }
+    }
+}

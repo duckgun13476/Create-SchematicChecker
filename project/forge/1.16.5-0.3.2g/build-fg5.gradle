@@ -164,7 +164,7 @@ sourceSets.main.java { srcDir new File(sharedRootDir, 'common/src/main/java') }
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 ext.csc_torque_embed_notation = "com.pinkcats.torque:TorqueAPI-1.16.5-forge:${torque_api_version}"
-apply from: new File(sharedRootDir, 'gradle/csc-torque-embed-legacy.gradle')
+apply from: new File(sharedRootDir, 'gradle/csc-torque-embed-forge36.gradle')
 
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
@@ -303,4 +303,16 @@ boolean hasUnstaged() {
     } catch (Throwable ignored) {
         return false
     }
+}
+
+// No JUnit dependency needed for this bootstrap-only regression harness.
+tasks.register('testTorqueApiLocator', JavaExec) {
+    group = 'verification'
+    dependsOn tasks.named('testClasses')
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'com.pinkcats.csc.bootstrap.TorqueApiLocatorTest'
+    jvmArgs '--add-opens=java.base/java.util.jar=ALL-UNNAMED'
+}
+tasks.named('check').configure {
+    dependsOn tasks.named('testTorqueApiLocator')
 }
