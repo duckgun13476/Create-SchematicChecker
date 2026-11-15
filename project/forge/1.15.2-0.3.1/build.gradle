@@ -66,6 +66,9 @@ tasks.register('reobfJar', Exec) {
     workingDir = fg5RunnerDir
     commandLine(*runnerCommandLineFor('reobfJar'))
     outputs.file(project.file(csc_publish_artifact_relative_path))
+    // The FG5 build owns the real source and dependency inputs; always let it
+    // decide whether its output is up to date, including TorqueAPI changes.
+    outputs.upToDateWhen { false }
 }
 
 tasks.named('assemble').configure {
